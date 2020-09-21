@@ -16,14 +16,26 @@ using namespace std;
 
 namespace chess {
 
-    ChessTeam::ChessTeam(team_type inType)
+    ChessTeam::ChessTeam(team_type inType = black)
     {
+        color = inType;
+
         if (inType == black) {
             // set the piece positions for a black team
         }
         else {
             // set the piece positions for a white team
         }
+    }
+
+    void ChessTeam::setColor(team_type inType)
+    {
+        color = inType;
+    }
+
+    team_type ChessTeam::getColor() const
+    {
+        return color;
     }
 
 

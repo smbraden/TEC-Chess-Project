@@ -10,9 +10,8 @@
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
 
-
-#include  "WhiteSet.h"
-#include  "BlackSet.h"
+#include  "ChessPiece.h"
+#include  "ChessTeam.h"
 
 namespace chess {
 
@@ -20,6 +19,7 @@ namespace chess {
 
 	public:
 
+		ChessBoard();
 		class MoveError{};
 		int moveWhite(char position1, int position2, char move1, int move2); // a5 to b3 for example
 		int moveBlack(char position1, int position2, char move1, int move2);
@@ -27,8 +27,8 @@ namespace chess {
 
 	private:
 
-		WhiteSet white;
-		BlackSet black;
+		ChessTeam White;
+		ChessTeam Black;
 		int remove(char position1, int position2);
 
 	};

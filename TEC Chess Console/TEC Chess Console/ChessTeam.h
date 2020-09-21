@@ -21,10 +21,13 @@ namespace chess {
 		public:
 
 			// constructor
-			ChessTeam(team_type);
-		
+			ChessTeam(team_type inType = black);
+			void setColor(team_type inType);
+			team_type getColor() const;
+			
 		private:
 			ArrayBag<ChessPiece> team;
+			team_type color;
 	};
 
 

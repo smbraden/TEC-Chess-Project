@@ -15,7 +15,13 @@
 using namespace std;
 
 namespace chess {
-
+    
+    ChessBoard::ChessBoard()
+    {
+        White.setColor(white);
+        Black.setColor(black);
+    }
+    
     int ChessBoard::moveWhite(char position1, int position2, char move1, int move2)
     {
         return 0;
@@ -24,6 +30,10 @@ namespace chess {
     int ChessBoard::moveBlack(char position1, int position2, char move1, int move2)
     {
         return 0;
+    }
+
+    void ChessBoard::printBoard()
+    {
     }
 
     int ChessBoard::remove(char position1, int position2)
