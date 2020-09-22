@@ -13,20 +13,22 @@
 namespace chess {
 
 	enum team_type { white, black };
-
+	
 	class ChessPiece {
 
 		public:
 		
 			ChessPiece(int inCol = 0, int inRow = 0);
 			class PieceMoveError {};
-			void getPosition(int& inCol, int& inRow) const;	
+			void getPosition(int& inCol, int& inRow) const;
+			char getType() const;
 			virtual void setPosition(int inCol, int inRow);
 		
 		protected:
 
 			int col;
 			int row;
+			char piece_type;
 
 	};
 

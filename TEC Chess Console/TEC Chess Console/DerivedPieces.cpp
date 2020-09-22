@@ -14,14 +14,15 @@ namespace chess {
 	Pawn::Pawn(int inCol, int inRow)
 	{
 		ChessPiece(inCol, inRow);
+		piece_type = 'P';
 	}
 
 	void Pawn::setPosition(int inCol, int inRow, team_type team)
 	{
 		if (team == black) {
 
-			// if starting row and move two rows forward, or move one row forward 
-			if ((row == 5 && inRow == 7 && col == inCol) || (inRow == row - 1 && col == inCol)) {
+			// if starting row and move two rows forward, or otherwise move only one row forward 
+			if ((row == 5 && inRow == 3 && col == inCol) || (inRow == (row - 1) && col == inCol)) {
 				col = inCol;
 				row = inRow;
 			}
@@ -31,7 +32,7 @@ namespace chess {
 		}
 		else if (team == white) {
 
-			// if starting row and move two rows forward, or move one row forward 
+			// if starting row and move two rows forward, or otherwise move only one row forward 
 			if ((row == 2 && inRow == 4 && col == inCol) || (inRow == row + 1 && col == inCol)) {
 				col = inCol;
 				row = inRow;
@@ -51,6 +52,7 @@ namespace chess {
 	Rook::Rook(int inCol, int inRow)
 	{
 		ChessPiece(inCol, inRow);
+		piece_type = 'R';
 	}
 
 	void Rook::setPosition(int inCol, int inRow)
@@ -75,6 +77,7 @@ namespace chess {
 	Knight::Knight(int inCol, int inRow)
 	{
 		ChessPiece(inCol, inRow);
+		piece_type = 'N';
 	}
 
 	void Knight::setPosition(int inCol, int inRow)
@@ -99,6 +102,7 @@ namespace chess {
 	Castle::Castle(int inCol, int inRow)
 	{
 		ChessPiece(inCol, inRow);
+		piece_type = 'C';
 	}
 
 	void Castle::setPosition(int inCol, int inRow)
@@ -122,6 +126,7 @@ namespace chess {
 	Queen::Queen(int inCol, int inRow)
 	{
 		ChessPiece(inCol, inRow);
+		piece_type = 'Q';
 	}
 
 	void Queen::setPosition(int inCol, int inRow)
@@ -146,6 +151,7 @@ namespace chess {
 	King::King(int inCol, int inRow)
 	{
 		ChessPiece(inCol, inRow);
+		piece_type = 'K';
 	}
 
 	void King::setPosition(int inCol, int inRow)

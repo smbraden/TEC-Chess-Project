@@ -9,7 +9,6 @@
                         the rules of chess.
 //-------------------------------------------------------------------------------------/*/
 
-#include <iostream>
 #include "ChessBoard.h"
 
 using namespace std;

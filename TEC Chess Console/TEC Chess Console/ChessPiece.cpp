@@ -9,7 +9,7 @@
 						for valid movement.
 //-------------------------------------------------------------------------------------/*/
 
-#include <iostream>
+
 #include "ChessPiece.h"
 
 using namespace std;
@@ -33,6 +33,11 @@ namespace chess {
 		inRow = row;
 		inCol = col;
 
+	}
+
+	char ChessPiece::getType() const
+	{
+		return piece_type;
 	}
 
 

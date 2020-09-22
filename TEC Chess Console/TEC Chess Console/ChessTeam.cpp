@@ -9,9 +9,7 @@
                         by the ChessTeam object
 //-------------------------------------------------------------------------------------/*/
 
-#include <iostream>
 #include "ChessTeam.h"
-#include "DerivedPieces.h"
 
 using namespace std;
 
@@ -109,6 +107,8 @@ namespace chess {
         team.add(K);
 
     }
+
+
 
 
 }  // closes namespace

@@ -10,7 +10,7 @@
 #define CHESSTEAM_H
 
 
-#include  "ChessPiece.h"	// team_type is enumerated here
+#include  "DerivedPieces.h"	// team_type is enumerated here
 #include "BagInterface.h"
 #include  "ArrayBag.h"
 
