@@ -17,6 +17,16 @@ using namespace chess;
 
 const int SIZE = 8;
 
+
+void WpawnTest(ChessPiece& pawn);
+void BpawnTest(ChessPiece& pawn);
+void castleTest(ChessPiece& castle);
+//void knightTest(ChessPiece& knight);
+void rookTest(ChessPiece& rook);
+void queenTest(ChessPiece& queen);
+void kingTest(ChessPiece& king);
+
+
 // Test
 int main() {
 
@@ -38,266 +48,328 @@ int main() {
 	cout << endl << endl;
 
 
+	WpawnTest(pW);
+	BpawnTest(pB);
+	castleTest(cB);
+	rookTest(r);
+	queenTest(Q);
+	kingTest(K);
+
+	return 0;
+}
+
+
+
+void WpawnTest(ChessPiece& pawn)
+{
+
 	int row;
 	int col;
-	
-
-
-
 
 	cout << "Testing white Pawn move exceptions: expecting 2 exceptions..." << endl;
 
-	pW.getPosition(col, row);
+	pawn.getPosition(col, row);
 	cout << "Initial position: ( " << col << ", " << row << " )" << endl;
 
 	try {
-		pW.setPosition(0, 3);
+		pawn.setPosition(0, 3);
 	}
 	catch (Pawn::PawnMoveError e) {
 		cout << "Forward 2 on first move. This move should NOT throw an exception." << endl;
 	}
 
 	try {
-		pW.setPosition(0, 4);
+		pawn.setPosition(0, 4);
 	}
 	catch (Pawn::PawnMoveError e) {
 		cout << "This move should NOT throw an exception." << endl;
 	}
 
 	try {
-		pW.setPosition(1, 4);
+		pawn.setPosition(1, 4);
 	}
 	catch (Pawn::PawnMoveError e) {
 		cout << "Invalid Pawn move. This move SHOULD throw an exception." << endl;
 	}
 
 	try {
-		pW.setPosition(0, 3);
+		pawn.setPosition(0, 3);
 	}
 	catch (Pawn::PawnMoveError e) {
 		cout << "Invalid Pawn move. This move SHOULD throw an exception." << endl;
 	}
 
 	try {
-		pW.setPosition(0, 5);
+		pawn.setPosition(0, 5);
 	}
 	catch (Pawn::PawnMoveError e) {
 		cout << "Invalid Pawn move. This move should NOT throw an exception." << endl;
 	}
 
-	pW.getPosition(col, row);
+	pawn.getPosition(col, row);
 	cout << "Final position: ( " << col << ", " << row << " )" << endl;
 
+}
 
 
 
 
 
+
+void BpawnTest(ChessPiece& pawn)
+{
+	int col;
+	int row;
+	
 	cout << endl;
 	cout << "Testing black Pawn move exceptions: expecting 2 exceptions..." << endl;
 
-	pB.getPosition(col, row);
+	pawn.getPosition(col, row);
 	cout << "Initial position: ( " << col << ", " << row << " )" << endl;
 
 	try {
-		pB.setPosition(4, 3);
+		pawn.setPosition(4, 3);
 	}
 	catch (Pawn::PawnMoveError e) {
 		cout << "Forward 2 on first move. This move should NOT throw an exception." << endl;
 	}
 
 	try {
-		pB.setPosition(4, 2);
+		pawn.setPosition(4, 2);
 	}
 	catch (Pawn::PawnMoveError e) {
 		cout << "This move should NOT throw an exception." << endl;
 	}
 
 	try {
-		pB.setPosition(5, 2);
+		pawn.setPosition(5, 2);
 	}
 	catch (Pawn::PawnMoveError e) {
 		cout << "Invalid Pawn move. This move SHOULD throw an exception." << endl;
 	}
 
 	try {
-		pB.setPosition(4, 1);
+		pawn.setPosition(4, 1);
 	}
 	catch (Pawn::PawnMoveError e) {
 		cout << "This move should NOT throw an exception." << endl;
 	}
 
 	try {
-		pB.setPosition(4, 2);
+		pawn.setPosition(4, 2);
 	}
 	catch (Pawn::PawnMoveError e) {
 		cout << "Invalid Pawn move. This move SHOULD throw an exception." << endl;
 	}
 
-	pB.getPosition(col, row);
+	pawn.getPosition(col, row);
 	cout << "Final position: ( " << col << ", " << row << " )" << endl;
 
 
+}
 
+void castleTest(ChessPiece& castle)
+{
 
+	int col;
+	int row;
 
 	cout << endl;
 	cout << "Testing Castle move exceptions: expecting 1 exceptions..." << endl;
 
-	cB.getPosition(col, row);
-	cout << "Initial position: ( " << col << ", " << row << " )" << endl;
+	castle.getPosition(col, row);
+	cout << "Initial position: ( " << col << ", " << row << " )" << endl;	// (2, 0)
 
 	try {
-		cB.setPosition(5, 2);
+		castle.setPosition(5, 2);
 	}
 	catch (Castle::CastleMoveError e) {
 		cout << "Invalid Castle move. This move SHOULD throw an exception." << endl;
 	}
 
 	try {
-		cB.setPosition(6, 2);
+		castle.setPosition(6, 2);
 	}
 	catch (Castle::CastleMoveError e) {
 		cout << "Move along a column. This move should NOT throw an exception." << endl;
 	}
 
 	try {
-		cB.setPosition(6, 4);
+		castle.setPosition(6, 4);
 	}
 	catch (Castle::CastleMoveError e) {
 		cout << "Move along a row. This move should NOT throw an exception." << endl;
 	}
 
-	cB.getPosition(col, row);
+	castle.getPosition(col, row);
 	cout << "Final position: ( " << col << ", " << row << " )" << endl;
 
+}
 
 
 
 
+
+
+
+void knightTest(ChessPiece& knight)
+{
+
+
+}
+
+
+
+
+
+
+void rookTest(ChessPiece& rook)
+{
+	int col;
+	int row;
 
 	cout << endl;
 	cout << "Testing Rook move exceptions: expecting 2 exceptions..." << endl;
 
-	r.getPosition(col, row);
+	rook.getPosition(col, row);
 	cout << "Initial position: ( " << col << ", " << row << " )" << endl;	// (2, 0)
 
 	try {
-		r.setPosition(2, 2);
+		rook.setPosition(2, 2);
 	}
 	catch (Rook::RookMoveError e) {
 		cout << "Invalid Rook move. This move SHOULD throw an exception." << endl;
 	}
 
 	try {
-		r.setPosition(4, 2);
+		rook.setPosition(4, 2);
 	}
 	catch (Rook::RookMoveError e) {
 		cout << "This move should NOT throw an exception." << endl;
 	}
 
 	try {
-		r.setPosition(1, 3);
+		rook.setPosition(1, 3);
 	}
 	catch (Rook::RookMoveError e) {
 		cout << "This move should NOT throw an exception." << endl;
 	}
 
 	try {
-		r.setPosition(6, 4);
+		rook.setPosition(6, 4);
 	}
 	catch (Rook::RookMoveError e) {
 		cout << "Invalid Rook move. This move SHOULD throw an exception." << endl;
 	}
 
-	r.getPosition(col, row);
+	rook.getPosition(col, row);
 	cout << "Final position: ( " << col << ", " << row << " )" << endl;
 
 
+}
 
 
+
+
+
+
+
+void queenTest(ChessPiece& queen)
+{
+	int col;
+	int row;
 
 	cout << endl;
 	cout << "Testing Queen move exceptions: expecting 1 exceptions..." << endl;
 
-	Q.getPosition(col, row);
+	queen.getPosition(col, row);
 	cout << "Initial position: ( " << col << ", " << row << " )" << endl;	// (3 , 0)
 
 	try {
-		Q.setPosition(6, 2);
+		queen.setPosition(6, 2);
 	}
 	catch (Queen::QueenMoveError e) {
 		cout << "Invalid Queen move. This move SHOULD throw an exception." << endl;
 	}
 
 	try {
-		Q.setPosition(5, 2);
+		queen.setPosition(5, 2);
 	}
 	catch (Queen::QueenMoveError e) {
 		cout << "Move on a diagonal. This move should NOT throw an exception." << endl;
 	}
 
 	try {
-		Q.setPosition(0, 2);
+		queen.setPosition(0, 2);
 	}
 	catch (Queen::QueenMoveError e) {
 		cout << "Move along a row. This move should NOT throw an exception." << endl;
 	}
 
 	try {
-		Q.setPosition(0, 1);
+		queen.setPosition(0, 1);
 	}
 	catch (Queen::QueenMoveError e) {
 		cout << "Move along a col. This move should NOT throw an exception." << endl;
 	}
 
-	Q.getPosition(col, row);
+	queen.getPosition(col, row);
 	cout << "Final position: ( " << col << ", " << row << " )" << endl;
 
+}
 
 
 
 
+
+
+void kingTest(ChessPiece& king)
+{
+	int col;
+	int row;
 
 	cout << endl;
 	cout << "Testing King move exceptions: expecting 1 exceptions..." << endl;
 
-	K.getPosition(col, row);
+	king.getPosition(col, row);
 	cout << "Initial position: ( " << col << ", " << row << " )" << endl; // (4, 0)
 
 	try {
-		K.setPosition(6, 0);
+		king.setPosition(6, 0);
 	}
 	catch (King::KingMoveError e) {
 		cout << "Invalid King move. This move SHOULD throw an exception." << endl;
 	}
 
 	try {
-		K.setPosition(5, 1);
+		king.setPosition(5, 1);
 	}
 	catch (King::KingMoveError e) {
 		cout << "Move on diagonal. This move should NOT throw an exception." << endl;
 	}
 
 	try {
-		K.setPosition(4, 1);
+		king.setPosition(4, 1);
 	}
 	catch (King::KingMoveError e) {
 		cout << "Move along a row. This move should NOT throw an exception." << endl;
 	}
 
 	try {
-		K.setPosition(3, 1);
+		king.setPosition(3, 1);
 	}
 	catch (King::KingMoveError e) {
 		cout << "Move along a col. This move should NOT throw an exception." << endl;
 	}
 
-	K.getPosition(col, row);
+	king.getPosition(col, row);
 	cout << "Final position: ( " << col << ", " << row << " )" << endl;
 
-	return 0;
+
 }
+
+
+
 
 
 /*

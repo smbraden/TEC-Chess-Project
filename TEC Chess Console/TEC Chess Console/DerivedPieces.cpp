@@ -139,8 +139,8 @@ namespace chess {
 	{
 		col = inCol;
 		row = inRow;
-		ChessPiece(inCol, inRow, color);
 		piece_type = 'Q';
+		team_type = color;
 	}
 
 	void Queen::setPosition(int inCol, int inRow)
