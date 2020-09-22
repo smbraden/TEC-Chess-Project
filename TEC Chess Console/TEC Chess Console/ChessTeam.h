@@ -11,6 +11,7 @@
 
 
 #include  "ChessPiece.h"	// team_type is enumerated here
+#include "BagInterface.h"
 #include  "ArrayBag.h"
 
 
@@ -28,6 +29,7 @@ namespace chess {
 		private:
 			ArrayBag<ChessPiece> team;
 			team_type color;
+			void placePieces();
 	};
 
 

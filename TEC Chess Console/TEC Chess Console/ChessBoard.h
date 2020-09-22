@@ -20,9 +20,10 @@ namespace chess {
 	public:
 
 		ChessBoard();
-		class MoveError{};
-		int moveWhite(int position1, int position2, int move1, int move2); // a5 to b3 for example
-		int moveBlack(int position1, int position2, int move1, int move2);
+		class IlegalMoveError {};// moving a piece to a position already occupied by that team
+		class BoundsError {};	// for moves that go out of board bounds
+		int moveWhite(int position1, int position2, int move1, int move2); // indices 0-7 to rep
+		int moveBlack(int position1, int position2, int move1, int move2); // rows a-h, cols 1-8
 		void printBoard();
 
 	private:

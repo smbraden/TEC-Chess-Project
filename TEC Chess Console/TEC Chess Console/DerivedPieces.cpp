@@ -56,15 +56,15 @@ namespace chess {
 	void Rook::setPosition(int inCol, int inRow)
 	{
 
-		/*
-		if (valid Rook move) {
+		
+		if ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow)) {
 			col = inCol;
 			row = inRow;
 		}
 		else {
 			throw RookMoveError();
 		}
-		*/
+		
 	}
 
 
@@ -79,9 +79,8 @@ namespace chess {
 
 	void Knight::setPosition(int inCol, int inRow)
 	{
-
 		/*
-		if (valid Knight move) {
+		if (valid knight move) {
 			col = inCol;
 			row = inRow;
 		}
@@ -89,6 +88,7 @@ namespace chess {
 			throw KnightMoveError();
 		}
 		*/
+
 	}
 
 
@@ -127,15 +127,15 @@ namespace chess {
 	void Queen::setPosition(int inCol, int inRow)
 	{
 
-		/*
-		if (invalid Queen move) {
+		bool castleMove = ((row == inRow) || (col == inCol));
+		bool rookMove = (inRow <= row + 1) && (inRow >= row - 1) && (inCol <= col + 1) && (inCol >= col - 1);
+		if (castleMove || rookMove) {
 			col = inCol;
 			row = inRow;
 		}
 		else {
 			throw QueenMoveError();
 		}
-		*/
 	}
 
 
@@ -151,14 +151,12 @@ namespace chess {
 	void King::setPosition(int inCol, int inRow)
 	{
 
-		/*
-		if (valid Knight move) {
+		if ((inRow <= row + 1) && (inRow >= row - 1) && (inCol <= col + 1) && (inCol >= col - 1)) {
 			col = inCol;
 			row = inRow;
 		}
 		else {
 			throw KingMoveError();
 		}
-		*/
 	}
 }
