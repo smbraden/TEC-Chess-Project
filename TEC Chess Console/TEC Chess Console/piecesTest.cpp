@@ -1,9 +1,9 @@
 /*/-------------------------------------------------------------------------------------//
-	Filename:           main.cpp
+	Filename:           piecesTest.cpp
 	Contributors:       Sonja Braden
 	Date:               9/22/2020
 	Reference:
-	Description:
+	Description:		Testing the derived chess piece classes
 //-------------------------------------------------------------------------------------/*/
 
 
@@ -32,8 +32,8 @@ int main() {
 
 	ChessPiece a;
 	Pawn pW(0, 1);
-	Pawn pB(4, 5, 'b');
-	Castle cB(6, 6, 'b');
+	Pawn pB(4, 5, ChessPiece::black);
+	Castle cB(6, 6, ChessPiece::black);
 	//Knight n;
 	Rook r;
 	Queen Q;

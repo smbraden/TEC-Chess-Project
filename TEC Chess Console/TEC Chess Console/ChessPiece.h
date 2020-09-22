@@ -12,14 +12,16 @@
 
 namespace chess {
 
-	enum team_type { white, black };
-	
+
 	class ChessPiece {
 
 		public:
+
+			enum team_type { white = 'w', black = 'b' };
+			enum piece_type { none = '0', pawn = 'P', castle = 'C', knight = 'N', 
+								rook = 'R', queen = 'Q', king = 'K' };
 		
-			//ChessPiece();
-			ChessPiece(int inCol = 0, int inRow = 0, char color = 'w');
+			ChessPiece(int inCol = 0, int inRow = 0, team_type color = white);
 			class PieceMoveError {};
 			void getPosition(int& inCol, int& inRow) const;
 			char getPieceType() const;
@@ -30,8 +32,8 @@ namespace chess {
 
 			int col;
 			int row;
-			char piece_type;
-			char team_type;
+			piece_type piece;
+			team_type team;
 
 	};
 

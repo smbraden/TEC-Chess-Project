@@ -16,21 +16,13 @@
 
 namespace chess {
 	
-	/*
-	ChessPiece::ChessPiece()
-	{
-		row = 0;
-		col = 0;
-		piece_type = 'P';
-		team_type = 'w';
-	}
-	*/
-	ChessPiece::ChessPiece(int inCol, int inRow,char color)
+	
+	ChessPiece::ChessPiece(int inCol, int inRow,team_type color)
 	{
 		row = inRow;
 		col = inCol;
-		piece_type = '0';
-		team_type = color;
+		piece = none;
+		team = color;
 	}
 
 
@@ -52,7 +44,7 @@ namespace chess {
 
 	char ChessPiece::getPieceType() const
 	{
-		return piece_type;
+		return piece;
 	}
 
 
@@ -62,7 +54,7 @@ namespace chess {
 
 	char ChessPiece::getTeamType() const
 	{
-		return team_type;
+		return team;
 	}
 
 
