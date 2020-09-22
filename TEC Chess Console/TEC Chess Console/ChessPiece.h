@@ -18,10 +18,12 @@ namespace chess {
 
 		public:
 		
-			ChessPiece(int inCol = 0, int inRow = 0);
+			//ChessPiece();
+			ChessPiece(int inCol = 0, int inRow = 0, char color = 'w');
 			class PieceMoveError {};
 			void getPosition(int& inCol, int& inRow) const;
-			char getType() const;
+			char getPieceType() const;
+			char getTeamType() const;
 			virtual void setPosition(int inCol, int inRow);
 		
 		protected:
@@ -29,6 +31,7 @@ namespace chess {
 			int col;
 			int row;
 			char piece_type;
+			char team_type;
 
 	};
 

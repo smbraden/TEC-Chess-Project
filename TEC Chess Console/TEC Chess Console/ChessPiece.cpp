@@ -12,15 +12,25 @@
 
 #include "ChessPiece.h"
 
-using namespace std;
+//using namespace std;
 
 namespace chess {
 	
-
-	ChessPiece::ChessPiece(int inCol, int inRow)
+	/*
+	ChessPiece::ChessPiece()
+	{
+		row = 0;
+		col = 0;
+		piece_type = 'P';
+		team_type = 'w';
+	}
+	*/
+	ChessPiece::ChessPiece(int inCol, int inRow,char color)
 	{
 		row = inRow;
 		col = inCol;
+		piece_type = '0';
+		team_type = color;
 	}
 
 
@@ -35,9 +45,24 @@ namespace chess {
 
 	}
 
-	char ChessPiece::getType() const
+
+
+
+
+
+	char ChessPiece::getPieceType() const
 	{
 		return piece_type;
+	}
+
+
+
+
+
+
+	char ChessPiece::getTeamType() const
+	{
+		return team_type;
 	}
 
 

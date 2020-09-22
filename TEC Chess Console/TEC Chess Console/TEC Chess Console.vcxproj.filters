@@ -15,19 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChessBoard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ChessTeam.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ChessPiece.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ArrayBag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BagInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DerivedPieces.h">
@@ -35,16 +23,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ChessBoard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ChessTeam.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ChessPiece.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ArrayBag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DerivedPieces.cpp">

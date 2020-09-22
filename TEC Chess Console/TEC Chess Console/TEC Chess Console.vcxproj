@@ -139,18 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ArrayBag.cpp" />
-    <ClCompile Include="ChessBoard.cpp" />
-    <ClCompile Include="ChessTeam.cpp" />
     <ClCompile Include="ChessPiece.cpp" />
     <ClCompile Include="DerivedPieces.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ArrayBag.h" />
-    <ClInclude Include="BagInterface.h" />
-    <ClInclude Include="ChessBoard.h" />
-    <ClInclude Include="ChessTeam.h" />
     <ClInclude Include="ChessPiece.h" />
     <ClInclude Include="DerivedPieces.h" />
   </ItemGroup>
