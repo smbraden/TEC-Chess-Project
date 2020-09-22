@@ -13,7 +13,8 @@ namespace chess {
 
 	Pawn::Pawn(int inCol, int inRow, char color)
 	{
-		ChessPiece(inCol, inRow, color);
+		col = inCol;
+		row = inRow;
 		piece_type = 'P';
 		team_type = color;
 	}
@@ -53,7 +54,8 @@ namespace chess {
 
 	Rook::Rook(int inCol, int inRow, char color)
 	{
-		ChessPiece(inCol, inRow, color);
+		col = inCol;
+		row = inRow;
 		piece_type = 'R';
 		team_type = color;
 	}
@@ -79,7 +81,8 @@ namespace chess {
 
 	Knight::Knight(int inCol, int inRow, char color)
 	{
-		ChessPiece(inCol, inRow, color);
+		col = inCol;
+		row = inRow;
 		piece_type = 'N';
 		team_type = color;
 	}
@@ -108,7 +111,8 @@ namespace chess {
 
 	Castle::Castle(int inCol, int inRow, char color)
 	{
-		ChessPiece(inCol, inRow, color);
+		col = inCol;
+		row = inRow;
 		piece_type = 'C';
 		team_type = color;
 	}
@@ -133,6 +137,8 @@ namespace chess {
 
 	Queen::Queen(int inCol, int inRow, char color)
 	{
+		col = inCol;
+		row = inRow;
 		ChessPiece(inCol, inRow, color);
 		piece_type = 'Q';
 	}
@@ -141,7 +147,7 @@ namespace chess {
 	{
 
 		bool castleMove = ((row == inRow) || (col == inCol));
-		bool rookMove = (inRow <= row + 1) && (inRow >= row - 1) && (inCol <= col + 1) && (inCol >= col - 1);
+		bool rookMove = ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow));
 		if (castleMove || rookMove) {
 			col = inCol;
 			row = inRow;
@@ -158,7 +164,8 @@ namespace chess {
 
 	King::King(int inCol, int inRow, char color)
 	{
-		ChessPiece(inCol, inRow, color);
+		col = inCol;
+		row = inRow;
 		piece_type = 'K';
 		team_type = color;
 	}

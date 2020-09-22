@@ -75,7 +75,7 @@ namespace chess {
 
 	public:
 
-		Queen(int inCol = 4, int inRow = 0, char color = 'w');  // defaults to white queen
+		Queen(int inCol = 3, int inRow = 0, char color = 'w');  // defaults to white queen
 		class QueenMoveError {};
 		void setPosition(int inCol, int inRow);
 
@@ -89,7 +89,7 @@ namespace chess {
 
 	public:
 
-		King(int inCol = 3, int inRow = 0, char color = 'w');	// defaults to white king
+		King(int inCol = 4, int inRow = 0, char color = 'w');	// defaults to white king
 		class KingMoveError {};
 		void setPosition(int inCol, int inRow);
 

@@ -141,7 +141,7 @@
   <ItemGroup>
     <ClCompile Include="ChessPiece.cpp" />
     <ClCompile Include="DerivedPieces.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="piecesTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChessPiece.h" />
