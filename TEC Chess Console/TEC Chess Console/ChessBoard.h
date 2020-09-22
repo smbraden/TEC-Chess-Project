@@ -21,15 +21,15 @@ namespace chess {
 
 		ChessBoard();
 		class MoveError{};
-		int moveWhite(char position1, int position2, char move1, int move2); // a5 to b3 for example
-		int moveBlack(char position1, int position2, char move1, int move2);
+		int moveWhite(int position1, int position2, int move1, int move2); // a5 to b3 for example
+		int moveBlack(int position1, int position2, int move1, int move2);
 		void printBoard();
 
 	private:
 
 		ChessTeam White;
 		ChessTeam Black;
-		int remove(char position1, int position2);
+		int remove(int position1, int position2);
 
 	};
 

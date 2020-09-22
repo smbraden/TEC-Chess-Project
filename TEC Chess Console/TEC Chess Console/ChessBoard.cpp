@@ -22,12 +22,12 @@ namespace chess {
         Black.setColor(black);
     }
     
-    int ChessBoard::moveWhite(char position1, int position2, char move1, int move2)
+    int ChessBoard::moveWhite(int position1, int position2, int move1, int move2)
     {
         return 0;
     }
 
-    int ChessBoard::moveBlack(char position1, int position2, char move1, int move2)
+    int ChessBoard::moveBlack(int position1, int position2, int move1, int move2)
     {
         return 0;
     }
@@ -36,7 +36,7 @@ namespace chess {
     {
     }
 
-    int ChessBoard::remove(char position1, int position2)
+    int ChessBoard::remove(int position1, int position2)
     {
         return 0;
     }

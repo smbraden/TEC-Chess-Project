@@ -17,9 +17,9 @@ namespace chess {
 
 	public:
 
-		Pawn(char inCol = 'b', int inRow = 1);
+		Pawn(int inCol = 0, int inRow = 1);	// defaults to the left-most white pawn
 		class PawnMoveError {};
-		void setPosition(char inCol, int inRow, team_type team);
+		void setPosition(int inCol, int inRow, team_type team);
 
 	};
 
@@ -31,9 +31,9 @@ namespace chess {
 
 	public:
 
-		Rook(char inCol = 'a', int inRow = 1);
+		Rook(int inCol = 2, int inRow = 0); // defaults to left-most white rook
 		class RookMoveError {};
-		void setPosition(char inCol, int inRow);
+		void setPosition(int inCol, int inRow);
 
 	};
 
@@ -46,9 +46,9 @@ namespace chess {
 
 	public:
 
-		Knight(char inCol = 'a', int inRow = 1);
+		Knight(int inCol = 1, int inRow = 0);  // defaults to left-most white knight
 		class KnightMoveError {};
-		void setPosition(char inCol, int inRow);
+		void setPosition(int inCol, int inRow);
 
 	};
 
@@ -61,9 +61,9 @@ namespace chess {
 
 	public:
 
-		Castle(char inCol = 'b', int inRow = 1);
+		Castle(int inCol = 0, int inRow = 0);  // defaults to left-most white castle
 		class CastleMoveError {};
-		void setPosition(char inCol, int inRow);
+		void setPosition(int inCol, int inRow);
 
 	};
 
@@ -75,9 +75,9 @@ namespace chess {
 
 	public:
 
-		Queen(char inCol = 'b', int inRow = 1);
+		Queen(int inCol = 4, int inRow = 0);  // defaults to white queen
 		class QueenMoveError {};
-		void setPosition(char inCol, int inRow);
+		void setPosition(int inCol, int inRow);
 
 	};
 
@@ -89,9 +89,9 @@ namespace chess {
 
 	public:
 
-		King(char inCol = 'b', int inRow = 1);
+		King(int inCol = 3, int inRow = 0);	// defaults to white king
 		class KingMoveError {};
-		void setPosition(char inCol, int inRow);
+		void setPosition(int inCol, int inRow);
 
 	};
 

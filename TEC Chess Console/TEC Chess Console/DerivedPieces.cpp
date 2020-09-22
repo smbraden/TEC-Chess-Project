@@ -1,6 +1,6 @@
 /*/-------------------------------------------------------------------------------------//
 	Filename:           DerivedPieces.cpp
-	Contributor:        Sonja Braden
+	Contributors:        Sonja Braden
 	Date:               9/21/2020
 	Reference:
 	Description:
@@ -11,12 +11,12 @@
 
 namespace chess {
 
-	Pawn::Pawn(char inCol, int inRow)
+	Pawn::Pawn(int inCol, int inRow)
 	{
-		ChessPiece();
+		ChessPiece(inCol, inRow);
 	}
 
-	void Pawn::setPosition(char inCol, int inRow, team_type team)
+	void Pawn::setPosition(int inCol, int inRow, team_type team)
 	{
 		if (team == black) {
 
@@ -48,12 +48,12 @@ namespace chess {
 
 
 
-	Rook::Rook(char inCol, int inRow)
+	Rook::Rook(int inCol, int inRow)
 	{
-		ChessPiece();
+		ChessPiece(inCol, inRow);
 	}
 
-	void Rook::setPosition(char inCol, int inRow)
+	void Rook::setPosition(int inCol, int inRow)
 	{
 
 		/*
@@ -72,12 +72,12 @@ namespace chess {
 
 
 
-	Knight::Knight(char inCol, int inRow)
+	Knight::Knight(int inCol, int inRow)
 	{
-		ChessPiece();
+		ChessPiece(inCol, inRow);
 	}
 
-	void Knight::setPosition(char inCol, int inRow)
+	void Knight::setPosition(int inCol, int inRow)
 	{
 
 		/*
@@ -96,12 +96,12 @@ namespace chess {
 
 
 
-	Castle::Castle(char inCol, int inRow)
+	Castle::Castle(int inCol, int inRow)
 	{
-		ChessPiece();
+		ChessPiece(inCol, inRow);
 	}
 
-	void Castle::setPosition(char inCol, int inRow)
+	void Castle::setPosition(int inCol, int inRow)
 	{
 
 		// if moving only along columns or rows
@@ -119,12 +119,12 @@ namespace chess {
 
 
 
-	Queen::Queen(char inCol, int inRow)
+	Queen::Queen(int inCol, int inRow)
 	{
-		ChessPiece();
+		ChessPiece(inCol, inRow);
 	}
 
-	void Queen::setPosition(char inCol, int inRow)
+	void Queen::setPosition(int inCol, int inRow)
 	{
 
 		/*
@@ -143,12 +143,12 @@ namespace chess {
 
 
 
-	King::King(char inCol, int inRow)
+	King::King(int inCol, int inRow)
 	{
-		ChessPiece();
+		ChessPiece(inCol, inRow);
 	}
 
-	void King::setPosition(char inCol, int inRow)
+	void King::setPosition(int inCol, int inRow)
 	{
 
 		/*

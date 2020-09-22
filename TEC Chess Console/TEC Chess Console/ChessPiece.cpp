@@ -4,7 +4,7 @@
 	Date:               9/21/2020
 	Reference:
 	Description:		Implementation  of the ChessPiece class. This is the base
-						abstract class from which unique types of pieces are derived 
+						class from which unique types of pieces are derived 
 						(queen, king, etc.) Unique types have different error checking 
 						for valid movement.
 //-------------------------------------------------------------------------------------/*/
@@ -15,8 +15,9 @@
 using namespace std;
 
 namespace chess {
+	
 
-	ChessPiece::ChessPiece(char inCol, int inRow)
+	ChessPiece::ChessPiece(int inCol, int inRow)
 	{
 		row = inRow;
 		col = inCol;
@@ -27,7 +28,7 @@ namespace chess {
 
 
 
-	void ChessPiece::getPosition(char& inCol, int& inRow) const
+	void ChessPiece::getPosition(int& inCol, int& inRow) const
 	{
 		inRow = row;
 		inCol = col;
@@ -39,7 +40,7 @@ namespace chess {
 
 
 
-	void ChessPiece::setPosition(char inCol, int inRow)
+	void ChessPiece::setPosition(int inCol, int inRow)
 	{
 		/*	Pseudocode:
 		

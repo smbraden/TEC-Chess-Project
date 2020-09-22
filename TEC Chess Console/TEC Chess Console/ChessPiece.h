@@ -18,14 +18,14 @@ namespace chess {
 
 		public:
 		
-			ChessPiece(char inCol = 'a', int inRow = 1);
+			ChessPiece(int inCol = 0, int inRow = 0);
 			class PieceMoveError {};
-			void getPosition(char& inCol, int& inRow) const;	
-			virtual void setPosition(char inCol, int inRow);
+			void getPosition(int& inCol, int& inRow) const;	
+			virtual void setPosition(int inCol, int inRow);
 		
-		private:
+		protected:
 
-			char col;
+			int col;
 			int row;
 
 	};
