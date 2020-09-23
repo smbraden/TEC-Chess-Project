@@ -8,6 +8,8 @@
 
 
 #include "DerivedPieces.h"
+#include <stdlib.h>			// for abs()
+
 
 namespace chess {
 
@@ -30,7 +32,7 @@ namespace chess {
 				row = inRow;
 			}
 			else {
-				throw PawnMoveError();
+				throw PieceMoveError();
 			}
 		}
 		else if (team == white) {
@@ -41,9 +43,71 @@ namespace chess {
 				row = inRow;
 			}
 			else {
-				throw PawnMoveError();
+				throw PieceMoveError();
 			}
 		}
+	}
+
+
+
+
+
+
+
+	
+	Castle::Castle(int inCol, int inRow, team_type color)
+	{
+		col = inCol;
+		row = inRow;
+		piece = castle;
+		team = color;
+	}
+
+	void Castle::setPosition(int inCol, int inRow)
+	{
+
+		// if moving only along columns or rows
+		if ((row == inRow) || (col == inCol)) {
+			col = inCol;
+			row = inRow;
+		}
+		else {
+			throw PieceMoveError();
+		}
+	}
+
+
+
+
+
+
+	Knight::Knight(int inCol, int inRow, team_type color)
+	{
+		col = inCol;
+		row = inRow;
+		piece = knight;
+		team = color;
+	}
+
+	void Knight::setPosition(int inCol, int inRow)
+	{
+
+		bool cond1 = abs(col - inCol) == 2 && abs(row - inRow) == 1; // (1, 0) ---> (0, 2)
+		bool cond2 = abs(row - inRow) == 2 && abs(col - inCol) == 1;
+
+
+		if (cond1 || cond2) {
+			col = inCol;
+			row = inRow;
+		}
+		else {
+			throw PieceMoveError();
+		}
+		
+
+		col = inCol;
+		row = inRow;
+
 	}
 
 
@@ -63,7 +127,7 @@ namespace chess {
 	void Rook::setPosition(int inCol, int inRow)
 	{
 
-		
+
 		if ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow)) {
 			col = inCol;
 			row = inRow;
@@ -71,63 +135,7 @@ namespace chess {
 		else {
 			throw PieceMoveError();
 		}
-		
-	}
 
-
-
-
-
-
-	Knight::Knight(int inCol, int inRow, team_type color)
-	{
-		col = inCol;
-		row = inRow;
-		piece = knight;
-		team = color;
-	}
-
-	void Knight::setPosition(int inCol, int inRow)
-	{
-		/*
-		if (valid knight move) {
-			col = inCol;
-			row = inRow;
-		}
-		else {
-			throw KnightMoveError();
-		}
-		*/
-
-		col = inCol;
-		row = inRow;
-
-	}
-
-
-
-
-
-
-	Castle::Castle(int inCol, int inRow, team_type color)
-	{
-		col = inCol;
-		row = inRow;
-		piece = castle;
-		team = color;
-	}
-
-	void Castle::setPosition(int inCol, int inRow)
-	{
-
-		// if moving only along columns or rows
-		if ((row == inRow) || (col == inCol)) {
-			col = inCol;
-			row = inRow;
-		}
-		else {
-			throw CastleMoveError();
-		}
 	}
 
 
@@ -153,7 +161,7 @@ namespace chess {
 			row = inRow;
 		}
 		else {
-			throw QueenMoveError();
+			throw PieceMoveError();
 		}
 	}
 
@@ -178,7 +186,7 @@ namespace chess {
 			row = inRow;
 		}
 		else {
-			throw KingMoveError();
+			throw PieceMoveError();
 		}
 	}
 }

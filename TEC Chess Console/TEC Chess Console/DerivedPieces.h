@@ -27,12 +27,13 @@ namespace chess {
 
 
 
-	class Rook : public ChessPiece {
+
+	class Castle : public ChessPiece {
 
 	public:
 
-		Rook(int inCol = 2, int inRow = 0, team_type color = white); // defaults to left-most white rook
-		class RookMoveError {};
+		Castle(int inCol = 0, int inRow = 0, team_type color = white);  // defaults to left-most white castle
+		class CastleMoveError {};
 		void setPosition(int inCol, int inRow);
 
 	};
@@ -57,15 +58,16 @@ namespace chess {
 
 
 
-	class Castle : public ChessPiece {
+	class Rook : public ChessPiece {
 
 	public:
 
-		Castle(int inCol = 0, int inRow = 0, team_type color = white);  // defaults to left-most white castle
-		class CastleMoveError {};
+		Rook(int inCol = 2, int inRow = 0, team_type color = white); // defaults to left-most white rook
+		class RookMoveError {};
 		void setPosition(int inCol, int inRow);
 
 	};
+
 
 
 
@@ -80,6 +82,7 @@ namespace chess {
 		void setPosition(int inCol, int inRow);
 
 	};
+
 
 
 
