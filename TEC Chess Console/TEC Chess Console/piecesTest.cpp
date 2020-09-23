@@ -58,6 +58,9 @@ int main() {
 
 
 
+
+
+
 void WpawnTest(ChessPiece& pawn)
 {
 
@@ -165,6 +168,12 @@ void BpawnTest(ChessPiece& pawn)
 
 
 }
+
+
+
+
+
+
 
 void castleTest(ChessPiece& castle)
 {

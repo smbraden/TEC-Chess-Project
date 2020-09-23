@@ -11,6 +11,9 @@
 
 #include "ChessPiece.h"
 
+
+
+
 namespace chess {
 
 	class Pawn : public ChessPiece {
@@ -19,7 +22,8 @@ namespace chess {
 
 		Pawn(int inCol = 0, int inRow = 1, team_type color = white);	// defaults to the left-most white pawn
 		class PawnMoveError {};
-		void setPosition(int inCol, int inRow);
+		int* setPosition(int inCol, int inRow);
+		int* getPath(int inCol, int inRow);
 
 	};
 
@@ -34,7 +38,8 @@ namespace chess {
 
 		Castle(int inCol = 0, int inRow = 0, team_type color = white);  // defaults to left-most white castle
 		class CastleMoveError {};
-		void setPosition(int inCol, int inRow);
+		int* setPosition(int inCol, int inRow);
+		int* getPath(int inCol, int inRow);
 
 	};
 
@@ -49,7 +54,8 @@ namespace chess {
 
 		Knight(int inCol = 1, int inRow = 0, team_type color = white);  // defaults to left-most white knight
 		class KnightMoveError {};
-		void setPosition(int inCol, int inRow);
+		int* setPosition(int inCol, int inRow);
+		int* getPath(int inCol, int inRow);
 
 	};
 
@@ -64,7 +70,8 @@ namespace chess {
 
 		Rook(int inCol = 2, int inRow = 0, team_type color = white); // defaults to left-most white rook
 		class RookMoveError {};
-		void setPosition(int inCol, int inRow);
+		int* setPosition(int inCol, int inRow);
+		int* getPath(int inCol, int inRow);
 
 	};
 
@@ -79,7 +86,8 @@ namespace chess {
 
 		Queen(int inCol = 3, int inRow = 0, team_type color = white);  // defaults to white queen
 		class QueenMoveError {};
-		void setPosition(int inCol, int inRow);
+		int* setPosition(int inCol, int inRow);
+		int* getPath(int inCol, int inRow);
 
 	};
 
@@ -94,7 +102,8 @@ namespace chess {
 
 		King(int inCol = 4, int inRow = 0, team_type color = white);	// defaults to white king
 		class KingMoveError {};
-		void setPosition(int inCol, int inRow);
+		int* setPosition(int inCol, int inRow);
+		int* getPath(int inCol, int inRow);
 
 	};
 

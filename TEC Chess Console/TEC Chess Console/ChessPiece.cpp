@@ -61,19 +61,50 @@ namespace chess {
 
 
 
+	// Returns the "path" the new space if the move is valid
+	// validity of piece moves does not consider board bounds, nor
+	// "jumps" over other pieces. The "path" returned will represent 
+	// the spaces between current position and move. 
+	// compliance with non-"jump" moves will be evaluated by 
+	// the ChessBoard client, which manages info of all piece positions
 
-	void ChessPiece::setPosition(int inCol, int inRow)
+	int* ChessPiece::setPosition(int inCol, int inRow)
 	{
 		/*
-		if (inRow >= ChessBoard::BOARD_SIZE || inRow < 0 ||
-						inCol >= ChessBoard::BOARD_SIZE || inCol < 0 ) {
+		if ( Valid move ) {
 
-			throw PieceMoveError();
-		}
-		else {
 			col = inCol;
 			row = inRow;
+			
+			int* path = getPath();
 		}
+		else {
+			
+			throw PieceMoveError();
+		}
+
+		return path;
+		*/
+	}
+
+
+
+
+
+
+	//	always returns pointer to array of length (2 * MAX_PATH)
+	int* ChessPiece::getPath(int inCol, int inRow)
+	{
+		/*
+		int numSpaces = (calc num spaces);
+		int *path = new int[2 * MAX_PATH];
+		
+		for ( r = 0; r < numSpaces; 2 * (r++)) {
+			path[r] =		pathCol_r;
+			path[r + 1] =	pathRow_r;
+		}
+
+		return path;
 		*/
 	}
 
