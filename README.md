@@ -2,4 +2,4 @@
  
 This repo is for The Engineering Club's chess game application.
 
-The the VS project folder appended with "Console" is for working on the backend classes. The prject folder appened with "Desktop" is a VS auto-generated "Desktop Application." Integration for desktop functionality is a future goal.
+The the VS "Console" project folder is for working on the backend classes. The "Desktop" project folder is a VS auto-generated "Desktop Application." Integration for desktop functionality is a future goal.
