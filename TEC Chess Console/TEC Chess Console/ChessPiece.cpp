@@ -64,9 +64,10 @@ namespace chess {
 
 	void ChessPiece::setPosition(int inCol, int inRow)
 	{
-		/*	Pseudocode:
-		
-		if (inRow invalid move || inCol invalid move) {
+		/*
+		if (inRow >= ChessBoard::BOARD_SIZE || inRow < 0 ||
+						inCol >= ChessBoard::BOARD_SIZE || inCol < 0 ) {
+
 			throw PieceMoveError();
 		}
 		else {

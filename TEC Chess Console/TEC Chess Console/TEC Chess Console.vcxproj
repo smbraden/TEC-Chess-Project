@@ -144,8 +144,6 @@
     <ClCompile Include="piecesTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ArrayBag.h" />
-    <ClInclude Include="BagInterface.h" />
     <ClInclude Include="ChessPiece.h" />
     <ClInclude Include="DerivedPieces.h" />
   </ItemGroup>

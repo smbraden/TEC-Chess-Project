@@ -69,7 +69,7 @@ namespace chess {
 			row = inRow;
 		}
 		else {
-			throw RookMoveError();
+			throw PieceMoveError();
 		}
 		
 	}

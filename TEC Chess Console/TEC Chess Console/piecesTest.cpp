@@ -15,17 +15,17 @@ using namespace std;
 using namespace chess;
 
 
-const int SIZE = 8;
+const int SIZE = 7;
 
 
 void WpawnTest(ChessPiece& pawn);
 void BpawnTest(ChessPiece& pawn);
 void castleTest(ChessPiece& castle);
-//void knightTest(ChessPiece& knight);
+void knightTest(ChessPiece& knight);
 void rookTest(ChessPiece& rook);
 void queenTest(ChessPiece& queen);
 void kingTest(ChessPiece& king);
-
+void boardBoundsTest(ChessPiece& piece);
 
 // Test
 int main() {
@@ -54,6 +54,10 @@ int main() {
 	rookTest(r);
 	queenTest(Q);
 	kingTest(K);
+
+
+	Castle cW;
+	boardBoundsTest(cW);
 
 	return 0;
 }
@@ -237,28 +241,28 @@ void rookTest(ChessPiece& rook)
 	try {
 		rook.setPosition(2, 2);
 	}
-	catch (Rook::RookMoveError e) {
+	catch (ChessPiece::PieceMoveError e) {
 		cout << "Invalid Rook move. This move SHOULD throw an exception." << endl;
 	}
 
 	try {
 		rook.setPosition(4, 2);
 	}
-	catch (Rook::RookMoveError e) {
+	catch (ChessPiece::PieceMoveError e) {
 		cout << "This move should NOT throw an exception." << endl;
 	}
 
 	try {
-		rook.setPosition(1, 3);
+		rook.setPosition(1, 5);
 	}
-	catch (Rook::RookMoveError e) {
+	catch (Rook::PieceMoveError e) {
 		cout << "This move should NOT throw an exception." << endl;
 	}
 
 	try {
 		rook.setPosition(6, 4);
 	}
-	catch (Rook::RookMoveError e) {
+	catch (Rook::PieceMoveError e) {
 		cout << "Invalid Rook move. This move SHOULD throw an exception." << endl;
 	}
 
@@ -368,6 +372,25 @@ void kingTest(ChessPiece& king)
 
 }
 
+void boardBoundsTest(ChessPiece& piece)
+{
+
+	int row;
+	int col;
+
+	cout << "Testing out of bounds exceptions..." << endl;
+
+	piece.getPosition(col, row);
+	cout << "Initial position: ( " << col << ", " << row << " )" << endl;
+
+	try {
+		piece.setPosition(7, 0);
+	}
+	catch (ChessPiece::PieceMoveError e) {
+		cout << "Invalid move. Out of board bounds." << endl;
+	}
+}
+
 
 
 
@@ -404,8 +427,8 @@ Final position: ( 6, 4 )
 Testing Rook move exceptions: expecting 2 exceptions...
 Initial position: ( 2, 0 )
 Invalid Rook move. This move SHOULD throw an exception.
-This move should NOT throw an exception.
-Final position: ( 6, 4 )
+Invalid Rook move. This move SHOULD throw an exception.
+Final position: ( 1, 5 )
 
 Testing Queen move exceptions: expecting 1 exceptions...
 Initial position: ( 3, 0 )
@@ -416,6 +439,8 @@ Testing King move exceptions: expecting 1 exceptions...
 Initial position: ( 4, 0 )
 Invalid King move. This move SHOULD throw an exception.
 Final position: ( 3, 1 )
+Testing out of bounds exceptions...
+Initial position: ( 0, 0 )
 
 
 */

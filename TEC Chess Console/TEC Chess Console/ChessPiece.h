@@ -27,13 +27,13 @@ namespace chess {
 			char getPieceType() const;
 			char getTeamType() const;
 			virtual void setPosition(int inCol, int inRow);
-		
+					
 		protected:
 
 			int col;
 			int row;
-			piece_type piece;
 			team_type team;
+			piece_type piece;
 
 	};
 
