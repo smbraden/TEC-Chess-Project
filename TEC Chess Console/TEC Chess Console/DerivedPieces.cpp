@@ -1,6 +1,6 @@
 /*/-------------------------------------------------------------------------------------//
 	Filename:           DerivedPieces.cpp
-	Contributors:        Sonja Braden
+	Contributors:       Sonja Braden
 	Date:               9/21/2020
 	Reference:
 	Description:
@@ -27,6 +27,8 @@ namespace chess {
 
 	// In progress: How to handle captures by Pawns?
 	// Only piece whose range of motion depends on capture vs non-capture moves
+
+	// for now, this only accounts for forward moves by Pawns, not diagonal attackes
 	int* Pawn::setPosition(int inCol, int inRow)
 	{
 		int* path = nullptr;
@@ -57,7 +59,7 @@ namespace chess {
 			}
 			else {
 				throw PieceMoveError();
-			}
+			} // (*)
 		}
 
 		return path;
@@ -65,23 +67,44 @@ namespace chess {
 
 
 
+	// for now, this only accounts for forward moves by Pawns, not diagonal attacks
 	int* Pawn::getPath(int inCol, int inRow)
 	{
 		int* path = nullptr;
+		int j = 0;
 		
-		if (row == 5 || row == 1) {
-			
-			path = new int[2 * MAX_PATH];
-			path[0] = inCol;
+		if (abs(inRow - row) == 1) {
 
-			if (team == black)
-				path[1] = inRow - 1;	// minus 1 row for black pawn moves
-			else  
-				path[1] = inRow + 1;	// plus 1 row for white pawn moves
+			path = new int[MAX_PATH * 2];		// room for 6 coordinates 
+												// path[n * 2]  = {c1, r1, c2, r2, c3, r3...cn, rn} 
+			if (team == black) {
+
+				path[0] = inCol;
+				path[1] = inRow + 1;			// (*) add 1 to the destination row for black pawns 
+			}
+			else { //  if (team == white)
+
+				path[0] = inCol;
+				path[1] = row + 1;			// (*) add 1 to the current row for white pawns 
+				
+			}
+
+			for (int i = 2; i < (2 * MAX_PATH); i++) {
+				path[i] = -1;				// using -1 to signal end of path information
+			}								// analogous to null ternimator on a cstring
 		}
-
-		return path;
+		
+		return path;	// path is nullptr if no spaces between position and destination
 	}
+	
+	
+	/* 
+		(*) NOTE:  We can use -1 as the "null termiator" without potentially niche 
+					negative cooridates complications. We use only adding, and not subtraction, 
+					relative to either current position, or destination, as necessary.
+					However, the execption hierarchy in ChessBoard::move() should also prevent 
+					these conditions by disallowing out of bounds moves. 
+	*/
 
 
 
@@ -120,14 +143,83 @@ namespace chess {
 	}
 
 
-
+	// **** Refactoring NOTE: This can be condensed with a helper function
 	int* Castle::getPath(int inCol, int inRow)
 	{
-		int* path = new int[2 * MAX_PATH];
+		int* path = nullptr; 
 
 		// path[n * 2]  = {c1, r1, c2, r2, c3, r3...cn, rn} 
-		
-		// get the path
+		if (abs(inCol - col) > 0 || abs(inRow - row) > 0) {	// if squares traversed
+
+			path = new int[2 * MAX_PATH];
+			int j = 0;
+			
+			if (col == inCol) {
+
+				int nextRow = 0;
+
+				if (row > inRow) {
+
+					nextRow = inRow + 1;
+					while (nextRow != row) {
+
+						path[2 * j] = col;
+						path[2 * j + 1] = nextRow;
+						nextRow++;					
+						j++;
+					}
+				}
+				else {	// if row < inRow
+
+					nextRow = row + 1;
+					while (nextRow != inRow) {
+
+						path[2 * j] = col;
+						path[2 * j + 1] = nextRow;
+						nextRow++;					
+						j++;
+					}
+				}
+			}
+			else if (row == inRow) {
+
+				int nextCol = 0;
+
+				if (col > inCol) {
+
+					nextCol = inCol + 1;
+					while (nextCol != col) {
+
+						path[2 * j] = col;
+						path[2 * j + 1] = nextCol;
+						nextCol++;					
+						j++;
+					}
+				}
+				else {	// if col < inCol
+
+					nextCol = col + 1;
+					while (nextCol != inCol) {
+
+						path[2 * j] = col;
+						path[2 * j + 1] = nextCol;
+						nextCol++;					
+						j++;
+					}
+				}
+			}
+
+			// fill the rest of the spaces with -1, "null terminator"
+			do {
+
+				j++;
+				path[2 * j] = -1;
+				path[2 * j + 1] = -1;
+
+			} while (j < MAX_PATH);
+
+
+		}
 		
 		return path;
 	}
@@ -219,11 +311,9 @@ namespace chess {
 
 	int* Rook::getPath(int inCol, int inRow)
 	{
-		int* path = new int[2 * MAX_PATH];
+		int* path = nullptr;
+		
 
-		// path[n * 2]  = {c1, r1, c2, r2, c3, r3...cn, rn} 
-
-		// get the path
 
 		return path;
 	}
@@ -321,3 +411,53 @@ namespace chess {
 	}
 
 }	// closes namespace
+
+
+
+
+	/*
+
+			int* path = nullptr;
+		int j = 0;
+
+		if (team == black) {
+
+			int nextRow = row - 1;			// subtract 1 for black pawns
+
+			while (nextRow != inRow) {
+
+				path[2 * j] = col;
+				path[2 * j + 1] = nextRow;
+				nextRow--;					// subtract 1 for black pawns
+
+				j++;
+			}
+		}
+		else { //  if (team == white)
+
+			int nextRow = row + 1;			// add 1 for white pawns
+
+			while (nextRow != inRow) {
+
+				path[2 * j] = col;
+				path[2 * j + 1] = nextRow;
+				nextRow++;					// add 1 for white pawns
+
+				j++;
+			}
+		}
+
+		do {
+
+			j++;
+			path[2 * j] = -1;				// using -1 to signal end of
+			path[2 * j + 1] = -1;			// path could be problematic
+											// since an incorrect "out of bounds"
+		} while (j < MAX_PATH);				// move from black could result in -1,
+											// and bounds are checked by ChessBoard,
+											// not ChessPiece at this time
+
+		return path;
+
+
+	*/

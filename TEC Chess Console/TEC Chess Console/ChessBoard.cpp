@@ -38,25 +38,7 @@ namespace chess {
 
     int ChessBoard::moveWhite(int pos1, int pos2, int move1, int move2)
     {
-        if (move1 >= BOARD_SIZE || move2 >= BOARD_SIZE) {
-            throw BoundsError();
-        }
-        else if (grid[pos1][pos2]->getTeamType() != ChessPiece::white) {
-            throw TurnMoveError();
-        }
-        else if (grid[move1][move2]->getTeamType() == ChessPiece::white) {
-            throw IlegalMoveError();
-        }
-        else {
-            
-            try {
-                grid[pos1][pos2] -> setPosition(move1, move2);
-            }
-            catch (ChessPiece::PieceMoveError e) {
-                cout << "The move is invalid for that piece. Read the rule book please." << endl;
-            }
-        }
-
+        move(pos1, pos2, move1, move2, ChessPiece::white);
         return 0;
     }
 
@@ -68,26 +50,7 @@ namespace chess {
 
     int ChessBoard::moveBlack(int pos1, int pos2, int move1, int move2)
     {
-
-        if (move1 >= BOARD_SIZE || move2 >= BOARD_SIZE) {
-            throw BoundsError();
-        }
-        else if (grid[pos1][pos2]->getTeamType() != ChessPiece::black) {
-            throw TurnMoveError();
-        }
-        else if (grid[move1][move2]->getTeamType() == ChessPiece::black) {
-            throw IlegalMoveError();
-        }
-        else {
-
-            try {
-                grid[pos1][pos2]->setPosition(move1, move2);
-            }
-            catch (ChessPiece::PieceMoveError e) {
-                cout << "The move is invalid for that piece. Read the rule book please." << endl;
-            }
-        }
-
+        move(pos1, pos2, move1, move2, ChessPiece::black);
         return 0;
     }
 
@@ -204,14 +167,79 @@ namespace chess {
 
 
 
-
-    int ChessBoard::remove(int position1, int position2)
+    bool ChessBoard::evaluatePath(int* path)
     {
-        if (grid[position1][position2] != nullptr) {
+        return false;
+    }
+
+
+
+
+
+
+    void ChessBoard::move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type inTeamType)
+    {
+        if (move1 >= BOARD_SIZE || move2 >= BOARD_SIZE) {
+            throw BoundsError();
+        }
+        else if (grid[pos1][pos2]->getTeamType() != inTeamType) {
+            throw TurnMoveError();
+        }
+        else if (grid[move1][move2]->getTeamType() == inTeamType) {
+            throw IlegalMoveError();
+        }
+        else if (pos1 == move1 && pos2 == move2) {
+            throw NoTurnPassError();
+        }
+        else if (grid[pos1][pos2] == nullptr) { // !!!! not sure how to resolve the warning on this line
+            throw EmptySquareError();
+        }
+        else {
+
+            try {
+                int* path = (grid[pos1][pos2]->setPosition(move1, move2));    // SetPosition may throw an ex
+                bool clearPath = true;
+                // if path is nullptr, but no exception was thrown yet, we have either
+                // a knight or piece that did not traverse any squares to reach the destination
+                if (path != nullptr) {
+                    // otherwise we must check that the path positions in grid do not 
+                    // point to an ChessPiece object to verify to valid move 
+                    int i = 0 ;
+                    
+                    while (clearPath && path[i] != -1) {
+
+                        int nextCol = path[2 * i];
+                        int nextRow = path[2 * i + 1];
+                        if (grid[nextCol][nextRow] != nullptr) {
+                            clearPath = false;
+                        }
+                        i++;
+                    }
+                    delete[] path;
+                }
+
+                if (!clearPath) {
+                    throw IlegalMoveError();
+                }
+            }
+            catch (ChessPiece::PieceMoveError e) {
+                throw ChessPiece::PieceMoveError();
+            }
+        }
+    }
+
+
+
+
+
+
+    int ChessBoard::remove(int pos1, int pos2)
+    {
+        if (grid[pos1][pos2] != nullptr) {
             
-            // later could allocated pieces dynamically
+            // later could allocate pieces dynamically
             // and delete when removed from board
-            grid[position1][position2] = nullptr;
+            grid[pos1][pos2] = nullptr;
             
             return 1;   // success
         }

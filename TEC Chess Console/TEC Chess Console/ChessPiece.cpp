@@ -112,12 +112,11 @@ namespace chess {
 		
 		/*	Real pieces will calculate the path:
 		
-			int numSpaces = (calc num spaces);
 			path = new int[2 * MAX_PATH];
 		
-			for ( r = 0; r < numSpaces; r = 2 * (r + 1)) {
-				path[r] =		pathCol_r;
-				path[r + 1] =	pathRow_r;
+			for ( r = 0; r < MAX_PATH; r++) {
+				path[2 * r] =		pathCol_r;
+				path[2 * r + 1] =	pathRow_r;
 			}
 
 		*/
