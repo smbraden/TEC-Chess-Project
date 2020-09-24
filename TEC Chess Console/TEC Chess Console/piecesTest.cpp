@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include "DerivedPieces.h"
+#include <SFML/Graphics.hpp>
 using namespace std;
 using namespace chess;
 
@@ -52,6 +53,39 @@ int main() {
 	rookTest(r);
 	queenTest(Q);
 	kingTest(K);
+
+
+	
+	// Creating window and objects.
+	sf::RenderWindow window(sf::VideoMode(1200, 600), "SFML works!");
+	sf::CircleShape shape(100.f);
+	shape.setFillColor(sf::Color::Green);
+	sf::CircleShape shape2(30.f);
+	shape2.setFillColor(sf::Color::Blue);
+
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			// Testing mouse functionality.
+			sf::Vector2i localPosition = sf::Mouse::getPosition(window);
+			sf::Vector2f mpos;
+			mpos.x = localPosition.x - 30;
+			mpos.y = localPosition.y - 30;
+			shape2.setPosition(mpos);
+
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+
+		// Drawing window and objects.
+		window.clear();
+		window.draw(shape);
+		window.draw(shape2);
+		window.display();
+	}
+
 
 	return 0;
 }

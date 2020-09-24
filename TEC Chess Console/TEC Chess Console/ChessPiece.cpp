@@ -35,7 +35,6 @@ namespace chess {
 	{
 		inRow = row;
 		inCol = col;
-
 	}
 
 
@@ -57,6 +56,7 @@ namespace chess {
 	{
 		return team;
 	}
+
 
 
 

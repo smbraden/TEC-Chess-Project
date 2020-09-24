@@ -81,6 +81,8 @@ namespace chess {
 			char getTeamType() const;
 			virtual int* setPosition(int inCol, int inRow);
 
+
+
 		protected:
 
 			int col;
