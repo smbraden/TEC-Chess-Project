@@ -6,13 +6,14 @@
 	Description:		Implementation  of the ChessPiece class. This is the base
 						class from which unique types of pieces are derived 
 						(queen, king, etc.) Unique types have different error checking 
-						for valid movement.
+						for valid movement by the rules of chess.						
 //-------------------------------------------------------------------------------------/*/
+
+
 
 
 #include "ChessPiece.h"
 
-//using namespace std;
 
 namespace chess {
 	
@@ -21,7 +22,7 @@ namespace chess {
 	{
 		row = inRow;
 		col = inCol;
-		piece = none;
+		piece = base;
 		team = color;
 	}
 
@@ -61,51 +62,67 @@ namespace chess {
 
 
 
-	// Returns the "path" the new space if the move is valid
+	// Returns the "path" to the destination if the move is valid
 	// validity of piece moves does not consider board bounds, nor
 	// "jumps" over other pieces. The "path" returned will represent 
-	// the spaces between current position and move. 
-	// compliance with non-"jump" moves will be evaluated by 
-	// the ChessBoard client, which manages info of all piece positions
+	// the spaces between current position and destination (not inclusive). 
+	// compliance with non-jump moves will be evaluated by 
+	// the ChessBoard client, which manages info on all piece positions
 
 	int* ChessPiece::setPosition(int inCol, int inRow)
 	{
-		/*
-		if ( Valid move ) {
-
-			col = inCol;
-			row = inRow;
-			
-			int* path = getPath();
-		}
-		else {
-			
-			throw PieceMoveError();
-		}
+		int* path = nullptr;
+		
+		col = inCol;
+		row = inRow;
 
 		return path;
-		*/
 	}
 
+	/* Real pieces will take the folloing form 
+ 		
+		int* ChessPiece::setPosition(int inCol, int inRow)
+		{
+			int* path = nullptr;
+		
+			if ( Valid move ) {
+
+				path = getPath();
+
+				col = inCol;
+				row = inRow;
+			}
+			else {
+
+				throw PieceMoveError();
+			}
+
+			return path;
+		}
+	*/
 
 
 
 
 
-	//	always returns pointer to array of length (2 * MAX_PATH)
+
 	int* ChessPiece::getPath(int inCol, int inRow)
 	{
-		/*
-		int numSpaces = (calc num spaces);
-		int *path = new int[2 * MAX_PATH];
+		int* path = nullptr;
 		
-		for ( r = 0; r < numSpaces; 2 * (r++)) {
-			path[r] =		pathCol_r;
-			path[r + 1] =	pathRow_r;
-		}
+		/*	Real pieces will calculate the path:
+		
+			int numSpaces = (calc num spaces);
+			path = new int[2 * MAX_PATH];
+		
+			for ( r = 0; r < numSpaces; r = 2 * (r + 1)) {
+				path[r] =		pathCol_r;
+				path[r + 1] =	pathRow_r;
+			}
+
+		*/
 
 		return path;
-		*/
 	}
 
 }  // closes namespace
