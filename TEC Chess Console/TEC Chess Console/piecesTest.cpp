@@ -10,6 +10,7 @@
 #include <iostream>
 #include "DerivedPieces.h"
 #include <SFML/Graphics.hpp>
+#include "jacobTests.h"
 using namespace std;
 using namespace chess;
 
@@ -27,7 +28,7 @@ void kingTest(ChessPiece& king);
 
 // Test
 int main() {
-
+	
 	ChessPiece a;
 	Pawn pW(0, 1);
 	Pawn pB(4, 5, ChessPiece::black);
@@ -55,13 +56,35 @@ int main() {
 	kingTest(K);
 
 
-	
+
+
+	jtest::drawList drawlist;
+
 	// Creating window and objects.
 	sf::RenderWindow window(sf::VideoMode(1200, 600), "SFML works!");
+	
+	// SHape objects
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
 	sf::CircleShape shape2(30.f);
 	shape2.setFillColor(sf::Color::Blue);
+	sf::RectangleShape shape3;
+	sf::Vector2f sizing;
+	sizing.x = 30;
+	sizing.y = 30;
+	sf::Vector2f pos;
+	pos.x = 300;
+	pos.y = 300;
+	shape3.setSize(sizing);
+	shape3.setFillColor(sf::Color::Blue);
+	shape3.setPosition(pos);
+
+	// Utilizing the drawList class so future shape draws are automated.
+	drawlist.setRenderWindow(window);
+	drawlist.addShape(shape);
+	drawlist.addShape(shape2);
+	drawlist.addShape(shape3);
+
 
 	while (window.isOpen())
 	{
@@ -81,11 +104,9 @@ int main() {
 
 		// Drawing window and objects.
 		window.clear();
-		window.draw(shape);
-		window.draw(shape2);
+		drawlist.draw();
 		window.display();
 	}
-
 
 	return 0;
 }

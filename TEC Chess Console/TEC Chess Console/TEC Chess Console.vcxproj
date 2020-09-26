@@ -147,11 +147,13 @@
   <ItemGroup>
     <ClCompile Include="ChessPiece.cpp" />
     <ClCompile Include="DerivedPieces.cpp" />
+    <ClCompile Include="jacobTests.cpp" />
     <ClCompile Include="piecesTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChessPiece.h" />
     <ClInclude Include="DerivedPieces.h" />
+    <ClInclude Include="jacobTests.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
