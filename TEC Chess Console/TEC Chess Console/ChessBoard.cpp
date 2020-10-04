@@ -1,7 +1,7 @@
 /*/-------------------------------------------------------------------------------------//
     Filename:           ChessBoard.cpp
     Contributor:        Sonja Braden
-    Date:               9/23/2020
+    Date:               10/4/2020
     Reference:          
 
     Description:        Implementation  of the ChessBoard class, used for creating objects
@@ -68,10 +68,9 @@ namespace chess {
 
 
 
-    int ChessBoard::moveWhite(int pos1, int pos2, int move1, int move2)
+    void ChessBoard::moveWhite(int pos1, int pos2, int move1, int move2)
     {
         move(pos1, pos2, move1, move2, ChessPiece::team_type::white);
-        return 0;
     }
 
 
@@ -80,10 +79,9 @@ namespace chess {
 
 
 
-    int ChessBoard::moveBlack(int pos1, int pos2, int move1, int move2)
+    void ChessBoard::moveBlack(int pos1, int pos2, int move1, int move2)
     {
         move(pos1, pos2, move1, move2, ChessPiece::team_type::black);
-        return 0;
     }
 
 
@@ -180,23 +178,25 @@ namespace chess {
 
 
 
-
+    // if the path is nullptr, then there was no path (ie, knight or single move)
     void ChessBoard::evaluatePath(int* path) const
     {
-        int i = 0;
-        while (path[2 * i] != -1 && path[2 * i + 1] != -1) {
-            if (grid[2*i][2*i+1] != nullptr) {
-                delete path;
-                path = nullptr;
-                //return false;
-                throw IlegalMoveError();
+        if (path != nullptr) {
+            int i = 0;
+            while (path[2 * i] != -1 && path[2 * i + 1] != -1) {
+                if (grid[2 * i][2 * i + 1] != nullptr) {
+                    delete path;
+                    path = nullptr;
+                    //return false;
+                    throw IlegalMoveError();
+                }
+                i++;
             }
-            i++;
-        }
 
-        delete path;
-        path = nullptr;
-        // return true;
+            delete path;
+            path = nullptr;
+            // return true;
+        }
     }
 
 
@@ -206,8 +206,11 @@ namespace chess {
     //
     void ChessBoard::move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type inTeamType)
     {
-        if (move1 >= BOARD_SIZE || move2 >= BOARD_SIZE) {
+        if (move1 >= BOARD_SIZE || move2 >= BOARD_SIZE || pos1 >= BOARD_SIZE || pos2 >= BOARD_SIZE) {
             throw BoundsError();
+        }
+        else if (!isPiece(pos1, pos2)) {
+            throw EmptySquareError();
         }
         else if (grid[pos1][pos2]->getTeamType() != inTeamType) {
             throw TurnMoveError();
@@ -218,21 +221,19 @@ namespace chess {
         else if (pos1 == move1 && pos2 == move2) {
             throw NoTurnPassError();
         }
-        else if (isPiece(pos1, pos2)) {
-            throw EmptySquareError();
-        }
         else {
 
             try {
-                int* path = (grid[pos1][pos2]->setPosition(move1, move2));    // SetPosition may throw an ex
-                bool clearPath = true;
-                evaluatePath(path);     // may throw an ilegal move error
+                int* path = (grid[pos1][pos2]->setPosition(move1, move2));    // might throw a piece move error
+                evaluatePath(path);                         // might throw an ilegal move error
+                grid[move1][move2] = grid[pos1][pos2];     // map the object from the new board coordinate
+                grid[pos1][pos2] = nullptr;
             }
             catch (ChessPiece::PieceMoveError e) {
                 throw ChessPiece::PieceMoveError();
             }
-            catch (ChessBoard::IlegalMoveError e) {
-                throw ChessBoard::IlegalMoveError();
+            catch (IlegalMoveError e) {
+                throw IlegalMoveError();
             }
         }
     }

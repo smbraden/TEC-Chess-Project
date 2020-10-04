@@ -1,7 +1,7 @@
 /*/-------------------------------------------------------------------------------------//
 	Filename:           ChessPiece.h
 	Contributor:        Sonja Braden
-	Date:               9/21/2020
+	Date:               10/4/2020
 	Reference:
 	Description:		Implementation  of the ChessPiece class. This is the base
 						class from which unique types of pieces are derived 

@@ -1,7 +1,7 @@
 /*/-------------------------------------------------------------------------------------//
 	Filename:           DerivedPieces.cpp
 	Contributors:       Sonja Braden
-	Date:               9/21/2020
+	Date:               10/4/2020
 	Reference:
 	Description:
 //-------------------------------------------------------------------------------------/*/
@@ -127,12 +127,11 @@ namespace chess {
 	}
 
 
-	// **** Refactoring NOTE: This can be condensed with a helper function
+
 	int* Castle::getPath(int inCol, int inRow) const
 	{
 		int* path = nullptr; 
 
-		// path[n * 2]  = {c1, r1, c2, r2, c3, r3...cn, rn} 
 		if (abs(inCol - col) > 0 || abs(inRow - row) > 0) {	// if squares traversed
 
 			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
@@ -290,8 +289,7 @@ namespace chess {
 			return nullptr;
 		else {
 			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};	// function for this?
-			// path = (int*) calloc(2 * MAX_PATH, sizeof(int));	// return initialized array of zeros
-
+			
 			if (row < inRow && col > inCol) {
 
 				/*	__ x2 __ __

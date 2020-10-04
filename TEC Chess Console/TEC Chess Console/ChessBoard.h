@@ -33,8 +33,8 @@ namespace chess {
 		class EmptySquareError {};	
 		class IlegalMoveError {};	// any other illegal moves
 
-		int moveWhite(int pos1, int pos2, int move1, int move2); // indices 0-7 
-		int moveBlack(int pos1, int pos2, int move1, int move2); // (col ,row)
+		void moveWhite(int pos1, int pos2, int move1, int move2); // indices 0-7 
+		void moveBlack(int pos1, int pos2, int move1, int move2); // (col ,row)
 		ChessPiece::team_type getTeam(int pos1, int pos2) const;
 		ChessPiece::piece_type getPiece(int pos1, int pos2) const;
 		void printBoard() const;

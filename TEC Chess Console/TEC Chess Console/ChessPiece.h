@@ -1,7 +1,7 @@
 /*/-------------------------------------------------------------------------------------//
 	Filename:           ChessPiece.h
 	Contributor:        Sonja Braden
-	Date:               9/21/2020
+	Date:               10/4/2020
 	Reference:
 	Description:
 
@@ -85,6 +85,11 @@ namespace chess {
 			team_type team;
 			piece_type piece;
 			virtual int* getPath(int inCol, int inRow);
+			// int[] with 6 possible coordinates, and -1 signals end of coordinates
+
+			/*	path[2 * BOAD_SIZE] = {c1, r1, c2, r2, c3, r3...c6, r6}
+				path[n * 2]			= {c1, c2, c3,...cn,}
+				path[n * 2 + 1]		= {r1, r2, r3,...rn,}	*/
 
 	};
 
