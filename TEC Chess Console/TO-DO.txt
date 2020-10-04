@@ -1,0 +1,37 @@
+Some tasks to be completed in finishing up the ChessBoard class
+
+//--------------------------------------------------------------------------//
+
+Implement the following rules and condition checks:
+
+-Pawn capture via diagonals (challenging)
+-Check and checkmate
+-Castling
+-Pawn promotion
+-Stalemate?
+
+Obscure rules:
+
+-Three-fold repetition
+This rule states that if the same position is repeated three times 
+and no progress is made, you can claim a draw. 
+
+-En Passant
+En passant itself can only occur in a game when a player exercises 
+his option to move his pawn two squares on its initial movement and 
+that move places his pawn next to the opponent’s pawn.
+
+When this happens, the opposing player has the option to use his pawn 
+to take the moved pawn “en passant” or “in passing” as if the pawn had 
+only moved one square.
+
+//--------------------------------------------------------------------------//
+
+Derive a Grandmaster board class?
+
+- 50 move rule
+The rule states that you can claim a draw if there has been no capture 
+and if no pawn has been moved in the previous 50 moves.
+
+-etc
+-etc

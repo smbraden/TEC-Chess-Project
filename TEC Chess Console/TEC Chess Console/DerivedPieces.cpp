@@ -95,9 +95,9 @@ namespace chess {
 
 
 
-	//------------------------------Castle-----------------------------------//
+	//------------------------------Rook-----------------------------------//
 	
-	Castle::Castle(int inCol, int inRow, team_type color)
+	Rook::Rook(int inCol, int inRow, team_type color)
 	{
 		col = inCol;
 		row = inRow;
@@ -107,7 +107,7 @@ namespace chess {
 
 
 
-	int* Castle::setPosition(int inCol, int inRow)
+	int* Rook::setPosition(int inCol, int inRow)
 	{
 		int* path = nullptr;
 
@@ -128,7 +128,7 @@ namespace chess {
 
 
 
-	int* Castle::getPath(int inCol, int inRow) const
+	int* Rook::getPath(int inCol, int inRow) const
 	{
 		int* path = nullptr; 
 
@@ -249,9 +249,9 @@ namespace chess {
 
 
 
-	//------------------------------Rook-----------------------------------//
+	//------------------------------Bishop-----------------------------------//
 
-	Rook::Rook(int inCol, int inRow, team_type color)
+	Bishop::Bishop(int inCol, int inRow, team_type color)
 	{
 		col = inCol;
 		row = inRow;
@@ -261,7 +261,7 @@ namespace chess {
 
 
 
-	int* Rook::setPosition(int inCol, int inRow)
+	int* Bishop::setPosition(int inCol, int inRow)
 	{
 		int* path = nullptr;
 
@@ -281,7 +281,7 @@ namespace chess {
 
 
 
-	int* Rook::getPath(int inCol, int inRow) const
+	int* Bishop::getPath(int inCol, int inRow) const
 	{
 		int* path = nullptr;
 	
@@ -393,15 +393,15 @@ namespace chess {
 		
 		if (castleMove) {
 			
-			Castle tempCastle(col, row, team);			// a funky non-ideal work-around;
-			path = tempCastle.getPath(inCol, inRow);	// rather have friend functions to call
-			col = inCol;								// Castle and Rook getPath()'s from Queen.
+			Rook tempRook(col, row, team);			// a funky non-ideal work-around;
+			path = tempRook.getPath(inCol, inRow);	// rather have friend functions to call
+			col = inCol;								// Rook and Bishop getPath()'s from Queen.
 			row = inRow;
 		}
 		else if (rookMove) {
 
-			Rook tempRook(col, row, team);
-			path = tempRook.getPath(inCol, inRow);
+			Bishop tempBishop(col, row, team);
+			path = tempBishop.getPath(inCol, inRow);
 			col = inCol;
 			row = inRow;
 		}

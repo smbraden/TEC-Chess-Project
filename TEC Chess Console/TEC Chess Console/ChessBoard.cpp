@@ -70,7 +70,14 @@ namespace chess {
 
     void ChessBoard::moveWhite(int pos1, int pos2, int move1, int move2)
     {
-        move(pos1, pos2, move1, move2, ChessPiece::team_type::white);
+        if (isPiece(pos1, pos2))
+            if (grid[pos1][pos2]->getTeamType() == ChessPiece::team_type::white)
+                move(pos1, pos2, move1, move2, ChessPiece::team_type::white);
+            else
+                throw TurnMoveError();
+        else
+            throw EmptySquareError();
+
     }
 
 
@@ -81,7 +88,13 @@ namespace chess {
 
     void ChessBoard::moveBlack(int pos1, int pos2, int move1, int move2)
     {
-        move(pos1, pos2, move1, move2, ChessPiece::team_type::black);
+        if(isPiece(pos1, pos2))
+            if (grid[pos1][pos2]->getTeamType() == ChessPiece::team_type::black)
+                move(pos1, pos2, move1, move2, ChessPiece::team_type::white);
+            else
+                throw TurnMoveError();
+        else
+            throw EmptySquareError();
     }
 
 
@@ -132,9 +145,12 @@ namespace chess {
                 std::cout << "  ";
             }
             std::cout << endl;
+            // uncomment/comment out this block for more/less spaces in board console print
+            /*
             for (int i = 0; i < 32; i++)
                 std::cout << " ";
             std::cout << endl;
+            */
         }
     }
 
@@ -147,14 +163,14 @@ namespace chess {
     void ChessBoard::initPieces()
     {
         // instantiate and map the white team
-        grid[0][0] = new Castle(0, 0);
+        grid[0][0] = new Rook(0, 0);
         grid[1][0] = new Knight(1, 0);
-        grid[2][0] = new Rook(2, 0);
+        grid[2][0] = new Bishop(2, 0);
         grid[3][0] = new Queen(3, 0);
         grid[4][0] = new King(4, 0);
-        grid[5][0] = new Rook(5, 0);
+        grid[5][0] = new Bishop(5, 0);
         grid[6][0] = new Knight(6, 0);
-        grid[7][0] = new Castle(7, 0);
+        grid[7][0] = new Rook(7, 0);
 
         // white pawns
         for (int i = 0; i < BOARD_SIZE; i++) {
@@ -162,14 +178,14 @@ namespace chess {
         }
 
         // instantiate and map the black team pieces
-        grid[0][7] = new Castle(0, 7, ChessPiece::team_type::black);
+        grid[0][7] = new Rook(0, 7, ChessPiece::team_type::black);
         grid[1][7] = new Knight(1, 7, ChessPiece::team_type::black);
-        grid[2][7] = new Rook(2, 7, ChessPiece::team_type::black);
+        grid[2][7] = new Bishop(2, 7, ChessPiece::team_type::black);
         grid[3][7] = new Queen(3, 7, ChessPiece::team_type::black);
         grid[4][7] = new King(4, 7, ChessPiece::team_type::black);
-        grid[5][7] = new Rook(5, 7, ChessPiece::team_type::black);
+        grid[5][7] = new Bishop(5, 7, ChessPiece::team_type::black);
         grid[6][7] = new Knight(6, 7, ChessPiece::team_type::black);
-        grid[7][7] = new Castle(7, 7, ChessPiece::team_type::black);
+        grid[7][7] = new Rook(7, 7, ChessPiece::team_type::black);
                
         // black pawns
         for (int i = 0; i < BOARD_SIZE; i++) {
@@ -284,13 +300,13 @@ namespace chess {
                     grid[i][j] = new Pawn(i, j, grid[i][j]->getTeamType());
                 }
                 else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::castle) {
-                    grid[i][j] = new Castle(i, j, grid[i][j]->getTeamType());
+                    grid[i][j] = new Rook(i, j, grid[i][j]->getTeamType());
                 }
                 else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::knight) {
                     grid[i][j] = new Knight(i, j, grid[i][j]->getTeamType());
                 }
                 else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::rook) {
-                    grid[i][j] = new Rook(i, j, grid[i][j]->getTeamType());
+                    grid[i][j] = new Bishop(i, j, grid[i][j]->getTeamType());
                 }
                 else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::king) {
                     grid[i][j] = new King(i, j, grid[i][j]->getTeamType());

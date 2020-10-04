@@ -40,12 +40,12 @@ namespace chess {
 
 
 
-	class Castle : public ChessPiece {
+	class Rook : public ChessPiece {
 
 	public:
 
-		Castle(int inCol = 0, int inRow = 0, team_type color = team_type::white);  // defaults to left-most white castle
-		class CastleMoveError {};
+		Rook(int inCol = 0, int inRow = 0, team_type color = team_type::white);  // defaults to left-most white castle
+		class RookMoveError {};
 		int* setPosition(int inCol, int inRow);
 		friend class Queen;			// for Queen access to getPath()
 
@@ -79,12 +79,12 @@ namespace chess {
 
 
 
-	class Rook : public ChessPiece {
+	class Bishop : public ChessPiece {
 
 	public:
 
-		Rook(int inCol = 2, int inRow = 0, team_type color = team_type::white); // defaults to left-most white rook
-		class RookMoveError {};
+		Bishop(int inCol = 2, int inRow = 0, team_type color = team_type::white); // defaults to left-most white rook
+		class BishopMoveError {};
 		int* setPosition(int inCol, int inRow);
 		friend class Queen;		// for Queen access to getPath()
 
