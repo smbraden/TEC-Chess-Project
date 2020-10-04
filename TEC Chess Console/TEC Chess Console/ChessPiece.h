@@ -68,9 +68,15 @@ namespace chess {
 		public:
 
 			enum team_type : unsigned char
-			{ white = 'w', black = 'b' };
+			{
+				white = 'w', black = 'b'
+			};
+
 			enum piece_type : unsigned char
-			{ base = 'B', pawn = 'P', castle = 'C', knight = 'N', rook = 'R', queen = 'Q', king = 'K' };
+			{
+				pawn = 'P', castle = 'C', knight = 'N', rook = 'R', queen = 'Q', king = 'K'
+			};
+
 
 			const static int MAX_PATH = 6;
 			class PieceMoveError {};
@@ -85,10 +91,8 @@ namespace chess {
 
 			int col;
 			int row;
-			//char team;
-			//char piece;
-			team_type team;
-			piece_type piece;
+			team_type team;		//char team;
+			piece_type piece;	//char piece;
 			virtual int* getPath(int inCol, int inRow);
 
 	};

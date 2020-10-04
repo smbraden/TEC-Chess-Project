@@ -33,8 +33,10 @@ namespace chess {
 		class EmptySquareError {};	
 		class IlegalMoveError {};	// any other illegal moves
 
-		int moveWhite(int pos1, int pos2, int move1, int move2); // indices 0-7 to rep
-		int moveBlack(int pos1, int pos2, int move1, int move2); // rows a-h, cols 1-8
+		int moveWhite(int pos1, int pos2, int move1, int move2); // indices 0-7 
+		int moveBlack(int pos1, int pos2, int move1, int move2); // (col ,row)
+		//ChessPiece::team_type getTeam(int pos1, int pos2);
+		//ChessPiece::piece_type getPiece(int pos1, int pos2);
 		void printBoard();
 
 		const int MAX_PATH = 6;
@@ -45,11 +47,12 @@ namespace chess {
 
 		ChessPiece* grid[BOARD_SIZE][BOARD_SIZE];
 		void initPieces();
-		bool evaluatePath(int* path);
-		void move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type);
+		void evaluatePath(int* path);
+		void move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type); //
 		void remove(int pos1, int pos2);
 		void clear();
 		void copy(const ChessBoard);
+		bool isPiece(int inCol, int inRow);
 	};
 
 

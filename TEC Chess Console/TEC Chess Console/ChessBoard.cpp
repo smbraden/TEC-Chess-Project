@@ -65,6 +65,9 @@ namespace chess {
 
 
 
+
+
+
     int ChessBoard::moveWhite(int pos1, int pos2, int move1, int move2)
     {
         move(pos1, pos2, move1, move2, ChessPiece::white);
@@ -83,6 +86,31 @@ namespace chess {
         return 0;
     }
 
+
+
+
+
+
+    /*
+    ChessPiece::team_type ChessBoard::getTeam(int pos1, int pos2)
+    {
+        if (isPiece(pos1, pos2))
+            return grid[pos1][pos2]->getTeamType();
+        return ChessPiece::none;
+    }
+    */
+
+
+
+
+    /*
+    ChessPiece::piece_type ChessBoard::getPiece(int pos1, int pos2)
+    {
+        if (isPiece(pos1, pos2))
+            return grid[pos1][pos2]->getPieceType();
+        return ChessPiece::none;
+    }
+    */
 
 
 
@@ -148,16 +176,29 @@ namespace chess {
 
 
 
-    bool ChessBoard::evaluatePath(int* path)
+    void ChessBoard::evaluatePath(int* path)
     {
-        return false;
+        int i = 0;
+        while (path[2 * i] != -1 && path[2 * i + 1] != -1) {
+            if (grid[2*i][2*i+1] != nullptr) {
+                delete path;
+                path = nullptr;
+                //return false;
+                throw IlegalMoveError();
+            }
+            i++;
+        }
+
+        delete path;
+        path = nullptr;
+        // return true;
     }
 
 
 
 
 
-
+    //
     void ChessBoard::move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type inTeamType)
     {
         if (move1 >= BOARD_SIZE || move2 >= BOARD_SIZE) {
@@ -172,7 +213,7 @@ namespace chess {
         else if (pos1 == move1 && pos2 == move2) {
             throw NoTurnPassError();
         }
-        else if (grid[pos1][pos2] == nullptr) { // !!!! not sure how to resolve the warning on this line
+        else if (isPiece(pos1, pos2)) {
             throw EmptySquareError();
         }
         else {
@@ -180,31 +221,13 @@ namespace chess {
             try {
                 int* path = (grid[pos1][pos2]->setPosition(move1, move2));    // SetPosition may throw an ex
                 bool clearPath = true;
-                // if path is nullptr, but no exception was thrown yet, we have either
-                // a knight or piece that did not traverse any squares to reach the destination
-                if (path != nullptr) {
-                    // otherwise we must check that the path positions in grid do not 
-                    // point to an ChessPiece object to verify to valid move 
-                    int i = 0 ;
-                    
-                    while (clearPath && path[i] != -1) {
-
-                        int nextCol = path[2 * i];
-                        int nextRow = path[2 * i + 1];
-                        if (grid[nextCol][nextRow] != nullptr) {
-                            clearPath = false;
-                        }
-                        i++;
-                    }
-                    delete[] path;
-                }
-
-                if (!clearPath) {
-                    throw IlegalMoveError();
-                }
+                evaluatePath(path);     // may throw an ilegal move error
             }
             catch (ChessPiece::PieceMoveError e) {
                 throw ChessPiece::PieceMoveError();
+            }
+            catch (ChessBoard::IlegalMoveError e) {
+                throw ChessBoard::IlegalMoveError();
             }
         }
     }
@@ -268,6 +291,19 @@ namespace chess {
                 }
             }
         }
+    }
+
+
+
+
+
+
+
+    bool ChessBoard::isPiece(int inCol, int inRow)
+    {
+        if (grid[inCol][inRow] != nullptr)
+            return true;
+        return false;
     }
 
 }  // closes namespace
