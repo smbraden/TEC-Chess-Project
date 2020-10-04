@@ -67,21 +67,21 @@ namespace chess {
 
 		public:
 
-			enum team_type : unsigned char
+			enum class team_type : unsigned char
 			{
-				white = 'w', black = 'b'
+				none = '0', white = 'w', black = 'b'
 			};
 
-			enum piece_type : unsigned char
+			enum class piece_type : unsigned char
 			{
-				pawn = 'P', castle = 'C', knight = 'N', rook = 'R', queen = 'Q', king = 'K'
+				none = '0', pawn = 'P', castle = 'C', knight = 'N', rook = 'R', queen = 'Q', king = 'K'
 			};
 
 
 			const static int MAX_PATH = 6;
 			class PieceMoveError {};
 
-			ChessPiece(int inCol = 0, int inRow = 0, team_type color = white);
+			ChessPiece(int inCol = 0, int inRow = 0, team_type color = team_type::white);
 			void getPosition(int& inCol, int& inRow) const;
 			piece_type getPieceType() const;
 			team_type getTeamType() const;

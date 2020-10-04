@@ -23,6 +23,7 @@ namespace chess {
 		row = inRow;
 		col = inCol;
 		team = color;
+		piece = piece_type::none;
 	}
 
 

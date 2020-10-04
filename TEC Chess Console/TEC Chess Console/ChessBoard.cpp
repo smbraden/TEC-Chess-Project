@@ -70,7 +70,7 @@ namespace chess {
 
     int ChessBoard::moveWhite(int pos1, int pos2, int move1, int move2)
     {
-        move(pos1, pos2, move1, move2, ChessPiece::white);
+        move(pos1, pos2, move1, move2, ChessPiece::team_type::white);
         return 0;
     }
 
@@ -82,7 +82,7 @@ namespace chess {
 
     int ChessBoard::moveBlack(int pos1, int pos2, int move1, int move2)
     {
-        move(pos1, pos2, move1, move2, ChessPiece::black);
+        move(pos1, pos2, move1, move2, ChessPiece::team_type::black);
         return 0;
     }
 
@@ -91,31 +91,31 @@ namespace chess {
 
 
 
-    /*
+    
     ChessPiece::team_type ChessBoard::getTeam(int pos1, int pos2)
     {
         if (isPiece(pos1, pos2))
             return grid[pos1][pos2]->getTeamType();
-        return ChessPiece::none;
+        return ChessPiece::team_type::none;
     }
-    */
+    
 
 
 
 
-    /*
+    
     ChessPiece::piece_type ChessBoard::getPiece(int pos1, int pos2)
     {
         if (isPiece(pos1, pos2))
             return grid[pos1][pos2]->getPieceType();
-        return ChessPiece::none;
+        return ChessPiece::piece_type::none;
     }
-    */
+    
 
 
 
 
-
+    
 
     void ChessBoard::printBoard()
     {
@@ -124,8 +124,13 @@ namespace chess {
 
                 if (grid[col][row] == nullptr)
                     cout << "__";
-                else
-                    cout << grid[col][row]->getTeamType() << grid[col][row]->getPieceType();
+                else {
+                    ChessPiece::team_type team = grid[col][row]->getTeamType();
+                    ChessPiece::piece_type piece = grid[col][row]->getPieceType();
+                    cout << static_cast<underlying_type<ChessPiece::team_type>::type>(team) 
+                            << static_cast<underlying_type<ChessPiece::team_type>::type>(piece);
+                    // cast teh team and piece types beack to underlying types for printing
+                }
                 cout << " ";
             }
             cout << endl;
@@ -156,18 +161,18 @@ namespace chess {
         }
 
         // instantiate and map the black team pieces
-        grid[0][7] = new Castle(0, 7, ChessPiece::black);
-        grid[1][7] = new Knight(1, 7, ChessPiece::black);
-        grid[2][7] = new Rook(2, 7, ChessPiece::black);
-        grid[3][7] = new Queen(3, 7, ChessPiece::black);
-        grid[4][7] = new King(4, 7, ChessPiece::black);
-        grid[5][7] = new Rook(5, 7, ChessPiece::black);
-        grid[6][7] = new Knight(6, 7, ChessPiece::black);
-        grid[7][7] = new Castle(7, 7, ChessPiece::black);
+        grid[0][7] = new Castle(0, 7, ChessPiece::team_type::black);
+        grid[1][7] = new Knight(1, 7, ChessPiece::team_type::black);
+        grid[2][7] = new Rook(2, 7, ChessPiece::team_type::black);
+        grid[3][7] = new Queen(3, 7, ChessPiece::team_type::black);
+        grid[4][7] = new King(4, 7, ChessPiece::team_type::black);
+        grid[5][7] = new Rook(5, 7, ChessPiece::team_type::black);
+        grid[6][7] = new Knight(6, 7, ChessPiece::team_type::black);
+        grid[7][7] = new Castle(7, 7, ChessPiece::team_type::black);
                
         // black pawns
         for (int i = 0; i < BOARD_SIZE; i++) {
-            grid[i][6] = new Pawn(i, 6, ChessPiece::black);
+            grid[i][6] = new Pawn(i, 6, ChessPiece::team_type::black);
         }
     }
 
@@ -271,22 +276,22 @@ namespace chess {
             for (int j = 0; j < BOARD_SIZE; j++) {
                 if (arg.grid[i][j] == nullptr)
                     grid[i][j] = nullptr;
-                else if (grid[i][j]->getPieceType() == ChessPiece::pawn) {
+                else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::pawn) {
                     grid[i][j] = new Pawn(j, i, grid[i][j]->getTeamType());
                 }
-                else if (grid[i][j]->getPieceType() == ChessPiece::castle) {
+                else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::castle) {
                     grid[i][j] = new Castle(j, i, grid[i][j]->getTeamType());
                 }
-                else if (grid[i][j]->getPieceType() == ChessPiece::knight) {
+                else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::knight) {
                     grid[i][j] = new Knight(j, i, grid[i][j]->getTeamType());
                 }
-                else if (grid[i][j]->getPieceType() == ChessPiece::rook) {
+                else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::rook) {
                     grid[i][j] = new Rook(j, i, grid[i][j]->getTeamType());
                 }
-                else if (grid[i][j]->getPieceType() == ChessPiece::king) {
+                else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::king) {
                     grid[i][j] = new King(j, i, grid[i][j]->getTeamType());
                 }
-                else {  // if (grid[i][j]->getPieceType() == ChessPiece::queen) 
+                else {  // if (grid[i][j]->getPieceType() == ChessPiece::piece_type::queen) 
                     grid[i][j] = new Queen(j, i, grid[i][j]->getTeamType());
                 }
             }

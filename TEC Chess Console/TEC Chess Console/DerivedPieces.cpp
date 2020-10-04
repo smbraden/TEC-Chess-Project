@@ -20,7 +20,7 @@ namespace chess {
 	{
 		col = inCol;
 		row = inRow;
-		piece = pawn;
+		piece = piece_type::pawn;
 		team = color;
 	}
 
@@ -33,7 +33,7 @@ namespace chess {
 	{
 		int* path = nullptr;
 
-		if (team == black) {
+		if (team == team_type::black) {
 
 			// if starting row and move two rows forward, or otherwise move only one row forward 
 			if ((row == 5 && inRow == 3 && col == inCol) || (inRow == (row - 1) && col == inCol)) {
@@ -80,7 +80,7 @@ namespace chess {
 			// analogous to null ternimator on a cstring
 			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
 												// path[n * 2]  = {c1, r1, c2, r2, c3, r3...cn, rn} 
-			if (team == black) {
+			if (team == team_type::black) {
 
 				path[0] = inCol;
 				path[1] = inRow + 1;			// (*) add 1 to the destination row for black pawns 
@@ -115,7 +115,7 @@ namespace chess {
 	{
 		col = inCol;
 		row = inRow;
-		piece = castle;
+		piece = piece_type::castle;
 		team = color;
 	}
 
@@ -222,7 +222,7 @@ namespace chess {
 	{
 		col = inCol;
 		row = inRow;
-		piece = knight;
+		piece = piece_type::knight;
 		team = color;
 	}
 
@@ -270,7 +270,7 @@ namespace chess {
 	{
 		col = inCol;
 		row = inRow;
-		piece = rook;
+		piece = piece_type::rook;
 		team = color;
 	}
 
@@ -394,7 +394,7 @@ namespace chess {
 	{
 		col = inCol;
 		row = inRow;
-		piece = queen;
+		piece = piece_type::queen;
 		team = color;
 	}
 
@@ -439,7 +439,7 @@ namespace chess {
 	{
 		col = inCol;
 		row = inRow;
-		piece = king;
+		piece = piece_type::king;
 		team = color;
 	}
 

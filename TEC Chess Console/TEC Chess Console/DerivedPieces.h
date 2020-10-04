@@ -20,13 +20,18 @@ namespace chess {
 
 	public:
 
-		Pawn(int inCol = 0, int inRow = 1, team_type color = white);	// defaults to the left-most white pawn
+		Pawn(int inCol = 0, int inRow = 1, team_type color = team_type::white);	// defaults to the left-most white pawn
 		class PawnMoveError {};
 		int* setPosition(int inCol, int inRow);
 
 	private:
 
 		int* getPath(int inCol, int inRow);
+		// 6 possible coordinates, and -1 signals end of coordinates
+
+		/*	path[2 * MAX_PATH] = {c1, r1, c2, r2, c3, r3...c6, r6}
+			path[n * 2]			= {c1, c2, c3,...cn,}
+			path[n * 2 + 1]		= {r1, r2, r3,...rn,}	*/
 
 	};
 
@@ -39,7 +44,7 @@ namespace chess {
 
 	public:
 
-		Castle(int inCol = 0, int inRow = 0, team_type color = white);  // defaults to left-most white castle
+		Castle(int inCol = 0, int inRow = 0, team_type color = team_type::white);  // defaults to left-most white castle
 		class CastleMoveError {};
 		int* setPosition(int inCol, int inRow);
 		friend class Queen;			// for Queen access to getPath()
@@ -59,7 +64,7 @@ namespace chess {
 
 	public:
 
-		Knight(int inCol = 1, int inRow = 0, team_type color = white);  // defaults to left-most white knight
+		Knight(int inCol = 1, int inRow = 0, team_type color = team_type::white);  // defaults to left-most white knight
 		class KnightMoveError {};
 		int* setPosition(int inCol, int inRow);
 
@@ -78,7 +83,7 @@ namespace chess {
 
 	public:
 
-		Rook(int inCol = 2, int inRow = 0, team_type color = white); // defaults to left-most white rook
+		Rook(int inCol = 2, int inRow = 0, team_type color = team_type::white); // defaults to left-most white rook
 		class RookMoveError {};
 		int* setPosition(int inCol, int inRow);
 		friend class Queen;		// for Queen access to getPath()
@@ -98,7 +103,7 @@ namespace chess {
 
 	public:
 
-		Queen(int inCol = 3, int inRow = 0, team_type color = white);  // defaults to white queen
+		Queen(int inCol = 3, int inRow = 0, team_type color = team_type::white);  // defaults to white queen
 		class QueenMoveError {};
 		int* setPosition(int inCol, int inRow);
 
@@ -117,7 +122,7 @@ namespace chess {
 
 	public:
 
-		King(int inCol = 4, int inRow = 0, team_type color = white);	// defaults to white king
+		King(int inCol = 4, int inRow = 0, team_type color = team_type::white);	// defaults to white king
 		class KingMoveError {};
 		int* setPosition(int inCol, int inRow);
 
