@@ -67,9 +67,9 @@ namespace chess {
 
 		public:
 
-			enum class team_type : unsigned char
+			enum team_type : unsigned char
 			{ white = 'w', black = 'b' };
-			enum class piece_type : unsigned char
+			enum piece_type : unsigned char
 			{ base = 'B', pawn = 'P', castle = 'C', knight = 'N', rook = 'R', queen = 'Q', king = 'K' };
 
 			const static int MAX_PATH = 6;

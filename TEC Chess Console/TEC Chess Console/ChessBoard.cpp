@@ -112,52 +112,32 @@ namespace chess {
 
     void ChessBoard::initPieces()
     {
-        // set the white team
-        // Castle wC1(0, 0);
-        Castle* wC1 = new Castle(0, 0);
-        Knight* wN1 = new Knight(1, 0);
-        Rook* wR1 = new Rook(2, 0);
-        Queen* wQ = new Queen(3, 0);
-        King* wK = new King(4, 0);
-        Rook* wR2 = new Rook(5, 0);
-        Knight* wN2 = new Knight(6, 0);
-        Castle* wC2 = new Castle(7, 0);
+        // instantiate and map the white team
+        grid[0][0] = new Castle(0, 0);
+        grid[1][0] = new Knight(1, 0);
+        grid[2][0] = new Rook(2, 0);
+        grid[3][0] = new Queen(3, 0);
+        grid[4][0] = new King(4, 0);
+        grid[5][0] = new Rook(5, 0);
+        grid[6][0] = new Knight(6, 0);
+        grid[7][0] = new Castle(7, 0);
 
-        // map the white pieces on grid
-        grid[0][0] = wC1;
-        grid[1][0] = wN1;
-        grid[2][0] = wR1;
-        grid[3][0] = wQ;
-        grid[4][0] = wK;
-        grid[5][0] = wR2;
-        grid[6][0] = wN2;
-        grid[7][0] = wC2;
-
-
+        // white pawns
         for (int i = 0; i < BOARD_SIZE; i++) {
             grid[i][1] = new Pawn(i, 1);
         }
 
-        // instantiate the black team pieces
-        Castle* bC1 = new Castle(0, 7, ChessPiece::black);
-        Knight* bN1 = new Knight(1, 7, ChessPiece::black);
-        Rook* bR1 = new Rook(2, 7, ChessPiece::black);
-        Queen* bQ = new Queen(3, 7, ChessPiece::black);
-        King* bK = new King(4, 7, ChessPiece::black);
-        Rook* bR2 = new Rook(5, 7, ChessPiece::black);
-        Knight* bN2 = new Knight(6, 7, ChessPiece::black);
-        Castle* bC2 = new Castle(7, 7, ChessPiece::black);
-
-        // map the black pieces on grid
-        grid[0][7] = bC1;
-        grid[1][7] = bN1;
-        grid[2][7] = bR1;
-        grid[3][7] = bQ;
-        grid[4][7] = bK;
-        grid[5][7] = bR2;
-        grid[6][7] = bN2;
-        grid[7][7] = bC2;
-
+        // instantiate and map the black team pieces
+        grid[0][7] = new Castle(0, 7, ChessPiece::black);
+        grid[1][7] = new Knight(1, 7, ChessPiece::black);
+        grid[2][7] = new Rook(2, 7, ChessPiece::black);
+        grid[3][7] = new Queen(3, 7, ChessPiece::black);
+        grid[4][7] = new King(4, 7, ChessPiece::black);
+        grid[5][7] = new Rook(5, 7, ChessPiece::black);
+        grid[6][7] = new Knight(6, 7, ChessPiece::black);
+        grid[7][7] = new Castle(7, 7, ChessPiece::black);
+               
+        // black pawns
         for (int i = 0; i < BOARD_SIZE; i++) {
             grid[i][6] = new Pawn(i, 6, ChessPiece::black);
         }
