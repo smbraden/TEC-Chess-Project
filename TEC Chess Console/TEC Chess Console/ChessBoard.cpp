@@ -19,20 +19,49 @@ namespace chess {
     ChessBoard::ChessBoard()
     {
         // initialize a"blank" grid
-        for (int i = 0; i < BOARD_SIZE; i++) {
-
-            for (int j = 0; j < BOARD_SIZE; j++) {
+        for (int i = 0; i < BOARD_SIZE; i++)
+            for (int j = 0; j < BOARD_SIZE; j++)
                 grid[j][i] = nullptr;
-            }
-        }
-
+              
         // instantiate the pieces and map them on grid
         initPieces();
+    }
+
+
+
+
+
+
+    ChessBoard::ChessBoard(const ChessBoard& arg)
+    {
+        copy(arg);
     }
     
 
 
 
+
+
+
+    ChessBoard::~ChessBoard()
+    {
+        clear();
+    }
+    
+
+
+
+
+
+    ChessBoard ChessBoard::operator=(const ChessBoard right)
+    {
+        if (this != &right) {
+            clear();
+            copy(right);
+        }
+
+        return *this;
+    }
 
 
 
@@ -65,14 +94,13 @@ namespace chess {
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
 
-                if (grid[col][row] == nullptr) {
-                    cout << "__" << endl;
-                }
+                if (grid[col][row] == nullptr)
+                    cout << "__";
                 else
-                {
-                    cout << grid[col][row]->getTeamType() << grid[col][row]->getPieceType() << endl;
-                }
+                    cout << grid[col][row]->getTeamType() << grid[col][row]->getPieceType();
+                cout << " ";
             }
+            cout << endl;
         }
     }
 
@@ -85,81 +113,54 @@ namespace chess {
     void ChessBoard::initPieces()
     {
         // set the white team
-        Castle wC1(0, 0);
-        Knight wN1(1, 0);
-        Rook wR1(2, 0);
-        Queen wQ(3, 0);
-        King wK(4, 0);
-        Rook wR2(5, 0);
-        Knight wN2(6, 0);
-        Castle wC2(7, 0);
-
-        Pawn wP1(0, 1);
-        Pawn wP2(1, 1);
-        Pawn wP3(2, 1);
-        Pawn wP4(3, 1);
-        Pawn wP5(4, 1);
-        Pawn wP6(5, 1);
-        Pawn wP7(6, 1);
-        Pawn wP8(7, 1);
+        // Castle wC1(0, 0);
+        Castle* wC1 = new Castle(0, 0);
+        Knight* wN1 = new Knight(1, 0);
+        Rook* wR1 = new Rook(2, 0);
+        Queen* wQ = new Queen(3, 0);
+        King* wK = new King(4, 0);
+        Rook* wR2 = new Rook(5, 0);
+        Knight* wN2 = new Knight(6, 0);
+        Castle* wC2 = new Castle(7, 0);
 
         // map the white pieces on grid
-        grid[0][0] = &wC1;
-        grid[1][0] = &wN1;
-        grid[2][0] = &wR1;
-        grid[3][0] = &wQ;
-        grid[4][0] = &wK;
-        grid[5][0] = &wR2;
-        grid[6][0] = &wN2;
-        grid[7][0] = &wC2;
+        grid[0][0] = wC1;
+        grid[1][0] = wN1;
+        grid[2][0] = wR1;
+        grid[3][0] = wQ;
+        grid[4][0] = wK;
+        grid[5][0] = wR2;
+        grid[6][0] = wN2;
+        grid[7][0] = wC2;
 
-        grid[0][1] = &wP1;
-        grid[1][1] = &wP2;
-        grid[2][1] = &wP3;
-        grid[3][1] = &wP4;
-        grid[4][1] = &wP5;
-        grid[5][1] = &wP6;
-        grid[6][1] = &wP7;
-        grid[7][1] = &wP8;
+
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            grid[i][1] = new Pawn(i, 1);
+        }
 
         // instantiate the black team pieces
-        Castle bC1(0, 7, ChessPiece::black);
-        Knight bN1(1, 7, ChessPiece::black);
-        Rook bR1(2, 7, ChessPiece::black);
-        Queen bQ(3, 7, ChessPiece::black);
-        King bK(4, 7, ChessPiece::black);
-        Rook bR2(5, 7, ChessPiece::black);
-        Knight bN2(6, 7, ChessPiece::black);
-        Castle bC2(7, 7, ChessPiece::black);
-
-        Pawn bP1(0, 6, ChessPiece::black);
-        Pawn bP2(1, 6, ChessPiece::black);
-        Pawn bP3(2, 6, ChessPiece::black);
-        Pawn bP4(3, 6, ChessPiece::black);
-        Pawn bP5(4, 6, ChessPiece::black);
-        Pawn bP6(5, 6, ChessPiece::black);
-        Pawn bP7(6, 6, ChessPiece::black);
-        Pawn bP8(7, 6, ChessPiece::black);
+        Castle* bC1 = new Castle(0, 7, ChessPiece::black);
+        Knight* bN1 = new Knight(1, 7, ChessPiece::black);
+        Rook* bR1 = new Rook(2, 7, ChessPiece::black);
+        Queen* bQ = new Queen(3, 7, ChessPiece::black);
+        King* bK = new King(4, 7, ChessPiece::black);
+        Rook* bR2 = new Rook(5, 7, ChessPiece::black);
+        Knight* bN2 = new Knight(6, 7, ChessPiece::black);
+        Castle* bC2 = new Castle(7, 7, ChessPiece::black);
 
         // map the black pieces on grid
-        grid[0][7] = &bC1;
-        grid[1][7] = &bN1;
-        grid[2][7] = &bR1;
-        grid[3][7] = &bQ;
-        grid[4][7] = &bK;
-        grid[5][7] = &bR2;
-        grid[6][7] = &bN2;
-        grid[7][7] = &bC2;
+        grid[0][7] = bC1;
+        grid[1][7] = bN1;
+        grid[2][7] = bR1;
+        grid[3][7] = bQ;
+        grid[4][7] = bK;
+        grid[5][7] = bR2;
+        grid[6][7] = bN2;
+        grid[7][7] = bC2;
 
-        grid[0][6] = &bP1;
-        grid[1][6] = &bP2;
-        grid[2][6] = &bP3;
-        grid[3][6] = &bP4;
-        grid[4][6] = &bP5;
-        grid[5][6] = &bP6;
-        grid[6][6] = &bP7;
-        grid[7][6] = &bP8;
-
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            grid[i][6] = new Pawn(i, 6, ChessPiece::black);
+        }
     }
 
 
@@ -233,18 +234,60 @@ namespace chess {
 
 
 
-    int ChessBoard::remove(int pos1, int pos2)
+    void ChessBoard::remove(int pos1, int pos2)
     {
         if (grid[pos1][pos2] != nullptr) {
             
-            // later could allocate pieces dynamically
-            // and delete when removed from board
+            delete grid[pos1][pos2];
             grid[pos1][pos2] = nullptr;
-            
-            return 1;   // success
         }
-        
-        return 0;   // it was a nullptr
+    }
+
+
+
+
+
+
+
+    void ChessBoard::clear()
+    {
+        for (int i = 0; i < BOARD_SIZE; i++)
+            for (int j = 0; j < BOARD_SIZE; j++)
+                remove(i, j);
+    }
+
+
+
+
+
+
+    // precodition: the board has been cleared
+    void ChessBoard::copy(const ChessBoard arg)
+    {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                if (arg.grid[i][j] == nullptr)
+                    grid[i][j] = nullptr;
+                else if (grid[i][j]->getPieceType() == ChessPiece::pawn) {
+                    grid[i][j] = new Pawn(j, i, grid[i][j]->getTeamType());
+                }
+                else if (grid[i][j]->getPieceType() == ChessPiece::castle) {
+                    grid[i][j] = new Castle(j, i, grid[i][j]->getTeamType());
+                }
+                else if (grid[i][j]->getPieceType() == ChessPiece::knight) {
+                    grid[i][j] = new Knight(j, i, grid[i][j]->getTeamType());
+                }
+                else if (grid[i][j]->getPieceType() == ChessPiece::rook) {
+                    grid[i][j] = new Rook(j, i, grid[i][j]->getTeamType());
+                }
+                else if (grid[i][j]->getPieceType() == ChessPiece::king) {
+                    grid[i][j] = new King(j, i, grid[i][j]->getTeamType());
+                }
+                else {  // if (grid[i][j]->getPieceType() == ChessPiece::queen) 
+                    grid[i][j] = new Queen(j, i, grid[i][j]->getTeamType());
+                }
+            }
+        }
     }
 
 }  // closes namespace

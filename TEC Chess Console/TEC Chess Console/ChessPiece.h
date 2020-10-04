@@ -59,7 +59,6 @@
 #ifndef CHESSPIECE_H
 #define CHESSPIECE_H
 
-// #include <vector>
 
 namespace chess {
 
@@ -68,23 +67,26 @@ namespace chess {
 
 		public:
 
-			enum team_type { white = 'w', black = 'b' };
-			enum piece_type { base = 'B', pawn = 'P', castle = 'C',
-							knight = 'N', rook = 'R', queen = 'Q', king = 'K' };
+			enum class team_type : unsigned char
+			{ white = 'w', black = 'b' };
+			enum class piece_type : unsigned char
+			{ base = 'B', pawn = 'P', castle = 'C', knight = 'N', rook = 'R', queen = 'Q', king = 'K' };
 
 			const static int MAX_PATH = 6;
 			class PieceMoveError {};
 
 			ChessPiece(int inCol = 0, int inRow = 0, team_type color = white);
 			void getPosition(int& inCol, int& inRow) const;
-			char getPieceType() const;
-			char getTeamType() const;
+			piece_type getPieceType() const;
+			team_type getTeamType() const;
 			virtual int* setPosition(int inCol, int inRow);
 
 		protected:
 
 			int col;
 			int row;
+			//char team;
+			//char piece;
 			team_type team;
 			piece_type piece;
 			virtual int* getPath(int inCol, int inRow);

@@ -142,7 +142,7 @@
     <ClCompile Include="ChessBoard.cpp" />
     <ClCompile Include="ChessPiece.cpp" />
     <ClCompile Include="DerivedPieces.cpp" />
-    <ClCompile Include="piecesTest.cpp" />
+    <ClCompile Include="boardTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChessBoard.h" />

@@ -18,11 +18,10 @@
 namespace chess {
 	
 	
-	ChessPiece::ChessPiece(int inCol, int inRow,team_type color)
+	ChessPiece::ChessPiece(int inCol, int inRow, team_type color)
 	{
 		row = inRow;
 		col = inCol;
-		piece = base;
 		team = color;
 	}
 
@@ -43,7 +42,7 @@ namespace chess {
 
 
 
-	char ChessPiece::getPieceType() const
+	ChessPiece::piece_type ChessPiece::getPieceType() const
 	{
 		return piece;
 	}
@@ -53,7 +52,7 @@ namespace chess {
 
 
 
-	char ChessPiece::getTeamType() const
+	ChessPiece::team_type ChessPiece::getTeamType() const
 	{
 		return team;
 	}

@@ -3,7 +3,9 @@
 	Contributor:        Sonja Braden
 	Date:               9/21/2020
 	Reference:
-	Description:        
+	Description:        Annoyingly, I have index the Board coordinates as [Column][Row],
+						as this is how a chess board is labeled 
+						(eg, a1, a2, b5, etc. where letters are columns ).
 //-------------------------------------------------------------------------------------/*/
 
 
@@ -19,6 +21,10 @@ namespace chess {
 	public:
 
 		ChessBoard();
+		ChessBoard(const ChessBoard&);
+		~ChessBoard();
+		ChessBoard operator=(const ChessBoard);
+		
 		class SelfCapturError {};	// moving a piece to a position already occupied by that team
 		class NoTurnPassError {};	// Passing is not allowed in the classic rules of chess.
 									// This is the same as moving a piece to it's current position
@@ -31,9 +37,9 @@ namespace chess {
 		int moveBlack(int pos1, int pos2, int move1, int move2); // rows a-h, cols 1-8
 		void printBoard();
 
-		static const int MAX_PATH = 6;
+		const int MAX_PATH = 6;
 		static const int BOARD_SIZE = 8;
-		static const int SPACES = 64;
+		const int SPACES = 64;
 
 	private:
 
@@ -41,8 +47,9 @@ namespace chess {
 		void initPieces();
 		bool evaluatePath(int* path);
 		void move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type);
-		int remove(int pos1, int pos2);
-
+		void remove(int pos1, int pos2);
+		void clear();
+		void copy(const ChessBoard);
 	};
 
 
