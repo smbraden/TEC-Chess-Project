@@ -35,7 +35,6 @@ namespace chess {
 	{
 		inRow = row;
 		inCol = col;
-
 	}
 
 

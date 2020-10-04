@@ -92,7 +92,7 @@ namespace chess {
 
 
     
-    ChessPiece::team_type ChessBoard::getTeam(int pos1, int pos2)
+    ChessPiece::team_type ChessBoard::getTeam(int pos1, int pos2) const
     {
         if (isPiece(pos1, pos2))
             return grid[pos1][pos2]->getTeamType();
@@ -104,7 +104,7 @@ namespace chess {
 
 
     
-    ChessPiece::piece_type ChessBoard::getPiece(int pos1, int pos2)
+    ChessPiece::piece_type ChessBoard::getPiece(int pos1, int pos2) const
     {
         if (isPiece(pos1, pos2))
             return grid[pos1][pos2]->getPieceType();
@@ -117,7 +117,7 @@ namespace chess {
 
     
 
-    void ChessBoard::printBoard()
+    void ChessBoard::printBoard() const
     {
         for (int row = 0; row < BOARD_SIZE; row++) {
             for (int col = 0; col < BOARD_SIZE; col++) {
@@ -181,7 +181,7 @@ namespace chess {
 
 
 
-    void ChessBoard::evaluatePath(int* path)
+    void ChessBoard::evaluatePath(int* path) const
     {
         int i = 0;
         while (path[2 * i] != -1 && path[2 * i + 1] != -1) {
@@ -304,7 +304,7 @@ namespace chess {
 
 
 
-    bool ChessBoard::isPiece(int inCol, int inRow)
+    bool ChessBoard::isPiece(int inCol, int inRow) const
     {
         if (grid[inCol][inRow] != nullptr)
             return true;

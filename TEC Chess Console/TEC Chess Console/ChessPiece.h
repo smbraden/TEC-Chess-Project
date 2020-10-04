@@ -4,15 +4,6 @@
 	Date:               9/21/2020
 	Reference:
 	Description:
-	Note:				Some member functions would be better as pure virtual functions;
-						however, it is not desirable to make this an abstract class
-						because we would like to manage a collection of ChessPieces via
-						arra of pointers, or another data structures that can only manage
-						a collection of objects of the same types. We will use the
-						base class ChessPiece to make such declarations, and this 
-						cannot be done with an abstract class, which cannot be instantiated.
-						Hence, ChessPiece as an abstract class is not compatible with
-						design goals, despite that it srves more as an abstract class.
 
 //-------------------------------------------------------------------------------------/*/
 
@@ -91,8 +82,8 @@ namespace chess {
 
 			int col;
 			int row;
-			team_type team;		//char team;
-			piece_type piece;	//char piece;
+			team_type team;
+			piece_type piece;
 			virtual int* getPath(int inCol, int inRow);
 
 	};
@@ -100,3 +91,13 @@ namespace chess {
 } // closes namespace
 
 #endif
+
+/*	Note:	Some member functions would be better as pure virtual functions;
+			however, it is not desirable to make this an abstract class
+			because we would like to manage a collection of ChessPieces via
+			arra of pointers, or another data structures that can only manage
+			a collection of objects of the same types.We will use the
+			base class ChessPiece to make such declarations, and this
+			cannot be done with an abstract class, which cannot be instantiated.
+			Hence, ChessPiece as an abstract class is not compatible with
+			design goals, despite that it srves more as an abstract class.		*/

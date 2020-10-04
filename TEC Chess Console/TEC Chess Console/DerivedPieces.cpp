@@ -37,9 +37,8 @@ namespace chess {
 
 			// if starting row and move two rows forward, or otherwise move only one row forward 
 			if ((row == 5 && inRow == 3 && col == inCol) || (inRow == (row - 1) && col == inCol)) {
-				
-				path = getPath(inCol, inRow);
-				
+				if (row == 5 && inRow == 3 && col == inCol)
+					path = getPath(inCol, inRow);	// only need path if moved two spaces
 				col = inCol;
 				row = inRow;
 			}
@@ -51,9 +50,8 @@ namespace chess {
 
 			// if starting row and move two rows forward, or otherwise move only one row forward 
 			if ((row == 1 && inRow == 3 && col == inCol) || (inRow == row + 1 && col == inCol)) {
-				
-				path = getPath(inCol, inRow);
-				
+				if (row == 1 && inRow == 3 && col == inCol)
+					path = getPath(inCol, inRow);	// only need path if moved two spaces
 				col = inCol;
 				row = inRow;
 			}
@@ -68,29 +66,17 @@ namespace chess {
 
 
 	// for now, this only accounts for forward moves by Pawns, not diagonal attacks
-	int* Pawn::getPath(int inCol, int inRow)
+	int* Pawn::getPath(int inCol, int inRow) const
 	{
 		int* path = nullptr;
 		int j = 0;
-		
-		if (abs(inRow - row) == 1) {
 
-			// room for 6 coordinates
-			// using -1 to signal end of path information
-			// analogous to null ternimator on a cstring
+		if (abs(inRow - row) == 2) {
+
 			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
-												// path[n * 2]  = {c1, r1, c2, r2, c3, r3...cn, rn} 
-			if (team == team_type::black) {
+			path[0] = inCol;
+			path[1] = (team == team_type::black ? inRow + 1 : path[1] = row + 1);
 
-				path[0] = inCol;
-				path[1] = inRow + 1;			// (*) add 1 to the destination row for black pawns 
-			}
-			else { //  if (team == white)
-
-				path[0] = inCol;
-				path[1] = row + 1;			// (*) add 1 to the current row for white pawns 
-				
-			}
 		}
 		return path;	// path is nullptr if no spaces between position and destination
 	}
@@ -142,7 +128,7 @@ namespace chess {
 
 
 	// **** Refactoring NOTE: This can be condensed with a helper function
-	int* Castle::getPath(int inCol, int inRow)
+	int* Castle::getPath(int inCol, int inRow) const
 	{
 		int* path = nullptr; 
 
@@ -254,7 +240,7 @@ namespace chess {
 
 
 
-	int* Knight::getPath(int inCol, int inRow)
+	int* Knight::getPath(int inCol, int inRow) const
 	{
 		return nullptr;	// no path for knights, they can leap
 	}
@@ -296,7 +282,7 @@ namespace chess {
 
 
 
-	int* Rook::getPath(int inCol, int inRow)
+	int* Rook::getPath(int inCol, int inRow) const
 	{
 		int* path = nullptr;
 	
@@ -464,7 +450,7 @@ namespace chess {
 
 
 
-	int* King::getPath(int inCol, int inRow)
+	int* King::getPath(int inCol, int inRow) const
 	{
 		return nullptr;	// no path for Kings, they only move by 1 space at a time
 	}

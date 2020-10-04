@@ -26,7 +26,7 @@ namespace chess {
 
 	private:
 
-		int* getPath(int inCol, int inRow);
+		int* getPath(int inCol, int inRow) const;
 		// 6 possible coordinates, and -1 signals end of coordinates
 
 		/*	path[2 * MAX_PATH] = {c1, r1, c2, r2, c3, r3...c6, r6}
@@ -51,7 +51,7 @@ namespace chess {
 
 	private:
 
-		int* getPath(int inCol, int inRow);
+		int* getPath(int inCol, int inRow) const;
 
 	};
 
@@ -70,7 +70,7 @@ namespace chess {
 
 	private:
 
-		int* getPath(int inCol, int inRow);
+		int* getPath(int inCol, int inRow) const;
 
 	};
 
@@ -90,7 +90,7 @@ namespace chess {
 
 	private:
 
-		int* getPath(int inCol, int inRow);
+		int* getPath(int inCol, int inRow) const;
 
 	};
 
@@ -109,7 +109,7 @@ namespace chess {
 
 	private:
 
-		//int* getPath(int inCol, int inRow);
+		//int* getPath(int inCol, int inRow) const;
 
 	};
 
@@ -128,7 +128,7 @@ namespace chess {
 
 	private:
 
-		int* getPath(int inCol, int inRow);
+		int* getPath(int inCol, int inRow) const;
 
 	};
 
