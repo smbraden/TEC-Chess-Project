@@ -18,7 +18,7 @@ namespace chess {
     
     ChessBoard::ChessBoard()
     {
-        // initialize a"blank" grid
+        // initialize a "blank" grid
         for (int i = 0; i < BOARD_SIZE; i++)
             for (int j = 0; j < BOARD_SIZE; j++)
                 grid[j][i] = nullptr;
@@ -121,17 +121,20 @@ namespace chess {
             for (int col = 0; col < BOARD_SIZE; col++) {
 
                 if (grid[col][row] == nullptr)
-                    cout << "__";
+                    std::cout << "__";
                 else {
                     ChessPiece::team_type team = grid[col][row]->getTeamType();
                     ChessPiece::piece_type piece = grid[col][row]->getPieceType();
-                    cout << static_cast<underlying_type<ChessPiece::team_type>::type>(team) 
-                            << static_cast<underlying_type<ChessPiece::team_type>::type>(piece);
-                    // cast teh team and piece types beack to underlying types for printing
+                    std::cout << static_cast<std::underlying_type<ChessPiece::team_type>::type>(team)
+                            << static_cast<std::underlying_type<ChessPiece::team_type>::type>(piece);
+                    // cast the team and piece types beack to underlying types for printing
                 }
-                cout << " ";
+                std::cout << "  ";
             }
-            cout << endl;
+            std::cout << endl;
+            for (int i = 0; i < 32; i++)
+                std::cout << " ";
+            std::cout << endl;
         }
     }
 
@@ -195,15 +198,15 @@ namespace chess {
 
             delete path;
             path = nullptr;
-            // return true;
         }
+        // return true;
     }
 
 
 
 
 
-    //
+    
     void ChessBoard::move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type inTeamType)
     {
         if (move1 >= BOARD_SIZE || move2 >= BOARD_SIZE || pos1 >= BOARD_SIZE || pos2 >= BOARD_SIZE) {
@@ -215,10 +218,10 @@ namespace chess {
         else if (grid[pos1][pos2]->getTeamType() != inTeamType) {
             throw TurnMoveError();
         }
-        else if (grid[move1][move2]->getTeamType() == inTeamType) {
+        else if (grid[move1][move2] != nullptr && grid[move1][move2]->getTeamType() == inTeamType) {    
             throw IlegalMoveError();
         }
-        else if (pos1 == move1 && pos2 == move2) {
+        else if (pos1 == move1 && pos2 == move2) {  // this might be redundant with the previous condition
             throw NoTurnPassError();
         }
         else {
@@ -278,22 +281,22 @@ namespace chess {
                 if (arg.grid[i][j] == nullptr)
                     grid[i][j] = nullptr;
                 else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::pawn) {
-                    grid[i][j] = new Pawn(j, i, grid[i][j]->getTeamType());
+                    grid[i][j] = new Pawn(i, j, grid[i][j]->getTeamType());
                 }
                 else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::castle) {
-                    grid[i][j] = new Castle(j, i, grid[i][j]->getTeamType());
+                    grid[i][j] = new Castle(i, j, grid[i][j]->getTeamType());
                 }
                 else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::knight) {
-                    grid[i][j] = new Knight(j, i, grid[i][j]->getTeamType());
+                    grid[i][j] = new Knight(i, j, grid[i][j]->getTeamType());
                 }
                 else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::rook) {
-                    grid[i][j] = new Rook(j, i, grid[i][j]->getTeamType());
+                    grid[i][j] = new Rook(i, j, grid[i][j]->getTeamType());
                 }
                 else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::king) {
-                    grid[i][j] = new King(j, i, grid[i][j]->getTeamType());
+                    grid[i][j] = new King(i, j, grid[i][j]->getTeamType());
                 }
                 else {  // if (grid[i][j]->getPieceType() == ChessPiece::piece_type::queen) 
-                    grid[i][j] = new Queen(j, i, grid[i][j]->getTeamType());
+                    grid[i][j] = new Queen(i, j, grid[i][j]->getTeamType());
                 }
             }
         }

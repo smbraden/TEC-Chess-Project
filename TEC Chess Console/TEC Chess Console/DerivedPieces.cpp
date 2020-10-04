@@ -36,8 +36,8 @@ namespace chess {
 		if (team == team_type::black) {
 
 			// if starting row and move two rows forward, or otherwise move only one row forward 
-			if ((row == 5 && inRow == 3 && col == inCol) || (inRow == (row - 1) && col == inCol)) {
-				if (row == 5 && inRow == 3 && col == inCol)
+			if ((row == 6 && inRow == 4 && col == inCol) || (inRow == (row - 1) && col == inCol)) {
+				if (row == 6 && inRow == 4 && col == inCol)
 					path = getPath(inCol, inRow);	// only need path if moved two spaces
 				col = inCol;
 				row = inRow;
@@ -75,7 +75,7 @@ namespace chess {
 
 			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
 			path[0] = inCol;
-			path[1] = (team == team_type::black ? inRow + 1 : path[1] = row + 1);
+			path[1] = (team == team_type::black ? inRow + 1 : row + 1);
 
 		}
 		return path;	// path is nullptr if no spaces between position and destination
