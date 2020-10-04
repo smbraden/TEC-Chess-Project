@@ -13,15 +13,63 @@
 using namespace std;
 using namespace chess;
 
-void testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2);
-void testMoveB(ChessBoard& argBoard, int x1, int y1, int x2, int y2);
+#define char2col(ch) ch - 65
+#define int2row(in) in - 1
+
+bool testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2);
+bool testMoveB(ChessBoard& argBoard, int x1, int y1, int x2, int y2);
 
 int main() {
+
+	char x1 = 'a';
+	int y1 = 1;
+	char x2 = 'a';
+	int y2 = 1;
+	bool status = false;
 
 	ChessBoard testBoard;
 	testBoard.printBoard();
 	testMoveW(testBoard, 0, 1, 0, 2);
 	testMoveB(testBoard, 5, 6, 5, 4);
+
+	cout << "Welcome to the TEC Chess Console!" << endl;
+	cout << "To enter moves, use the format 'ColRow': a7, b3, etc"<< endl;
+	cout << "Enter 'q' to exit at any time." << endl;
+	cout << endl;
+
+	do {
+
+		status = (tolower(x1) != 'q' && tolower(y1) != 'q' && tolower(x2) != 'q' && tolower(y2) != 'q');
+
+		do {
+
+			cout << "White move. Current position:	";
+			cin >> x1 >> y1;
+			cout << endl;
+			cout << "White move. New position:	";
+			cin >> x2 >> y2;
+			cout << endl;
+
+			status = (tolower(x1) != 'q' && tolower(y1) != 'q' && tolower(x2) != 'q' && tolower(y2) != 'q');
+
+		} while (status && !testMoveW(testBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2)));
+
+		do {
+
+			cout << "Black move. Current position:	";
+			cin >> x1 >> y1;
+			cout << endl;
+			cout << "Black move. New position:	";
+			cin >> x2 >> y2;
+			cout << endl;
+
+			status = (tolower(x1) != 'q' && tolower(y1) != 'q' && tolower(x2) != 'q' && tolower(y2) != 'q');
+
+		} while (status && !testMoveB(testBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2)));
+		
+	} while (status);
+
+	return 0;
 }
 
 
@@ -31,13 +79,14 @@ int main() {
 
 
 
-void testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
+bool testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 {
 	try {
 		argBoard.moveWhite(x1, y1, x2, y2);
 		cout << endl;
 		argBoard.printBoard();
 		cout << endl;
+		return true;
 	}
 	catch (ChessBoard::BoundsError e) {
 		cout << "Cannot move to or from a position off the board" << endl;
@@ -57,6 +106,8 @@ void testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 	catch (ChessBoard::IlegalMoveError e) {
 		cout << "Illegal move. Cannot jump over other pieces." << endl;
 	}
+
+	return false;
 }
 
 
@@ -64,13 +115,14 @@ void testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 
 
 
-void testMoveB(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
+bool testMoveB(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 {
 	try {
 		argBoard.moveBlack(x1, y1, x2, y2);
 		cout << endl;
 		argBoard.printBoard();
 		cout << endl;
+		return true;
 	}
 	catch (ChessBoard::BoundsError e) {
 		cout << "Cannot move to or from a position off the board" << endl;
@@ -90,6 +142,8 @@ void testMoveB(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 	catch (ChessBoard::IlegalMoveError e) {
 		cout << "Illegal move. Cannot jump over other pieces." << endl;
 	}
+
+	return false;
 }
 
 

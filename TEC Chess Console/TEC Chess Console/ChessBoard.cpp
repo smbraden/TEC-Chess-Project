@@ -90,7 +90,7 @@ namespace chess {
     {
         if(isPiece(pos1, pos2))
             if (grid[pos1][pos2]->getTeamType() == ChessPiece::team_type::black)
-                move(pos1, pos2, move1, move2, ChessPiece::team_type::white);
+                move(pos1, pos2, move1, move2, ChessPiece::team_type::black);
             else
                 throw TurnMoveError();
         else
@@ -129,8 +129,9 @@ namespace chess {
     
 
     void ChessBoard::printBoard() const
-    {
-        for (int row = 0; row < BOARD_SIZE; row++) {
+    {                                                       
+                                                            // for user from black perspective of board
+        for (int row = (BOARD_SIZE - 1); row >= 0; row--) { // (int row = 0; row < BOARD_SIZE; row++)
             for (int col = 0; col < BOARD_SIZE; col++) {
 
                 if (grid[col][row] == nullptr)
