@@ -13,7 +13,7 @@
 
 
 #include "ChessPiece.h"
-
+#include <stdlib.h>			// for abs()
 
 namespace chess {
 	

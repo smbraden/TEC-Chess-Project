@@ -75,7 +75,10 @@ namespace chess {
 		
 		if (abs(inRow - row) == 1) {
 
-			path = new int[MAX_PATH * 2];		// room for 6 coordinates 
+			// room for 6 coordinates
+			// using -1 to signal end of path information
+			// analogous to null ternimator on a cstring
+			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
 												// path[n * 2]  = {c1, r1, c2, r2, c3, r3...cn, rn} 
 			if (team == black) {
 
@@ -88,12 +91,7 @@ namespace chess {
 				path[1] = row + 1;			// (*) add 1 to the current row for white pawns 
 				
 			}
-
-			for (int i = 2; i < (2 * MAX_PATH); i++) {
-				path[i] = -1;				// using -1 to signal end of path information
-			}								// analogous to null ternimator on a cstring
 		}
-		
 		return path;	// path is nullptr if no spaces between position and destination
 	}
 	
@@ -151,7 +149,7 @@ namespace chess {
 		// path[n * 2]  = {c1, r1, c2, r2, c3, r3...cn, rn} 
 		if (abs(inCol - col) > 0 || abs(inRow - row) > 0) {	// if squares traversed
 
-			path = new int[2 * MAX_PATH];
+			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
 			int j = 0;
 			
 			if (col == inCol) {
@@ -208,17 +206,6 @@ namespace chess {
 					}
 				}
 			}
-
-			// fill the rest of the spaces with -1, "null terminator"
-			do {
-
-				j++;
-				path[2 * j] = -1;
-				path[2 * j + 1] = -1;
-
-			} while (j < MAX_PATH);
-
-
 		}
 		
 		return path;
@@ -312,8 +299,86 @@ namespace chess {
 	int* Rook::getPath(int inCol, int inRow)
 	{
 		int* path = nullptr;
-		
+	
+		if (abs(inCol - col) == 1 && abs(inRow - row) == 1)	// moved by only 1 space
+			return nullptr;
+		else {
+			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};	// function for this?
+			// path = (int*) calloc(2 * MAX_PATH, sizeof(int));	// return initialized array of zeros
 
+			if (row < inRow && col > inCol) {
+
+				/*	__ x2 __ __
+					__ __ __ __
+					__ __ __ x1
+					__ __ __ __		*/
+
+				int nextRow = row + 1;
+				int nextCol = col - 1;
+				int j = 0;
+				while (nextRow != inRow && nextCol != inCol) {
+					path[j * 2] = nextCol;
+					path[j * 2 + 1] = nextRow;
+					j++;
+					nextRow++;
+					nextCol--;
+				}
+			}
+			else if (row < inRow && col < inCol) {
+
+				/*	__ __ __ x2
+					__ __ __ __
+					__ x1 __ __
+					__ __ __ __		*/
+
+				int nextRow = row + 1;
+				int nextCol = col + 1;
+				int j = 0;
+				while (nextRow != inRow && nextCol != inCol) {
+					path[j * 2] = nextCol;
+					path[j * 2 + 1] = nextRow;
+					j++;
+					nextRow++;
+					nextCol++;
+				}
+			}
+			else if (row > inRow && col < inCol) {
+
+				/*	__ __ __ __
+					__ x1 __ __
+					__ __ __ __
+					__ __ __ x2		*/
+
+				int nextRow = row - 1;
+				int nextCol = col + 1;
+				int j = 0;
+				while (nextRow != inRow && nextCol != inCol) {
+					path[j * 2] = nextCol;
+					path[j * 2 + 1] = nextRow;
+					j++;
+					nextRow++;
+					nextCol++;
+				}
+			}
+			else if (row > inRow && col > inCol) {
+								
+				/*	__ __ __ x1
+					__ __ __ __
+					__ x2 __ __
+					__ __ __ __		*/
+
+				int nextRow = row - 1;
+				int nextCol = col - 1;
+				int j = 0;
+				while (nextRow != inRow && nextCol != inCol) {
+					path[j * 2] = nextCol;
+					path[j * 2 + 1] = nextRow;
+					j++;
+					nextRow--;
+					nextCol--;
+				}
+			}
+		}
 
 		return path;
 	}
@@ -337,34 +402,28 @@ namespace chess {
 
 	int* Queen::setPosition(int inCol, int inRow)
 	{
-		int* path = nullptr;
+		static int* path = nullptr;
 
 		bool castleMove = ((row == inRow) || (col == inCol));
 		bool rookMove = ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow));
 		
-		if (castleMove || rookMove) {
+		if (castleMove) {
 			
-			path = getPath(inCol, inRow);
-			
+			Castle tempCastle(col, row, team);			// a funky non-ideal work-around;
+			path = tempCastle.getPath(inCol, inRow);	// rather have friend functions to call
+			col = inCol;								// Castle and Rook getPath()'s from Queen.
+			row = inRow;
+		}
+		else if (rookMove) {
+
+			Rook tempRook(col, row, team);
+			path = tempRook.getPath(inCol, inRow);
 			col = inCol;
 			row = inRow;
 		}
 		else {
 			throw PieceMoveError();
 		}
-
-		return path;
-	}
-
-
-
-	int* Queen::getPath(int inCol, int inRow)
-	{
-		int* path = new int[2 * MAX_PATH];
-
-		// path[n * 2]  = {c1, r1, c2, r2, c3, r3...cn, rn} 
-
-		// get the path
 
 		return path;
 	}

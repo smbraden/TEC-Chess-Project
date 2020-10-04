@@ -23,6 +23,9 @@ namespace chess {
 		Pawn(int inCol = 0, int inRow = 1, team_type color = white);	// defaults to the left-most white pawn
 		class PawnMoveError {};
 		int* setPosition(int inCol, int inRow);
+
+	private:
+
 		int* getPath(int inCol, int inRow);
 
 	};
@@ -39,6 +42,10 @@ namespace chess {
 		Castle(int inCol = 0, int inRow = 0, team_type color = white);  // defaults to left-most white castle
 		class CastleMoveError {};
 		int* setPosition(int inCol, int inRow);
+		friend class Queen;			// for Queen access to getPath()
+
+	private:
+
 		int* getPath(int inCol, int inRow);
 
 	};
@@ -55,6 +62,9 @@ namespace chess {
 		Knight(int inCol = 1, int inRow = 0, team_type color = white);  // defaults to left-most white knight
 		class KnightMoveError {};
 		int* setPosition(int inCol, int inRow);
+
+	private:
+
 		int* getPath(int inCol, int inRow);
 
 	};
@@ -71,6 +81,10 @@ namespace chess {
 		Rook(int inCol = 2, int inRow = 0, team_type color = white); // defaults to left-most white rook
 		class RookMoveError {};
 		int* setPosition(int inCol, int inRow);
+		friend class Queen;		// for Queen access to getPath()
+
+	private:
+
 		int* getPath(int inCol, int inRow);
 
 	};
@@ -87,7 +101,10 @@ namespace chess {
 		Queen(int inCol = 3, int inRow = 0, team_type color = white);  // defaults to white queen
 		class QueenMoveError {};
 		int* setPosition(int inCol, int inRow);
-		int* getPath(int inCol, int inRow);
+
+	private:
+
+		//int* getPath(int inCol, int inRow);
 
 	};
 
@@ -103,6 +120,9 @@ namespace chess {
 		King(int inCol = 4, int inRow = 0, team_type color = white);	// defaults to white king
 		class KingMoveError {};
 		int* setPosition(int inCol, int inRow);
+
+	private:
+
 		int* getPath(int inCol, int inRow);
 
 	};
