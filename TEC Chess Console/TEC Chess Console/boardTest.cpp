@@ -8,12 +8,13 @@
 //-------------------------------------------------------------------------------------/*/
 
 #include <iostream>
+#include <ctype.h>		// fo tolower()
 #include "ChessBoard.h"
 
 using namespace std;
 using namespace chess;
 
-#define char2col(ch) ch - 65
+#define char2col(ch) tolower(ch) - 97
 #define int2row(in) in - 1
 
 bool testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2);
@@ -26,48 +27,49 @@ int main() {
 	char x2 = 'a';
 	int y2 = 1;
 	bool status = false;
+	char option = 'c';
 
 	ChessBoard testBoard;
 	testBoard.printBoard();
+	cout << endl << endl;
 	testMoveW(testBoard, 0, 1, 0, 2);
 	testMoveB(testBoard, 5, 6, 5, 4);
 
 	cout << "Welcome to the TEC Chess Console!" << endl;
 	cout << "To enter moves, use the format 'ColRow': a7, b3, etc"<< endl;
-	cout << "Enter 'q' to exit at any time." << endl;
+	cout << "Enter 'q' to exit at the continue/quit promt after each round." << endl;
 	cout << endl;
 
 	do {
-
-		status = (tolower(x1) != 'q' && tolower(y1) != 'q' && tolower(x2) != 'q' && tolower(y2) != 'q');
 
 		do {
 
 			cout << "White move. Current position:	";
 			cin >> x1 >> y1;
-			cout << endl;
 			cout << "White move. New position:	";
 			cin >> x2 >> y2;
 			cout << endl;
 
-			status = (tolower(x1) != 'q' && tolower(y1) != 'q' && tolower(x2) != 'q' && tolower(y2) != 'q');
-
-		} while (status && !testMoveW(testBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2)));
+		} while (!testMoveW(testBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2)));
 
 		do {
 
 			cout << "Black move. Current position:	";
 			cin >> x1 >> y1;
-			cout << endl;
 			cout << "Black move. New position:	";
 			cin >> x2 >> y2;
 			cout << endl;
 
-			status = (tolower(x1) != 'q' && tolower(y1) != 'q' && tolower(x2) != 'q' && tolower(y2) != 'q');
-
-		} while (status && !testMoveB(testBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2)));
+		} while (!testMoveB(testBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2)));
 		
-	} while (status);
+		// Continue prompt
+		cout << "quit or continue (q/c):	";
+		cin >> option;
+		cout << endl;
+		if (option == 'q')
+			break;
+
+	} while (tolower(option) != 'q');
 
 	return 0;
 }
@@ -83,7 +85,7 @@ bool testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 {
 	try {
 		argBoard.moveWhite(x1, y1, x2, y2);
-		cout << endl;
+		//cout << endl;
 		argBoard.printBoard();
 		cout << endl;
 		return true;

@@ -129,9 +129,18 @@ namespace chess {
     
 
     void ChessBoard::printBoard() const
-    {                                                       
-                                                            // for user from black perspective of board
-        for (int row = (BOARD_SIZE - 1); row >= 0; row--) { // (int row = 0; row < BOARD_SIZE; row++)
+    {   
+       
+        int row_label = 8;
+        
+        // upper column labels
+        std::cout << "  ";
+        for (char col_label = 'a'; col_label < 'i'; col_label++)
+            std::cout << col_label << "  ";
+        std::cout << endl;
+
+        for (int row = (BOARD_SIZE - 1); row >= 0; row--) { //black-oriented: (int row = 0; row < BOARD_SIZE; row++)
+            cout << row_label << " ";   // row labels
             for (int col = 0; col < BOARD_SIZE; col++) {
 
                 if (grid[col][row] == nullptr)
@@ -143,18 +152,20 @@ namespace chess {
                             << static_cast<std::underlying_type<ChessPiece::team_type>::type>(piece);
                     // cast the team and piece types beack to underlying types for printing
                 }
-                std::cout << "  ";
-            }
-            std::cout << endl;
-            // uncomment/comment out this block for more/less spaces in board console print
-            /*
-            for (int i = 0; i < 32; i++)
-                std::cout << " ";
-            std::cout << endl;
-            */
-        }
-    }
 
+                std::cout << " ";
+            }
+            std::cout << row_label; // row labels
+            std::cout << endl;
+            row_label--;
+        }
+
+        // lower column labels
+        std::cout << "  ";
+        for (char col_label = 'a'; col_label < 'i'; col_label++)
+            std::cout << col_label << "  ";
+        std::cout << endl;
+    }
 
 
 
@@ -300,13 +311,13 @@ namespace chess {
                 else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::pawn) {
                     grid[i][j] = new Pawn(i, j, grid[i][j]->getTeamType());
                 }
-                else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::castle) {
+                else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::rook) {
                     grid[i][j] = new Rook(i, j, grid[i][j]->getTeamType());
                 }
                 else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::knight) {
                     grid[i][j] = new Knight(i, j, grid[i][j]->getTeamType());
                 }
-                else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::rook) {
+                else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::bishop) {
                     grid[i][j] = new Bishop(i, j, grid[i][j]->getTeamType());
                 }
                 else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::king) {

@@ -19,7 +19,7 @@
 	/**	Returns the piece type
 		@pre An instantiated ChessPiece object
 		@post No change to the object
-		@return the piece_type: rook, king, queen, etc.
+		@return the piece_type: bishop, king, queen, etc.
 			(an enumerated type belong to the ChessPiece Class) 
 
 	piece_type getPieceType() const;	*/
@@ -65,7 +65,7 @@ namespace chess {
 
 			enum class piece_type : unsigned char
 			{
-				none = '0', pawn = 'P', castle = 'C', knight = 'N', rook = 'R', queen = 'Q', king = 'K'
+				none = '0', pawn = 'P', rook = 'R', knight = 'N', bishop = 'B', queen = 'Q', king = 'K'
 			};
 
 

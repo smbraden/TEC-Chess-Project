@@ -101,7 +101,7 @@ namespace chess {
 	{
 		col = inCol;
 		row = inRow;
-		piece = piece_type::castle;
+		piece = piece_type::rook;
 		team = color;
 	}
 
@@ -255,7 +255,7 @@ namespace chess {
 	{
 		col = inCol;
 		row = inRow;
-		piece = piece_type::rook;
+		piece = piece_type::bishop;
 		team = color;
 	}
 
@@ -388,17 +388,17 @@ namespace chess {
 	{
 		static int* path = nullptr;
 
-		bool castleMove = ((row == inRow) || (col == inCol));
-		bool rookMove = ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow));
+		bool rookMove = ((row == inRow) || (col == inCol));
+		bool bishopMove = ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow));
 		
-		if (castleMove) {
+		if (rookMove) {
 			
 			Rook tempRook(col, row, team);			// a funky non-ideal work-around;
 			path = tempRook.getPath(inCol, inRow);	// rather have friend functions to call
 			col = inCol;								// Rook and Bishop getPath()'s from Queen.
 			row = inRow;
 		}
-		else if (rookMove) {
+		else if (bishopMove) {
 
 			Bishop tempBishop(col, row, team);
 			path = tempBishop.getPath(inCol, inRow);
