@@ -72,8 +72,9 @@ namespace chess {
 
     void ChessBoard::moveWhite(int pos1, int pos2, int move1, int move2)
     {
-        if (isPiece(pos1, pos2))
-            if (grid[pos1][pos2]->getTeamType() == ChessPiece::team_type::white)
+        // isPiece() is checked in move(),  but getTeam() has the precondition
+        if (isPiece(pos1, pos2))    // that the object at pos1, po2 is real
+            if (getTeam(pos1, pos2) == ChessPiece::team_type::white)
                 move(pos1, pos2, move1, move2, ChessPiece::team_type::white);
             else
                 throw TurnMoveError();
@@ -91,7 +92,7 @@ namespace chess {
     void ChessBoard::moveBlack(int pos1, int pos2, int move1, int move2)
     {
         if(isPiece(pos1, pos2))
-            if (grid[pos1][pos2]->getTeamType() == ChessPiece::team_type::black)
+            if (getTeam(pos1, pos2) == ChessPiece::team_type::black)
                 move(pos1, pos2, move1, move2, ChessPiece::team_type::black);
             else
                 throw TurnMoveError();
@@ -107,9 +108,8 @@ namespace chess {
     
     ChessPiece::team_type ChessBoard::getTeam(int pos1, int pos2) const
     {
-        if (isPiece(pos1, pos2))
-            return grid[pos1][pos2]->getTeamType();
-        return ChessPiece::team_type::none;
+        assert(isPiece(pos1, pos2));
+        return grid[pos1][pos2]->getTeamType();
     }
     
 
@@ -119,9 +119,8 @@ namespace chess {
     
     ChessPiece::piece_type ChessBoard::getPiece(int pos1, int pos2) const
     {
-        if (isPiece(pos1, pos2))
-            return grid[pos1][pos2]->getPieceType();
-        return ChessPiece::piece_type::none;
+        assert(isPiece(pos1, pos2));
+        return grid[pos1][pos2]->getPieceType();
     }
     
 
@@ -242,17 +241,17 @@ namespace chess {
         if (move1 >= BOARD_SIZE || move2 >= BOARD_SIZE || pos1 >= BOARD_SIZE || pos2 >= BOARD_SIZE) {
             throw BoundsError();
         }
-        else if (!isPiece(pos1, pos2)) {
+        else if (!isPiece(pos1, pos2)) {    
             throw EmptySquareError();
         }
-        else if (grid[pos1][pos2]->getTeamType() != inTeamType) {
+        else if (getTeam(pos1, pos2) != inTeamType) {
             throw TurnMoveError();
         }
-        else if (grid[move1][move2] != nullptr && grid[move1][move2]->getTeamType() == inTeamType) {    
-            throw IlegalMoveError();
-        }
-        else if (pos1 == move1 && pos2 == move2) {  // this might be redundant with the previous condition
+        else if (pos1 == move1 && pos2 == move2) {
             throw NoTurnPassError();
+        }
+        else if (isPiece(move1, move2) && getTeam(move1, move2) == getTeam(pos1, pos2)) {
+            throw SelfCapturError();
         }
         else {
 
@@ -273,7 +272,7 @@ namespace chess {
                 throw IlegalMoveError();
             }
 
-            if (grid[move1][move2] != nullptr && grid[move1][move2]->getTeamType() != inTeamType) {
+            if (isPiece(move1, move2) && getTeam(move1, move2) != getTeam(pos1, pos2)) {
                 remove(move1, move2);
             }
 

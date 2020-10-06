@@ -1,0 +1,379 @@
+/*
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 bP bP bP bP bP bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 wP wP wP wP wP wP wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+
+Welcome to the TEC Chess Console!
+To enter moves, use the format 'ColRow': a7, b3, etc
+Enter 'q' to exit at the continue/quit promt after each round.
+
+White move. Current position:   c2
+White move. New position:       c3
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 bP bP bP bP bP bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 __ __ wP __ __ __ __ __ 3
+2 wP wP __ wP wP wP wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+Black move. Current position:   d7
+Black move. New position:       d5
+
+Only Knights can jump over other pieces
+
+Black move. Current position:   f7
+Black move. New position:       f5
+
+Only Knights can jump over other pieces
+
+Black move. Current position:   g8
+Black move. New position:       h6
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB __ bR 8
+7 bP bP bP bP bP bP bP bP 7
+6 __ __ __ __ __ __ __ bN 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 __ __ wP __ __ __ __ __ 3
+2 wP wP __ wP wP wP wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c):
+
+*/
+
+
+
+/*
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 bP bP bP bP bP bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 wP wP wP wP wP wP wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+
+Welcome to the TEC Chess Console!
+To enter moves, use the format 'ColRow': a7, b3, etc
+Enter 'q' to exit at the continue/quit promt after each round.
+
+White move. Current position:   f2
+White move. New position:       f3
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 bP bP bP bP bP bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 __ __ __ __ __ wP __ __ 3
+2 wP wP wP wP wP __ wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+Black move. Current position:   d7
+Black move. New position:       d5
+
+Only Knights can jump over other pieces
+
+Black move. Current position:   d6
+Black move. New position:       d5
+
+Cannot move an empty square
+
+Black move. Current position:   b7
+Black move. New position:       b6
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 bP __ bP bP bP bP bP bP 7
+6 __ bP __ __ __ __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 __ __ __ __ __ wP __ __ 3
+2 wP wP wP wP wP __ wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): c
+
+White move. Current position:   c2
+White move. New position:       c4
+
+Only Knights can jump over other pieces
+
+White move. Current position:   g1
+White move. New position:       f3
+
+You cannot 'capture' your own pieces
+
+White move. Current position:   g1
+White move. New position:       h3
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 bP __ bP bP bP bP bP bP 7
+6 __ bP __ __ __ __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 __ __ __ __ __ wP __ wN 3
+2 wP wP wP wP wP __ wP wP 2
+1 wR wN wB wQ wK wB __ wR 1
+  a  b  c  d  e  f  g  h
+
+Black move. Current position:   d7
+Black move. New position:       d6
+
+Invalid move for that piece
+
+Black move. Current position:   c7
+Black move. New position:       c6
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 bP __ __ bP bP bP bP bP 7
+6 __ bP bP __ __ __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 __ __ __ __ __ wP __ wN 3
+2 wP wP wP wP wP __ wP wP 2
+1 wR wN wB wQ wK wB __ wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): c
+
+White move. Current position:   d2
+White move. New position:       d3
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 bP __ __ bP bP bP bP bP 7
+6 __ bP bP __ __ __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 __ __ __ wP __ wP __ wN 3
+2 wP wP wP __ wP __ wP wP 2
+1 wR wN wB wQ wK wB __ wR 1
+  a  b  c  d  e  f  g  h
+
+Black move. Current position:   d7
+Black move. New position:       d6
+
+Invalid move for that piece
+
+Black move. Current position:   e7
+Black move. New position:       e6
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 bP __ __ bP __ bP bP bP 7
+6 __ bP bP __ bP __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 __ __ __ wP __ wP __ wN 3
+2 wP wP wP __ wP __ wP wP 2
+1 wR wN wB wQ wK wB __ wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): c
+
+White move. Current position:   a2
+White move. New position:       a3
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 bP __ __ bP __ bP bP bP 7
+6 __ bP bP __ bP __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 wP __ __ wP __ wP __ wN 3
+2 __ wP wP __ wP __ wP wP 2
+1 wR wN wB wQ wK wB __ wR 1
+  a  b  c  d  e  f  g  h
+
+Black move. Current position:   a7
+Black move. New position:       a6
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 __ __ __ bP __ bP bP bP 7
+6 bP bP bP __ bP __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 wP __ __ wP __ wP __ wN 3
+2 __ wP wP __ wP __ wP wP 2
+1 wR wN wB wQ wK wB __ wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): c
+
+White move. Current position:   b2
+White move. New position:       b3
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 __ __ __ bP __ bP bP bP 7
+6 bP bP bP __ bP __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 wP wP __ wP __ wP __ wN 3
+2 __ __ wP __ wP __ wP wP 2
+1 wR wN wB wQ wK wB __ wR 1
+  a  b  c  d  e  f  g  h
+
+Black move. Current position:   f7
+Black move. New position:       f6
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 __ __ __ bP __ __ bP bP 7
+6 bP bP bP __ bP bP __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 wP wP __ wP __ wP __ wN 3
+2 __ __ wP __ wP __ wP wP 2
+1 wR wN wB wQ wK wB __ wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): c
+
+White move. Current position:   e2
+White move. New position:       e3
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 __ __ __ bP __ __ bP bP 7
+6 bP bP bP __ bP bP __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 wP wP __ wP wP wP __ wN 3
+2 __ __ wP __ __ __ wP wP 2
+1 wR wN wB wQ wK wB __ wR 1
+  a  b  c  d  e  f  g  h
+
+Black move. Current position:   g7
+Black move. New position:       g6
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 __ __ __ bP __ __ __ bP 7
+6 bP bP bP __ bP bP bP __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 wP wP __ wP wP wP __ wN 3
+2 __ __ wP __ __ __ wP wP 2
+1 wR wN wB wQ wK wB __ wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): c
+
+White move. Current position:   g2
+White move. New position:       g3
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 __ __ __ bP __ __ __ bP 7
+6 bP bP bP __ bP bP bP __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 wP wP __ wP wP wP wP wN 3
+2 __ __ wP __ __ __ __ wP 2
+1 wR wN wB wQ wK wB __ wR 1
+  a  b  c  d  e  f  g  h
+
+Black move. Current position:   g8
+Black move. New position:       e7
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB __ bR 8
+7 __ __ __ bP bN __ __ bP 7
+6 bP bP bP __ bP bP bP __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 wP wP __ wP wP wP wP wN 3
+2 __ __ wP __ __ __ __ wP 2
+1 wR wN wB wQ wK wB __ wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): c
+
+White move. Current position:   c1
+White move. New position:       c2
+
+You cannot 'capture' your own pieces
+
+White move. Current position:   c2
+White move. New position:       c3
+
+Invalid move for that piece
+
+White move. Current position:   h3
+White move. New position:       g5
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB __ bR 8
+7 __ __ __ bP bN __ __ bP 7
+6 bP bP bP __ bP bP bP __ 6
+5 __ __ __ __ __ __ wN __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 wP wP __ wP wP wP wP __ 3
+2 __ __ wP __ __ __ __ wP 2
+1 wR wN wB wQ wK wB __ wR 1
+  a  b  c  d  e  f  g  h
+
+Black move. Current position:   f6
+Black move. New position:       g5
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB __ bR 8
+7 __ __ __ bP bN __ __ bP 7
+6 bP bP bP __ bP __ bP __ 6
+5 __ __ __ __ __ __ bP __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 wP wP __ wP wP wP wP __ 3
+2 __ __ wP __ __ __ __ wP 2
+1 wR wN wB wQ wK wB __ wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): q
+
+*/
