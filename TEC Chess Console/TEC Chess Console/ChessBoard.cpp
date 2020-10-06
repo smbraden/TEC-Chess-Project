@@ -10,7 +10,9 @@
 //-------------------------------------------------------------------------------------/*/
 
 #include <iostream>
+#include <cassert>
 #include "ChessBoard.h"
+
 
 using namespace std;
 
@@ -255,10 +257,14 @@ namespace chess {
         else {
 
             try {
-                int* path = (grid[pos1][pos2]->setPosition(move1, move2));    // might throw a piece move error
-                evaluatePath(path);                         // might throw an ilegal move error
-                grid[move1][move2] = grid[pos1][pos2];     // map the object from the new board coordinate
-                grid[pos1][pos2] = nullptr;
+                // Pawn moves need extra information from the board
+                if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {
+                    pawnMove(pos1, pos2, move1, move2);         // might throw a piece move error
+                }
+                else {
+                    int* path = (grid[pos1][pos2]->setPosition(move1, move2));    // might throw a piece move error
+                    evaluatePath(path);                         // might throw an ilegal move error
+                }
             }
             catch (ChessPiece::PieceMoveError e) {
                 throw ChessPiece::PieceMoveError();
@@ -266,6 +272,14 @@ namespace chess {
             catch (IlegalMoveError e) {
                 throw IlegalMoveError();
             }
+
+            if (grid[move1][move2] != nullptr && grid[move1][move2]->getTeamType() != inTeamType) {
+                remove(move1, move2);
+            }
+
+            grid[move1][move2] = grid[pos1][pos2];     // map the object from the new board coordinate
+            grid[pos1][pos2] = nullptr;                // set previos coordinate to empty
+
         }
     }
 
@@ -342,6 +356,83 @@ namespace chess {
             return true;
         return false;
     }
+
+
+
+
+
+
+
+    int* ChessBoard::pawnMove(int pos1, int pos2, int move1, int move2)
+    {
+        int* path = nullptr;
+        assert(getPiece(pos1, pos2) == ChessPiece::piece_type::pawn);   // terminate if not pawn
+      
+        if (isCapture(pos1, pos2, move1, move2)) { // if attempt to capture
+            try {
+                path = grid[pos1][pos2]->setPosition(move1, move2);
+            }
+            catch (ChessPiece::PieceMoveError e) {
+                throw ChessPiece::PieceMoveError();
+            }
+        }
+        // if simple advance
+        else if (simpleAdvance(pos1, pos2, move1, move2)) {
+            try {
+                path = grid[pos1][pos2]->setPosition(move1, move2);
+                evaluatePath(path);
+            }
+            catch (ChessPiece::PieceMoveError e) {
+                throw ChessPiece::PieceMoveError();
+            }
+        }
+        else {
+            throw ChessPiece::PieceMoveError();
+        }
+        return path;
+    }
+
+
+
+
+
+
+
+    bool ChessBoard::isCapture(int pos1, int pos2, int move1, int move2)
+    {
+        /* if opponent occupies destination */
+        if (isPiece(move1, move2) && getTeam(move1, move2) != getTeam(pos1, pos2)) { 
+            /*single diagonal move, white piece*/
+            if (getTeam(pos1, pos2) == ChessPiece::team_type::white &&
+                move2 == pos2 + 1 && abs(pos1 - move1) == 1) {
+                return true;
+            }
+            /*single diagonal move, black piece*/
+            else if (getTeam(pos1, pos2) == ChessPiece::team_type::black &&
+                pos2 == move2 + 1 && abs(pos1 - move1) == 1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+
+
+
+
+
+    bool ChessBoard::simpleAdvance(int pos1, int pos2, int move1, int move2)
+    {
+        if (!isPiece(move1, move2) && pos1 == move1)    // destination is empty square, 
+            return true;                                // and same column as current position
+        return false;
+    }
+
+
+
+
 
 }  // closes namespace
 

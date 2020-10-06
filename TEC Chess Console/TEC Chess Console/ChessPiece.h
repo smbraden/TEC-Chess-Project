@@ -73,9 +73,9 @@ namespace chess {
 			class PieceMoveError {};
 
 			ChessPiece(int inCol = 0, int inRow = 0, team_type color = team_type::white);
-			void getPosition(int& inCol, int& inRow) const;
 			piece_type getPieceType() const;
 			team_type getTeamType() const;
+			void getPosition(int& inCol, int& inRow) const;
 			virtual int* setPosition(int inCol, int inRow);
 
 		protected:

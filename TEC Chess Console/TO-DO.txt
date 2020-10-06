@@ -4,7 +4,8 @@ Some tasks to be completed in finishing up the ChessBoard class
 
 Implement the following rules and condition checks:
 
--Pawn capture via diagonals (challenging)
+-Pawn capture via diagonals and prohibit false Pawn "captures" via row moves
+	-implement via ChessBoard; need board information
 -Check and checkmate
 -Castling
 -Pawn promotion

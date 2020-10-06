@@ -22,7 +22,8 @@ namespace chess {
 
 		Pawn(int inCol = 0, int inRow = 1, team_type color = team_type::white);	// defaults to the left-most white pawn
 		class PawnMoveError {};
-		int* setPosition(int inCol, int inRow);
+		int* setPosition(int inCol, int inRow);	// add single diagonals as valid move
+		
 
 	private:
 

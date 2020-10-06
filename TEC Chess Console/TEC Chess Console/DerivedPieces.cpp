@@ -42,6 +42,10 @@ namespace chess {
 				col = inCol;
 				row = inRow;
 			}
+			else if (row == inRow + 1 && abs(col - inCol) == 1) {	// diagonal capture, no path
+				col = inCol;
+				row = inRow;
+			}
 			else {
 				throw PieceMoveError();
 			}
@@ -55,6 +59,10 @@ namespace chess {
 				col = inCol;
 				row = inRow;
 			}
+			else if (inRow == row + 1 && abs(col - inCol) == 1) {	// diagonal capture, no path
+				col = inCol;
+				row = inRow;
+			}
 			else {
 				throw PieceMoveError();
 			} // (*)
@@ -62,6 +70,12 @@ namespace chess {
 
 		return path;
 	}
+
+
+
+
+
+
 
 
 
@@ -452,6 +466,8 @@ namespace chess {
 	{
 		return nullptr;	// no path for Kings, they only move by 1 space at a time
 	}
+
+
 
 }	// closes namespace
 
