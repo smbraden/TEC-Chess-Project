@@ -44,8 +44,17 @@ int main() {
 	cout << endl << endl;
 	
 	// set the first 2 moves
-	testMoveW(testBoard, 0, 1, 0, 2);
+	testMoveW(testBoard, 0, 1, 0, 3);
 	testMoveB(testBoard, 5, 6, 5, 4);
+	testMoveW(testBoard, 0, 3, 0, 4);
+	testMoveB(testBoard, 5, 4, 5, 3);
+	testMoveW(testBoard, 0, 4, 0, 5);
+	testMoveB(testBoard, 5, 3, 5, 2);
+	// the leap tests
+	testMoveW(testBoard, 5, 1, 5, 3);
+	testMoveB(testBoard, 0, 6, 0, 4);
+
+
 
 	cout << "Welcome to the TEC Chess Test Console!" << endl;
 	cout << "To enter moves, use the format 'ColRow': a7, b3, etc"<< endl;
@@ -63,48 +72,6 @@ int main() {
 
 
 	return 0;
-}
-
-
-
-
-
-
-
-
-bool testMoveB(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
-{
-	try {
-		
-		argBoard.moveBlack(x1, y1, x2, y2);
-		cout << endl;
-		argBoard.printBoard();
-		cout << endl;
-		return true;
-	}
-	catch (ChessBoard::BoundsError e) {
-		cout << "Cannot move to or from a position off the board" << endl << endl;
-	}
-	catch (ChessBoard::EmptySquareError e) {
-		cout << "Cannot move an empty square" << endl << endl;
-	}
-	catch (ChessBoard::TurnMoveError e) {
-		cout << "Not your turn, or you're moving the other player's piece" << endl << endl;
-	}
-	catch (ChessBoard::NoTurnPassError e) {
-		cout << "No moving to the same square, no passing turns" << endl << endl;
-	}
-	catch (ChessBoard::SelfCapturError e) {
-		cout << "You cannot 'capture' your own pieces" << endl << endl;
-	}
-	catch (ChessPiece::PieceMoveError e) {
-		cout << "Invalid move for that piece" << endl << endl;
-	}
-	catch (ChessBoard::IlegalMoveError e) {
-		cout << "Only Knights can jump over other pieces" << endl << endl;
-	}
-
-	return false;
 }
 
 
@@ -154,6 +121,47 @@ void play(ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& 
 
 
 
+bool testMoveB(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
+{
+	try {
+		
+		argBoard.moveBlack(x1, y1, x2, y2);
+		cout << endl;
+		argBoard.printBoard();
+		cout << endl;
+		return true;
+	}
+	catch (ChessBoard::BoundsError e) {
+		cout << "Cannot move to or from a position off the board" << endl << endl;
+	}
+	catch (ChessBoard::EmptySquareError e) {
+		cout << "Cannot move an empty square" << endl << endl;
+	}
+	catch (ChessBoard::TurnMoveError e) {
+		cout << "Not your turn, or you're moving the other player's piece" << endl << endl;
+	}
+	catch (ChessBoard::NoTurnPassError e) {
+		cout << "No moving to the same square, no passing turns" << endl << endl;
+	}
+	catch (ChessBoard::SelfCapturError e) {
+		cout << "You cannot 'capture' your own pieces" << endl << endl;
+	}
+	catch (ChessPiece::PieceMoveError e) {
+		cout << "Invalid move for that piece" << endl << endl;
+	}
+	catch (ChessBoard::IndirectPathError e) {
+		cout << "Indirect path. Only Knights can jump over other pieces" << endl << endl;
+	}
+	catch (ChessBoard::IlegalMoveError e) {
+		cout << "Ilegal move" << endl << endl;
+	}
+
+	return false;
+}
+
+
+
+
 
 
 bool testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
@@ -184,8 +192,11 @@ bool testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 	catch (ChessPiece::PieceMoveError e) {
 		cout << "Invalid move for that piece" << endl << endl;
 	}
+	catch (ChessBoard::IndirectPathError e) {
+		cout << "Indirect path. Only Knights can jump over other pieces" << endl << endl;
+	}
 	catch (ChessBoard::IlegalMoveError e) {
-		cout << "Only Knights can jump over other pieces" << endl << endl;
+		cout << "Ilegal move" << endl << endl;
 	}
 
 	return false;

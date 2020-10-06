@@ -31,6 +31,7 @@ namespace chess {
 		class TurnMoveError {};		// when a player attempts to move the opponent's piece
 		class BoundsError {};		// for moves that go out of board bounds
 		class EmptySquareError {};	
+		class IndirectPathError {};	// For attempts to jump over other pieces if not knight 
 		class IlegalMoveError {};	// any other illegal moves
 
 		void moveWhite(int pos1, int pos2, int move1, int move2); // indices 0-7 
@@ -39,7 +40,7 @@ namespace chess {
 		ChessPiece::piece_type getPiece(int pos1, int pos2) const;
 		void printBoard() const;
 
-		const int MAX_PATH = 6;
+		const int MAX_PATH = 7; // 6 spaces for max path, and 1 more for an extra delimiter
 		static const int BOARD_SIZE = 8;
 		const int SPACES = 64;
 
@@ -55,7 +56,7 @@ namespace chess {
 		bool isPiece(int inCol, int inRow) const;
 		// Pawn moves need extra information from the board, 
 		// so we must evaluate their gamestate-dependant legitimacy from the ChessBoard object
-		int* pawnMove(int pos1, int pos2, int move1, int move2);
+		void pawnMove(int pos1, int pos2, int move1, int move2);
 		bool isCapture(int pos1, int pos2, int move1, int move2);
 		bool simpleAdvance(int pos1, int pos2, int move1, int move2);
 

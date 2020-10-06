@@ -216,68 +216,66 @@ namespace chess {
         if (path != nullptr) {
             int i = 0;
             while (path[2 * i] != -1 && path[2 * i + 1] != -1) {
-                if (grid[2 * i][2 * i + 1] != nullptr) {
+                if (grid[2 * i][2 * i + 1] != nullptr) {    // if an object is in path
                     delete path;
                     path = nullptr;
-                    //return false;
-                    throw IlegalMoveError();
+                    
+                    throw IndirectPathError();
                 }
                 i++;
             }
-
             delete path;
             path = nullptr;
         }
-        // return true;
     }
 
 
 
 
 
-    
+    // inTeam is the team whose turn it is to move
     void ChessBoard::move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type inTeamType)
     {
         if (move1 >= BOARD_SIZE || move2 >= BOARD_SIZE || pos1 >= BOARD_SIZE || pos2 >= BOARD_SIZE) {
             throw BoundsError();
         }
-        else if (!isPiece(pos1, pos2)) {    
+        else if (!isPiece(pos1, pos2)) { // moving a non-exsistent piece   
             throw EmptySquareError();
         }
-        else if (getTeam(pos1, pos2) != inTeamType) {
+        else if (getTeam(pos1, pos2) != inTeamType) {   // player whose turn it is, is moving the opponent's piece
             throw TurnMoveError();
         }
-        else if (pos1 == move1 && pos2 == move2) {
+        else if (pos1 == move1 && pos2 == move2) {      // the source is the destination
             throw NoTurnPassError();
         }
-        else if (isPiece(move1, move2) && getTeam(move1, move2) == getTeam(pos1, pos2)) {
-            throw SelfCapturError();
+        else if (isPiece(move1, move2) && getTeam(move1, move2) == inTeamType) {    // destination occupied by a piece
+            throw SelfCapturError();                                                // belonging to the moving player
         }
-        else {
+        else {  // basic rules have been followed. Now, are the rules followed for the specific piece?
 
             try {
-                // Pawn moves need extra information from the board
+                // Pawn moves require extra information from the board
                 if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {
-                    pawnMove(pos1, pos2, move1, move2);         // might throw a piece move error
+                    pawnMove(pos1, pos2, move1, move2);         // might throw piece move, or ilegal move error
                 }
-                else {
-                    int* path = (grid[pos1][pos2]->setPosition(move1, move2));    // might throw a piece move error
-                    evaluatePath(path);                         // might throw an ilegal move error
+                else {  // For all the other pieces    
+                    int* path = grid[pos1][pos2]->validMove(move1, move2);    // might throw a piece move error
+                    evaluatePath(path);                                         // might throw an ilegal move error
+                    grid[pos1][pos2]->setPosition(move1, move2);
                 }
             }
             catch (ChessPiece::PieceMoveError e) {
                 throw ChessPiece::PieceMoveError();
             }
-            catch (IlegalMoveError e) {
-                throw IlegalMoveError();
+            catch (IndirectPathError e) {
+                throw IndirectPathError();
             }
 
-            if (isPiece(move1, move2) && getTeam(move1, move2) != getTeam(pos1, pos2)) {
+            // SelfCapture block should ensure that getTeam(move1, move2) != getTeam(pos1, pos2)
+            if (isPiece(move1, move2))
                 remove(move1, move2);
-            }
-
-            grid[move1][move2] = grid[pos1][pos2];     // map the object from the new board coordinate
-            grid[pos1][pos2] = nullptr;                // set previos coordinate to empty
+            grid[move1][move2] = grid[pos1][pos2];     // map the object with the destination coordinate
+            grid[pos1][pos2] = nullptr;                // set previous coordinate to empty
 
         }
     }
@@ -362,14 +360,17 @@ namespace chess {
 
 
 
-    int* ChessBoard::pawnMove(int pos1, int pos2, int move1, int move2)
+    void ChessBoard::pawnMove(int pos1, int pos2, int move1, int move2)
     {
-        int* path = nullptr;
+        assert(isPiece(pos1, pos2));
         assert(getPiece(pos1, pos2) == ChessPiece::piece_type::pawn);   // terminate if not pawn
-      
+     
+        int* path = nullptr;
+
         if (isCapture(pos1, pos2, move1, move2)) { // if attempt to capture
             try {
-                path = grid[pos1][pos2]->setPosition(move1, move2);
+                path = grid[pos1][pos2]->validMove(move1, move2);   // no path for this move
+                grid[pos1][pos2]->setPosition(move1, move2);        // set the move
             }
             catch (ChessPiece::PieceMoveError e) {
                 throw ChessPiece::PieceMoveError();
@@ -378,17 +379,20 @@ namespace chess {
         // if simple advance
         else if (simpleAdvance(pos1, pos2, move1, move2)) {
             try {
-                path = grid[pos1][pos2]->setPosition(move1, move2);
-                evaluatePath(path);
+                path = grid[pos1][pos2]->validMove(move1, move2);   // get the path
+                evaluatePath(path);                                 // determine if valid path
+                grid[pos1][pos2]->setPosition(move1, move2);        // set the move
             }
             catch (ChessPiece::PieceMoveError e) {
                 throw ChessPiece::PieceMoveError();
             }
+            catch (IndirectPathError e) {
+                throw IndirectPathError();
+            }
         }
         else {
-            throw ChessPiece::PieceMoveError();
-        }
-        return path;
+            throw ChessPiece::PieceMoveError();     // it's invalid move if neither
+        }                                           // SimpleAdvance, nor isCapture
     }
 
 
@@ -396,7 +400,7 @@ namespace chess {
 
 
 
-
+    // helper function to pawnMove()
     bool ChessBoard::isCapture(int pos1, int pos2, int move1, int move2)
     {
         /* if opponent occupies destination */
@@ -413,7 +417,7 @@ namespace chess {
             }
         }
 
-        return false;
+        return false; // function could be one if statement, but w/ annoyingly long condition
     }
 
 
@@ -421,12 +425,12 @@ namespace chess {
 
 
 
-
+    // helper function to pawnMove()
     bool ChessBoard::simpleAdvance(int pos1, int pos2, int move1, int move2)
     {
         if (!isPiece(move1, move2) && pos1 == move1)    // destination is empty square, 
             return true;                                // and same column as current position
-        return false;
+        return false;                                   // setPosition() takes care of the specifics
     }
 
 

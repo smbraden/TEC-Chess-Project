@@ -61,20 +61,30 @@ namespace chess {
 
 
 
-	// Returns the "path" to the destination if the move is valid
-	// validity of piece moves does not consider board bounds, nor
-	// "jumps" over other pieces. The "path" returned will represent 
-	// the spaces between current position and destination (not inclusive). 
-	// compliance with non-jump moves will be evaluated by 
-	// the ChessBoard client, which manages info on all piece positions
-
-	int* ChessPiece::setPosition(int inCol, int inRow)
+	// Precondition:	validMove() has been called with no exceptions
+	//					AND the path returned has been evualted, and is clear
+	void ChessPiece::setPosition(int inCol, int inRow)
 	{
-		int* path = nullptr;
-		
 		col = inCol;
 		row = inRow;
+	}
 
+
+
+
+
+
+
+	/*	Returns the "path" to the destination if move is otherwise valid.
+		Validity of moves in the land of ChessPiece does not consider board bounds, nor
+		"jumps" over other pieces. The "path" returned will represent 
+		the spaces between current position and destination (not inclusive). 
+		compliance with non-jump moves will be evaluated by 
+		the ChessBoard client, which manages info on all piece positions	*/
+
+	int* ChessPiece::validMove(int inCol, int inRow)
+	{
+		int* path = nullptr;
 		return path;
 	}
 
@@ -88,8 +98,6 @@ namespace chess {
 
 				path = getPath();
 
-				col = inCol;
-				row = inRow;
 			}
 			else {
 

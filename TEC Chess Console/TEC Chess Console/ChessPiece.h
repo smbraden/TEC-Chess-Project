@@ -69,14 +69,15 @@ namespace chess {
 			};
 
 
-			const static int MAX_PATH = 6;
+			const static int MAX_PATH = 7;	 // 6 spaces for max path, and 1 more for an extra delimiter
 			class PieceMoveError {};
 
 			ChessPiece(int inCol = 0, int inRow = 0, team_type color = team_type::white);
 			piece_type getPieceType() const;
 			team_type getTeamType() const;
 			void getPosition(int& inCol, int& inRow) const;
-			virtual int* setPosition(int inCol, int inRow);
+			void setPosition(int inCol, int inRow);
+			virtual int* validMove(int inCol, int inRow);
 
 		protected:
 

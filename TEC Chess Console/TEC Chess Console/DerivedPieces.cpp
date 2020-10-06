@@ -25,11 +25,10 @@ namespace chess {
 	}
 
 
-	// In progress: How to handle captures by Pawns?
-	// Only piece whose range of motion depends on capture vs non-capture moves
-
-	// for now, this only accounts for forward moves by Pawns, not diagonal attackes
-	int* Pawn::setPosition(int inCol, int inRow)
+	// Precondition:	the potential validity of the move with respect to 
+	//					other pieces on the board has been evaluated and confirmed.
+	//					(ie pieces blocking the pawn vs pieces captured by the pawn)
+	int* Pawn::validMove(int inCol, int inRow)
 	{
 		int* path = nullptr;
 
@@ -68,7 +67,7 @@ namespace chess {
 			} // (*)
 		}
 
-		return path;
+		return path; // coul be condensed, but with lengthy, less-readable condition statements
 	}
 
 
@@ -79,18 +78,20 @@ namespace chess {
 
 
 
-	// for now, this only accounts for forward moves by Pawns, not diagonal attacks
+	// Precondition:	the move was a 2-space advance from the initial row
 	int* Pawn::getPath(int inCol, int inRow) const
 	{
 		int* path = nullptr;
-		int j = 0;
-
+		
 		if (abs(inRow - row) == 2) {
 
-			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
+			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
 			path[0] = inCol;
-			path[1] = (team == team_type::black ? inRow + 1 : row + 1);
-
+			// path[1] = (team == team_type::black ? inRow + 1 : row + 1);
+			if (team == team_type::black)
+				path[1] = inRow + 1;
+			else
+				path[1] = row + 1;
 		}
 		return path;	// path is nullptr if no spaces between position and destination
 	}
@@ -121,7 +122,7 @@ namespace chess {
 
 
 
-	int* Rook::setPosition(int inCol, int inRow)
+	int* Rook::validMove(int inCol, int inRow)
 	{
 		int* path = nullptr;
 
@@ -130,8 +131,8 @@ namespace chess {
 			
 			path = getPath(inCol, inRow);
 
-			col = inCol;
-			row = inRow;
+			//col = inCol;
+			//row = inRow;
 		}
 		else {
 			throw PieceMoveError();
@@ -148,7 +149,7 @@ namespace chess {
 
 		if (abs(inCol - col) > 0 || abs(inRow - row) > 0) {	// if squares traversed
 
-			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
+			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
 			int j = 0;
 			
 			if (col == inCol) {
@@ -231,22 +232,22 @@ namespace chess {
 	// the rules of inheitance dictate that the return type is the 
 	// same as that of the base class for overriden virtual functions.
 	// Thus, we will simply return nullptr for all Kight moves, correct or incorrect
-	int* Knight::setPosition(int inCol, int inRow)
+	int* Knight::validMove(int inCol, int inRow)
 	{
 		bool cond1 = abs(col - inCol) == 2 && abs(row - inRow) == 1; // (1, 0) ---> (0, 2)
 		bool cond2 = abs(row - inRow) == 2 && abs(col - inCol) == 1;
 
 		if (cond1 || cond2) {
 			
-			col = inCol;
-			row = inRow;
+			//col = inCol;
+			//row = inRow;
 		}
 		else {
 			throw PieceMoveError();
 		}
 		
-		col = inCol;
-		row = inRow;
+		//col = inCol;
+		//row = inRow;
 
 		return nullptr;
 	}
@@ -275,7 +276,7 @@ namespace chess {
 
 
 
-	int* Bishop::setPosition(int inCol, int inRow)
+	int* Bishop::validMove(int inCol, int inRow)
 	{
 		int* path = nullptr;
 
@@ -283,8 +284,8 @@ namespace chess {
 			
 			path = getPath(inCol, inRow);
 			
-			col = inCol;
-			row = inRow;
+			//col = inCol;
+			//row = inRow;
 		}
 		else {
 			throw PieceMoveError();
@@ -302,7 +303,7 @@ namespace chess {
 		if (abs(inCol - col) == 1 && abs(inRow - row) == 1)	// moved by only 1 space
 			return nullptr;
 		else {
-			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};	// function for this?
+			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };	// function for this?
 			
 			if (row < inRow && col > inCol) {
 
@@ -398,7 +399,7 @@ namespace chess {
 
 
 
-	int* Queen::setPosition(int inCol, int inRow)
+	int* Queen::validMove(int inCol, int inRow)
 	{
 		static int* path = nullptr;
 
@@ -409,15 +410,15 @@ namespace chess {
 			
 			Rook tempRook(col, row, team);			// a funky non-ideal work-around;
 			path = tempRook.getPath(inCol, inRow);	// rather have friend functions to call
-			col = inCol;								// Rook and Bishop getPath()'s from Queen.
-			row = inRow;
+			//col = inCol;								// Rook and Bishop getPath()'s from Queen.
+			//row = inRow;
 		}
 		else if (bishopMove) {
 
 			Bishop tempBishop(col, row, team);
 			path = tempBishop.getPath(inCol, inRow);
-			col = inCol;
-			row = inRow;
+			//col = inCol;
+			//row = inRow;
 		}
 		else {
 			throw PieceMoveError();
@@ -446,12 +447,12 @@ namespace chess {
 	// as he only moves space by space. Path only concern space between the position 
 	// and destination. Nullptr will be returned by default
 
-	int* King::setPosition(int inCol, int inRow)
+	int* King::validMove(int inCol, int inRow)
 	{
 		if ((inRow <= row + 1) && (inRow >= row - 1) && (inCol <= col + 1) && (inCol >= col - 1)) {
 			
-			col = inCol;
-			row = inRow;
+			//col = inCol;
+			//row = inRow;
 		}
 		else {
 			throw PieceMoveError();
