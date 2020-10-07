@@ -50,6 +50,8 @@
 #ifndef CHESSPIECE_H
 #define CHESSPIECE_H
 
+#include <cassert>			// for assert()
+#include <stdlib.h>			// for abs()
 
 namespace chess {
 
@@ -68,7 +70,7 @@ namespace chess {
 				none = '0', pawn = 'P', rook = 'R', knight = 'N', bishop = 'B', queen = 'Q', king = 'K'
 			};
 
-
+			const static int BOARD_SIZE = 8;
 			const static int MAX_PATH = 7;	 // 6 spaces for max path, and 1 more for an extra delimiter
 			class PieceMoveError {};
 
@@ -77,7 +79,7 @@ namespace chess {
 			team_type getTeamType() const;
 			void getPosition(int& inCol, int& inRow) const;
 			void setPosition(int inCol, int inRow);
-			virtual int* validMove(int inCol, int inRow);
+			virtual int* validMove(int inCol, int inRow) const;
 
 		protected:
 

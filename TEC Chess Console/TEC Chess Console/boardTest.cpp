@@ -44,15 +44,17 @@ int main() {
 	cout << endl << endl;
 	
 	// set the first 2 moves
+	
 	testMoveW(testBoard, 0, 1, 0, 3);
 	testMoveB(testBoard, 5, 6, 5, 4);
 	testMoveW(testBoard, 0, 3, 0, 4);
 	testMoveB(testBoard, 5, 4, 5, 3);
 	testMoveW(testBoard, 0, 4, 0, 5);
 	testMoveB(testBoard, 5, 3, 5, 2);
+	
 	// the leap tests
-	testMoveW(testBoard, 5, 1, 5, 3);
-	testMoveB(testBoard, 0, 6, 0, 4);
+	//testMoveW(testBoard, 5, 1, 5, 3);
+	//testMoveB(testBoard, 0, 6, 0, 4);
 
 
 

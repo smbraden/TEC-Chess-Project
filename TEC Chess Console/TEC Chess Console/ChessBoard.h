@@ -56,7 +56,7 @@ namespace chess {
 		bool isPiece(int inCol, int inRow) const;
 		// Pawn moves need extra information from the board, 
 		// so we must evaluate their gamestate-dependant legitimacy from the ChessBoard object
-		void pawnMove(int pos1, int pos2, int move1, int move2);
+		int* validPawnMove(int pos1, int pos2, int move1, int move2);
 		bool isCapture(int pos1, int pos2, int move1, int move2);
 		bool simpleAdvance(int pos1, int pos2, int move1, int move2);
 

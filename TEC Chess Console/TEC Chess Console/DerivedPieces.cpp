@@ -8,7 +8,7 @@
 
 
 #include "DerivedPieces.h"
-#include <stdlib.h>			// for abs()
+
 
 
 namespace chess {
@@ -18,6 +18,7 @@ namespace chess {
 
 	Pawn::Pawn(int inCol, int inRow, team_type color)
 	{
+		assert((inCol < BOARD_SIZE) && (inRow < BOARD_SIZE) && (inCol >= 0) && (inRow >= 0));
 		col = inCol;
 		row = inRow;
 		piece = piece_type::pawn;
@@ -28,7 +29,7 @@ namespace chess {
 	// Precondition:	the potential validity of the move with respect to 
 	//					other pieces on the board has been evaluated and confirmed.
 	//					(ie pieces blocking the pawn vs pieces captured by the pawn)
-	int* Pawn::validMove(int inCol, int inRow)
+	int* Pawn::validMove(int inCol, int inRow) const
 	{
 		int* path = nullptr;
 
@@ -38,12 +39,9 @@ namespace chess {
 			if ((row == 6 && inRow == 4 && col == inCol) || (inRow == (row - 1) && col == inCol)) {
 				if (row == 6 && inRow == 4 && col == inCol)
 					path = getPath(inCol, inRow);	// only need path if moved two spaces
-				col = inCol;
-				row = inRow;
 			}
 			else if (row == inRow + 1 && abs(col - inCol) == 1) {	// diagonal capture, no path
-				col = inCol;
-				row = inRow;
+
 			}
 			else {
 				throw PieceMoveError();
@@ -55,19 +53,16 @@ namespace chess {
 			if ((row == 1 && inRow == 3 && col == inCol) || (inRow == row + 1 && col == inCol)) {
 				if (row == 1 && inRow == 3 && col == inCol)
 					path = getPath(inCol, inRow);	// only need path if moved two spaces
-				col = inCol;
-				row = inRow;
 			}
 			else if (inRow == row + 1 && abs(col - inCol) == 1) {	// diagonal capture, no path
-				col = inCol;
-				row = inRow;
+
 			}
 			else {
 				throw PieceMoveError();
 			} // (*)
 		}
 
-		return path; // coul be condensed, but with lengthy, less-readable condition statements
+		return path; // could be condensed, but with lengthy, less-readable condition statements
 	}
 
 
@@ -87,15 +82,22 @@ namespace chess {
 
 			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
 			path[0] = inCol;
-			// path[1] = (team == team_type::black ? inRow + 1 : row + 1);
-			if (team == team_type::black)
-				path[1] = inRow + 1;
-			else
-				path[1] = row + 1;
+			path[1] = (team == team_type::black ? inRow + 1 : row + 1);
+			
 		}
 		return path;	// path is nullptr if no spaces between position and destination
 	}
 	
+	/*
+	
+	if (team == team_type::black)
+		path[1] = inRow + 1;
+	else
+		path[1] = row + 1;
+	
+	*/
+
+
 	
 	/* 
 		(*) NOTE:  We can use -1 as the "null termiator" without potentially niche 
@@ -114,6 +116,7 @@ namespace chess {
 	
 	Rook::Rook(int inCol, int inRow, team_type color)
 	{
+		assert((inCol < BOARD_SIZE) && (inRow < BOARD_SIZE) && (inCol >= 0) && (inRow >= 0));
 		col = inCol;
 		row = inRow;
 		piece = piece_type::rook;
@@ -122,7 +125,7 @@ namespace chess {
 
 
 
-	int* Rook::validMove(int inCol, int inRow)
+	int* Rook::validMove(int inCol, int inRow) const
 	{
 		int* path = nullptr;
 
@@ -131,8 +134,6 @@ namespace chess {
 			
 			path = getPath(inCol, inRow);
 
-			//col = inCol;
-			//row = inRow;
 		}
 		else {
 			throw PieceMoveError();
@@ -220,6 +221,7 @@ namespace chess {
 
 	Knight::Knight(int inCol, int inRow, team_type color)
 	{
+		assert((inCol < BOARD_SIZE) && (inRow < BOARD_SIZE) && (inCol >= 0) && (inRow >= 0));
 		col = inCol;
 		row = inRow;
 		piece = piece_type::knight;
@@ -232,23 +234,18 @@ namespace chess {
 	// the rules of inheitance dictate that the return type is the 
 	// same as that of the base class for overriden virtual functions.
 	// Thus, we will simply return nullptr for all Kight moves, correct or incorrect
-	int* Knight::validMove(int inCol, int inRow)
+	int* Knight::validMove(int inCol, int inRow) const
 	{
 		bool cond1 = abs(col - inCol) == 2 && abs(row - inRow) == 1; // (1, 0) ---> (0, 2)
 		bool cond2 = abs(row - inRow) == 2 && abs(col - inCol) == 1;
 
 		if (cond1 || cond2) {
-			
-			//col = inCol;
-			//row = inRow;
+
 		}
 		else {
 			throw PieceMoveError();
 		}
 		
-		//col = inCol;
-		//row = inRow;
-
 		return nullptr;
 	}
 
@@ -268,6 +265,7 @@ namespace chess {
 
 	Bishop::Bishop(int inCol, int inRow, team_type color)
 	{
+		assert((inCol < BOARD_SIZE) && (inRow < BOARD_SIZE) && (inCol >= 0) && (inRow >= 0));
 		col = inCol;
 		row = inRow;
 		piece = piece_type::bishop;
@@ -276,16 +274,14 @@ namespace chess {
 
 
 
-	int* Bishop::validMove(int inCol, int inRow)
+	int* Bishop::validMove(int inCol, int inRow) const
 	{
 		int* path = nullptr;
 
 		if ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow)) {
 			
 			path = getPath(inCol, inRow);
-			
-			//col = inCol;
-			//row = inRow;
+
 		}
 		else {
 			throw PieceMoveError();
@@ -391,6 +387,7 @@ namespace chess {
 
 	Queen::Queen(int inCol, int inRow, team_type color)
 	{
+		assert((inCol < BOARD_SIZE) && (inRow < BOARD_SIZE) && (inCol >= 0) && (inRow >= 0));
 		col = inCol;
 		row = inRow;
 		piece = piece_type::queen;
@@ -399,7 +396,7 @@ namespace chess {
 
 
 
-	int* Queen::validMove(int inCol, int inRow)
+	int* Queen::validMove(int inCol, int inRow) const
 	{
 		static int* path = nullptr;
 
@@ -410,15 +407,12 @@ namespace chess {
 			
 			Rook tempRook(col, row, team);			// a funky non-ideal work-around;
 			path = tempRook.getPath(inCol, inRow);	// rather have friend functions to call
-			//col = inCol;								// Rook and Bishop getPath()'s from Queen.
-			//row = inRow;
-		}
+		}											// Rook and Bishop getPath()'s from Queen.
 		else if (bishopMove) {
 
 			Bishop tempBishop(col, row, team);
 			path = tempBishop.getPath(inCol, inRow);
-			//col = inCol;
-			//row = inRow;
+
 		}
 		else {
 			throw PieceMoveError();
@@ -436,6 +430,7 @@ namespace chess {
 
 	King::King(int inCol, int inRow, team_type color)
 	{
+		assert((inCol < BOARD_SIZE) && (inRow < BOARD_SIZE) && (inCol >= 0) && (inRow >= 0));
 		col = inCol;
 		row = inRow;
 		piece = piece_type::king;
@@ -447,12 +442,10 @@ namespace chess {
 	// as he only moves space by space. Path only concern space between the position 
 	// and destination. Nullptr will be returned by default
 
-	int* King::validMove(int inCol, int inRow)
+	int* King::validMove(int inCol, int inRow) const
 	{
 		if ((inRow <= row + 1) && (inRow >= row - 1) && (inCol <= col + 1) && (inCol >= col - 1)) {
 			
-			//col = inCol;
-			//row = inRow;
 		}
 		else {
 			throw PieceMoveError();

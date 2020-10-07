@@ -12,8 +12,6 @@
 #include "ChessPiece.h"
 
 
-
-
 namespace chess {
 
 	class Pawn : public ChessPiece {
@@ -22,7 +20,7 @@ namespace chess {
 
 		Pawn(int inCol = 0, int inRow = 1, team_type color = team_type::white);	// defaults to the left-most white pawn
 		class PawnMoveError {};
-		int* validMove(int inCol, int inRow);	// add single diagonals as valid move
+		int* validMove(int inCol, int inRow) const;	// add single diagonals as valid move
 		
 
 	private:
@@ -47,7 +45,7 @@ namespace chess {
 
 		Rook(int inCol = 0, int inRow = 0, team_type color = team_type::white);  // defaults to left-most white bishop
 		class RookMoveError {};
-		int* validMove(int inCol, int inRow);
+		int* validMove(int inCol, int inRow) const;
 		friend class Queen;			// for Queen access to getPath()
 
 	private:
@@ -67,7 +65,7 @@ namespace chess {
 
 		Knight(int inCol = 1, int inRow = 0, team_type color = team_type::white);  // defaults to left-most white knight
 		class KnightMoveError {};
-		int* validMove(int inCol, int inRow);
+		int* validMove(int inCol, int inRow) const;
 
 	private:
 
@@ -86,7 +84,7 @@ namespace chess {
 
 		Bishop(int inCol = 2, int inRow = 0, team_type color = team_type::white); // defaults to left-most white bishop
 		class BishopMoveError {};
-		int* validMove(int inCol, int inRow);
+		int* validMove(int inCol, int inRow) const;
 		friend class Queen;		// for Queen access to getPath()
 
 	private:
@@ -106,7 +104,7 @@ namespace chess {
 
 		Queen(int inCol = 3, int inRow = 0, team_type color = team_type::white);  // defaults to white queen
 		class QueenMoveError {};
-		int* validMove(int inCol, int inRow);
+		int* validMove(int inCol, int inRow) const;
 
 	private:
 
@@ -125,7 +123,7 @@ namespace chess {
 
 		King(int inCol = 4, int inRow = 0, team_type color = team_type::white);	// defaults to white king
 		class KingMoveError {};
-		int* validMove(int inCol, int inRow);
+		int* validMove(int inCol, int inRow) const;
 
 	private:
 

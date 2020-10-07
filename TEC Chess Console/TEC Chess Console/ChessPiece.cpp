@@ -13,13 +13,13 @@
 
 
 #include "ChessPiece.h"
-#include <stdlib.h>			// for abs()
 
 namespace chess {
 	
 	
 	ChessPiece::ChessPiece(int inCol, int inRow, team_type color)
 	{
+		assert((inCol < BOARD_SIZE) && (inRow < BOARD_SIZE) && (inCol >= 0) && (inRow >= 0));
 		row = inRow;
 		col = inCol;
 		team = color;
@@ -65,6 +65,7 @@ namespace chess {
 	//					AND the path returned has been evualted, and is clear
 	void ChessPiece::setPosition(int inCol, int inRow)
 	{
+		assert(inCol < BOARD_SIZE && inRow < BOARD_SIZE && inCol >= 0 && inRow >= 0);
 		col = inCol;
 		row = inRow;
 	}
@@ -82,8 +83,9 @@ namespace chess {
 		compliance with non-jump moves will be evaluated by 
 		the ChessBoard client, which manages info on all piece positions	*/
 
-	int* ChessPiece::validMove(int inCol, int inRow)
+	int* ChessPiece::validMove(int inCol, int inRow) const
 	{
+		assert(inCol < BOARD_SIZE && inRow < BOARD_SIZE && inCol >= 0 && inRow >= 0);
 		int* path = nullptr;
 		return path;
 	}
@@ -115,6 +117,7 @@ namespace chess {
 
 	int* ChessPiece::getPath(int inCol, int inRow)
 	{
+		assert(inCol < BOARD_SIZE && inRow < BOARD_SIZE && inCol >= 0 && inRow >= 0);
 		int* path = nullptr;
 		
 		/*	Real pieces will calculate the path:
