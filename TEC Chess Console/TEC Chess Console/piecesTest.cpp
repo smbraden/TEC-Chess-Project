@@ -57,12 +57,12 @@ int main() {
 
 
 
-
 	jtest::drawList drawlist;
 
 	// Creating window and objects.
 	sf::RenderWindow window(sf::VideoMode(1200, 600), "SFML works!");
-	
+	window.setFramerateLimit(60);
+
 	// SHape objects
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
@@ -85,7 +85,7 @@ int main() {
 	drawlist.addShape(shape2);
 	drawlist.addShape(shape3);
 
-
+	// Graphics while loop begins.           <----------------- Normal terminal stuff wont work past here because graphics ae running. Game must be contained in this While-Loop!
 	while (window.isOpen())
 	{
 		sf::Event event;
