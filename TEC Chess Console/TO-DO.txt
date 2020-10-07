@@ -4,27 +4,40 @@ Some tasks to be completed in finishing up the ChessBoard class
 
 Implement the following rules and condition checks:
 
--Pawn capture via diagonals and prohibit false Pawn "captures" via row moves
-	-implement via ChessBoard; need board information
--Check and checkmate
+
 -Castling
 -Pawn promotion
--Stalemate?
 
-Obscure rules:
+-En Passant (aka, "why are pawns so needy?")
+En passant itself can only occur in a game when a player exercises 
+his option to move his pawn two squares on its initial movement and 
+that move places his pawn next to the opponent’s pawn.
+When this happens, the opposing player has the option to use his pawn 
+to take the moved pawn “en passant” or “in passing” as if the pawn had 
+only moved one square.
+
+-Check and checkmate (and Stalemate?)
 
 -Three-fold repetition
 This rule states that if the same position is repeated three times 
 and no progress is made, you can claim a draw. 
+Two positions are by definition "the same" if the same types of pieces 
+occupy the same squares, the same player has the move, the remaining 
+castling rights are the same and the possibility to capture 
+en passant is the same. The repeated positions need not occur in succession. 
 
--En Passant
-En passant itself can only occur in a game when a player exercises 
-his option to move his pawn two squares on its initial movement and 
-that move places his pawn next to the opponent’s pawn.
+DONE:
 
-When this happens, the opposing player has the option to use his pawn 
-to take the moved pawn “en passant” or “in passing” as if the pawn had 
-only moved one square.
+-Pawn capture via diagonals and prohibit false Pawn "captures" via row moves
+implement via ChessBoard; need board information
+
+
+
+
+
+
+
+
 
 //--------------------------------------------------------------------------//
 

@@ -16,13 +16,21 @@ namespace chess {
 
 	//------------------------------Pawn-----------------------------------//
 
-	Pawn::Pawn(int inCol, int inRow, team_type color) : ChessPiece {inCol, inRow}
+	Pawn::Pawn() : ChessPiece()
 	{
-		assert((inCol < BOARD_SIZE) && (inRow < BOARD_SIZE) && (inCol >= 0) && (inRow >= 0));
-		col = inCol;
-		row = inRow;
-		piece = piece_type::pawn;
-		team = color;
+		enPassant = false;
+		setPieceType(piece_type::pawn);
+	}
+
+
+
+
+
+
+	Pawn::Pawn(int inCol, int inRow, team_type color) : ChessPiece(inCol, inRow, color)
+	{
+		enPassant = false;
+		setPieceType(piece_type::pawn);
 	}
 
 
@@ -36,13 +44,18 @@ namespace chess {
 	int* Pawn::validMove(int inCol, int inRow) const
 	{
 		int* path = nullptr;
+		ChessPiece::team_type team = getTeamType();
+		int col = getCol();
+		int row = getRow();
 
 		if (team == team_type::black) {
 
 			// if starting row and move two rows forward, or otherwise move only one row forward 
 			if ((row == 6 && inRow == 4 && col == inCol) || (inRow == (row - 1) && col == inCol)) {
-				if (row == 6 && inRow == 4)			// col == inCol implied
+				if (row == 6 && inRow == 4) {			// col == inCol implied
 					path = getPath(inCol, inRow);	// only need path if moved two spaces
+					//enPassant = true;
+				}
 			}
 			else if (row == inRow + 1 && abs(col - inCol) == 1) {	// diagonal capture, no path
 
@@ -74,6 +87,24 @@ namespace chess {
 
 
 
+	/*
+	bool Pawn::getPassantState()
+	{
+		return enPassant;
+	}
+
+
+
+
+
+
+	void Pawn::setPassantState(bool arg)
+	{
+		enPassant = arg;
+	}
+	*/
+
+
 
 
 
@@ -81,8 +112,10 @@ namespace chess {
 	int* Pawn::getPath(int inCol, int inRow) const
 	{
 		int* path = nullptr;
-		
-		if (abs(inRow - row) == 2) {
+		int row = getRow();
+		ChessPiece::team_type team = getTeamType();
+
+		if (abs(inRow - getRow()) == 2) {
 
 			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
 			path[0] = inCol;
@@ -99,13 +132,19 @@ namespace chess {
 
 	//------------------------------Rook-----------------------------------//
 	
-	Rook::Rook(int inCol, int inRow, team_type color)
+	Rook::Rook() : ChessPiece()
 	{
-		assert((inCol < BOARD_SIZE) && (inRow < BOARD_SIZE) && (inCol >= 0) && (inRow >= 0));
-		col = inCol;
-		row = inRow;
-		piece = piece_type::rook;
-		team = color;
+		setPieceType(piece_type::rook);
+	}
+
+
+
+
+
+
+	Rook::Rook(int inCol, int inRow, team_type color) : ChessPiece(inCol, inRow, color)
+	{
+		setPieceType(piece_type::rook);
 	}
 
 
@@ -116,6 +155,9 @@ namespace chess {
 	int* Rook::validMove(int inCol, int inRow) const
 	{
 		int* path = nullptr;
+		int col = getCol();
+		int row = getRow();
+
 
 		if ((row == inRow) || (col == inCol)) // if moving only along columns or rows
 			path = getPath(inCol, inRow);
@@ -132,7 +174,9 @@ namespace chess {
 
 	int* Rook::getPath(int inCol, int inRow) const
 	{
-		int* path = nullptr; 
+		int* path = nullptr;
+		int col = getCol();
+		int row = getRow();
 
 		if (abs(inCol - col) > 1 || abs(inRow - row) > 1) {	// if more than 1 squares traversed
 
@@ -201,13 +245,19 @@ namespace chess {
 
 	//------------------------------Knight-----------------------------------//
 
-	Knight::Knight(int inCol, int inRow, team_type color)
+	Knight::Knight() : ChessPiece()
 	{
-		assert((inCol < BOARD_SIZE) && (inRow < BOARD_SIZE) && (inCol >= 0) && (inRow >= 0));
-		col = inCol;
-		row = inRow;
-		piece = piece_type::knight;
-		team = color;
+		setPieceType(piece_type::knight);
+	}
+
+
+
+
+
+
+	Knight::Knight(int inCol, int inRow, team_type color) : ChessPiece(inCol, inRow, color)
+	{
+		setPieceType(piece_type::knight);
 	}
 
 
@@ -221,6 +271,9 @@ namespace chess {
 	// Thus, we will simply return nullptr for all Kight moves, correct or incorrect
 	int* Knight::validMove(int inCol, int inRow) const
 	{
+		int col = getCol();
+		int row = getRow();
+
 		bool cond1 = abs(col - inCol) == 2 && abs(row - inRow) == 1; // (1, 0) ---> (0, 2)
 		bool cond2 = abs(row - inRow) == 2 && abs(col - inCol) == 1;
 
@@ -251,13 +304,19 @@ namespace chess {
 
 	//------------------------------Bishop-----------------------------------//
 
-	Bishop::Bishop(int inCol, int inRow, team_type color)
+	Bishop::Bishop() : ChessPiece()
 	{
-		assert((inCol < BOARD_SIZE) && (inRow < BOARD_SIZE) && (inCol >= 0) && (inRow >= 0));
-		col = inCol;
-		row = inRow;
-		piece = piece_type::bishop;
-		team = color;
+		setPieceType(piece_type::bishop);
+	}
+
+
+
+
+
+
+	Bishop::Bishop(int inCol, int inRow, team_type color) : ChessPiece(inCol, inRow, color)
+	{
+		setPieceType(piece_type::bishop);
 	}
 
 
@@ -268,6 +327,8 @@ namespace chess {
 	int* Bishop::validMove(int inCol, int inRow) const
 	{
 		int* path = nullptr;
+		int col = getCol();
+		int row = getRow();
 
 		if ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow)) {
 			
@@ -289,7 +350,9 @@ namespace chess {
 	int* Bishop::getPath(int inCol, int inRow) const
 	{
 		int* path = nullptr;
-	
+		int col = getCol();
+		int row = getRow();
+
 		if (abs(inCol - col) == 1 && abs(inRow - row) == 1)	// moved by only 1 space
 			return nullptr;
 		else {
@@ -435,13 +498,19 @@ namespace chess {
 
 	//------------------------------Queen-----------------------------------//
 
-	Queen::Queen(int inCol, int inRow, team_type color)
+	Queen::Queen() : ChessPiece()
 	{
-		assert((inCol < BOARD_SIZE) && (inRow < BOARD_SIZE) && (inCol >= 0) && (inRow >= 0));
-		col = inCol;
-		row = inRow;
-		piece = piece_type::queen;
-		team = color;
+		setPieceType(piece_type::queen);
+	}
+
+
+
+
+
+
+	Queen::Queen(int inCol, int inRow, team_type color) : ChessPiece(inCol, inRow, color)
+	{
+		setPieceType(piece_type::queen);
 	}
 
 
@@ -452,6 +521,9 @@ namespace chess {
 	int* Queen::validMove(int inCol, int inRow) const
 	{
 		static int* path = nullptr;
+		int row = getRow();
+		int col = getCol();
+		ChessPiece::team_type team = getTeamType();
 
 		bool rookMove = ((row == inRow) || (col == inCol));
 		bool bishopMove = ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow));
@@ -483,13 +555,19 @@ namespace chess {
 
 	//------------------------------King-----------------------------------//
 
+	King::King()
+	{
+		setPieceType(piece_type::king);
+	}
+
+
+
+
+
+
 	King::King(int inCol, int inRow, team_type color)
 	{
-		assert((inCol < BOARD_SIZE) && (inRow < BOARD_SIZE) && (inCol >= 0) && (inRow >= 0));
-		col = inCol;
-		row = inRow;
-		piece = piece_type::king;
-		team = color;
+		setPieceType(piece_type::king);
 	}
 
 
@@ -503,6 +581,9 @@ namespace chess {
 
 	int* King::validMove(int inCol, int inRow) const
 	{
+		int row = getRow();
+		int col = getCol();
+
 		if ((inRow <= row + 1) && (inRow >= row - 1) && (inCol <= col + 1) && (inCol >= col - 1)) {
 			
 		}
@@ -522,6 +603,8 @@ namespace chess {
 	{
 		return nullptr;	// no path for Kings, they only move by 1 space at a time
 	}
+
+
 
 
 

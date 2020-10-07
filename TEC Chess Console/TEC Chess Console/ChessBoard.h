@@ -57,6 +57,7 @@ namespace chess {
 		int* validPawnMove(int pos1, int pos2, int move1, int move2);
 		bool isCapture(int pos1, int pos2, int move1, int move2);
 		bool simpleAdvance(int pos1, int pos2, int move1, int move2);
+		bool enPassant(int pos1, int pos2, int move1, int move2);
 		
 	};
 

@@ -17,21 +17,19 @@ namespace chess {
 	class Pawn : public ChessPiece {
 
 	public:
-
-		Pawn(int inCol = 0, int inRow = 1, team_type color = team_type::white); // defaults to the left-most white pawn
-		class PawnMoveError {};
-		int* validMove(int inCol, int inRow) const;	// add single diagonals as valid move
 		
+		Pawn();
+		Pawn(int inCol, int inRow, team_type color);
+		class PawnMoveError {};
+		int* validMove(int inCol, int inRow) const;
+		friend bool getPassantState();
+		friend void setPassantState(bool);
 
 	private:
 
+		bool enPassant;
 		int* getPath(int inCol, int inRow) const;
-		// 6 possible coordinates, and -1 signals end of coordinates
-
-		/*	path[2 * MAX_PATH] = {c1, r1, c2, r2, c3, r3...c6, r6}
-			path[n * 2]			= {c1, c2, c3,...cn,}
-			path[n * 2 + 1]		= {r1, r2, r3,...rn,}	*/
-
+		
 	};
 
 
@@ -43,15 +41,17 @@ namespace chess {
 
 	public:
 
-		Rook(int inCol = 0, int inRow = 0, team_type color = team_type::white);  // defaults to left-most white bishop
+		Rook();
+		Rook(int inCol, int inRow, team_type color);
 		class RookMoveError {};
 		int* validMove(int inCol, int inRow) const;
+		
 		friend class Queen;			// for Queen access to getPath()
 
 	private:
 
 		int* getPath(int inCol, int inRow) const;
-
+		
 	};
 
 
@@ -63,14 +63,15 @@ namespace chess {
 
 	public:
 
-		Knight(int inCol = 1, int inRow = 0, team_type color = team_type::white);  // defaults to left-most white knight
+		Knight();
+		Knight(int inCol, int inRow, team_type color);
 		class KnightMoveError {};
 		int* validMove(int inCol, int inRow) const;
-
+		
 	private:
 
 		int* getPath(int inCol, int inRow) const;
-
+		
 	};
 
 
@@ -81,12 +82,12 @@ namespace chess {
 	class Bishop : public ChessPiece {
 
 	public:
-
-		Bishop(int inCol = 2, int inRow = 0, team_type color = team_type::white); // defaults to left-most white bishop
+		Bishop();
+		Bishop(int inCol, int inRow, team_type color);
 		class BishopMoveError {};
 		int* validMove(int inCol, int inRow) const;
 		friend class Queen;		// for Queen access to getPath()
-
+		
 	private:
 
 		int* getPath(int inCol, int inRow) const;
@@ -103,15 +104,15 @@ namespace chess {
 
 	public:
 
-		Queen(int inCol = 3, int inRow = 0, team_type color = team_type::white);  // defaults to white queen
+		Queen();
+		Queen(int inCol, int inRow, team_type color);
 		class QueenMoveError {};
 		int* validMove(int inCol, int inRow) const;
-
+		
 	private:
 
 		//int* getPath(int inCol, int inRow) const;
-		friend class Rook;
-		friend class Bishop;
+		
 	};
 
 
@@ -123,14 +124,15 @@ namespace chess {
 
 	public:
 
-		King(int inCol = 4, int inRow = 0, team_type color = team_type::white);	// defaults to white king
+		King();
+		King(int inCol, int inRow, team_type color);
 		class KingMoveError {};
 		int* validMove(int inCol, int inRow) const;
-
+		
 	private:
 
 		int* getPath(int inCol, int inRow) const;
-
+		
 	};
 
 } // closes namespace

@@ -175,18 +175,18 @@ namespace chess {
     void ChessBoard::initPieces()
     {
         // instantiate and map the white team
-        grid[0][0] = new Rook(0, 0);
-        grid[1][0] = new Knight(1, 0);
-        grid[2][0] = new Bishop(2, 0);
-        grid[3][0] = new Queen(3, 0);
-        grid[4][0] = new King(4, 0);
-        grid[5][0] = new Bishop(5, 0);
-        grid[6][0] = new Knight(6, 0);
-        grid[7][0] = new Rook(7, 0);
+        grid[0][0] = new Rook(0, 0, ChessPiece::team_type::white);
+        grid[1][0] = new Knight(1, 0, ChessPiece::team_type::white);
+        grid[2][0] = new Bishop(2, 0, ChessPiece::team_type::white);
+        grid[3][0] = new Queen(3, 0, ChessPiece::team_type::white);
+        grid[4][0] = new King(4, 0, ChessPiece::team_type::white);
+        grid[5][0] = new Bishop(5, 0, ChessPiece::team_type::white);
+        grid[6][0] = new Knight(6, 0, ChessPiece::team_type::white);
+        grid[7][0] = new Rook(7, 0, ChessPiece::team_type::white);
 
         // white pawns
         for (int i = 0; i < BOARD_SIZE; i++) {
-            grid[i][1] = new Pawn(i, 1);
+            grid[i][1] = new Pawn(i, 1, ChessPiece::team_type::white);
         }
 
         // instantiate and map the black team pieces
@@ -437,6 +437,16 @@ namespace chess {
         if (!isPiece(move1, move2) && pos1 == move1)    // destination is empty square, 
             return true;                                // and same column as current position
         return false;                                   // setPosition() takes care of the specifics
+    }
+
+
+
+
+
+
+    bool ChessBoard::enPassant(int pos1, int pos2, int move1, int move2)
+    {
+        return false;
     }
 
 

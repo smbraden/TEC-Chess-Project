@@ -62,7 +62,7 @@ namespace chess {
 
 			enum class team_type : unsigned char
 			{
-				none = '0', white = 'w', black = 'b'
+				white = 'w', black = 'b'
 			};
 
 			enum class piece_type : unsigned char
@@ -74,24 +74,28 @@ namespace chess {
 			const static int MAX_PATH = 7;	 // 6 spaces for max path, and 1 more for an extra delimiter
 			class PieceMoveError {};
 
-			// Default and parameterized constructor
-			ChessPiece(int inCol = 0, int inRow = 0, team_type color = team_type::white);
-			ChessPiece(const ChessPiece&);
+			ChessPiece();											// Default constructor
+			ChessPiece(int inCol , int inRow , team_type color);	// Parameterized constructor
+			ChessPiece(const ChessPiece&);							// Copy
 
-			piece_type getPieceType() const;
 			team_type getTeamType() const;
+			void setTeamType(team_type);
+			piece_type getPieceType() const;
+			void setPieceType(piece_type);
 			void getPosition(int& inCol, int& inRow) const;
+			void setPosition(int inCol, int inRow);
 			int getCol() const;
 			int getRow() const;
-			void setPosition(int inCol, int inRow);
+			
 			virtual int* validMove(int inCol, int inRow) const;
 
-		protected:
+		private:
 
 			int col;
 			int row;
 			team_type team;
 			piece_type piece;
+			
 			virtual int* getPath(int inCol, int inRow);	// (*)
 
 	};
@@ -114,24 +118,19 @@ namespace chess {
 
 	Note:	According to Dave Harden, in "real" production code 
 			one would never use the "protected" keyword. 
-			Instead, one would provide accessors and mutators 
-			to allow derived classes to access or mutate the private data members.
+			Instead, one would provide accessors and mutators to allow 
+			derived classes to access or mutate the private data members.
 
-			For the purposes of this project, I'm not doing that because
-			it would be a bit tedious in this case, and the client is really
-			only interfacing with the ChessBoard class, not the DerivedPieces.
-			Also, the ChessPiece class is really more of a pseudo abstract class.
-
-			But in the future, this could be among the refactoring goals. 
-
-
+			The code was recently refactored to avoid using a 
+			protected Base Class Access Specification.
+			Derived classes now access base memebers only via accessors/mutators
 
 	Note:	Some member functions would be better as pure virtual functions;
 			however, it is not desirable to make this an abstract class
 			because we would like to manage a collection of ChessPieces via
 			array of pointers, or another data structures that can only manage
-			a collection of objects of the same types. We will use the
-			base class, ChessPiece to make such declarations, and this
-			cannot be done with an abstract class, which cannot be instantiated.
+			a collection of objects of the same types, in this case, 
+			the base class, ChessPiece. We cannot instaniate/declare an abstract class
+			for such purposes.
 			Hence, ChessPiece as a true abstract class is not compatible with
-			design goals, despite that it srves more as an abstract class.		*/
+			design goals, despite that it serves quite like an abstract class.		*/

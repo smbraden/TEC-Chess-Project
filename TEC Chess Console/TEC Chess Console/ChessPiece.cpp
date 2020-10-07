@@ -16,7 +16,19 @@
 
 namespace chess {
 
+	ChessPiece::ChessPiece()
+	{
+		col = 0;
+		row = 0;
+		team = team_type::white;
+		piece = piece_type::none;
+	}
 	
+	
+
+
+
+
 	// Default and Parameterized constructor
 	ChessPiece::ChessPiece(int inCol, int inRow, team_type color)
 	{
@@ -75,6 +87,23 @@ namespace chess {
 
 
 
+
+	// Accessor
+	ChessPiece::team_type ChessPiece::getTeamType() const
+	{
+		return team;
+	}
+
+	void ChessPiece::setTeamType(team_type arg)
+	{
+		team = arg;
+	}
+
+
+
+
+
+
 	// Accessor
 	ChessPiece::piece_type ChessPiece::getPieceType() const
 	{
@@ -85,10 +114,10 @@ namespace chess {
 
 
 
-	// Accessor
-	ChessPiece::team_type ChessPiece::getTeamType() const
+
+	void ChessPiece::setPieceType(piece_type arg)
 	{
-		return team;
+		piece = arg;
 	}
 
 

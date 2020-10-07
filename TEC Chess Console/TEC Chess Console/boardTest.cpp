@@ -36,15 +36,14 @@ int main() {
 	int y1 = 1;
 	char x2 = 'a';
 	int y2 = 1;
-	//bool status = false;
 	char option = 'c';
 
 	ChessBoard testBoard;
 	testBoard.printBoard();
 	cout << endl << endl;
 	
-	// test pawn skipping
-/*
+	
+/*	// test pawn skipping
 	testMoveW(testBoard, 0, 1, 0, 3);
 	testMoveB(testBoard, 5, 6, 5, 4);
 	testMoveW(testBoard, 0, 3, 0, 4);
