@@ -74,10 +74,15 @@ namespace chess {
 			const static int MAX_PATH = 7;	 // 6 spaces for max path, and 1 more for an extra delimiter
 			class PieceMoveError {};
 
+			// Default and parameterized constructor
 			ChessPiece(int inCol = 0, int inRow = 0, team_type color = team_type::white);
+			ChessPiece(const ChessPiece&);
+
 			piece_type getPieceType() const;
 			team_type getTeamType() const;
 			void getPosition(int& inCol, int& inRow) const;
+			int getCol() const;
+			int getRow() const;
 			void setPosition(int inCol, int inRow);
 			virtual int* validMove(int inCol, int inRow) const;
 
@@ -87,12 +92,7 @@ namespace chess {
 			int row;
 			team_type team;
 			piece_type piece;
-			virtual int* getPath(int inCol, int inRow);
-			// int[] with 6 possible coordinates, and -1 signals end of coordinates
-
-			/*	path[2 * BOAD_SIZE] = {c1, r1, c2, r2, c3, r3...c6, r6}
-				path[n * 2]			= {c1, c2, c3,...cn,}
-				path[n * 2 + 1]		= {r1, r2, r3,...rn,}	*/
+			virtual int* getPath(int inCol, int inRow);	// (*)
 
 	};
 
@@ -100,12 +100,38 @@ namespace chess {
 
 #endif
 
-/*	Note:	Some member functions would be better as pure virtual functions;
+
+/*
+
+	(*)		virtual int* getPath(int inCol, int inRow);
+			
+			The returned int pointer, int* path, is such that:
+
+			path[2 * BOAD_SIZE] = {c1, r1, c2, r2, c3, r3...c6, r6}
+			path[n * 2]			= {c1, c2, c3,...cn,}
+			path[n * 2 + 1]		= {r1, r2, r3,...rn,}
+
+
+	Note:	According to Dave Harden, in "real" production code 
+			one would never use the "protected" keyword. 
+			Instead, one would provide accessors and mutators 
+			to allow derived classes to access or mutate the private data members.
+
+			For the purposes of this project, I'm not doing that because
+			it would be a bit tedious in this case, and the client is really
+			only interfacing with the ChessBoard class, not the DerivedPieces.
+			Also, the ChessPiece class is really more of a pseudo abstract class.
+
+			But in the future, this could be among the refactoring goals. 
+
+
+
+	Note:	Some member functions would be better as pure virtual functions;
 			however, it is not desirable to make this an abstract class
 			because we would like to manage a collection of ChessPieces via
-			arra of pointers, or another data structures that can only manage
-			a collection of objects of the same types.We will use the
-			base class ChessPiece to make such declarations, and this
+			array of pointers, or another data structures that can only manage
+			a collection of objects of the same types. We will use the
+			base class, ChessPiece to make such declarations, and this
 			cannot be done with an abstract class, which cannot be instantiated.
-			Hence, ChessPiece as an abstract class is not compatible with
+			Hence, ChessPiece as a true abstract class is not compatible with
 			design goals, despite that it srves more as an abstract class.		*/

@@ -15,8 +15,9 @@
 #include "ChessPiece.h"
 
 namespace chess {
+
 	
-	
+	// Default and Parameterized constructor
 	ChessPiece::ChessPiece(int inCol, int inRow, team_type color)
 	{
 		assert((inCol < BOARD_SIZE) && (inRow < BOARD_SIZE) && (inCol >= 0) && (inRow >= 0));
@@ -30,7 +31,20 @@ namespace chess {
 
 
 
+	// Copy constructor
+	ChessPiece::ChessPiece(const ChessPiece& source)
+	{
+		row = source.row;
+		col = source.col;
+		team = source.team;
+		piece = source.piece;
+	}
 
+
+
+
+
+	// Accessor
 	void ChessPiece::getPosition(int& inCol, int& inRow) const
 	{
 		inRow = row;
@@ -41,7 +55,27 @@ namespace chess {
 
 
 
+	// Accessor
+	int ChessPiece::getCol() const
+	{
+		return col;
+	}
 
+
+
+
+
+	// Accessor
+	int ChessPiece::getRow() const
+	{
+		return row;
+	}
+
+
+
+
+
+	// Accessor
 	ChessPiece::piece_type ChessPiece::getPieceType() const
 	{
 		return piece;
@@ -51,7 +85,7 @@ namespace chess {
 
 
 
-
+	// Accessor
 	ChessPiece::team_type ChessPiece::getTeamType() const
 	{
 		return team;
@@ -77,11 +111,11 @@ namespace chess {
 
 
 	/*	Returns the "path" to the destination if move is otherwise valid.
-		Validity of moves in the land of ChessPiece does not consider board bounds, nor
-		"jumps" over other pieces. The "path" returned will represent 
-		the spaces between current position and destination (not inclusive). 
+		Validity of moves in the ChessPiece class does not consider board bounds, nor
+		"jumps" over other pieces, or other relations to board state. The "path" returned 
+		represents the spaces between current position and destination (not inclusive). 
 		compliance with non-jump moves will be evaluated by 
-		the ChessBoard client, which manages info on all piece positions	*/
+		the ChessBoard client, which manages info regarding all piece positions	*/
 
 	int* ChessPiece::validMove(int inCol, int inRow) const
 	{
@@ -96,16 +130,11 @@ namespace chess {
 		{
 			int* path = nullptr;
 		
-			if ( Valid move ) {
-
+			if ( Valid move )
 				path = getPath();
-
-			}
-			else {
-
+			else
 				throw PieceMoveError();
-			}
-
+			
 			return path;
 		}
 	*/

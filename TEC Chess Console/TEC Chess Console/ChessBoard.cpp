@@ -13,7 +13,6 @@
 #include <cassert>
 #include "ChessBoard.h"
 
-
 using namespace std;
 
 namespace chess {

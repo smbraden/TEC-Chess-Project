@@ -18,7 +18,7 @@ namespace chess {
 
 	public:
 
-		Pawn(int inCol = 0, int inRow = 1, team_type color = team_type::white);	// defaults to the left-most white pawn
+		Pawn(int inCol = 0, int inRow = 1, team_type color = team_type::white); // defaults to the left-most white pawn
 		class PawnMoveError {};
 		int* validMove(int inCol, int inRow) const;	// add single diagonals as valid move
 		
@@ -90,6 +90,7 @@ namespace chess {
 	private:
 
 		int* getPath(int inCol, int inRow) const;
+		//int* buildPath(signed int colSign, signed int rowSign, int inCol, int inRow);
 
 	};
 
@@ -109,7 +110,8 @@ namespace chess {
 	private:
 
 		//int* getPath(int inCol, int inRow) const;
-
+		friend class Rook;
+		friend class Bishop;
 	};
 
 
