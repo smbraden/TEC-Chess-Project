@@ -87,7 +87,7 @@ namespace chess {
 
 
 
-	/*
+	
 	bool Pawn::getPassantState()
 	{
 		return enPassant;
@@ -102,7 +102,7 @@ namespace chess {
 	{
 		enPassant = arg;
 	}
-	*/
+	
 
 
 

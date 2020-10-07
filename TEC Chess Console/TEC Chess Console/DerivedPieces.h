@@ -22,8 +22,8 @@ namespace chess {
 		Pawn(int inCol, int inRow, team_type color);
 		class PawnMoveError {};
 		int* validMove(int inCol, int inRow) const;
-		friend bool getPassantState();
-		friend void setPassantState(bool);
+		bool getPassantState();
+		void setPassantState(bool);
 
 	private:
 
