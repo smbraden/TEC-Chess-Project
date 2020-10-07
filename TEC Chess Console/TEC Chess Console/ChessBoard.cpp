@@ -297,8 +297,8 @@ namespace chess {
     void ChessBoard::remove(int pos1, int pos2)
     {
         if (grid[pos1][pos2] != nullptr) {
-            
-            delete grid[pos1][pos2];
+            ChessPiece* objPtr = grid[pos1][pos2];
+            delete objPtr;
             grid[pos1][pos2] = nullptr;
         }
     }

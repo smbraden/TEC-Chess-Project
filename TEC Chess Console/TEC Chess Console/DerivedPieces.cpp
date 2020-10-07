@@ -351,7 +351,7 @@ namespace chess {
 					path[j * 2] = nextCol;
 					path[j * 2 + 1] = nextRow;
 					j++;
-					nextRow++;
+					nextRow--;
 					nextCol++;
 				}
 			}
