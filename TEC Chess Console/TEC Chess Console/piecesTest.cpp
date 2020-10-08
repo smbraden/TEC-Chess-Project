@@ -63,7 +63,7 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(1200, 600), "SFML works!");
 	window.setFramerateLimit(60);
 
-	// SHape objects
+	// Shape objects
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
 	sf::CircleShape shape2(30.f);
@@ -79,11 +79,22 @@ int main() {
 	shape3.setFillColor(sf::Color::Blue);
 	shape3.setPosition(pos);
 
+
+	// Sprite object test
+	sf::Texture texture;
+	if (!texture.loadFromFile("Images/WhiteQueen.png"))
+	{
+		// error...
+	}
+	sf::Sprite sprite;
+	sprite.setTexture(texture);
+
 	// Utilizing the drawList class so future shape draws are automated.
 	drawlist.setRenderWindow(window);
 	drawlist.addShape(shape);
 	drawlist.addShape(shape2);
 	drawlist.addShape(shape3);
+	drawlist.addSprite(sprite);
 
 	// Graphics while loop begins.           <----------------- Normal terminal stuff wont work past here because graphics ae running. Game must be contained in this While-Loop!
 	while (window.isOpen())
