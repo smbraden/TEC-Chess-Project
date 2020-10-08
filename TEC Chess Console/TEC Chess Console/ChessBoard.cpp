@@ -279,6 +279,9 @@ namespace chess {
                 throw IndirectPathError();
             }
 
+            resetEnPassant(pos1, pos2); // resets all EnPassant to false, except the 
+                                        // most recently moved piece            
+            
             // SelfCapture block should ensure that getTeam(move1, move2) != getTeam(pos1, pos2)
             if (isPiece(move1, move2))
                 remove(move1, move2);
@@ -373,20 +376,12 @@ namespace chess {
 
         assert(getPiece(pos1, pos2) == ChessPiece::piece_type::pawn);   // terminate if not pawn
                                                                         // isPiece(pos1, pos2) is implied
-     
         int* path = nullptr;
-
-        if (isCapture(pos1, pos2, move1, move2)) { // if attempt to capture
-            try {
-                path = grid[pos1][pos2]->validMove(move1, move2);   // no path for this move
-                grid[pos1][pos2]->setPosition(move1, move2);        // set the move
-            }
-            catch (ChessPiece::PieceMoveError e) {
-                throw ChessPiece::PieceMoveError();
-            }
-        }
-        // if simple advance
-        else if (simpleAdvance(pos1, pos2, move1, move2)) {
+        
+        if (isCapture(pos1, pos2, move1, move2) || 
+                enPassant(pos1, pos2, move1, move2) ||
+                    simpleAdvance(pos1, pos2, move1, move2)) {   
+            
             try {
                 path = grid[pos1][pos2]->validMove(move1, move2);
             }
@@ -446,7 +441,29 @@ namespace chess {
 
     bool ChessBoard::enPassant(int pos1, int pos2, int move1, int move2)
     {
-        return false;
+        // if current position is one space ahead of the opponent's fifth rank,
+        // and if either of the objects to the left or right has enPassant == true 
+            // if move is to the diagonal, 'behind' the opponent (pseudo-capture),
+            // then return true
+        // else, return false
+
+        return true;
+    }
+
+
+
+
+
+
+    void ChessBoard::resetEnPassant(int pos1, int pos2)
+    {
+        for (int r = 0; r < BOARD_SIZE; r++) {
+            for (int c = 0; c < BOARD_SIZE; c++) {  // for all pawns that are not the current piece
+                if (!(c == pos1 && r == pos2) && getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {
+                    grid[pos1][pos2]->setEnPassant(false);  // gotta add this enPassant business to the base class
+                }
+            }
+        }
     }
 
 

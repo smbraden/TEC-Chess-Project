@@ -21,11 +21,12 @@ namespace chess {
 		Pawn();
 		Pawn(int inCol, int inRow, team_type color);
 		class PawnMoveError {};
-		int* validMove(int inCol, int inRow) const;
-		bool getPassantState();
-		void setPassantState(bool);
+		int* validMove(int inCol, int inRow);	// no "const" for Pawns b/c need to setEnPassant()  
+		void setEnPassant(bool);
+		bool getEnPassant() const;
 
-	private:
+
+	protected:
 
 		bool enPassant;
 		int* getPath(int inCol, int inRow) const;

@@ -192,5 +192,7 @@ namespace chess {
 		return path;
 	}
 
+
+
 }  // closes namespace
 

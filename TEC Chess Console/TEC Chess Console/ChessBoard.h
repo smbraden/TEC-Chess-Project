@@ -58,6 +58,7 @@ namespace chess {
 		bool isCapture(int pos1, int pos2, int move1, int move2);
 		bool simpleAdvance(int pos1, int pos2, int move1, int move2);
 		bool enPassant(int pos1, int pos2, int move1, int move2);
+		void resetEnPassant(int pos1, int pos2); // resets all EnPassant to false, except most recently moved piece  
 		
 	};
 

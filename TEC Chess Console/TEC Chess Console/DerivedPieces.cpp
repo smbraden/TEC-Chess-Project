@@ -41,20 +41,20 @@ namespace chess {
 	/* Precondition:	the potential validity of the move with respect to 
 						other pieces on the board has been evaluated and confirmed.
 						(ie pieces blocking the pawn vs pieces captured by the pawn)	*/
-	int* Pawn::validMove(int inCol, int inRow) const
+	int* Pawn::validMove(int inCol, int inRow)
 	{
 		int* path = nullptr;
 		ChessPiece::team_type team = getTeamType();
 		int col = getCol();
 		int row = getRow();
-
+		
 		if (team == team_type::black) {
 
 			// if starting row and move two rows forward, or otherwise move only one row forward 
 			if ((row == 6 && inRow == 4 && col == inCol) || (inRow == (row - 1) && col == inCol)) {
 				if (row == 6 && inRow == 4) {			// col == inCol implied
 					path = getPath(inCol, inRow);	// only need path if moved two spaces
-					//enPassant = true;
+					setEnPassant(true);
 				}
 			}
 			else if (row == inRow + 1 && abs(col - inCol) == 1) {	// diagonal capture, no path
@@ -68,8 +68,10 @@ namespace chess {
 
 			// if starting row and move two rows forward, or otherwise move only one row forward 
 			if ((row == 1 && inRow == 3 && col == inCol) || (inRow == row + 1 && col == inCol)) {
-				if (row == 1 && inRow == 3)			//  col == inCol
+				if (row == 1 && inRow == 3) {		//  col == inCol
 					path = getPath(inCol, inRow);	// only need path if moved two spaces
+					setEnPassant(true);
+				}
 			}
 			else if (inRow == row + 1 && abs(col - inCol) == 1) {	// diagonal capture, no path
 
@@ -88,7 +90,7 @@ namespace chess {
 
 
 	
-	bool Pawn::getPassantState()
+	bool Pawn::getEnPassant() const
 	{
 		return enPassant;
 	}
@@ -98,7 +100,7 @@ namespace chess {
 
 
 
-	void Pawn::setPassantState(bool arg)
+	void Pawn::setEnPassant(bool arg)
 	{
 		enPassant = arg;
 	}

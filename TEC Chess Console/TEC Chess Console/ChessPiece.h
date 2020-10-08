@@ -97,7 +97,7 @@ namespace chess {
 			piece_type piece;
 			
 			virtual int* getPath(int inCol, int inRow);	// (*)
-
+			
 	};
 
 } // closes namespace
