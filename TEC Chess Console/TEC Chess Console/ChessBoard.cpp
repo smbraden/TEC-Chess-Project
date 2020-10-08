@@ -188,7 +188,7 @@ namespace chess {
         // white pawns
         Pawn* pPtr =nullptr;
         for (int i = 0; i < BOARD_SIZE; i++) {
-            grid[i][1] = new Pawn(i, 1, ChessPiece::team_type::white);
+            grid[i][1] = new Pawn(i, 1, ChessPiece::team_type::white, false);
         }
 
         // instantiate and map the black team pieces
@@ -203,7 +203,7 @@ namespace chess {
                
         // black pawns
         for (int i = 0; i < BOARD_SIZE; i++) {
-            grid[i][6] = new Pawn(i, 6, ChessPiece::team_type::black);
+            grid[i][6] = new Pawn(i, 6, ChessPiece::team_type::black, false);
         }
     }
 
@@ -338,29 +338,28 @@ namespace chess {
     // Precodition:     The board has been cleared
     void ChessBoard::copy(const ChessBoard arg)
     {
-        Pawn* pPtr = nullptr;
-        int k = 0;
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
                 if (arg.grid[i][j] == nullptr)
                     grid[i][j] = nullptr;
                 else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::pawn) {
-                    grid[i][j] = new Pawn(i, j, grid[i][j]->getTeamType());
+                    bool passVal = ((Pawn*)grid[i][j])->getEnPassant();
+                    grid[i][j] = new Pawn(i, j, arg.grid[i][j]->getTeamType(), passVal);
                 }
                 else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::rook) {
-                    grid[i][j] = new Rook(i, j, grid[i][j]->getTeamType());
+                    grid[i][j] = new Rook(i, j, arg.grid[i][j]->getTeamType());
                 }
                 else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::knight) {
-                    grid[i][j] = new Knight(i, j, grid[i][j]->getTeamType());
+                    grid[i][j] = new Knight(i, j, arg.grid[i][j]->getTeamType());
                 }
                 else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::bishop) {
-                    grid[i][j] = new Bishop(i, j, grid[i][j]->getTeamType());
+                    grid[i][j] = new Bishop(i, j, arg.grid[i][j]->getTeamType());
                 }
                 else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::king) {
-                    grid[i][j] = new King(i, j, grid[i][j]->getTeamType());
+                    grid[i][j] = new King(i, j, arg.grid[i][j]->getTeamType());
                 }
                 else {  // if (grid[i][j]->getPieceType() == ChessPiece::piece_type::queen) 
-                    grid[i][j] = new Queen(i, j, grid[i][j]->getTeamType());
+                    grid[i][j] = new Queen(i, j, arg.grid[i][j]->getTeamType());
                 }
             }
         }

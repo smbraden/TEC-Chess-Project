@@ -19,7 +19,7 @@ namespace chess {
 	public:
 		
 		Pawn();
-		Pawn(int inCol, int inRow, team_type color);
+		Pawn(int inCol, int inRow, team_type color, bool passVal);
 		class PawnMoveError {};
 		int* validMove(int inCol, int inRow) const;	// no "const" for Pawns b/c need to setEnPassant()  
 		void setEnPassant(bool);
@@ -38,7 +38,29 @@ namespace chess {
 
 
 
-	class Rook : public ChessPiece {
+	class Queen : public ChessPiece {
+
+	public:
+
+		Queen();
+		Queen(int inCol, int inRow, team_type color);
+		class QueenMoveError {};
+		int* validMove(int inCol, int inRow) const;
+
+	protected:	// for Rook and Bishop access to these getPath()'s
+
+		//int* getPath(int inCol, int inRow) const;
+		int* getLateralPath(int inCol, int inRow) const;
+		int* getDiagonalPath(int inCol, int inRow) const;
+		//int* buildPath(signed int colSign, signed int rowSign, int inCol, int inRow); // getDiagonalPath() helper function
+	};
+
+
+
+
+
+
+	class Rook : public Queen {
 
 	public:
 
@@ -47,7 +69,7 @@ namespace chess {
 		class RookMoveError {};
 		int* validMove(int inCol, int inRow) const;
 		
-		friend class Queen;			// for Queen access to getPath()
+		//friend class Queen;			// for Queen access to getPath()
 
 	private:
 
@@ -80,41 +102,22 @@ namespace chess {
 
 
 
-	class Bishop : public ChessPiece {
+	class Bishop : public Queen {
 
 	public:
 		Bishop();
 		Bishop(int inCol, int inRow, team_type color);
 		class BishopMoveError {};
 		int* validMove(int inCol, int inRow) const;
-		friend class Queen;		// for Queen access to getPath()
+		
+		//friend class Queen;		// for Queen access to getPath()
 		
 	private:
 
 		int* getPath(int inCol, int inRow) const;
-		//int* buildPath(signed int colSign, signed int rowSign, int inCol, int inRow);
-
-	};
-
-
-
-
-
-
-	class Queen : public ChessPiece {
-
-	public:
-
-		Queen();
-		Queen(int inCol, int inRow, team_type color);
-		class QueenMoveError {};
-		int* validMove(int inCol, int inRow) const;
-		
-	private:
-
-		//int* getPath(int inCol, int inRow) const;
 		
 	};
+
 
 
 
@@ -129,9 +132,18 @@ namespace chess {
 		King(int inCol, int inRow, team_type color);
 		class KingMoveError {};
 		int* validMove(int inCol, int inRow) const;
-		
+		bool getCastleStatus();
+		void setCastleStatus(bool arg);
+		bool getCheckStatus();
+		void setCheckStatus(bool arg);
+		bool getMateStatus();
+		void setMateStatus(bool arg);
+
 	private:
 
+		bool castle;	// true as long as king has never moved yet
+		bool check;
+		bool checkMate;
 		int* getPath(int inCol, int inRow) const;
 		
 	};
