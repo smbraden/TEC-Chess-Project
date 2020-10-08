@@ -1,0 +1,103 @@
+	//		Alternate to the above getPath(), uses helper function
+	/*	
+	int* Bishop::buildPath(signed int colSign, signed int rowSign, int inCol, int inRow) {
+
+		int* path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };	// function for this?
+
+		int nextRow = row + rowSign;
+		int nextCol = col + colSign;
+		int j = 0;
+		while (nextRow != inRow && nextCol != inCol) {
+			path[j * 2] = nextCol;
+			path[j * 2 + 1] = nextRow;
+			j++;
+			nextRow = nextRow + rowSign;
+			nextCol = nextCol + colSign;
+		}
+
+		return path;
+	}
+
+
+
+
+
+
+	int* Bishop::getPath(int inCol, int inRow) const
+	{
+		int* path = nullptr;
+
+		if (abs(inCol - col) == 1 && abs(inRow - row) == 1)	// moved by only 1 space
+			return path;
+		else {
+			
+			if (col > inCol && row < inRow) {
+				path = buildPath(-1, 1, inCol, inRow);
+			}
+			else if (col < inCol && row < inRow) {
+				path = buildPath(1, 1, inCol, inRow);
+			}
+			else if (col < inCol && row > inRow) {
+				path = buildPath(1, -1, inCol, inRow);
+			}
+			else if (col > inCol && row > inRow) {
+				path = buildPath(-1, -1, inCol, inRow);				
+			}
+		}
+
+		return path;
+	}
+	*/
+
+
+
+    /*
+
+    // return:          -1 for object not found (not a pawn), or non-existent 
+    //                  If object is found returns 0 <= i < (2 * BOARD_SIZE)
+    int ChessBoard::findPawnPtr(ChessPiece* ptr)
+    {
+        if (ptr == nullptr)
+            return -1;
+
+        ChessPiece* tmpPtr = nullptr;
+        for (int c = 0; c < BOARD_SIZE; c++) {
+            for (int r = 0; r < BOARD_SIZE; r++) {
+                tmpPtr = grid[c][r];
+                for (int i = 0; i < BOARD_SIZE * 2; i++) {
+                    if (ptr == pawnGrid[i])
+                        return i;
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    */
+
+
+
+    /*
+
+    // resets entire board's Pawn enPassant values, except the moving piece at (pos1, pos2)
+    // if that piece is a pawn. The enPassant of the moving piece is set elsewhere
+    void ChessBoard::resetEnPassant(int pos1, int pos2)
+    {
+        ChessPiece* pPtr = grid[pos1][pos2];
+        int pawnIndex = findPawnPtr(pPtr);      // this is -1 if grid[pos1][pos2] is emtpy or not pawn
+
+        if (pawnIndex == -1) {                          // not a pawn
+            for (int i = 0; i < (2 * BOARD_SIZE); i++)
+                if (pawnGrid[i] != nullptr)             // not empty
+                    pawnGrid[i]->setEnPassant(false);   // set all other pawns to false enPassant
+        }
+        else {
+            pawnGrid[pawnIndex]->setEnPassant(true);
+            for (int i = 0; i < (2 * BOARD_SIZE); i++)
+                if (pawnGrid[i] != nullptr && i != pawnIndex)   // not the moving piece, and not empty
+                    pawnGrid[i]->setEnPassant(false);           // set all other pawns to false enPassant
+        }
+    }
+
+    */

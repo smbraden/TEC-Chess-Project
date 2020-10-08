@@ -139,7 +139,8 @@ namespace chess {
             std::cout << col_label << "  ";
         std::cout << endl;
 
-        for (int row = (BOARD_SIZE - 1); row >= 0; row--) { //black-oriented: (int row = 0; row < BOARD_SIZE; row++)
+        //black-oriented would be: (int row = 0; row < BOARD_SIZE; row++)
+        for (int row = (BOARD_SIZE - 1); row >= 0; row--) {
             cout << row_label << " ";   // row labels
             for (int col = 0; col < BOARD_SIZE; col++) {
 
@@ -185,6 +186,7 @@ namespace chess {
         grid[7][0] = new Rook(7, 0, ChessPiece::team_type::white);
 
         // white pawns
+        Pawn* pPtr =nullptr;
         for (int i = 0; i < BOARD_SIZE; i++) {
             grid[i][1] = new Pawn(i, 1, ChessPiece::team_type::white);
         }
@@ -223,7 +225,6 @@ namespace chess {
                 if (grid[x][y] != nullptr) {    // if an object is in path 
                     delete [] path;
                     path = nullptr;
-                    
                     throw IndirectPathError();
                 }
 
@@ -240,36 +241,34 @@ namespace chess {
 
 
 
-    // inTeam is the team whose turn it is to move
+
+    // Note:    inTeam is the team whose turn it is to move
     void ChessBoard::move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type inTeamType)
     {
         if (move1 >= BOARD_SIZE || move2 >= BOARD_SIZE || pos1 >= BOARD_SIZE || pos2 >= BOARD_SIZE || 
                                                     move1 < 0 || move2 < 0 || pos1 < 0 || pos2 < 0) {
             throw BoundsError();
         }
-        else if (!isPiece(pos1, pos2)) { // moving a non-exsistent piece   
+        else if (!isPiece(pos1, pos2))  // moving a non-exsistent piece   
             throw EmptySquareError();
-        }
-        else if (getTeam(pos1, pos2) != inTeamType) {   // player whose turn it is, is moving the opponent's piece
+        else if (getTeam(pos1, pos2) != inTeamType)     // wrong team being move
             throw TurnMoveError();
-        }
-        else if (pos1 == move1 && pos2 == move2) {      // the source is the destination
+        else if (pos1 == move1 && pos2 == move2)        // the source is the destination
             throw NoTurnPassError();
-        }
-        else if (isPiece(move1, move2) && getTeam(move1, move2) == inTeamType) {    // destination occupied by a piece
-            throw SelfCapturError();                                                // belonging to the moving player
-        }
+        else if (isPiece(move1, move2) && getTeam(move1, move2) == inTeamType)  // destination occupied by a piece
+            throw SelfCapturError();                                            // belonging to the moving player
         else {  // basic rules have been followed. Now, are the rules followed for the specific piece?
 
             try {
                 // Pawn moves require extra information from the board
                 if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {
-                    int* path = validPawnMove(pos1, pos2, move1, move2);                // might throw piece move, or ilegal move error
+                    int* path = validPawnMove(pos1, pos2, move1, move2);    // might throw piece or ilegal move error
                     evaluatePath(path);
+                    removeEnPassant(pos1, pos2, move1, move2);  // removes the captured piece if enPassant move
                 }
                 else {  // For all the other pieces    
                     int* path = grid[pos1][pos2]->validMove(move1, move2);    // might throw a piece move error
-                    evaluatePath(path);                                         // might throw an ilegal move error
+                    evaluatePath(path);                                       // might throw an ilegal move error
                 }
             }
             catch (ChessPiece::PieceMoveError e) {
@@ -279,10 +278,10 @@ namespace chess {
                 throw IndirectPathError();
             }
 
-            resetEnPassant(pos1, pos2); // resets all EnPassant to false, except the 
-                                        // most recently moved piece            
+            resetEnPassant(pos1, pos2); // resets all EnPassant to false, except the moving piece            
             
-            // SelfCapture block should ensure that getTeam(move1, move2) != getTeam(pos1, pos2)
+            // SelfCapture error block ensures that getTeam(move1, move2) != getTeam(pos1, pos2)
+            
             if (isPiece(move1, move2))
                 remove(move1, move2);
             grid[move1][move2] = grid[pos1][pos2];          // map the object with the destination coordinate
@@ -299,10 +298,23 @@ namespace chess {
     void ChessBoard::remove(int pos1, int pos2)
     {
         if (grid[pos1][pos2] != nullptr) {
-            ChessPiece* objPtr = grid[pos1][pos2];
-            delete objPtr;
-            grid[pos1][pos2] = nullptr;
+            ChessPiece* objPtr = grid[pos1][pos2];                      
+            delete objPtr;                                              // destroy the object
+            grid[pos1][pos2] = nullptr;                                 // set the grid square to nullptr
+
         }
+    }
+
+
+
+
+
+
+    void ChessBoard::removeEnPassant(int pos1, int pos2, int move1, int move2)
+    {
+        if (isEnPassant(pos1, pos2, move1, move2)) {
+            remove(move1, pos2);
+        }          
     }
 
 
@@ -323,9 +335,11 @@ namespace chess {
 
 
 
-    // precodition: the board has been cleared
+    // Precodition:     The board has been cleared
     void ChessBoard::copy(const ChessBoard arg)
     {
+        Pawn* pPtr = nullptr;
+        int k = 0;
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
                 if (arg.grid[i][j] == nullptr)
@@ -379,7 +393,7 @@ namespace chess {
         int* path = nullptr;
         
         if (isCapture(pos1, pos2, move1, move2) || 
-                enPassant(pos1, pos2, move1, move2) ||
+                isEnPassant(pos1, pos2, move1, move2) ||
                     simpleAdvance(pos1, pos2, move1, move2)) {   
             
             try {
@@ -401,7 +415,7 @@ namespace chess {
 
 
 
-    // helper function to pawnMove()
+    // Purpose:     Helper function to pawnMove()
     bool ChessBoard::isCapture(int pos1, int pos2, int move1, int move2)
     {
         /* if opponent occupies destination */
@@ -426,7 +440,7 @@ namespace chess {
 
 
 
-    // helper function to pawnMove()
+    // Purpose:     Helper function to pawnMove()
     bool ChessBoard::simpleAdvance(int pos1, int pos2, int move1, int move2)
     {
         if (!isPiece(move1, move2) && pos1 == move1)    // destination is empty square, 
@@ -439,35 +453,58 @@ namespace chess {
 
 
 
-    bool ChessBoard::enPassant(int pos1, int pos2, int move1, int move2)
+    // Purpose:         Checks for a valid En assant move
+    // Precondition:    The move  and current position are in bounds
+    bool ChessBoard::isEnPassant(int pos1, int pos2, int move1, int move2)
     {
-        // if current position is one space ahead of the opponent's fifth rank,
-        // and if either of the objects to the left or right has enPassant == true 
-            // if move is to the diagonal, 'behind' the opponent (pseudo-capture),
-            // then return true
-        // else, return false
+        assert(move1 < BOARD_SIZE&& move2 < BOARD_SIZE&& pos1 < BOARD_SIZE&& pos2 < BOARD_SIZE&&
+            move1 >= 0 && move2 >= 0 && pos1 >= 0 && pos2 >= 0);
 
-        return true;
+        if (getTeam(pos1, pos2) == ChessPiece::team_type::white) {
+            if (pos2 != 4 || move2 != 5)    // if current position is not fifth rank
+                return false;               // and moving to the proper row
+            // if either of the objects to the left or right has enPassant == true
+            else if (move1 == (pos1 - 1) && isPiece(pos1 - 1, pos2) && ((Pawn*)grid[pos1 - 1][pos2])->getEnPassant())
+                return true;
+            else if (move1 == (pos1 + 1) && isPiece(pos1 + 1, pos2) && ((Pawn*)grid[pos1 + 1][pos2])->getEnPassant())
+                return true;
+        }
+        else {  // if (getTeam(pos1, pos2) == ChessPiece::team_type::black)
+            if (pos2 != 3 || move2 != 2)    // if current position is not fifth rank
+                return false;               // and moving to the proper row
+            // if either of the objects to the left or right has enPassant == true
+            else if (move1 == (pos1 - 1) && isPiece(pos1 - 1, pos2) && ((Pawn*)grid[pos1 - 1][pos2])->getEnPassant())
+                return true;
+            else if (move1 == (pos1 + 1) && isPiece(pos1 + 1, pos2) && ((Pawn*)grid[pos1 + 1][pos2])->getEnPassant())
+                return true;
+        }
+
+        return false;
     }
 
 
 
 
 
-
+    
+    // Purpose:         Resets all enPassant to false, except the moving piece, if Pawn
+    // Precondition:    The move  and current position are in bounds
     void ChessBoard::resetEnPassant(int pos1, int pos2)
     {
-        for (int r = 0; r < BOARD_SIZE; r++) {
-            for (int c = 0; c < BOARD_SIZE; c++) {  // for all pawns that are not the current piece
-                if (!(c == pos1 && r == pos2) && getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {
-                    grid[pos1][pos2]->setEnPassant(false);  // gotta add this enPassant business to the base class
+        Pawn* ptr = nullptr;
+        
+        for (int c = 0; c < BOARD_SIZE; c++) {
+            for (int r = 0; r < BOARD_SIZE; r++) {      //  !(pos1 == c && pos2 == r)
+                if ( isPiece(c, r) && getPiece(c, r) == ChessPiece::piece_type::pawn) {
+                    ((Pawn*)grid[c][r])->setEnPassant(false);
                 }
             }
         }
+
+        if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {
+            ((Pawn*)grid[pos1][pos2])->setEnPassant(true);
+        }
     }
-
-
-
 
 
 }  // closes namespace

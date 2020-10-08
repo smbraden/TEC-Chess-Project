@@ -46,19 +46,23 @@ namespace chess {
 
 	private:
 
+		// main data member
 		ChessPiece* grid[BOARD_SIZE][BOARD_SIZE];
+		
+		// helper functions
 		void initPieces();
 		void evaluatePath(int* path) const;
 		void move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type);
 		void remove(int pos1, int pos2);
+		void removeEnPassant(int pos1, int pos2, int move1, int move2);
 		void clear();
 		void copy(const ChessBoard);
 		bool isPiece(int inCol, int inRow) const;
 		int* validPawnMove(int pos1, int pos2, int move1, int move2);
 		bool isCapture(int pos1, int pos2, int move1, int move2);
 		bool simpleAdvance(int pos1, int pos2, int move1, int move2);
-		bool enPassant(int pos1, int pos2, int move1, int move2);
-		void resetEnPassant(int pos1, int pos2); // resets all EnPassant to false, except most recently moved piece  
+		bool isEnPassant(int pos1, int pos2, int move1, int move2);
+		void resetEnPassant(int pos1, int pos2);
 		
 	};
 

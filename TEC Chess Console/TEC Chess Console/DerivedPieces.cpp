@@ -41,7 +41,7 @@ namespace chess {
 	/* Precondition:	the potential validity of the move with respect to 
 						other pieces on the board has been evaluated and confirmed.
 						(ie pieces blocking the pawn vs pieces captured by the pawn)	*/
-	int* Pawn::validMove(int inCol, int inRow)
+	int* Pawn::validMove(int inCol, int inRow) const
 	{
 		int* path = nullptr;
 		ChessPiece::team_type team = getTeamType();
@@ -54,7 +54,7 @@ namespace chess {
 			if ((row == 6 && inRow == 4 && col == inCol) || (inRow == (row - 1) && col == inCol)) {
 				if (row == 6 && inRow == 4) {			// col == inCol implied
 					path = getPath(inCol, inRow);	// only need path if moved two spaces
-					setEnPassant(true);
+					// setEnPassant(true);
 				}
 			}
 			else if (row == inRow + 1 && abs(col - inCol) == 1) {	// diagonal capture, no path
@@ -70,7 +70,7 @@ namespace chess {
 			if ((row == 1 && inRow == 3 && col == inCol) || (inRow == row + 1 && col == inCol)) {
 				if (row == 1 && inRow == 3) {		//  col == inCol
 					path = getPath(inCol, inRow);	// only need path if moved two spaces
-					setEnPassant(true);
+					// setEnPassant(true);
 				}
 			}
 			else if (inRow == row + 1 && abs(col - inCol) == 1) {	// diagonal capture, no path
@@ -437,61 +437,6 @@ namespace chess {
 		return path;
 	}
 	
-	
-
-
-	//		Alternate to the above getPath(), uses helper function
-	/*	
-	int* Bishop::buildPath(signed int colSign, signed int rowSign, int inCol, int inRow) {
-
-		int* path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };	// function for this?
-
-		int nextRow = row + rowSign;
-		int nextCol = col + colSign;
-		int j = 0;
-		while (nextRow != inRow && nextCol != inCol) {
-			path[j * 2] = nextCol;
-			path[j * 2 + 1] = nextRow;
-			j++;
-			nextRow = nextRow + rowSign;
-			nextCol = nextCol + colSign;
-		}
-
-		return path;
-	}
-
-
-
-
-
-
-	int* Bishop::getPath(int inCol, int inRow) const
-	{
-		int* path = nullptr;
-
-		if (abs(inCol - col) == 1 && abs(inRow - row) == 1)	// moved by only 1 space
-			return path;
-		else {
-			
-			if (col > inCol && row < inRow) {
-				path = buildPath(-1, 1, inCol, inRow);
-			}
-			else if (col < inCol && row < inRow) {
-				path = buildPath(1, 1, inCol, inRow);
-			}
-			else if (col < inCol && row > inRow) {
-				path = buildPath(1, -1, inCol, inRow);
-			}
-			else if (col > inCol && row > inRow) {
-				path = buildPath(-1, -1, inCol, inRow);				
-			}
-		}
-
-		return path;
-	}
-	*/
-
-
 
 
 
