@@ -24,10 +24,12 @@ namespace jtest {
 		drawList();
 		void setRenderWindow(sf::RenderWindow &window);
 		void addShape(sf::Shape& shapeObj);
+		void addSprite(sf::Sprite& shapeObj);
 		void draw();
 
 	private:
 		vector<sf::Shape*> shapeObjPtrs = {};
+		vector<sf::Sprite*> spriteObjPtrs = {};
 		sf::RenderWindow* renderWindowPointer;
 		
 	};
