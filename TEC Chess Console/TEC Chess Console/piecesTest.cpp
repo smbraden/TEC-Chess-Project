@@ -81,13 +81,13 @@ int main() {
 
 
 	// Sprite object test
-	sf::Texture texture;
-	if (!texture.loadFromFile("Images/WhiteQueen.png"))
+	sf::Texture wqTex;
+	if (!wqTex.loadFromFile("Images/WhiteQueen.png"))
 	{
 		// error...
 	}
 	sf::Sprite sprite;
-	sprite.setTexture(texture);
+	sprite.setTexture(wqTex);
 
 	// Utilizing the drawList class so future shape draws are automated.
 	drawlist.setRenderWindow(window);
