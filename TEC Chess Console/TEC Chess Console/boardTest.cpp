@@ -41,16 +41,6 @@ int main() {
 	ChessBoard testBoard;
 	testBoard.printBoard();
 	cout << endl << endl;
-	
-	
-/*	// test pawn skipping
-	testMoveW(testBoard, 0, 1, 0, 3);
-	testMoveB(testBoard, 5, 6, 5, 4);
-	testMoveW(testBoard, 0, 3, 0, 4);
-	testMoveB(testBoard, 5, 4, 5, 3);
-	testMoveW(testBoard, 0, 4, 0, 5);
-	testMoveB(testBoard, 5, 3, 5, 2);
-*/
 
 	cout << "Welcome to the TEC Chess Test Console!" << endl;
 	cout << "To enter moves, use the format 'ColRow': a7, b3, etc"<< endl;

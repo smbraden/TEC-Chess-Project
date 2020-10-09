@@ -52,7 +52,7 @@ namespace chess {
 		//int* getPath(int inCol, int inRow) const;
 		int* getLateralPath(int inCol, int inRow) const;
 		int* getDiagonalPath(int inCol, int inRow) const;
-		//int* buildPath(signed int colSign, signed int rowSign, int inCol, int inRow); // getDiagonalPath() helper function
+		int* buildDiagonalPath(int colSign, int rowSign, int inCol, int inRow) const; // getDiagonalPath() helper function
 	};
 
 
@@ -69,8 +69,6 @@ namespace chess {
 		class RookMoveError {};
 		int* validMove(int inCol, int inRow) const;
 		
-		//friend class Queen;			// for Queen access to getPath()
-
 	private:
 
 		int* getPath(int inCol, int inRow) const;
@@ -109,9 +107,7 @@ namespace chess {
 		Bishop(int inCol, int inRow, team_type color);
 		class BishopMoveError {};
 		int* validMove(int inCol, int inRow) const;
-		
-		//friend class Queen;		// for Queen access to getPath()
-		
+				
 	private:
 
 		int* getPath(int inCol, int inRow) const;

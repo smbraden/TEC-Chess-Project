@@ -223,7 +223,7 @@ namespace chess {
 			path = getLateralPath(inCol, inRow);
 		}											// Rook and Bishop getPath()'s from Queen.
 		else if (bishopMove) {
-			path = getDiagonalPath(inCol, inRow);
+			path = getDiagonalPath(inCol, inRow); 
 		}
 		else {
 			throw PieceMoveError();
@@ -248,54 +248,36 @@ namespace chess {
 			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
 			int j = 0;
 
-			if (col == inCol) {	// same column
+			if (col == inCol) {		// same column
+				
+				int nextRow = 0;
+				if (row > inRow)
+					nextRow = inRow + 1;
+				else
+					nextRow = row + 1;
+				
+				while (nextRow != row) {
 
-				if (row > inRow) {
-
-					int nextRow = inRow + 1;
-					while (nextRow != row) {
-
-						path[2 * j] = inCol;
-						path[2 * j + 1] = nextRow;
-						nextRow++;
-						j++;
-					}
-				}
-				else {	// if row < inRow
-
-					int nextRow = row + 1;
-					while (nextRow != inRow) {
-
-						path[2 * j] = inCol;
-						path[2 * j + 1] = nextRow;
-						nextRow++;
-						j++;
-					}
+					path[2 * j] = inCol;
+					path[2 * j + 1] = nextRow;
+					nextRow++;
+					j++;
 				}
 			}
-			else if (row == inRow) {	// same column
+			else if (row == inRow) {	// same row
+				
+				int nextCol = 0;
+				if (col > inCol)
+					nextCol = inCol + 1;
+				else
+					nextCol = col + 1;
+					
+				while (nextCol != col) {
 
-				if (col > inCol) {
-
-					int nextCol = inCol + 1;
-					while (nextCol != col) {
-
-						path[2 * j + 1] = inRow;
-						path[2 * j] = nextCol;
-						nextCol++;
-						j++;
-					}
-				}
-				else {	// if col < inCol
-
-					int nextCol = col + 1;
-					while (nextCol != inCol) {
-
-						path[2 * j + 1] = inRow;
-						path[2 * j] = nextCol;
-						nextCol++;
-						j++;
-					}
+					path[2 * j + 1] = inRow;
+					path[2 * j] = nextCol;
+					nextCol++;
+					j++;
 				}
 			}
 		}
@@ -308,104 +290,13 @@ namespace chess {
 
 
 
-	int* Queen::getDiagonalPath(int inCol, int inRow) const
-	{
-		int* path = nullptr;
-		int col = getCol();
-		int row = getRow();
 
-		if (abs(inCol - col) == 1 && abs(inRow - row) == 1)	// moved by only 1 space
-			return nullptr;
-		else {
-			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };	// function for this?
-
-			if (row < inRow && col > inCol) {
-
-				/*	__ x2 __ __
-					__ __ __ __
-					__ __ __ x1
-					__ __ __ __		*/
-
-				int nextRow = row + 1;
-				int nextCol = col - 1;
-				int j = 0;
-				while (nextRow != inRow && nextCol != inCol) {
-					path[j * 2] = nextCol;
-					path[j * 2 + 1] = nextRow;
-					j++;
-					nextRow++;
-					nextCol--;
-				}
-			}
-			else if (row < inRow && col < inCol) {
-
-				/*	__ __ __ x2
-					__ __ __ __
-					__ x1 __ __
-					__ __ __ __		*/
-
-				int nextRow = row + 1;
-				int nextCol = col + 1;
-				int j = 0;
-				while (nextRow != inRow && nextCol != inCol) {
-					path[j * 2] = nextCol;
-					path[j * 2 + 1] = nextRow;
-					j++;
-					nextRow++;
-					nextCol++;
-				}
-			}
-			else if (row > inRow && col < inCol) {
-
-				/*	__ __ __ __
-					__ x1 __ __
-					__ __ __ __
-					__ __ __ x2		*/
-
-				int nextRow = row - 1;
-				int nextCol = col + 1;
-				int j = 0;
-				while (nextRow != inRow && nextCol != inCol) {
-					path[j * 2] = nextCol;
-					path[j * 2 + 1] = nextRow;
-					j++;
-					nextRow--;
-					nextCol++;
-				}
-			}
-			else if (row > inRow && col > inCol) {
-
-				/*	__ __ __ x1
-					__ __ __ __
-					__ x2 __ __
-					__ __ __ __		*/
-
-				int nextRow = row - 1;
-				int nextCol = col - 1;
-				int j = 0;
-				while (nextRow != inRow && nextCol != inCol) {
-					path[j * 2] = nextCol;
-					path[j * 2 + 1] = nextRow;
-					j++;
-					nextRow--;
-					nextCol--;
-				}
-			}
-		}
-
-		return path;
-	}
-
-
-
-
-
-
-	
-	/*
-	int* Queen::buildPath(signed int colSign, signed int rowSign, int inCol, int inRow) {
+	// (*)
+	int* Queen::buildDiagonalPath(int colSign, int rowSign, int inCol, int inRow) const {
 
 		int* path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
+		int col = getCol();
+		int row = getRow();
 
 		int nextRow = row + rowSign;
 		int nextCol = col + colSign;
@@ -425,32 +316,31 @@ namespace chess {
 
 
 
+
 	// Alternative to the above getDiagonalPath(), uses helper function
-	int* Queen::getPath(int inCol, int inRow) const
+	int* Queen::getDiagonalPath(int inCol, int inRow) const
 	{
 		int* path = nullptr;
+		int col = getCol();
+		int row = getRow();
 
 		if (abs(inCol - col) == 1 && abs(inRow - row) == 1)	// moved by only 1 space
 			return path;
 		else {
 
-			if (col > inCol && row < inRow) {
-				path = buildPath(-1, 1, inCol, inRow);
-			}
-			else if (col < inCol && row < inRow) {
-				path = buildPath(1, 1, inCol, inRow);
-			}
-			else if (col < inCol && row > inRow) {
-				path = buildPath(1, -1, inCol, inRow);
-			}
-			else if (col > inCol && row > inRow) {
-				path = buildPath(-1, -1, inCol, inRow);
-			}
+			if (col > inCol && row < inRow)
+				path = buildDiagonalPath(-1, 1, inCol, inRow);
+			else if (col < inCol && row < inRow)
+				path = buildDiagonalPath(1, 1, inCol, inRow);
+			else if (col < inCol && row > inRow)
+				path = buildDiagonalPath(1, -1, inCol, inRow);
+			else if (col > inCol && row > inRow)
+				path = buildDiagonalPath(-1, -1, inCol, inRow);
 		}
 
 		return path;
 	}
-	*/
+	
 
 
 
@@ -673,4 +563,92 @@ namespace chess {
 
 
 
+// (*)
+/*	int* Queen::getDiagonalPath(int inCol, int inRow) const
+	{
+		int* path = nullptr;
+		int col = getCol();
+		int row = getRow();
 
+		if (abs(inCol - col) == 1 && abs(inRow - row) == 1)	// moved by only 1 space
+			return nullptr;
+		else {
+			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };	// function for this?
+
+			if (row < inRow && col > inCol) {
+
+				//	__ x2 __ __
+				//	__ __ __ __
+				//	__ __ __ x1
+				//	__ __ __ __
+
+				int nextRow = row + 1;
+				int nextCol = col - 1;
+				int j = 0;
+				while (nextRow != inRow && nextCol != inCol) {
+					path[j * 2] = nextCol;
+					path[j * 2 + 1] = nextRow;
+					j++;
+					nextRow++;
+					nextCol--;
+				}
+			}
+			else if (row < inRow && col < inCol) {
+
+				//	__ __ __ x2
+				//	__ __ __ __
+				//	__ x1 __ __
+				//	__ __ __ __
+
+				int nextRow = row + 1;
+				int nextCol = col + 1;
+				int j = 0;
+				while (nextRow != inRow && nextCol != inCol) {
+					path[j * 2] = nextCol;
+					path[j * 2 + 1] = nextRow;
+					j++;
+					nextRow++;
+					nextCol++;
+				}
+			}
+			else if (row > inRow && col < inCol) {
+
+				//	__ __ __ __
+				//	__ x1 __ __
+				//	__ __ __ __
+				//	__ __ __ x2
+
+				int nextRow = row - 1;
+				int nextCol = col + 1;
+				int j = 0;
+				while (nextRow != inRow && nextCol != inCol) {
+					path[j * 2] = nextCol;
+					path[j * 2 + 1] = nextRow;
+					j++;
+					nextRow--;
+					nextCol++;
+				}
+			}
+			else if (row > inRow && col > inCol) {
+
+				//	__ __ __ x1
+				//	__ __ __ __
+				//	__ x2 __ __
+				//	__ __ __ __
+
+				int nextRow = row - 1;
+				int nextCol = col - 1;
+				int j = 0;
+				while (nextRow != inRow && nextCol != inCol) {
+					path[j * 2] = nextCol;
+					path[j * 2 + 1] = nextRow;
+					j++;
+					nextRow--;
+					nextCol--;
+				}
+			}
+		}
+
+		return path;
+	}
+	*/
