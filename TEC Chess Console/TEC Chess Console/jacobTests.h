@@ -3,7 +3,7 @@
 	Contributor:        Jacob Halaweh
 	Date:               9/26/2020
 	Reference:
-	Description:		Tests run on grapgical integration. Placed in seperate file to be modular.
+	Description:		Tests run on graphical integration. Placed in seperate file to be modular.
 //-------------------------------------------------------------------------------------/*/
 
 #ifndef JACOBTESTS_H

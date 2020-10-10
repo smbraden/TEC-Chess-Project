@@ -88,6 +88,10 @@ int main() {
 	}
 	sf::Sprite sprite;
 	sprite.setTexture(wqTex);
+	sf::Vector2f wqpos;
+	wqpos.x = 500;
+	wqpos.y = 300;
+	sprite.setPosition(wqpos);
 
 	// Utilizing the drawList class so future shape draws are automated.
 	drawlist.setRenderWindow(window);
@@ -96,7 +100,7 @@ int main() {
 	drawlist.addShape(shape3);
 	drawlist.addSprite(sprite);
 
-	// Graphics while loop begins.           <----------------- Normal terminal stuff wont work past here because graphics ae running. Game must be contained in this While-Loop!
+	// Graphics while loop begins.           <----------------- Normal terminal stuff wont work past here because graphics is running. Game must be contained in this While-Loop!
 	while (window.isOpen())
 	{
 		sf::Event event;
