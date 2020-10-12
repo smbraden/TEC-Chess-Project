@@ -190,8 +190,8 @@ namespace chess {
 					nextCol = inCol + 1;
 					while (nextCol != col) {
 
-						path[2 * j] = col;
-						path[2 * j + 1] = nextCol;
+						path[2 * j] = nextCol;
+						path[2 * j + 1] = row;
 						nextCol++;					
 						j++;
 					}
@@ -201,8 +201,8 @@ namespace chess {
 					nextCol = col + 1;
 					while (nextCol != inCol) {
 
-						path[2 * j] = col;
-						path[2 * j + 1] = nextCol;
+						path[2 * j] = nextCol;
+						path[2 * j + 1] = row;
 						nextCol++;					
 						j++;
 					}
