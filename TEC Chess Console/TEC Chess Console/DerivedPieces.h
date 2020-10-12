@@ -32,6 +32,26 @@ namespace chess {
 		int* getPath(int inCol, int inRow) const;
 		
 	};
+	
+	
+	
+	
+	
+	
+	class Knight : public ChessPiece {
+
+	public:
+
+		Knight();
+		Knight(int inCol, int inRow, team_type color);
+		class KnightMoveError {};
+		int* validMove(int inCol, int inRow) const;
+
+	private:
+
+		int* getPath(int inCol, int inRow) const;
+
+	};
 
 
 
@@ -49,52 +69,9 @@ namespace chess {
 
 	protected:	// for Rook and Bishop access to these getPath()'s
 
-		//int* getPath(int inCol, int inRow) const;
 		int* getLateralPath(int inCol, int inRow) const;
 		int* getDiagonalPath(int inCol, int inRow) const;
-		//int* buildPath(signed int colSign, signed int rowSign, int inCol, int inRow); // getDiagonalPath() helper function
-	};
-
-
-
-
-
-
-	class Rook : public Queen {
-
-	public:
-
-		Rook();
-		Rook(int inCol, int inRow, team_type color);
-		class RookMoveError {};
-		int* validMove(int inCol, int inRow) const;
-		
-		//friend class Queen;			// for Queen access to getPath()
-
-	private:
-
-		int* getPath(int inCol, int inRow) const;
-		
-	};
-
-
-
-
-
-
-	class Knight : public ChessPiece {
-
-	public:
-
-		Knight();
-		Knight(int inCol, int inRow, team_type color);
-		class KnightMoveError {};
-		int* validMove(int inCol, int inRow) const;
-		
-	private:
-
-		int* getPath(int inCol, int inRow) const;
-		
+		int* buildPath(signed int colSign, signed int rowSign, int inCol, int inRow) const; // getDiagonalPath() helper function
 	};
 
 
@@ -110,12 +87,30 @@ namespace chess {
 		class BishopMoveError {};
 		int* validMove(int inCol, int inRow) const;
 		
-		//friend class Queen;		// for Queen access to getPath()
-		
 	private:
 
 		int* getPath(int inCol, int inRow) const;
 		
+	};
+
+
+
+
+
+
+	class Rook : public Queen {
+
+	public:
+
+		Rook();
+		Rook(int inCol, int inRow, team_type color);
+		class RookMoveError {};
+		int* validMove(int inCol, int inRow) const;
+
+	private:
+
+		int* getPath(int inCol, int inRow) const;
+
 	};
 
 

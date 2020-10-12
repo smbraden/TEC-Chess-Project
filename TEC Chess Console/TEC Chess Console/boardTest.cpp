@@ -1,4 +1,4 @@
-/*/-------------------------------------------------------------------------------------//
+ /*/-------------------------------------------------------------------------------------//
 	Filename:           boardTest.cpp
 	Contributor:        Sonja Braden
 	Date:               10/4/2020
@@ -35,22 +35,12 @@ int main() {
 	char x1 = 'a';
 	int y1 = 1;
 	char x2 = 'a';
-	int y2 = 1;
+	int y2 = 1; 
 	char option = 'c';
 
 	ChessBoard testBoard;
 	testBoard.printBoard();
 	cout << endl << endl;
-	
-	
-/*	// test pawn skipping
-	testMoveW(testBoard, 0, 1, 0, 3);
-	testMoveB(testBoard, 5, 6, 5, 4);
-	testMoveW(testBoard, 0, 3, 0, 4);
-	testMoveB(testBoard, 5, 4, 5, 3);
-	testMoveW(testBoard, 0, 4, 0, 5);
-	testMoveB(testBoard, 5, 3, 5, 2);
-*/
 
 	cout << "Welcome to the TEC Chess Test Console!" << endl;
 	cout << "To enter moves, use the format 'ColRow': a7, b3, etc"<< endl;

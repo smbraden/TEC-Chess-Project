@@ -19,6 +19,7 @@ namespace chess {
     
     ChessBoard::ChessBoard()
     {
+
         // initialize a "blank" grid
         for (int i = 0; i < BOARD_SIZE; i++)
             for (int j = 0; j < BOARD_SIZE; j++)
@@ -168,6 +169,16 @@ namespace chess {
         std::cout << endl;
     }
 
+    bool ChessBoard::blackCheck()
+    {
+        return false;
+    }
+
+    bool ChessBoard::whiteCheck()
+    {
+        return false;
+    }
+
 
 
 
@@ -262,13 +273,14 @@ namespace chess {
             try {
                 // Pawn moves require extra information from the board
                 if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {
-                    int* path = validPawnMove(pos1, pos2, move1, move2);    // might throw piece or ilegal move error
-                    evaluatePath(path);
-                    removeEnPassant(pos1, pos2, move1, move2);  // removes the captured piece if enPassant move
+                    evaluatePath(validPawnMove(pos1, pos2, move1, move2));  // might throw piece or ilegal move error
+                    removeEnPassant(pos1, pos2, move1, move2);              // if enPassant move, removes the captured piece
+                    //pawnPromote(move1, move2);                            // if 8th rank move, promote pawn routine 
                 }
-                else {  // For all the other pieces    
-                    int* path = grid[pos1][pos2]->validMove(move1, move2);    // might throw a piece move error
-                    evaluatePath(path);                                       // might throw an ilegal move error
+                else {  // For all the other pieces
+                    evaluatePath(grid[pos1][pos2]->validMove(move1, move2));// might throw piece or ilegal move error
+                    if (getPiece(pos1, pos2) == ChessPiece::piece_type::king) { // if King, set the members
+                    }
                 }
             }
             catch (ChessPiece::PieceMoveError e) {
@@ -281,7 +293,6 @@ namespace chess {
             resetEnPassant(pos1, pos2); // resets all EnPassant to false, except the moving piece            
             
             // SelfCapture error block ensures that getTeam(move1, move2) != getTeam(pos1, pos2)
-            
             if (isPiece(move1, move2))
                 remove(move1, move2);
             grid[move1][move2] = grid[pos1][pos2];          // map the object with the destination coordinate
@@ -384,7 +395,7 @@ namespace chess {
 
 
 
-    int* ChessBoard::validPawnMove(int pos1, int pos2, int move1, int move2)
+    int* ChessBoard::validPawnMove(int pos1, int pos2, int move1, int move2) const
     {
 
         assert(getPiece(pos1, pos2) == ChessPiece::piece_type::pawn);   // terminate if not pawn
@@ -415,7 +426,7 @@ namespace chess {
 
 
     // Purpose:     Helper function to pawnMove()
-    bool ChessBoard::isCapture(int pos1, int pos2, int move1, int move2)
+    bool ChessBoard::isCapture(int pos1, int pos2, int move1, int move2) const
     {
         /* if opponent occupies destination */
         if (isPiece(move1, move2) && getTeam(move1, move2) != getTeam(pos1, pos2)) { 
@@ -440,7 +451,7 @@ namespace chess {
 
 
     // Purpose:     Helper function to pawnMove()
-    bool ChessBoard::simpleAdvance(int pos1, int pos2, int move1, int move2)
+    bool ChessBoard::simpleAdvance(int pos1, int pos2, int move1, int move2) const
     {
         if (!isPiece(move1, move2) && pos1 == move1)    // destination is empty square, 
             return true;                                // and same column as current position
@@ -454,7 +465,7 @@ namespace chess {
 
     // Purpose:         Checks for a valid En assant move
     // Precondition:    The move  and current position are in bounds
-    bool ChessBoard::isEnPassant(int pos1, int pos2, int move1, int move2)
+    bool ChessBoard::isEnPassant(int pos1, int pos2, int move1, int move2) const
     {
         assert(move1 < BOARD_SIZE&& move2 < BOARD_SIZE&& pos1 < BOARD_SIZE&& pos2 < BOARD_SIZE&&
             move1 >= 0 && move2 >= 0 && pos1 >= 0 && pos2 >= 0);
@@ -485,6 +496,16 @@ namespace chess {
 
 
 
+
+    bool ChessBoard::pawnPromote(int move1, int move2)
+    {
+        return false;
+    }
+
+
+
+
+
     
     // Purpose:         Resets all enPassant to false, except the moving piece, if Pawn
     // Precondition:    The move  and current position are in bounds
@@ -504,6 +525,21 @@ namespace chess {
             ((Pawn*)grid[pos1][pos2])->setEnPassant(true);
         }
     }
+
+
+
+
+
+
+    bool ChessBoard::isCheck(ChessPiece::team_type, int pos1, int pos2) const
+    {
+        // if (position would place a king in check)
+            //return true;
+
+        return false;
+    }
+
+
 
 
 }  // closes namespace
