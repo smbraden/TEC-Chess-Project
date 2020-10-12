@@ -1,0 +1,65 @@
+Some tasks to be completed in finishing up the ChessBoard class
+
+//--------------------------------------------------------------------------//
+
+Implement the following rules and condition checks:
+
+
+-Castling
+Castling consists of moving the king two squares towards a rook 
+on the player's first rank, then moving the rook to the square 
+over which the king crossed. Castling may only be done if the king 
+has never moved, the rook involved has never moved, 
+the squares between the king and the rook involved are unoccupied, 
+the king is not in check, and the king does not cross over 
+or end on a square attacked by an enemy piece.
+
+-Pawn promotion
+Promotion in chess is a rule that requires a pawn that reaches 
+the eighth rank to be replaced by the player's choice of a 
+bishop, knight, rook, or queen of the same color.
+The new piece replaces the pawn on the same move. 
+The player cannot convert the pawn to another king nor another pawn. 
+The choice of the new piece is not limited to pieces previously captured, 
+thus promotion can result in a player owning, for example, 
+two or more queens despite starting the game with one.
+
+-Check and checkmate (and Stalemate?)
+
+-Three-fold repetition
+This rule states that if the same position is repeated three times 
+and no progress is made, you can claim a draw. 
+Two positions are by definition "the same" if the same types of pieces 
+occupy the same squares, the same player has the move, the remaining 
+castling rights are the same and the possibility to capture 
+en passant is the same. The repeated positions need not occur in succession. 
+
+DONE:
+
+-Pawn capture via diagonals and prohibit false Pawn "captures" via row moves
+implement via ChessBoard; need board information
+
+-En Passant (aka, "why are pawns so needy?")
+En passant itself can only occur in a game when a player exercises 
+his option to move his pawn two squares on its initial movement and 
+that move places his pawn next to the opponent’s pawn.
+When this happens, the opposing player has the option to use his pawn 
+to take the moved pawn “en passant” or “in passing” as if the pawn had 
+only moved one square.
+
+
+
+
+
+
+
+//--------------------------------------------------------------------------//
+
+Derive a Grandmaster board class?
+
+- 50 move rule
+The rule states that you can claim a draw if there has been no capture 
+and if no pawn has been moved in the previous 50 moves.
+
+-etc
+-etc

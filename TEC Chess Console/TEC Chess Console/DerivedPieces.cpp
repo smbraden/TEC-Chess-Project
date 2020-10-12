@@ -1,14 +1,14 @@
 /*/-------------------------------------------------------------------------------------//
 	Filename:           DerivedPieces.cpp
 	Contributors:       Sonja Braden
-	Date:               9/21/2020
+	Date:               10/4/2020
 	Reference:
-	Description:
+	Description:		Implementation of all the derived ChessPieces
 //-------------------------------------------------------------------------------------/*/
 
 
 #include "DerivedPieces.h"
-#include <stdlib.h>			// for abs()
+
 
 
 namespace chess {
@@ -16,32 +16,49 @@ namespace chess {
 
 	//------------------------------Pawn-----------------------------------//
 
-	Pawn::Pawn(int inCol, int inRow, team_type color)
+	Pawn::Pawn() : ChessPiece()
 	{
-		col = inCol;
-		row = inRow;
-		piece = pawn;
-		team = color;
+		enPassant = false;
+		setPieceType(piece_type::pawn);
 	}
 
 
-	// In progress: How to handle captures by Pawns?
-	// Only piece whose range of motion depends on capture vs non-capture moves
 
-	// for now, this only accounts for forward moves by Pawns, not diagonal attackes
-	int* Pawn::setPosition(int inCol, int inRow)
+
+
+
+	Pawn::Pawn(int inCol, int inRow, team_type color, bool passVal) : ChessPiece(inCol, inRow, color)
+	{
+		enPassant = passVal;
+		setPieceType(piece_type::pawn);
+	}
+
+
+
+
+
+
+	/* Precondition:	the potential validity of the move with respect to 
+						other pieces on the board has been evaluated and confirmed.
+						(ie pieces blocking the pawn vs pieces captured by the pawn)	*/
+	int* Pawn::validMove(int inCol, int inRow) const
 	{
 		int* path = nullptr;
-
-		if (team == black) {
+		ChessPiece::team_type team = getTeamType();
+		int col = getCol();
+		int row = getRow();
+		
+		if (team == team_type::black) {
 
 			// if starting row and move two rows forward, or otherwise move only one row forward 
-			if ((row == 5 && inRow == 3 && col == inCol) || (inRow == (row - 1) && col == inCol)) {
-				
-				path = getPath(inCol, inRow);
-				
-				col = inCol;
-				row = inRow;
+			if ((row == 6 && inRow == 4 && col == inCol) || (inRow == (row - 1) && col == inCol)) {
+				if (row == 6 && inRow == 4) {			// col == inCol implied
+					path = getPath(inCol, inRow);	// only need path if moved two spaces
+					// setEnPassant(true);
+				}
+			}
+			else if (row == inRow + 1 && abs(col - inCol) == 1) {	// diagonal capture, no path
+
 			}
 			else {
 				throw PieceMoveError();
@@ -51,179 +68,66 @@ namespace chess {
 
 			// if starting row and move two rows forward, or otherwise move only one row forward 
 			if ((row == 1 && inRow == 3 && col == inCol) || (inRow == row + 1 && col == inCol)) {
-				
-				path = getPath(inCol, inRow);
-				
-				col = inCol;
-				row = inRow;
+				if (row == 1 && inRow == 3) {		//  col == inCol
+					path = getPath(inCol, inRow);	// only need path if moved two spaces
+					// setEnPassant(true);
+				}
+			}
+			else if (inRow == row + 1 && abs(col - inCol) == 1) {	// diagonal capture, no path
+
 			}
 			else {
 				throw PieceMoveError();
-			} // (*)
+			} 
 		}
 
-		return path;
+		return path; // could be condensed, but with lengthy, less-readable condition statements
 	}
 
 
 
-	// for now, this only accounts for forward moves by Pawns, not diagonal attacks
-	int* Pawn::getPath(int inCol, int inRow)
+
+
+
+	
+	bool Pawn::getEnPassant() const
+	{
+		return enPassant;
+	}
+
+
+
+
+
+
+	void Pawn::setEnPassant(bool arg)
+	{
+		enPassant = arg;
+	}
+	
+
+
+
+
+
+	// Precondition:	the move was a 2-space advance from the initial row
+	int* Pawn::getPath(int inCol, int inRow) const
 	{
 		int* path = nullptr;
-		int j = 0;
-		
-		if (abs(inRow - row) == 1) {
+		int row = getRow();
+		ChessPiece::team_type team = getTeamType();
 
-			path = new int[MAX_PATH * 2];		// room for 6 coordinates 
-												// path[n * 2]  = {c1, r1, c2, r2, c3, r3...cn, rn} 
-			if (team == black) {
+		if (abs(inRow - getRow()) == 2) {
 
-				path[0] = inCol;
-				path[1] = inRow + 1;			// (*) add 1 to the destination row for black pawns 
-			}
-			else { //  if (team == white)
-
-				path[0] = inCol;
-				path[1] = row + 1;			// (*) add 1 to the current row for white pawns 
-				
-			}
-
-			for (int i = 2; i < (2 * MAX_PATH); i++) {
-				path[i] = -1;				// using -1 to signal end of path information
-			}								// analogous to null ternimator on a cstring
+			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
+			path[0] = inCol;
+			path[1] = (team == team_type::black ? inRow + 1 : row + 1);
+			
 		}
-		
 		return path;	// path is nullptr if no spaces between position and destination
 	}
 	
 	
-	/* 
-		(*) NOTE:  We can use -1 as the "null termiator" without potentially niche 
-					negative cooridates complications. We use only adding, and not subtraction, 
-					relative to either current position, or destination, as necessary.
-					However, the execption hierarchy in ChessBoard::move() should also prevent 
-					these conditions by disallowing out of bounds moves. 
-	*/
-
-
-
-
-
-
-	//------------------------------Castle-----------------------------------//
-	
-	Castle::Castle(int inCol, int inRow, team_type color)
-	{
-		col = inCol;
-		row = inRow;
-		piece = castle;
-		team = color;
-	}
-
-
-
-	int* Castle::setPosition(int inCol, int inRow)
-	{
-		int* path = nullptr;
-
-		// if moving only along columns or rows
-		if ((row == inRow) || (col == inCol)) {
-			
-			path = getPath(inCol, inRow);
-
-			col = inCol;
-			row = inRow;
-		}
-		else {
-			throw PieceMoveError();
-		}
-
-		return path;
-	}
-
-
-	// **** Refactoring NOTE: This can be condensed with a helper function
-	int* Castle::getPath(int inCol, int inRow)
-	{
-		int* path = nullptr; 
-
-		// path[n * 2]  = {c1, r1, c2, r2, c3, r3...cn, rn} 
-		if (abs(inCol - col) > 0 || abs(inRow - row) > 0) {	// if squares traversed
-
-			path = new int[2 * MAX_PATH];
-			int j = 0;
-			
-			if (col == inCol) {
-
-				int nextRow = 0;
-
-				if (row > inRow) {
-
-					nextRow = inRow + 1;
-					while (nextRow != row) {
-
-						path[2 * j] = col;
-						path[2 * j + 1] = nextRow;
-						nextRow++;					
-						j++;
-					}
-				}
-				else {	// if row < inRow
-
-					nextRow = row + 1;
-					while (nextRow != inRow) {
-
-						path[2 * j] = col;
-						path[2 * j + 1] = nextRow;
-						nextRow++;					
-						j++;
-					}
-				}
-			}
-			else if (row == inRow) {
-
-				int nextCol = 0;
-
-				if (col > inCol) {
-
-					nextCol = inCol + 1;
-					while (nextCol != col) {
-
-						path[2 * j] = nextCol;
-						path[2 * j + 1] = row;
-						nextCol++;					
-						j++;
-					}
-				}
-				else {	// if col < inCol
-
-					nextCol = col + 1;
-					while (nextCol != inCol) {
-
-						path[2 * j] = nextCol;
-						path[2 * j + 1] = row;
-						nextCol++;					
-						j++;
-					}
-				}
-			}
-
-			// fill the rest of the spaces with -1, "null terminator"
-			do {
-
-				j++;
-				path[2 * j] = -1;
-				path[2 * j + 1] = -1;
-
-			} while (j < MAX_PATH);
-
-
-		}
-		
-		return path;
-	}
-
 
 
 
@@ -231,43 +135,48 @@ namespace chess {
 
 	//------------------------------Knight-----------------------------------//
 
-	Knight::Knight(int inCol, int inRow, team_type color)
+	Knight::Knight() : ChessPiece()
 	{
-		col = inCol;
-		row = inRow;
-		piece = knight;
-		team = color;
+		setPieceType(piece_type::knight);
 	}
 
 
 
-	// Although the return "path" for Knights is irrelevant,
-	// the rules of inheitance dictate that the return type is the 
-	// same as that of the base class for overriden virtual functions.
-	// Thus, we will simply return nullptr for all Kight moves, correct or incorrect
-	int* Knight::setPosition(int inCol, int inRow)
+
+
+
+	Knight::Knight(int inCol, int inRow, team_type color) : ChessPiece(inCol, inRow, color)
 	{
+		setPieceType(piece_type::knight);
+	}
+
+
+
+
+
+
+	// Return:		nullptr by default for all Kight moves b/c their path is irrelevant
+	int* Knight::validMove(int inCol, int inRow) const
+	{
+		int col = getCol();
+		int row = getRow();
+
 		bool cond1 = abs(col - inCol) == 2 && abs(row - inRow) == 1; // (1, 0) ---> (0, 2)
 		bool cond2 = abs(row - inRow) == 2 && abs(col - inCol) == 1;
 
-		if (cond1 || cond2) {
-			
-			col = inCol;
-			row = inRow;
-		}
-		else {
+		if (!(cond1 || cond2)) {	// neither satisfied
 			throw PieceMoveError();
 		}
 		
-		col = inCol;
-		row = inRow;
-
 		return nullptr;
 	}
 
 
 
-	int* Knight::getPath(int inCol, int inRow)
+
+
+
+	int* Knight::getPath(int inCol, int inRow) const
 	{
 		return nullptr;	// no path for knights, they can leap
 	}
@@ -277,77 +186,44 @@ namespace chess {
 
 
 
-	//------------------------------Rook-----------------------------------//
-
-	Rook::Rook(int inCol, int inRow, team_type color)
-	{
-		col = inCol;
-		row = inRow;
-		piece = rook;
-		team = color;
-	}
-
-
-
-	int* Rook::setPosition(int inCol, int inRow)
-	{
-		int* path = nullptr;
-
-		if ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow)) {
-			
-			path = getPath(inCol, inRow);
-			
-			col = inCol;
-			row = inRow;
-		}
-		else {
-			throw PieceMoveError();
-		}
-
-		return path;
-	}
-
-
-
-	int* Rook::getPath(int inCol, int inRow)
-	{
-		int* path = nullptr;
-		
-
-
-		return path;
-	}
-
-
-
-
-
-
+	
 	//------------------------------Queen-----------------------------------//
 
-	Queen::Queen(int inCol, int inRow, team_type color)
+	Queen::Queen() : ChessPiece()
 	{
-		col = inCol;
-		row = inRow;
-		piece = queen;
-		team = color;
+		setPieceType(piece_type::queen);
 	}
 
 
 
-	int* Queen::setPosition(int inCol, int inRow)
-	{
-		int* path = nullptr;
 
-		bool castleMove = ((row == inRow) || (col == inCol));
-		bool rookMove = ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow));
+
+
+	Queen::Queen(int inCol, int inRow, team_type color) : ChessPiece(inCol, inRow, color)
+	{
+		setPieceType(piece_type::queen);
+	}
+
+
+
+
+
+
+	int* Queen::validMove(int inCol, int inRow) const
+	{
+		static int* path = nullptr;
+		int row = getRow();
+		int col = getCol();
+		ChessPiece::team_type team = getTeamType();
+
+		bool rookMove = ((row == inRow) || (col == inCol));
+		bool bishopMove = ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow));
 		
-		if (castleMove || rookMove) {
-			
-			path = getPath(inCol, inRow);
-			
-			col = inCol;
-			row = inRow;
+		if (rookMove) {
+			path = getLateralPath(inCol, inRow);
+		}											// Rook and Bishop getPath()'s from Queen.
+		else if (bishopMove) {
+			path = getDiagonalPath(inCol, inRow);
 		}
 		else {
 			throw PieceMoveError();
@@ -358,17 +234,328 @@ namespace chess {
 
 
 
-	int* Queen::getPath(int inCol, int inRow)
+
+
+
+	int* Queen::getLateralPath(int inCol, int inRow) const
 	{
-		int* path = new int[2 * MAX_PATH];
+		int* path = nullptr;
+		int col = getCol();
+		int row = getRow();
 
-		// path[n * 2]  = {c1, r1, c2, r2, c3, r3...cn, rn} 
+		if (abs(inCol - col) > 1 || abs(inRow - row) > 1) {	// if more than 1 squares traversed
 
-		// get the path
+			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
+			int j = 0;
+
+			if (col == inCol) {	// same column
+
+				if (row > inRow) {
+
+					int nextRow = inRow + 1;
+					while (nextRow != row) {
+
+						path[2 * j] = inCol;
+						path[2 * j + 1] = nextRow;
+						nextRow++;
+						j++;
+					}
+				}
+				else {	// if row < inRow
+
+					int nextRow = row + 1;
+					while (nextRow != inRow) {
+
+						path[2 * j] = inCol;
+						path[2 * j + 1] = nextRow;
+						nextRow++;
+						j++;
+					}
+				}
+			}
+			else if (row == inRow) {	// same column
+
+				if (col > inCol) {
+
+					int nextCol = inCol + 1;
+					while (nextCol != col) {
+
+						path[2 * j + 1] = inRow;
+						path[2 * j] = nextCol;
+						nextCol++;
+						j++;
+					}
+				}
+				else {	// if col < inCol
+
+					int nextCol = col + 1;
+					while (nextCol != inCol) {
+
+						path[2 * j + 1] = inRow;
+						path[2 * j] = nextCol;
+						nextCol++;
+						j++;
+					}
+				}
+			}
+		}
 
 		return path;
 	}
 
+
+
+
+
+
+	int* Queen::getDiagonalPath(int inCol, int inRow) const
+	{
+		int* path = nullptr;
+		int col = getCol();
+		int row = getRow();
+
+		if (abs(inCol - col) == 1 && abs(inRow - row) == 1)	// moved by only 1 space
+			return nullptr;
+		else {
+			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };	// function for this?
+
+			if (row < inRow && col > inCol) {
+
+				/*	__ x2 __ __
+					__ __ __ __
+					__ __ __ x1
+					__ __ __ __		*/
+
+				int nextRow = row + 1;
+				int nextCol = col - 1;
+				int j = 0;
+				while (nextRow != inRow && nextCol != inCol) {
+					path[j * 2] = nextCol;
+					path[j * 2 + 1] = nextRow;
+					j++;
+					nextRow++;
+					nextCol--;
+				}
+			}
+			else if (row < inRow && col < inCol) {
+
+				/*	__ __ __ x2
+					__ __ __ __
+					__ x1 __ __
+					__ __ __ __		*/
+
+				int nextRow = row + 1;
+				int nextCol = col + 1;
+				int j = 0;
+				while (nextRow != inRow && nextCol != inCol) {
+					path[j * 2] = nextCol;
+					path[j * 2 + 1] = nextRow;
+					j++;
+					nextRow++;
+					nextCol++;
+				}
+			}
+			else if (row > inRow && col < inCol) {
+
+				/*	__ __ __ __
+					__ x1 __ __
+					__ __ __ __
+					__ __ __ x2		*/
+
+				int nextRow = row - 1;
+				int nextCol = col + 1;
+				int j = 0;
+				while (nextRow != inRow && nextCol != inCol) {
+					path[j * 2] = nextCol;
+					path[j * 2 + 1] = nextRow;
+					j++;
+					nextRow--;
+					nextCol++;
+				}
+			}
+			else if (row > inRow && col > inCol) {
+
+				/*	__ __ __ x1
+					__ __ __ __
+					__ x2 __ __
+					__ __ __ __		*/
+
+				int nextRow = row - 1;
+				int nextCol = col - 1;
+				int j = 0;
+				while (nextRow != inRow && nextCol != inCol) {
+					path[j * 2] = nextCol;
+					path[j * 2 + 1] = nextRow;
+					j++;
+					nextRow--;
+					nextCol--;
+				}
+			}
+		}
+
+		return path;
+	}
+
+
+
+
+
+
+	
+	/*
+	int* Queen::buildPath(signed int colSign, signed int rowSign, int inCol, int inRow) {
+
+		int* path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
+
+		int nextRow = row + rowSign;
+		int nextCol = col + colSign;
+		int j = 0;
+		while (nextRow != inRow && nextCol != inCol) {
+			path[j * 2] = nextCol;
+			path[j * 2 + 1] = nextRow;
+			j++;
+			nextRow = nextRow + rowSign;
+			nextCol = nextCol + colSign;
+		}
+
+		return path;
+	}
+
+
+
+
+
+	// Alternative to the above getDiagonalPath(), uses helper function
+	int* Queen::getPath(int inCol, int inRow) const
+	{
+		int* path = nullptr;
+
+		if (abs(inCol - col) == 1 && abs(inRow - row) == 1)	// moved by only 1 space
+			return path;
+		else {
+
+			if (col > inCol && row < inRow) {
+				path = buildPath(-1, 1, inCol, inRow);
+			}
+			else if (col < inCol && row < inRow) {
+				path = buildPath(1, 1, inCol, inRow);
+			}
+			else if (col < inCol && row > inRow) {
+				path = buildPath(1, -1, inCol, inRow);
+			}
+			else if (col > inCol && row > inRow) {
+				path = buildPath(-1, -1, inCol, inRow);
+			}
+		}
+
+		return path;
+	}
+	*/
+
+
+
+	
+
+
+	//------------------------------Rook-----------------------------------//
+
+	Rook::Rook() : Queen()
+	{
+		setPieceType(piece_type::rook);
+	}
+
+
+
+
+
+
+	Rook::Rook(int inCol, int inRow, team_type color) : Queen(inCol, inRow, color)
+	{
+		setPieceType(piece_type::rook);
+	}
+
+
+
+
+
+
+	int* Rook::validMove(int inCol, int inRow) const
+	{
+		int* path = nullptr;
+		int col = getCol();
+		int row = getRow();
+
+
+		if ((row == inRow) || (col == inCol)) // if moving only along columns or rows
+			path = getPath(inCol, inRow);
+		else
+			throw PieceMoveError();
+
+		return path;
+	}
+
+
+
+
+
+
+	int* Rook::getPath(int inCol, int inRow) const
+	{
+		return getLateralPath(inCol, inRow);
+	}
+
+
+
+
+
+
+	//------------------------------Bishop-----------------------------------//
+
+	Bishop::Bishop() : Queen()
+	{
+		setPieceType(piece_type::bishop);
+	}
+
+
+
+
+
+
+	Bishop::Bishop(int inCol, int inRow, team_type color) : Queen(inCol, inRow, color)
+	{
+		setPieceType(piece_type::bishop);
+	}
+
+
+
+
+
+
+	int* Bishop::validMove(int inCol, int inRow) const
+	{
+		int* path = nullptr;
+		int col = getCol();
+		int row = getRow();
+
+		if ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow)) {
+			path = getPath(inCol, inRow);
+		}
+		else {
+			throw PieceMoveError();
+		}
+
+		return path;
+	}
+
+
+
+
+
+
+	int* Bishop::getPath(int inCol, int inRow) const
+	{
+		return getDiagonalPath(inCol, inRow);
+	}
 
 
 
@@ -376,25 +563,43 @@ namespace chess {
 
 	//------------------------------King-----------------------------------//
 
+	King::King()
+	{
+		setPieceType(piece_type::king);
+		castle = false;
+		check = false;
+		checkMate = false;
+	}
+
+
+
+
+
+
 	King::King(int inCol, int inRow, team_type color)
 	{
-		col = inCol;
-		row = inRow;
-		piece = king;
-		team = color;
+		setPieceType(piece_type::king);
+		castle = false;
+		check = false;
+		checkMate = false;
 	}
+
+
+
+
 
 
 	// Like the Knight, the "path" for King is irrelevant,
 	// as he only moves space by space. Path only concern space between the position 
 	// and destination. Nullptr will be returned by default
 
-	int* King::setPosition(int inCol, int inRow)
+	int* King::validMove(int inCol, int inRow) const
 	{
+		int row = getRow();
+		int col = getCol();
+
 		if ((inRow <= row + 1) && (inRow >= row - 1) && (inCol <= col + 1) && (inCol >= col - 1)) {
 			
-			col = inCol;
-			row = inRow;
 		}
 		else {
 			throw PieceMoveError();
@@ -405,59 +610,67 @@ namespace chess {
 
 
 
-	int* King::getPath(int inCol, int inRow)
+
+
+
+	bool King::getCastleStatus()
+	{
+		return castle;
+	}
+
+	void King::setCastleStatus(bool arg)
+	{
+		castle = arg;
+	}
+
+
+
+
+
+
+
+
+	bool King::getCheckStatus()
+	{
+		return check;
+	}
+
+	void King::setCheckStatus(bool arg)
+	{
+		check = arg;
+	}
+
+
+
+
+
+
+	bool King::getMateStatus()
+	{
+		return checkMate;
+	}
+
+	void King::setMateStatus(bool arg)
+	{
+		checkMate = arg;
+	}
+
+
+
+
+
+
+	int* King::getPath(int inCol, int inRow) const
 	{
 		return nullptr;	// no path for Kings, they only move by 1 space at a time
 	}
+
+
+
+
 
 }	// closes namespace
 
 
 
 
-	/*
-
-			int* path = nullptr;
-		int j = 0;
-
-		if (team == black) {
-
-			int nextRow = row - 1;			// subtract 1 for black pawns
-
-			while (nextRow != inRow) {
-
-				path[2 * j] = col;
-				path[2 * j + 1] = nextRow;
-				nextRow--;					// subtract 1 for black pawns
-
-				j++;
-			}
-		}
-		else { //  if (team == white)
-
-			int nextRow = row + 1;			// add 1 for white pawns
-
-			while (nextRow != inRow) {
-
-				path[2 * j] = col;
-				path[2 * j + 1] = nextRow;
-				nextRow++;					// add 1 for white pawns
-
-				j++;
-			}
-		}
-
-		do {
-
-			j++;
-			path[2 * j] = -1;				// using -1 to signal end of
-			path[2 * j + 1] = -1;			// path could be problematic
-											// since an incorrect "out of bounds"
-		} while (j < MAX_PATH);				// move from black could result in -1,
-											// and bounds are checked by ChessBoard,
-											// not ChessPiece at this time
-
-		return path;
-
-
-	*/

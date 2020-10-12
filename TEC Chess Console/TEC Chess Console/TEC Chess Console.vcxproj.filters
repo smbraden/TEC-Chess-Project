@@ -32,10 +32,10 @@
     <ClCompile Include="DerivedPieces.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="piecesTest.cpp">
+    <ClCompile Include="ChessBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChessBoard.cpp">
+    <ClCompile Include="boardTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

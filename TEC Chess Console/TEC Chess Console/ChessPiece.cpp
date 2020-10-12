@@ -1,7 +1,7 @@
 /*/-------------------------------------------------------------------------------------//
 	Filename:           ChessPiece.h
 	Contributor:        Sonja Braden
-	Date:               9/21/2020
+	Date:               10/4/2020
 	Reference:
 	Description:		Implementation  of the ChessPiece class. This is the base
 						class from which unique types of pieces are derived 
@@ -14,38 +14,73 @@
 
 #include "ChessPiece.h"
 
-
 namespace chess {
-	
-	
-	ChessPiece::ChessPiece(int inCol, int inRow,team_type color)
+
+	ChessPiece::ChessPiece()
 	{
+		col = 0;
+		row = 0;
+		team = team_type::white;
+		piece = piece_type::none;
+	}
+	
+	
+
+
+
+
+	// Default and Parameterized constructor
+	ChessPiece::ChessPiece(int inCol, int inRow, team_type color)
+	{
+		assert((inCol < BOARD_SIZE) && (inRow < BOARD_SIZE) && (inCol >= 0) && (inRow >= 0));
 		row = inRow;
 		col = inCol;
-		piece = base;
 		team = color;
+		piece = piece_type::none;
 	}
 
 
 
 
 
+	// Copy constructor
+	ChessPiece::ChessPiece(const ChessPiece& source)
+	{
+		row = source.row;
+		col = source.col;
+		team = source.team;
+		piece = source.piece;
+	}
 
+
+
+
+
+	// Accessor
 	void ChessPiece::getPosition(int& inCol, int& inRow) const
 	{
 		inRow = row;
 		inCol = col;
-
 	}
 
 
 
 
 
-
-	char ChessPiece::getPieceType() const
+	// Accessor
+	int ChessPiece::getCol() const
 	{
-		return piece;
+		return col;
+	}
+
+
+
+
+
+	// Accessor
+	int ChessPiece::getRow() const
+	{
+		return row;
 	}
 
 
@@ -53,7 +88,8 @@ namespace chess {
 
 
 
-	char ChessPiece::getTeamType() const
+	// Accessor
+	ChessPiece::team_type ChessPiece::getTeamType() const
 	{
 		return team;
 	}
@@ -62,20 +98,64 @@ namespace chess {
 
 
 
-	// Returns the "path" to the destination if the move is valid
-	// validity of piece moves does not consider board bounds, nor
-	// "jumps" over other pieces. The "path" returned will represent 
-	// the spaces between current position and destination (not inclusive). 
-	// compliance with non-jump moves will be evaluated by 
-	// the ChessBoard client, which manages info on all piece positions
 
-	int* ChessPiece::setPosition(int inCol, int inRow)
+	// Mutator
+	void ChessPiece::setTeamType(team_type arg)
 	{
-		int* path = nullptr;
-		
+		team = arg;
+	}
+
+
+
+
+
+
+	// Accessor
+	ChessPiece::piece_type ChessPiece::getPieceType() const
+	{
+		return piece;
+	}
+
+
+
+
+	
+	// Mutator
+	void ChessPiece::setPieceType(piece_type arg)
+	{
+		piece = arg;
+	}
+
+
+
+
+
+	// Precondition:	validMove() has been called with no exceptions
+	//					AND the path returned has been evualted, and is clear
+	void ChessPiece::setPosition(int inCol, int inRow)
+	{
+		assert(inCol < BOARD_SIZE && inRow < BOARD_SIZE && inCol >= 0 && inRow >= 0);
 		col = inCol;
 		row = inRow;
+	}
 
+
+
+
+
+
+
+	/*	Returns the "path" to the destination if move is otherwise valid.
+		Validity of moves in the ChessPiece class does not consider board bounds, nor
+		"jumps" over other pieces, or other relations to board state. The "path" returned 
+		represents the spaces between current position and destination (not inclusive). 
+		compliance with non-jump moves will be evaluated by 
+		the ChessBoard client, which manages info regarding all piece positions	*/
+
+	int* ChessPiece::validMove(int inCol, int inRow) const
+	{
+		assert(inCol < BOARD_SIZE && inRow < BOARD_SIZE && inCol >= 0 && inRow >= 0);
+		int* path = nullptr;
 		return path;
 	}
 
@@ -85,18 +165,11 @@ namespace chess {
 		{
 			int* path = nullptr;
 		
-			if ( Valid move ) {
-
+			if ( Valid move )
 				path = getPath();
-
-				col = inCol;
-				row = inRow;
-			}
-			else {
-
+			else
 				throw PieceMoveError();
-			}
-
+			
 			return path;
 		}
 	*/
@@ -108,6 +181,7 @@ namespace chess {
 
 	int* ChessPiece::getPath(int inCol, int inRow)
 	{
+		assert(inCol < BOARD_SIZE && inRow < BOARD_SIZE && inCol >= 0 && inRow >= 0);
 		int* path = nullptr;
 		
 		/*	Real pieces will calculate the path:
@@ -123,6 +197,8 @@ namespace chess {
 
 		return path;
 	}
+
+
 
 }  // closes namespace
 

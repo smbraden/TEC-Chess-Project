@@ -1,7 +1,7 @@
 /*/-------------------------------------------------------------------------------------//
 	Filename:           DerivedPieces.h
 	Contributor:        Sonja Braden
-	Date:               9/21/2020
+	Date:               10/4/2020
 	Reference:
 	Description:
 //-------------------------------------------------------------------------------------/*/
@@ -12,67 +12,25 @@
 #include "ChessPiece.h"
 
 
-
-
 namespace chess {
 
 	class Pawn : public ChessPiece {
 
 	public:
-
-		Pawn(int inCol = 0, int inRow = 1, team_type color = white);	// defaults to the left-most white pawn
+		
+		Pawn();
+		Pawn(int inCol, int inRow, team_type color, bool passVal);
 		class PawnMoveError {};
-		int* setPosition(int inCol, int inRow);
-		int* getPath(int inCol, int inRow);
-
-	};
-
+		int* validMove(int inCol, int inRow) const;	// no "const" for Pawns b/c need to setEnPassant()  
+		void setEnPassant(bool);
+		bool getEnPassant() const;
 
 
+	protected:
 
-
-
-	class Castle : public ChessPiece {
-
-	public:
-
-		Castle(int inCol = 0, int inRow = 0, team_type color = white);  // defaults to left-most white castle
-		class CastleMoveError {};
-		int* setPosition(int inCol, int inRow);
-		int* getPath(int inCol, int inRow);
-
-	};
-
-
-
-
-
-
-	class Knight : public ChessPiece {
-
-	public:
-
-		Knight(int inCol = 1, int inRow = 0, team_type color = white);  // defaults to left-most white knight
-		class KnightMoveError {};
-		int* setPosition(int inCol, int inRow);
-		int* getPath(int inCol, int inRow);
-
-	};
-
-
-
-
-
-
-	class Rook : public ChessPiece {
-
-	public:
-
-		Rook(int inCol = 2, int inRow = 0, team_type color = white); // defaults to left-most white rook
-		class RookMoveError {};
-		int* setPosition(int inCol, int inRow);
-		int* getPath(int inCol, int inRow);
-
+		bool enPassant;
+		int* getPath(int inCol, int inRow) const;
+		
 	};
 
 
@@ -84,12 +42,82 @@ namespace chess {
 
 	public:
 
-		Queen(int inCol = 3, int inRow = 0, team_type color = white);  // defaults to white queen
+		Queen();
+		Queen(int inCol, int inRow, team_type color);
 		class QueenMoveError {};
-		int* setPosition(int inCol, int inRow);
-		int* getPath(int inCol, int inRow);
+		int* validMove(int inCol, int inRow) const;
 
+	protected:	// for Rook and Bishop access to these getPath()'s
+
+		//int* getPath(int inCol, int inRow) const;
+		int* getLateralPath(int inCol, int inRow) const;
+		int* getDiagonalPath(int inCol, int inRow) const;
+		//int* buildPath(signed int colSign, signed int rowSign, int inCol, int inRow); // getDiagonalPath() helper function
 	};
+
+
+
+
+
+
+	class Rook : public Queen {
+
+	public:
+
+		Rook();
+		Rook(int inCol, int inRow, team_type color);
+		class RookMoveError {};
+		int* validMove(int inCol, int inRow) const;
+		
+		//friend class Queen;			// for Queen access to getPath()
+
+	private:
+
+		int* getPath(int inCol, int inRow) const;
+		
+	};
+
+
+
+
+
+
+	class Knight : public ChessPiece {
+
+	public:
+
+		Knight();
+		Knight(int inCol, int inRow, team_type color);
+		class KnightMoveError {};
+		int* validMove(int inCol, int inRow) const;
+		
+	private:
+
+		int* getPath(int inCol, int inRow) const;
+		
+	};
+
+
+
+
+
+
+	class Bishop : public Queen {
+
+	public:
+		Bishop();
+		Bishop(int inCol, int inRow, team_type color);
+		class BishopMoveError {};
+		int* validMove(int inCol, int inRow) const;
+		
+		//friend class Queen;		// for Queen access to getPath()
+		
+	private:
+
+		int* getPath(int inCol, int inRow) const;
+		
+	};
+
 
 
 
@@ -100,11 +128,24 @@ namespace chess {
 
 	public:
 
-		King(int inCol = 4, int inRow = 0, team_type color = white);	// defaults to white king
+		King();
+		King(int inCol, int inRow, team_type color);
 		class KingMoveError {};
-		int* setPosition(int inCol, int inRow);
-		int* getPath(int inCol, int inRow);
+		int* validMove(int inCol, int inRow) const;
+		bool getCastleStatus();
+		void setCastleStatus(bool arg);
+		bool getCheckStatus();
+		void setCheckStatus(bool arg);
+		bool getMateStatus();
+		void setMateStatus(bool arg);
 
+	private:
+
+		bool castle;	// true as long as king has never moved yet
+		bool check;
+		bool checkMate;
+		int* getPath(int inCol, int inRow) const;
+		
 	};
 
 } // closes namespace
