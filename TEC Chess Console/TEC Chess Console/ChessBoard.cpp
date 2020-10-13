@@ -13,10 +13,16 @@
 #include <cassert>
 #include "ChessBoard.h"
 
+#define inBounds(a, b, c, d) (a <= BOARD_SIZE || b <= BOARD_SIZE || c <= BOARD_SIZE || d <= BOARD_SIZE || a > 0 || b > 0 || c > 0 || d > 0)
+
+
 using namespace std;
 
 namespace chess {
-    
+
+
+
+
     ChessBoard::ChessBoard()
     {
         wKingRow = 0;
@@ -173,10 +179,20 @@ namespace chess {
         std::cout << endl;
     }
 
+
+
+
+
+
     bool ChessBoard::blackCheck()
     {
         return false;
     }
+
+
+
+
+
 
     bool ChessBoard::whiteCheck()
     {
@@ -260,8 +276,7 @@ namespace chess {
     // Note:    inTeam is the team whose turn it is to move
     void ChessBoard::move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type inTeamType)
     {
-        if (move1 >= BOARD_SIZE || move2 >= BOARD_SIZE || pos1 >= BOARD_SIZE || pos2 >= BOARD_SIZE || 
-                                                    move1 < 0 || move2 < 0 || pos1 < 0 || pos2 < 0) {
+        if (!inBounds(pos1, pos2, move1, move2)){
             throw BoundsError();
         }
         else if (!isPiece(pos1, pos2))  // moving a non-exsistent piece   
@@ -275,18 +290,18 @@ namespace chess {
         else {  // basic rules have been followed. Now, are the rules followed for the specific piece?
 
             try {
-                 
-                // Pawn moves require extra information from the board
-                if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {
+                
+                isCheck(pos1, pos2, move1, move2);                          // throws CheckError if move results in Check
+                
+                if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) { // Pawns have special rules to assess
                     evaluatePath(validPawnMove(pos1, pos2, move1, move2));  // might throw piece or ilegal move error
-                    removeEnPassant(pos1, pos2, move1, move2);              // if enPassant move, removes the captured piece
                     //pawnPromote(move1, move2);                            // if 8th rank move, promotes pawn 
                 }
                 else {  // all the other pieces
                     evaluatePath(grid[pos1][pos2]->validMove(move1, move2));// throws PieceMoveError, IlegalMoveError
-                    isCheck(pos1, pos2, move1, move2);                      // throws CheckError
+                    
                     if (getPiece(pos1, pos2) == ChessPiece::piece_type::king)
-                        setKing(getTeam(pos1, pos2), move1, move2);
+                        setKing(pos1, pos2, move1, move2);
                 }
             }
             catch (ChessPiece::PieceMoveError e) {
@@ -296,14 +311,8 @@ namespace chess {
                 throw IndirectPathError();
             }
 
-            resetEnPassant(pos1, pos2); // resets all EnPassant to false, except the moving piece            
-            
-            // SelfCapture error block ensures that getTeam(move1, move2) != getTeam(pos1, pos2)
-            if (isPiece(move1, move2))
-                remove(move1, move2);
-            grid[move1][move2] = grid[pos1][pos2];          // map the object with the destination coordinate
-            grid[pos1][pos2]->setPosition(move1, move2);    // set the object's internal position
-            grid[pos1][pos2] = nullptr;                     // set previous coordinate to empty
+            removePiece(pos1, pos2, move1, move2);      // removes for En Passant too
+            resetEnPassant(move1, move2); // resets all EnPassant to false, except the moved piece, if applicable
         }
     }
 
@@ -312,28 +321,31 @@ namespace chess {
 
 
 
-    void ChessBoard::remove(int pos1, int pos2)
+    void ChessBoard::removePiece(int pos1, int pos2, int move1, int move2)
     {
-        if (grid[pos1][pos2] != nullptr) {
-            ChessPiece* objPtr = grid[pos1][pos2];                      
-            delete objPtr;                                              // destroy the object
-            grid[pos1][pos2] = nullptr;                                 // set the grid square to nullptr
-
-        }
-    }
-
-
-
-
-
-
-    void ChessBoard::removeEnPassant(int pos1, int pos2, int move1, int move2)
-    {
-        if (isEnPassant(pos1, pos2, move1, move2)) {
+        if (isEnPassant(pos1, pos2, move1, move2))
             remove(move1, pos2);
-        }          
+        else if (isPiece(move1, move2))
+            remove(move1, move2);
+
+        grid[move1][move2] = grid[pos1][pos2];          // map the object with the destination coordinate
+        grid[pos1][pos2]->setPosition(move1, move2);    // set the object's internal position
+        grid[pos1][pos2] = nullptr;                     // set previous coordinate to empty
     }
 
+
+
+
+
+
+    void ChessBoard::remove(int x, int y)
+    {
+        if (grid[x][y] != nullptr) {
+            ChessPiece* objPtr = grid[x][y];                      
+            delete objPtr;                      // destroy the object
+            grid[x][y] = nullptr;               // set the grid square to nullptr
+        }
+    }
 
 
 
@@ -421,7 +433,7 @@ namespace chess {
         }
         else {
             throw ChessPiece::PieceMoveError();     // it's an invalid move if neither
-        }                                           // SimpleAdvance(), nor isCapture()
+        }                                           // SimpleAdvance(), isCapture(), nor isEnPassant()
 
         return path;
     }
@@ -469,13 +481,17 @@ namespace chess {
 
 
 
-    // Purpose:         Checks for a valid En assant move
+    // Purpose:         Checks for a valid En Passant move
     // Precondition:    The move  and current position are in bounds
+    // Return:          True if a valid En Passant move
+    //                  False if not En Passant move, or not Pawn
     bool ChessBoard::isEnPassant(int pos1, int pos2, int move1, int move2) const
     {
-        assert(move1 < BOARD_SIZE&& move2 < BOARD_SIZE&& pos1 < BOARD_SIZE&& pos2 < BOARD_SIZE&&
-            move1 >= 0 && move2 >= 0 && pos1 >= 0 && pos2 >= 0);
+        assert(inBounds(pos1, pos2, move1, move2));
 
+        if (getPiece(pos1, pos2) != ChessPiece::piece_type::pawn) {
+            return false;
+        }
         if (getTeam(pos1, pos2) == ChessPiece::team_type::white) {
             if (pos2 != 4 || move2 != 5)    // if current position is not fifth rank
                 return false;               // and moving to the proper row
@@ -517,17 +533,17 @@ namespace chess {
     // Precondition:    The move  and current position are in bounds
     void ChessBoard::resetEnPassant(int pos1, int pos2)
     {
-        Pawn* ptr = nullptr;
-        
+        //Pawn* ptr = nullptr;
+
         for (int c = 0; c < BOARD_SIZE; c++) {
             for (int r = 0; r < BOARD_SIZE; r++) {      //  !(pos1 == c && pos2 == r)
-                if ( isPiece(c, r) && getPiece(c, r) == ChessPiece::piece_type::pawn) {
+                if (isPiece(c, r) && getPiece(c, r) == ChessPiece::piece_type::pawn) {
                     ((Pawn*)grid[c][r])->setEnPassant(false);
                 }
             }
         }
 
-        if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {
+        if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {     // This might need more specific conditions
             ((Pawn*)grid[pos1][pos2])->setEnPassant(true);
         }
     }
@@ -554,18 +570,17 @@ namespace chess {
         }
 
         // if opponent in any direct lateral path & if such an opponent is queen or rook
-                // throw CheckError()
-
-        // else if there is an opponent in any direct diagonal path
-            // if such an opponent is queen or bishop
-                // throw CheckError()
-            // if such an oppent is pawn and located rank higher than the king
-                // throw CheckError()
-
+        if (checkLaterals(kCol, kRow))
+            throw CheckError();
+        // if threatened by pawn
+        else if (checkCorners(kCol, kRow))
+            throw CheckError();
+        // else if there is an opponent in any direct diagonal path such an opponent is queen or bishop
+        else if (checkDiagonals(kCol, kRow))
+            throw CheckError();
         // else if there are any opponent knights in 'inverse knight' positions
-            // throw CheckError()
-
-        
+        else if (checkKnight(kCol, kRow))
+            throw CheckError();
     }
 
 
@@ -573,10 +588,56 @@ namespace chess {
 
 
 
-    void ChessBoard::setKing(ChessPiece::team_type inTeam, int move1, int move2)
+    bool ChessBoard::checkLaterals(int kCol, int kRow) const
     {
-        assert(move1 < BOARD_SIZE&& move1 >= 0 && move2 < BOARD_SIZE&& move2 >= 0);
-        if (inTeam == ChessPiece::team_type::white) {
+        // if threatened from laterals by opponent queen or rook
+            return true;
+    }
+
+
+
+
+
+
+
+    bool ChessBoard::checkCorners(int kCol, int kRow) const
+    {
+        // if threatened by pawn
+            return true;
+    }
+
+
+
+
+
+
+    bool ChessBoard::checkDiagonals(int kCol, int kRow) const
+    {
+        // if threatened from diagonal by opponent queen or bishop
+            return true;
+    }
+
+
+
+
+
+
+    
+    bool ChessBoard::checkKnight(int kCol, int kRow) const
+    {
+        // if threatened by an opponent knight
+            return true;
+    }
+
+
+
+
+
+
+    void ChessBoard::setKing(int pos1, int pos2, int move1, int move2)
+    {
+        assert(move1 < BOARD_SIZE && move1 >= 0 && move2 < BOARD_SIZE && move2 >= 0);
+        if (getTeam(pos1, pos2) == ChessPiece::team_type::white) {
             wKingCol = move1;
             wKingRow = move2;
         }

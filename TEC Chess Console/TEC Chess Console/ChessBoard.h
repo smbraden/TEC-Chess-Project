@@ -59,8 +59,8 @@ namespace chess {
 		void initPieces();
 		void evaluatePath(int* path) const;
 		void move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type);
-		void remove(int pos1, int pos2);
-		void removeEnPassant(int pos1, int pos2, int move1, int move2);
+		void remove(int x, int y);
+		void removePiece(int pos1, int pos2, int move1, int move2);
 		void clear();
 		void copy(const ChessBoard);
 		bool isPiece(int inCol, int inRow) const;
@@ -73,7 +73,11 @@ namespace chess {
 
 		// determines if the given position and suit places a king in check
 		void isCheck(int pos1, int pos2, int move1, int move2) const;
-		void setKing(ChessPiece::team_type, int move1, int move2);
+		bool checkLaterals(int kCol, int kRow) const;
+		bool checkCorners(int kCol, int kRow) const;
+		bool checkDiagonals(int kCol, int kRow) const;
+		bool checkKnight(int kCol, int kRow) const;
+		void setKing(int pos1, int pos2, int move1, int move2);
 		
 	};
 

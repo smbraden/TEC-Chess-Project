@@ -520,12 +520,15 @@ namespace chess {
 
 
 
-
-
 	bool King::getCheckStatus()
 	{
 		return check;
 	}
+
+
+
+
+
 
 	void King::setCheckStatus(bool arg)
 	{
@@ -541,6 +544,11 @@ namespace chess {
 	{
 		return checkMate;
 	}
+
+
+
+
+
 
 	void King::setMateStatus(bool arg)
 	{
