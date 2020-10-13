@@ -247,59 +247,40 @@ namespace chess {
 
 			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
 			int j = 0;
+			int next = 0;
 
-			if (col == inCol) {	// same column
+			if (col == inCol) {		// same column
 
-				if (row > inRow) {
+				if (row > inRow)
+					next = inRow + 1;
+				else				// if row < inRow
+					next = row + 1;
 
-					int nextRow = inRow + 1;
-					while (nextRow != row) {
+				while (next != row && next != inRow) {
 
-						path[2 * j] = inCol;
-						path[2 * j + 1] = nextRow;
-						nextRow++;
-						j++;
-					}
+					path[2 * j] = inCol;
+					path[2 * j + 1] = next;
+					next++;
+					j++;
 				}
-				else {	// if row < inRow
-
-					int nextRow = row + 1;
-					while (nextRow != inRow) {
-
-						path[2 * j] = inCol;
-						path[2 * j + 1] = nextRow;
-						nextRow++;
-						j++;
-					}
-				}
+				
 			}
 			else if (row == inRow) {	// same column
 
-				if (col > inCol) {
+				if (col > inCol)
+					next = inCol + 1;
+				else					// if col < inCol
+					next = col + 1;
+					
+				while (next != col && next != inCol) {
 
-					int nextCol = inCol + 1;
-					while (nextCol != col) {
-
-						path[2 * j + 1] = inRow;
-						path[2 * j] = nextCol;
-						nextCol++;
-						j++;
-					}
-				}
-				else {	// if col < inCol
-
-					int nextCol = col + 1;
-					while (nextCol != inCol) {
-
-						path[2 * j + 1] = inRow;
-						path[2 * j] = nextCol;
-						nextCol++;
-						j++;
-					}
+					path[2 * j + 1] = inRow;
+					path[2 * j] = next;
+					next++;
+					j++;
 				}
 			}
 		}
-
 		return path;
 	}
 
@@ -591,92 +572,168 @@ namespace chess {
 
 
 
-	/*
-	int* Queen::getDiagonalPath(int inCol, int inRow) const
+/*
+int* Queen::getDiagonalPath(int inCol, int inRow) const
+{
+	int* path = nullptr;
+	int col = getCol();
+	int row = getRow();
+
+	if (abs(inCol - col) == 1 && abs(inRow - row) == 1)	// moved by only 1 space
+		return nullptr;
+	else {
+		path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };	// function for this?
+
+		if (row < inRow && col > inCol) {
+
+			//	__ x2 __ __
+			//	__ __ __ __
+			//	__ __ __ x1
+			//	__ __ __ __
+
+			int nextRow = row + 1;
+			int nextCol = col - 1;
+			int j = 0;
+			while (nextRow != inRow && nextCol != inCol) {
+				path[j * 2] = nextCol;
+				path[j * 2 + 1] = nextRow;
+				j++;
+				nextRow++;
+				nextCol--;
+			}
+		}
+		else if (row < inRow && col < inCol) {
+
+			//	__ __ __ x2
+			//	__ __ __ __
+			//	__ x1 __ __
+			//	__ __ __ __
+
+			int nextRow = row + 1;
+			int nextCol = col + 1;
+			int j = 0;
+			while (nextRow != inRow && nextCol != inCol) {
+				path[j * 2] = nextCol;
+				path[j * 2 + 1] = nextRow;
+				j++;
+				nextRow++;
+				nextCol++;
+			}
+		}
+		else if (row > inRow && col < inCol) {
+
+			//	__ __ __ __
+			//	__ x1 __ __
+			//	__ __ __ __
+			//	__ __ __ x2
+
+			int nextRow = row - 1;
+			int nextCol = col + 1;
+			int j = 0;
+			while (nextRow != inRow && nextCol != inCol) {
+				path[j * 2] = nextCol;
+				path[j * 2 + 1] = nextRow;
+				j++;
+				nextRow--;
+				nextCol++;
+			}
+		}
+		else if (row > inRow && col > inCol) {
+
+			//	__ __ __ x1
+			//	__ __ __ __
+			//	__ x2 __ __
+			//	__ __ __ __
+
+			int nextRow = row - 1;
+			int nextCol = col - 1;
+			int j = 0;
+			while (nextRow != inRow && nextCol != inCol) {
+				path[j * 2] = nextCol;
+				path[j * 2 + 1] = nextRow;
+				j++;
+				nextRow--;
+				nextCol--;
+			}
+		}
+	}
+
+	return path;
+}
+
+*/
+
+
+
+
+
+/*
+
+int* Queen::getLateralPath(int inCol, int inRow) const
 	{
 		int* path = nullptr;
 		int col = getCol();
 		int row = getRow();
 
-		if (abs(inCol - col) == 1 && abs(inRow - row) == 1)	// moved by only 1 space
-			return nullptr;
-		else {
-			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };	// function for this?
+		if (abs(inCol - col) > 1 || abs(inRow - row) > 1) {	// if more than 1 squares traversed
 
-			if (row < inRow && col > inCol) {
+			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
+			int j = 0;
 
-				//	__ x2 __ __
-				//	__ __ __ __
-				//	__ __ __ x1
-				//	__ __ __ __
+			if (col == inCol) {	// same column
 
-				int nextRow = row + 1;
-				int nextCol = col - 1;
-				int j = 0;
-				while (nextRow != inRow && nextCol != inCol) {
-					path[j * 2] = nextCol;
-					path[j * 2 + 1] = nextRow;
-					j++;
-					nextRow++;
-					nextCol--;
+				if (row > inRow) {
+
+					int nextRow = inRow + 1;
+					while (nextRow != row) {
+
+						path[2 * j] = inCol;
+						path[2 * j + 1] = nextRow;
+						nextRow++;
+						j++;
+					}
+				}
+				else {	// if row < inRow
+
+					int nextRow = row + 1;
+					while (nextRow != inRow) {
+
+						path[2 * j] = inCol;
+						path[2 * j + 1] = nextRow;
+						nextRow++;
+						j++;
+					}
 				}
 			}
-			else if (row < inRow && col < inCol) {
+			else if (row == inRow) {	// same column
 
-				//	__ __ __ x2
-				//	__ __ __ __
-				//	__ x1 __ __
-				//	__ __ __ __
+				if (col > inCol) {
 
-				int nextRow = row + 1;
-				int nextCol = col + 1;
-				int j = 0;
-				while (nextRow != inRow && nextCol != inCol) {
-					path[j * 2] = nextCol;
-					path[j * 2 + 1] = nextRow;
-					j++;
-					nextRow++;
-					nextCol++;
+					int nextCol = inCol + 1;
+					while (nextCol != col) {
+
+						path[2 * j + 1] = inRow;
+						path[2 * j] = nextCol;
+						nextCol++;
+						j++;
+					}
 				}
-			}
-			else if (row > inRow && col < inCol) {
+				else {	// if col < inCol
 
-				//	__ __ __ __
-				//	__ x1 __ __
-				//	__ __ __ __
-				//	__ __ __ x2
+					int nextCol = col + 1;
+					while (nextCol != inCol) {
 
-				int nextRow = row - 1;
-				int nextCol = col + 1;
-				int j = 0;
-				while (nextRow != inRow && nextCol != inCol) {
-					path[j * 2] = nextCol;
-					path[j * 2 + 1] = nextRow;
-					j++;
-					nextRow--;
-					nextCol++;
-				}
-			}
-			else if (row > inRow && col > inCol) {
-
-				//	__ __ __ x1
-				//	__ __ __ __
-				//	__ x2 __ __
-				//	__ __ __ __
-
-				int nextRow = row - 1;
-				int nextCol = col - 1;
-				int j = 0;
-				while (nextRow != inRow && nextCol != inCol) {
-					path[j * 2] = nextCol;
-					path[j * 2 + 1] = nextRow;
-					j++;
-					nextRow--;
-					nextCol--;
+						path[2 * j + 1] = inRow;
+						path[2 * j] = nextCol;
+						nextCol++;
+						j++;
+					}
 				}
 			}
 		}
 
 		return path;
 	}
-	*/
+
+
+*/

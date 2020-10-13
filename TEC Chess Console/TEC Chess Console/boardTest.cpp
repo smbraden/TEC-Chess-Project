@@ -136,6 +136,9 @@ bool testMoveB(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 	catch (ChessBoard::IndirectPathError e) {
 		cout << "Indirect path. Only Knights can jump over other pieces" << endl << endl;
 	}
+	catch (ChessBoard::CheckError e) {
+		cout << "This move does not remove your King from check. You might be pwned..." << endl << endl;
+	}
 	catch (ChessBoard::IlegalMoveError e) {
 		cout << "Ilegal move" << endl << endl;
 	}
@@ -178,6 +181,9 @@ bool testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 	}
 	catch (ChessBoard::IndirectPathError e) {
 		cout << "Indirect path. Only Knights can jump over other pieces" << endl << endl;
+	}
+	catch (ChessBoard::CheckError e) {
+		cout << "This move does not remove your King from check. You might be pwned..." << endl << endl;
 	}
 	catch (ChessBoard::IlegalMoveError e) {
 		cout << "Ilegal move" << endl << endl;

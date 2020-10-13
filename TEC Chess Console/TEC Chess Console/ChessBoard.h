@@ -40,7 +40,7 @@ namespace chess {
 		class EmptySquareError {};	// Attempt to move an empty square
 		class IndirectPathError {};	// For attempts to jump over other pieces if not knight 
 		class IlegalMoveError {};	// any other illegal moves
-		class CheckMoveError {};	// if King in Check, must escape the check
+		class CheckError {};		// if King in Check, must escape the check
 
 		const int MAX_PATH = 7; // 6 spaces for max path, and 1 more for an extra delimiter
 		static const int BOARD_SIZE = 8;
@@ -50,6 +50,10 @@ namespace chess {
 
 		// main data members
 		ChessPiece* grid[BOARD_SIZE][BOARD_SIZE];
+		int wKingRow;
+		int wKingCol;
+		int bKingRow;
+		int bKingCol;
 
 		// helper functions
 		void initPieces();
@@ -68,7 +72,8 @@ namespace chess {
 		void resetEnPassant(int pos1, int pos2);
 
 		// determines if the given position and suit places a king in check
-		bool isCheck(ChessPiece::team_type, int pos1, int pos2) const;	
+		void isCheck(int pos1, int pos2, int move1, int move2) const;
+		void setKing(ChessPiece::team_type, int move1, int move2);
 		
 	};
 

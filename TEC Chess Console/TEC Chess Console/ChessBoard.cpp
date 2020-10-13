@@ -19,6 +19,10 @@ namespace chess {
     
     ChessBoard::ChessBoard()
     {
+        wKingRow = 0;
+        wKingCol = 4;
+        bKingRow = 7;
+        bKingCol = 4;
 
         // initialize a "blank" grid
         for (int i = 0; i < BOARD_SIZE; i++)
@@ -271,16 +275,18 @@ namespace chess {
         else {  // basic rules have been followed. Now, are the rules followed for the specific piece?
 
             try {
+                 
                 // Pawn moves require extra information from the board
                 if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {
                     evaluatePath(validPawnMove(pos1, pos2, move1, move2));  // might throw piece or ilegal move error
                     removeEnPassant(pos1, pos2, move1, move2);              // if enPassant move, removes the captured piece
-                    //pawnPromote(move1, move2);                            // if 8th rank move, promote pawn routine 
+                    //pawnPromote(move1, move2);                            // if 8th rank move, promotes pawn 
                 }
-                else {  // For all the other pieces
-                    evaluatePath(grid[pos1][pos2]->validMove(move1, move2));// might throw piece or ilegal move error
-                    if (getPiece(pos1, pos2) == ChessPiece::piece_type::king) { // if King, set the members
-                    }
+                else {  // all the other pieces
+                    evaluatePath(grid[pos1][pos2]->validMove(move1, move2));// throws PieceMoveError, IlegalMoveError
+                    isCheck(pos1, pos2, move1, move2);                      // throws CheckError
+                    if (getPiece(pos1, pos2) == ChessPiece::piece_type::king)
+                        setKing(getTeam(pos1, pos2), move1, move2);
                 }
             }
             catch (ChessPiece::PieceMoveError e) {
@@ -414,7 +420,7 @@ namespace chess {
             }
         }
         else {
-            throw ChessPiece::PieceMoveError();     // it's invalid move if neither
+            throw ChessPiece::PieceMoveError();     // it's an invalid move if neither
         }                                           // SimpleAdvance(), nor isCapture()
 
         return path;
@@ -531,12 +537,53 @@ namespace chess {
 
 
 
-    bool ChessBoard::isCheck(ChessPiece::team_type, int pos1, int pos2) const
+    void ChessBoard::isCheck(int pos1, int pos2, int move1, int move2) const
     {
-        // if (position would place a king in check)
-            //return true;
 
-        return false;
+        int kRow;
+        int kCol;
+        ChessPiece::team_type team = getTeam(pos1, pos2);
+
+        if (team == ChessPiece::team_type::white) {
+            kRow = wKingRow;
+            kCol = wKingCol;
+        }
+        else {  // if (getTeam(pos1, pos2) == ChessPiece::team_type::blakc)
+            kRow = bKingRow;
+            kCol = bKingCol;
+        }
+
+        // if opponent in any direct lateral path & if such an opponent is queen or rook
+                // throw CheckError()
+
+        // else if there is an opponent in any direct diagonal path
+            // if such an opponent is queen or bishop
+                // throw CheckError()
+            // if such an oppent is pawn and located rank higher than the king
+                // throw CheckError()
+
+        // else if there are any opponent knights in 'inverse knight' positions
+            // throw CheckError()
+
+        
+    }
+
+
+
+
+
+
+    void ChessBoard::setKing(ChessPiece::team_type inTeam, int move1, int move2)
+    {
+        assert(move1 < BOARD_SIZE&& move1 >= 0 && move2 < BOARD_SIZE&& move2 >= 0);
+        if (inTeam == ChessPiece::team_type::white) {
+            wKingCol = move1;
+            wKingRow = move2;
+        }
+        else { // if (inTeam == ChessPiece::team_type::black)
+            bKingCol = move1;
+            bKingRow = move2;
+        }
     }
 
 
