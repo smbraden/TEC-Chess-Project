@@ -68,15 +68,18 @@ namespace chess {
 		bool isCapture(int pos1, int pos2, int move1, int move2) const;
 		bool simpleAdvance(int pos1, int pos2, int move1, int move2) const;
 		bool isEnPassant(int pos1, int pos2, int move1, int move2) const;
-		bool pawnPromote(int move1, int move2);
+		void pawnPromote(int move1, int move2);
 		void resetEnPassant(int pos1, int pos2);
 
 		// determines if the given position and suit places a king in check
-		void isCheck(int pos1, int pos2, int move1, int move2) const;
-		bool checkLaterals(int kCol, int kRow) const;
-		bool checkCorners(int kCol, int kRow) const;
-		bool checkDiagonals(int kCol, int kRow) const;
-		bool checkKnight(int kCol, int kRow) const;
+		void isCheck(ChessPiece::team_type team) const;
+		bool checkLaterals(ChessPiece::team_type kingTeam, int kCol, int kRow) const;
+		bool singleLateral(ChessPiece::team_type kingTeam, int kCol, int kRow, int colSign, int rowSign) const;
+		bool checkCorners(ChessPiece::team_type kingTeam, int kCol, int kRow) const;
+		bool checkDiagonals(ChessPiece::team_type kingTeam, int kCol, int kRow) const;
+		bool singleDiagonal(ChessPiece::team_type kingTeam, int kCol, int kRow, int colSign, int rowSign) const;
+		bool checkKnight(ChessPiece::team_type kingTeam, int kCol, int kRow) const;
+		bool singleKnight(ChessPiece::team_type kingTeam,int kCol, int kRow, int colSign, int rowSign) const;
 		void setKing(int pos1, int pos2, int move1, int move2);
 		
 	};

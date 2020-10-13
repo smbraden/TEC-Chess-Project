@@ -13,14 +13,13 @@
 #include <cassert>
 #include "ChessBoard.h"
 
-#define inBounds(a, b, c, d) (a <= BOARD_SIZE || b <= BOARD_SIZE || c <= BOARD_SIZE || d <= BOARD_SIZE || a > 0 || b > 0 || c > 0 || d > 0)
-
+#define inBounds4(a, b, c, d) (a >= 0 && b >= 0 && c >= 0 && d >= 0 &&  \
+                            a < BOARD_SIZE&& b < BOARD_SIZE&& c < BOARD_SIZE&& d < BOARD_SIZE)
+#define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
 
 using namespace std;
 
 namespace chess {
-
-
 
 
     ChessBoard::ChessBoard()
@@ -158,8 +157,8 @@ namespace chess {
                 if (grid[col][row] == nullptr)
                     std::cout << "__";
                 else {
-                    ChessPiece::team_type team = grid[col][row]->getTeamType();
-                    ChessPiece::piece_type piece = grid[col][row]->getPieceType();
+                    ChessPiece::team_type team = getTeam(col, row);     // grid[col][row]->getTeamType();
+                    ChessPiece::piece_type piece = getPiece(col, row);   // grid[col][row]->getPieceType();
                     std::cout << static_cast<std::underlying_type<ChessPiece::team_type>::type>(team)
                             << static_cast<std::underlying_type<ChessPiece::team_type>::type>(piece);
                     // cast the team and piece types beack to underlying types for printing
@@ -252,7 +251,7 @@ namespace chess {
             
             while (x != -1 && y != -1 && i < (MAX_PATH * 2)) {
                 
-                assert(x < BOARD_SIZE && y < BOARD_SIZE && x >= 0 && y >= 0);
+                assert(inBounds2(x, y));
                 if (grid[x][y] != nullptr) {    // if an object is in path 
                     delete [] path;
                     path = nullptr;
@@ -276,7 +275,7 @@ namespace chess {
     // Note:    inTeam is the team whose turn it is to move
     void ChessBoard::move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type inTeamType)
     {
-        if (!inBounds(pos1, pos2, move1, move2)){
+        if (!inBounds4(pos1, pos2, move1, move2)){
             throw BoundsError();
         }
         else if (!isPiece(pos1, pos2))  // moving a non-exsistent piece   
@@ -285,13 +284,13 @@ namespace chess {
             throw TurnMoveError();
         else if (pos1 == move1 && pos2 == move2)        // the source is the destination
             throw NoTurnPassError();
-        else if (isPiece(move1, move2) && getTeam(move1, move2) == inTeamType)  // destination occupied by a piece
+        else if (getTeam(move1, move2) == inTeamType)  // destination occupied by a piece
             throw SelfCapturError();                                            // belonging to the moving player
         else {  // basic rules have been followed. Now, are the rules followed for the specific piece?
 
             try {
                 
-                isCheck(pos1, pos2, move1, move2);                          // throws CheckError if move results in Check
+                isCheck(inTeamType);                          // throws CheckError if move results in Check
                 
                 if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) { // Pawns have special rules to assess
                     evaluatePath(validPawnMove(pos1, pos2, move1, move2));  // might throw piece or ilegal move error
@@ -402,7 +401,7 @@ namespace chess {
 
     bool ChessBoard::isPiece(int inCol, int inRow) const
     {
-        if (grid[inCol][inRow] != nullptr)
+        if (inBounds2(inCol, inRow) && grid[inCol][inRow] != nullptr)
             return true;
         return false;
     }
@@ -447,7 +446,7 @@ namespace chess {
     bool ChessBoard::isCapture(int pos1, int pos2, int move1, int move2) const
     {
         /* if opponent occupies destination */
-        if (isPiece(move1, move2) && getTeam(move1, move2) != getTeam(pos1, pos2)) { 
+        if (isPiece(move1, move2) && getTeam(move1, move2) != getTeam(pos1, pos2)) {
             /*single diagonal move, white piece*/
             if (getTeam(pos1, pos2) == ChessPiece::team_type::white &&
                 move2 == pos2 + 1 && abs(pos1 - move1) == 1) {
@@ -487,12 +486,12 @@ namespace chess {
     //                  False if not En Passant move, or not Pawn
     bool ChessBoard::isEnPassant(int pos1, int pos2, int move1, int move2) const
     {
-        assert(inBounds(pos1, pos2, move1, move2));
+        assert(inBounds4(pos1, pos2, move1, move2));
 
-        if (getPiece(pos1, pos2) != ChessPiece::piece_type::pawn) {
+        if (isPiece(pos1, pos2) && getPiece(pos1, pos2) != ChessPiece::piece_type::pawn) {
             return false;
         }
-        if (getTeam(pos1, pos2) == ChessPiece::team_type::white) {
+        if (isPiece(pos1, pos2) && getTeam(pos1, pos2) == ChessPiece::team_type::white) {
             if (pos2 != 4 || move2 != 5)    // if current position is not fifth rank
                 return false;               // and moving to the proper row
             // if either of the objects to the left or right has enPassant == true
@@ -518,10 +517,10 @@ namespace chess {
 
 
 
-
-    bool ChessBoard::pawnPromote(int move1, int move2)
+    // IN PROGRESS
+    void ChessBoard::pawnPromote(int move1, int move2)
     {
-        return false;
+        
     }
 
 
@@ -553,13 +552,12 @@ namespace chess {
 
 
 
-    void ChessBoard::isCheck(int pos1, int pos2, int move1, int move2) const
+    void ChessBoard::isCheck(ChessPiece::team_type team) const
     {
 
         int kRow;
         int kCol;
-        ChessPiece::team_type team = getTeam(pos1, pos2);
-
+        
         if (team == ChessPiece::team_type::white) {
             kRow = wKingRow;
             kCol = wKingCol;
@@ -569,17 +567,17 @@ namespace chess {
             kCol = bKingCol;
         }
 
-        // if opponent in any direct lateral path & if such an opponent is queen or rook
-        if (checkLaterals(kCol, kRow))
+        // if there is attacking queen or rook from laterals
+        if (checkLaterals(team, kCol, kRow))
             throw CheckError();
-        // if threatened by pawn
-        else if (checkCorners(kCol, kRow))
+        // if threatened by pawn from corners
+        else if (checkCorners(team, kCol, kRow))
             throw CheckError();
-        // else if there is an opponent in any direct diagonal path such an opponent is queen or bishop
-        else if (checkDiagonals(kCol, kRow))
+        // else if there is an attacking queen or bishop in diagonals
+        else if (checkDiagonals(team, kCol, kRow))
             throw CheckError();
-        // else if there are any opponent knights in 'inverse knight' positions
-        else if (checkKnight(kCol, kRow))
+        // else if there are any attacking knights
+        else if (checkKnight(team, kCol, kRow))
             throw CheckError();
     }
 
@@ -588,33 +586,15 @@ namespace chess {
 
 
 
-    bool ChessBoard::checkLaterals(int kCol, int kRow) const
+    bool ChessBoard::checkLaterals(ChessPiece::team_type kingTeam, int kCol, int kRow) const
     {
-        // if threatened from laterals by opponent queen or rook
+        if (singleLateral(kingTeam, kCol, kRow,  1, 0) ||
+            singleLateral(kingTeam, kCol, kRow, -1, 0) ||
+            singleLateral(kingTeam, kCol, kRow, 0,  1) ||
+            singleLateral(kingTeam, kCol, kRow, 0, -1))
             return true;
-    }
 
-
-
-
-
-
-
-    bool ChessBoard::checkCorners(int kCol, int kRow) const
-    {
-        // if threatened by pawn
-            return true;
-    }
-
-
-
-
-
-
-    bool ChessBoard::checkDiagonals(int kCol, int kRow) const
-    {
-        // if threatened from diagonal by opponent queen or bishop
-            return true;
+        return false;
     }
 
 
@@ -623,10 +603,142 @@ namespace chess {
 
 
     
-    bool ChessBoard::checkKnight(int kCol, int kRow) const
+    //    Precondition: Either colSign or rowSign is 0
+    //                  Either colSign or RowSign is 1 or -1
+    //                  kCol is the king's column
+    //                  kRow is the king's row
+    bool ChessBoard::singleLateral(ChessPiece::team_type kingTeam, int kCol, int kRow, int colSign, int rowSign) const
+    {
+        int nextRow = kRow + rowSign; 
+        int nextCol = kCol + colSign;
+        
+        if (kRow == nextRow) {
+            while (nextCol < BOARD_SIZE && nextCol >= 0 && !isPiece(nextCol, kRow))
+                nextCol = nextCol + colSign;
+
+            if (isPiece(nextCol, kRow) && getTeam(nextCol, kRow) != kingTeam
+                && (getPiece(nextCol, kRow) == ChessPiece::piece_type::queen
+                || getPiece(nextCol, kRow) == ChessPiece::piece_type::rook))
+                return true;
+        }
+        else {  // if (kCol == nextCol)
+            while (nextRow < BOARD_SIZE && nextRow >= 0 && !isPiece(kCol, nextRow))
+                nextRow = nextRow + rowSign;
+            
+            if (isPiece(kCol, nextRow) && getTeam(nextCol, kRow) != kingTeam 
+                && (getPiece(kCol, nextRow) == ChessPiece::piece_type::queen
+                || getPiece(kCol, nextRow) == ChessPiece::piece_type::rook))
+                return true;
+        }
+        
+        return false;
+    }
+
+
+
+
+
+
+
+    bool ChessBoard::checkCorners(ChessPiece::team_type kingTeam, int kCol, int kRow) const
+    {
+        // if threatened by pawn
+        if (kingTeam == ChessPiece::team_type::white)
+            if ((isPiece(kCol + 1, kRow + 1) && getTeam(kCol + 1, kRow + 1) != kingTeam 
+                        && getPiece(kCol + 1, kRow + 1) == ChessPiece::piece_type::pawn) ||
+                (isPiece(kCol - 1, kRow + 1) && getTeam(kCol - 1, kRow + 1) != kingTeam 
+                        && getPiece(kCol - 1, kRow + 1) == ChessPiece::piece_type::pawn))
+                return true;
+
+        else {  // if (getTeam(kCol, kRow) == ChessPiece::team_type::black)
+            if ((isPiece(kCol + 1, kRow - 1) && getTeam(kCol + 1, kRow - 1) != kingTeam 
+                        && getPiece(kCol + 1, kRow - 1) == ChessPiece::piece_type::pawn) ||
+                (isPiece(kCol - 1, kRow - 1) && getTeam(kCol - 1, kRow - 1) != kingTeam  
+                        && getPiece(kCol - 1, kRow - 1) == ChessPiece::piece_type::pawn))
+                return true;
+        }
+        return false;
+    }
+
+
+
+
+
+    
+    // Precondition:    colSign and rowSign are 1 or -1
+    bool ChessBoard::checkDiagonals(ChessPiece::team_type kingTeam, int kCol, int kRow) const
+    {
+        if (singleDiagonal(kingTeam, kCol, kRow, 1, -1) ||
+            singleDiagonal(kingTeam, kCol, kRow, 1,  1) ||
+            singleDiagonal(kingTeam, kCol, kRow, -1, 1) ||
+            singleDiagonal(kingTeam, kCol, kRow, -1, -1))
+           return true;
+
+        return false; // if not threatened from diagonal by opponent queen or bishop
+    }
+
+
+
+
+
+
+
+    bool ChessBoard::singleDiagonal(ChessPiece::team_type kingTeam, int kCol, int kRow, int colSign, int rowSign) const
+    {
+        int nextCol = kCol + colSign;
+        int nextRow = kRow + rowSign;
+
+        while (inBounds2(nextCol, nextRow) && !isPiece(nextCol, nextRow)) {
+            nextCol = nextCol + colSign;
+            nextRow = nextRow + rowSign;
+        }
+
+        ChessPiece::piece_type piece = getPiece(nextCol, nextRow);
+
+        if (isPiece(nextCol, nextRow) && getTeam(nextCol, nextRow) != kingTeam &&
+            (piece == ChessPiece::piece_type::queen || piece == ChessPiece::piece_type::rook))
+            return true;
+
+        return false;
+    }
+
+
+
+
+
+
+    
+    bool ChessBoard::checkKnight(ChessPiece::team_type kingTeam, int kCol, int kRow) const
     {
         // if threatened by an opponent knight
+        if (singleKnight(kingTeam, kCol, kRow,  1,  2) || singleKnight(kingTeam, kCol, kRow,  1, -2) ||
+            singleKnight(kingTeam, kCol, kRow, -1,  2) || singleKnight(kingTeam, kCol, kRow, -1, -2) ||
+            singleKnight(kingTeam, kCol, kRow,  2,  1) || singleKnight(kingTeam, kCol, kRow, -2,  1) ||
+            singleKnight(kingTeam, kCol, kRow,  2, -1) || singleKnight(kingTeam, kCol, kRow, -2, -1))
             return true;
+        
+        return false;
+    }
+
+
+
+
+
+
+    // Precondition: Either colSign or rowSign is in {2, -2} and,
+    //               Either colSign or RowSign is in {1, -1}
+    //               kCol is the king's column
+    //               kRow is the king's row
+    bool ChessBoard::singleKnight(ChessPiece::team_type kingTeam, int kCol, int kRow, int colSign, int rowSign) const
+    {
+        int col = kCol + colSign;
+        int row = kRow + rowSign;
+
+        if (isPiece(col, row) && getTeam(col, row) != kingTeam 
+            && getPiece(col, row) == ChessPiece::piece_type::knight)
+            return true;
+        
+        return false;
     }
 
 
@@ -636,7 +748,7 @@ namespace chess {
 
     void ChessBoard::setKing(int pos1, int pos2, int move1, int move2)
     {
-        assert(move1 < BOARD_SIZE && move1 >= 0 && move2 < BOARD_SIZE && move2 >= 0);
+        assert(inBounds4(pos1, pos2, move1, move2));
         if (getTeam(pos1, pos2) == ChessPiece::team_type::white) {
             wKingCol = move1;
             wKingRow = move2;
