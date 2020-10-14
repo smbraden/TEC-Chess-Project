@@ -24,14 +24,6 @@ The choice of the new piece is not limited to pieces previously captured,
 thus promotion can result in a player owning, for example, 
 two or more queens despite starting the game with one.
 
--Check and checkmate (Stalemate? challenging)
-Under the standard rules of chess, a player may not make any move 
-that places or leaves their king in check. A player may move the king, 
-capture the threatening piece, or block the check with another piece. 
-A king cannot itself directly check the opposing king, 
-since this would place the first king in check as well.
-
-
 -Three-fold repetition
 This rule states that if the same position is repeated three times 
 and no progress is made, you can claim a draw. 
@@ -53,7 +45,12 @@ When this happens, the opposing player has the option to use his pawn
 to take the moved pawn “en passant” or “in passing” as if the pawn had 
 only moved one square.
 
-
+-Check 
+Under the standard rules of chess, a player may not make any move 
+that places or leaves their king in check. A player may move the king, 
+capture the threatening piece, or block the check with another piece. 
+A king cannot itself directly check the opposing king, 
+since this would place the first king in check as well.
 
 
 

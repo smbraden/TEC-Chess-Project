@@ -294,8 +294,7 @@ namespace chess {
             try {
                 
                 if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) { // Pawns have special rules to assess
-                    evaluatePath(validPawnMove(pos1, pos2, move1, move2));  // might throw piece or ilegal move error
-                    //pawnPromote(move1, move2);                            // if 8th rank move, promotes pawn 
+                    evaluatePath(validPawnMove(pos1, pos2, move1, move2));  // might throw piece or ilegal move error 
                 }
                 else {  // all the other pieces
                     evaluatePath(grid[pos1][pos2]->validMove(move1, move2));// throws PieceMoveError, IlegalMoveError
@@ -311,11 +310,12 @@ namespace chess {
                 throw IndirectPathError();
             }
 
-            removePiece(pos1, pos2, move1, move2);      // removes for En Passant too
-            resetEnPassant(move1, move2); // resets all EnPassant to false, except the moved piece, if applicable
+            pawnPromote(pos1, pos2, move1, move2);  // if moving to 8th rank move, promote pawn
+            setPiece(pos1, pos2, move1, move2);     // set new pos on grid and internally, remove captures
+            resetEnPassant(move1, move2);           // resets all EnPassant to false, except a moved pawn
             
             try {
-                isCheck(inTeamType);    // throws CheckError if move results in Check                        
+                isCheck(inTeamType);            // throws CheckError if move results in Check                        
             }
             catch (CheckError e) {
                 *this = tempBoard;
@@ -329,7 +329,7 @@ namespace chess {
 
 
 
-    void ChessBoard::removePiece(int pos1, int pos2, int move1, int move2)
+    void ChessBoard::setPiece(int pos1, int pos2, int move1, int move2)
     {
         if (isEnPassant(pos1, pos2, move1, move2))
             remove(move1, pos2);
@@ -532,10 +532,23 @@ namespace chess {
 
 
 
-    // IN PROGRESS
-    void ChessBoard::pawnPromote(int move1, int move2)
+
+
+    // IN PROGRESS: Promotion with options needs implementing, currently promotes to queen
+    void ChessBoard::pawnPromote(int pos1, int pos2, int move1, int move2)
     {
-        
+        assert(inBounds4(pos1, pos2, move1, move2));
+        ChessPiece::team_type team = getTeam(pos1, pos2);
+
+        if (isPiece(pos1, pos2) && getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {
+            if ((team == ChessPiece::team_type::white && move2 == 7) ||
+                (team == ChessPiece::team_type::black && move2 == 0)) {
+                // later, promote with options HERE
+                Queen* qPtr = new Queen(pos1, pos2, team);
+                remove(pos1, pos2);
+                grid[pos1][pos2] = qPtr;
+            }
+        }
     }
 
 
@@ -593,10 +606,6 @@ namespace chess {
         // else if there are any attacking knights
         else if (checkKnight(team, kCol, kRow))
             throw CheckError();
-        else if (checkKing(team, kCol, kRow))
-            throw CheckError();
-        // A king cannot itself directly check the opposing king, 
-        // since this would place the first king in check as well.
     }
 
 
@@ -633,11 +642,15 @@ namespace chess {
             nextCol = nextCol + colSign;
             nextRow = nextRow + rowSign;
         }
+
         if (isPiece(nextCol, nextRow) && getTeam(nextCol, nextRow) != kingTeam
             && (getPiece(nextCol, nextRow) == ChessPiece::piece_type::queen
                 || getPiece(nextCol, nextRow) == ChessPiece::piece_type::rook))
             return true;
-
+        else if (getPiece(nextCol, nextRow) == ChessPiece::piece_type::king &&
+            abs(nextCol - kCol) == 1 || abs(nextRow - kRow) == 1)
+            return true;
+        
         return false;
     }
 
@@ -696,11 +709,15 @@ namespace chess {
             nextRow = nextRow + rowSign;
         }
 
-        if (isPiece(nextCol, nextRow) && getTeam(nextCol, nextRow) != kingTeam &&
-            (getPiece(nextCol, nextRow) == ChessPiece::piece_type::queen || 
-                    getPiece(nextCol, nextRow) == ChessPiece::piece_type::rook))
-            return true;
-
+        if (isPiece(nextCol, nextRow) && getTeam(nextCol, nextRow) != kingTeam ) {
+            if (getPiece(nextCol, nextRow) == ChessPiece::piece_type::queen ||
+                getPiece(nextCol, nextRow) == ChessPiece::piece_type::rook)
+                return true;
+            else if (getPiece(nextCol, nextRow) == ChessPiece::piece_type::king && 
+                abs(nextCol - kCol) == 1 && abs(nextRow - kRow) == 1)
+                return true;
+        }
+        
         return false;
     }
 
@@ -740,16 +757,6 @@ namespace chess {
             && getPiece(col, row) == ChessPiece::piece_type::knight)
             return true;
         
-        return false;
-    }
-
-
-
-
-
-    // IN PROGRESS
-    bool ChessBoard::checkKing(ChessPiece::team_type kingTeam, int kCol, int kRow) const
-    {
         return false;
     }
 

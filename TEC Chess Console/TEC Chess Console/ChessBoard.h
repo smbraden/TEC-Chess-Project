@@ -60,7 +60,7 @@ namespace chess {
 		void evaluatePath(int* path) const;
 		void move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type inTeam);
 		void remove(int x, int y);
-		void removePiece(int pos1, int pos2, int move1, int move2);
+		void setPiece(int pos1, int pos2, int move1, int move2);
 		void clear();
 		void copy(const ChessBoard&);
 		bool isPiece(int inCol, int inRow) const;
@@ -68,7 +68,7 @@ namespace chess {
 		bool isCapture(int pos1, int pos2, int move1, int move2) const;
 		bool simpleAdvance(int pos1, int pos2, int move1, int move2) const;
 		bool isEnPassant(int pos1, int pos2, int move1, int move2) const;
-		void pawnPromote(int move1, int move2);
+		void pawnPromote(int pos1, int pos2, int move1, int move2);
 		void resetEnPassant(int pos1, int pos2);
 
 		// determines if the given position and suit places a king in check
@@ -82,7 +82,6 @@ namespace chess {
 		bool singleDiagonal(ChessPiece::team_type kingTeam, int kCol, int kRow, int colSign, int rowSign) const;
 		bool checkKnight(ChessPiece::team_type kingTeam, int kCol, int kRow) const;
 		bool singleKnight(ChessPiece::team_type kingTeam,int kCol, int kRow, int colSign, int rowSign) const;
-		bool checkKing(ChessPiece::team_type kingTeam, int kCol, int kRow) const;
 		void setKing(int pos1, int pos2, int move1, int move2);
 		
 	};
