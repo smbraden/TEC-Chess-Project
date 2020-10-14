@@ -284,7 +284,7 @@ namespace chess {
             throw TurnMoveError();
         else if (pos1 == move1 && pos2 == move2)        // the source is the destination
             throw NoTurnPassError();
-        else if (getTeam(move1, move2) == inTeamType)  // destination occupied by a piece
+        else if (isPiece(move1, move2) && getTeam(move1, move2) == inTeamType)  // destination occupied by a piece
             throw SelfCapturError();                                            // belonging to the moving player
         else {  // basic rules have been followed. Now, are the rules followed for the specific piece?
 
@@ -693,10 +693,9 @@ namespace chess {
             nextRow = nextRow + rowSign;
         }
 
-        ChessPiece::piece_type piece = getPiece(nextCol, nextRow);
-
         if (isPiece(nextCol, nextRow) && getTeam(nextCol, nextRow) != kingTeam &&
-            (piece == ChessPiece::piece_type::queen || piece == ChessPiece::piece_type::rook))
+            (getPiece(nextCol, nextRow) == ChessPiece::piece_type::queen || 
+                    getPiece(nextCol, nextRow) == ChessPiece::piece_type::rook))
             return true;
 
         return false;

@@ -1,0 +1,193 @@
+isCheck() must take captures into account.
+OR need to call isCheck() AFTER capture moves, 
+then revert to previous game state if still invalid
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 bP bP bP bP bP bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 wP wP wP wP wP wP wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+
+Welcome to the TEC Chess Test Console!
+To enter moves, use the format 'ColRow': a7, b3, etc
+Enter 'q' to exit at the continue/quit promt after each round
+Play? Hit quit/continue now (q/c): c
+
+White move. Current position:   d2
+White move. New position:       d4
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 bP bP bP bP bP bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ wP __ __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 wP wP wP __ wP wP wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+Black move. Current position:   a7
+Black move. New position:       a5
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 __ bP bP bP bP bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 bP __ __ __ __ __ __ __ 5
+4 __ __ __ wP __ __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 wP wP wP __ wP wP wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): c
+
+White move. Current position:   d4
+White move. New position:       d5
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 __ bP bP bP bP bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 bP __ __ wP __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 wP wP wP __ wP wP wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+Black move. Current position:   c7
+Black move. New position:       c5
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 __ bP __ bP bP bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 bP __ bP wP __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 wP wP wP __ wP wP wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): c
+
+White move. Current position:   d5
+White move. New position:       c6
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 __ bP __ bP bP bP bP bP 7
+6 __ __ wP __ __ __ __ __ 6
+5 bP __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 wP wP wP __ wP wP wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+Black move. Current position:   b8
+Black move. New position:       c6
+
+
+  a  b  c  d  e  f  g  h
+8 bR __ bB bQ bK bB bN bR 8
+7 __ bP __ bP bP bP bP bP 7
+6 __ __ bN __ __ __ __ __ 6
+5 bP __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 wP wP wP __ wP wP wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): c
+
+White move. Current position:   a2
+White move. New position:       a4
+
+
+  a  b  c  d  e  f  g  h
+8 bR __ bB bQ bK bB bN bR 8
+7 __ bP __ bP bP bP bP bP 7
+6 __ __ bN __ __ __ __ __ 6
+5 bP __ __ __ __ __ __ __ 5
+4 wP __ __ __ __ __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 __ wP wP __ wP wP wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+Black move. Current position:   c6
+Black move. New position:       b4
+
+
+  a  b  c  d  e  f  g  h
+8 bR __ bB bQ bK bB bN bR 8
+7 __ bP __ bP bP bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 bP __ __ __ __ __ __ __ 5
+4 wP bN __ __ __ __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 __ wP wP __ wP wP wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): c
+
+White move. Current position:   c1
+White move. New position:       g5
+
+
+  a  b  c  d  e  f  g  h
+8 bR __ bB bQ bK bB bN bR 8
+7 __ bP __ bP bP bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 bP __ __ __ __ __ wB __ 5
+4 wP bN __ __ __ __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 __ wP wP __ wP wP wP wP 2
+1 wR wN __ wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+Black move. Current position:   b4
+Black move. New position:       c2
+
+
+  a  b  c  d  e  f  g  h
+8 bR __ bB bQ bK bB bN bR 8
+7 __ bP __ bP bP bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 bP __ __ __ __ __ wB __ 5
+4 wP __ __ __ __ __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 __ wP bN __ wP wP wP wP 2
+1 wR wN __ wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): c
+
+White move. Current position:   d1
+White move. New position:       d3
+
+This move does not remove your King from check. You might be pwned...
+
+White move. Current position:   d1
+White move. New position:       c2
+
+This move does not remove your King from check. You might be pwned...
+
+White move. Current position:
