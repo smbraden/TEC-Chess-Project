@@ -22,6 +22,7 @@ using namespace std;
 namespace chess {
 
 
+
     ChessBoard::ChessBoard()
     {
         wKingRow = 0;
@@ -313,7 +314,6 @@ namespace chess {
             removePiece(pos1, pos2, move1, move2);      // removes for En Passant too
             resetEnPassant(move1, move2); // resets all EnPassant to false, except the moved piece, if applicable
             
-            
             try {
                 isCheck(inTeamType);    // throws CheckError if move results in Check                        
             }
@@ -569,7 +569,6 @@ namespace chess {
 
     void ChessBoard::isCheck(ChessPiece::team_type team) const
     {
-
         int kRow;
         int kCol;
         
@@ -594,6 +593,10 @@ namespace chess {
         // else if there are any attacking knights
         else if (checkKnight(team, kCol, kRow))
             throw CheckError();
+        else if (checkKing(team, kCol, kRow))
+            throw CheckError();
+        // A king cannot itself directly check the opposing king, 
+        // since this would place the first king in check as well.
     }
 
 
@@ -615,37 +618,26 @@ namespace chess {
 
 
 
-
-
     
+
     //    Precondition: Either colSign or rowSign is 0
     //                  Either colSign or RowSign is 1 or -1
     //                  kCol is the king's column
     //                  kRow is the king's row
     bool ChessBoard::singleLateral(ChessPiece::team_type kingTeam, int kCol, int kRow, int colSign, int rowSign) const
     {
-        int nextRow = kRow + rowSign; 
         int nextCol = kCol + colSign;
-        
-        if (kRow == nextRow) {
-            while (nextCol < BOARD_SIZE && nextCol >= 0 && !isPiece(nextCol, kRow))
-                nextCol = nextCol + colSign;
+        int nextRow = kRow + rowSign;
 
-            if (isPiece(nextCol, kRow) && getTeam(nextCol, kRow) != kingTeam
-                && (getPiece(nextCol, kRow) == ChessPiece::piece_type::queen
-                || getPiece(nextCol, kRow) == ChessPiece::piece_type::rook))
-                return true;
+        while (inBounds2(nextCol, nextRow) && !isPiece(nextCol, nextRow)) {
+            nextCol = nextCol + colSign;
+            nextRow = nextRow + rowSign;
         }
-        else {  // if (kCol == nextCol)
-            while (nextRow < BOARD_SIZE && nextRow >= 0 && !isPiece(kCol, nextRow))
-                nextRow = nextRow + rowSign;
-            
-            if (isPiece(kCol, nextRow) && getTeam(nextCol, kRow) != kingTeam 
-                && (getPiece(kCol, nextRow) == ChessPiece::piece_type::queen
-                || getPiece(kCol, nextRow) == ChessPiece::piece_type::rook))
-                return true;
-        }
-        
+        if (isPiece(nextCol, nextRow) && getTeam(nextCol, nextRow) != kingTeam
+            && (getPiece(nextCol, nextRow) == ChessPiece::piece_type::queen
+                || getPiece(nextCol, nextRow) == ChessPiece::piece_type::rook))
+            return true;
+
         return false;
     }
 
@@ -653,25 +645,21 @@ namespace chess {
 
 
 
-
-
+    // if threatened by pawn
     bool ChessBoard::checkCorners(ChessPiece::team_type kingTeam, int kCol, int kRow) const
     {
-        // if threatened by pawn
-        if (kingTeam == ChessPiece::team_type::white)
-            if ((isPiece(kCol + 1, kRow + 1) && getTeam(kCol + 1, kRow + 1) != kingTeam 
-                        && getPiece(kCol + 1, kRow + 1) == ChessPiece::piece_type::pawn) ||
-                (isPiece(kCol - 1, kRow + 1) && getTeam(kCol - 1, kRow + 1) != kingTeam 
-                        && getPiece(kCol - 1, kRow + 1) == ChessPiece::piece_type::pawn))
-                return true;
+        int left = kCol - 1;
+        int right = kCol + 1;
+        int pRow;
 
-        else {  // if (getTeam(kCol, kRow) == ChessPiece::team_type::black)
-            if ((isPiece(kCol + 1, kRow - 1) && getTeam(kCol + 1, kRow - 1) != kingTeam 
-                        && getPiece(kCol + 1, kRow - 1) == ChessPiece::piece_type::pawn) ||
-                (isPiece(kCol - 1, kRow - 1) && getTeam(kCol - 1, kRow - 1) != kingTeam  
-                        && getPiece(kCol - 1, kRow - 1) == ChessPiece::piece_type::pawn))
-                return true;
-        }
+        pRow = (kingTeam == ChessPiece::team_type::white) ? (kRow + 1) : (kRow - 1);
+
+        if ((isPiece(right, pRow) && getTeam(right, pRow) != kingTeam
+            && getPiece(right, pRow) == ChessPiece::piece_type::pawn) ||
+            (isPiece(left, pRow) && getTeam(left, pRow) != kingTeam
+                && getPiece(left, pRow) == ChessPiece::piece_type::pawn))
+            return true;
+
         return false;
     }
 
@@ -759,6 +747,16 @@ namespace chess {
 
 
 
+    // IN PROGRESS
+    bool ChessBoard::checkKing(ChessPiece::team_type kingTeam, int kCol, int kRow) const
+    {
+        return false;
+    }
+
+
+
+
+
 
     void ChessBoard::setKing(int pos1, int pos2, int move1, int move2)
     {
@@ -779,3 +777,39 @@ namespace chess {
 }  // closes namespace
 
 
+
+
+
+
+    /*
+    //    Precondition: Either colSign or rowSign is 0
+    //                  Either colSign or RowSign is 1 or -1
+    //                  kCol is the king's column
+    //                  kRow is the king's row
+    bool ChessBoard::singleLateral(ChessPiece::team_type kingTeam, int kCol, int kRow, int colSign, int rowSign) const
+    {
+        int nextRow = kRow + rowSign;
+        int nextCol = kCol + colSign;
+
+        if (colSign != 0) {
+            while (nextCol < BOARD_SIZE && nextCol >= 0 && !isPiece(nextCol, kRow))
+                nextCol = nextCol + colSign;
+
+            if (isPiece(nextCol, kRow) && getTeam(nextCol, kRow) != kingTeam
+                && (getPiece(nextCol, kRow) == ChessPiece::piece_type::queen
+                || getPiece(nextCol, kRow) == ChessPiece::piece_type::rook))
+                return true;
+        }
+        else if (rowSign != 0) {  // if (kCol == nextCol)
+            while (nextRow < BOARD_SIZE && nextRow >= 0 && !isPiece(kCol, nextRow))
+                nextRow = nextRow + rowSign;
+
+            if (isPiece(kCol, nextRow) && getTeam(nextCol, kRow) != kingTeam
+                && (getPiece(kCol, nextRow) == ChessPiece::piece_type::queen
+                || getPiece(kCol, nextRow) == ChessPiece::piece_type::rook))
+                return true;
+        }
+
+        return false;
+    }
+    */

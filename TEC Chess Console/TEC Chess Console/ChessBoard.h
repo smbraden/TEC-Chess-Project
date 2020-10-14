@@ -82,6 +82,7 @@ namespace chess {
 		bool singleDiagonal(ChessPiece::team_type kingTeam, int kCol, int kRow, int colSign, int rowSign) const;
 		bool checkKnight(ChessPiece::team_type kingTeam, int kCol, int kRow) const;
 		bool singleKnight(ChessPiece::team_type kingTeam,int kCol, int kRow, int colSign, int rowSign) const;
+		bool checkKing(ChessPiece::team_type kingTeam, int kCol, int kRow) const;
 		void setKing(int pos1, int pos2, int move1, int move2);
 		
 	};
