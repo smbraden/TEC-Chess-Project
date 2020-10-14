@@ -64,7 +64,7 @@ namespace chess {
 
 
 
-    ChessBoard ChessBoard::operator=(const ChessBoard right)
+    ChessBoard ChessBoard::operator=(const ChessBoard& right)
     {
         if (this != &right) {
             clear();
@@ -288,9 +288,9 @@ namespace chess {
             throw SelfCapturError();                                            // belonging to the moving player
         else {  // basic rules have been followed. Now, are the rules followed for the specific piece?
 
+            ChessBoard tempBoard = *this;
+
             try {
-                
-                isCheck(inTeamType);                          // throws CheckError if move results in Check
                 
                 if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) { // Pawns have special rules to assess
                     evaluatePath(validPawnMove(pos1, pos2, move1, move2));  // might throw piece or ilegal move error
@@ -312,6 +312,15 @@ namespace chess {
 
             removePiece(pos1, pos2, move1, move2);      // removes for En Passant too
             resetEnPassant(move1, move2); // resets all EnPassant to false, except the moved piece, if applicable
+            
+            
+            try {
+                isCheck(inTeamType);    // throws CheckError if move results in Check                        
+            }
+            catch (CheckError e) {
+                *this = tempBoard;
+                throw CheckError();
+            }
         }
     }
 
@@ -364,33 +373,39 @@ namespace chess {
 
 
     // Precodition:     The board has been cleared
-    void ChessBoard::copy(const ChessBoard arg)
+    void ChessBoard::copy(const ChessBoard& arg)
     {
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
+                
                 if (arg.grid[i][j] == nullptr)
                     grid[i][j] = nullptr;
-                else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::pawn) {
-                    bool passVal = ((Pawn*)grid[i][j])->getEnPassant();
-                    grid[i][j] = new Pawn(i, j, arg.grid[i][j]->getTeamType(), passVal);
+                else if (arg.getPiece(i, j) == ChessPiece::piece_type::pawn) {
+                    bool passVal = ((Pawn*)arg.grid[i][j])->getEnPassant();
+                    grid[i][j] = new Pawn(i, j, arg.getTeam(i, j), passVal);
                 }
-                else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::rook) {
-                    grid[i][j] = new Rook(i, j, arg.grid[i][j]->getTeamType());
+                else if (arg.getPiece(i, j) == ChessPiece::piece_type::rook) {
+                    grid[i][j] = new Rook(i, j, arg.getTeam(i, j));
                 }
-                else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::knight) {
-                    grid[i][j] = new Knight(i, j, arg.grid[i][j]->getTeamType());
+                else if (arg.getPiece(i, j) == ChessPiece::piece_type::knight) {
+                    grid[i][j] = new Knight(i, j, arg.getTeam(i, j));
                 }
-                else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::bishop) {
-                    grid[i][j] = new Bishop(i, j, arg.grid[i][j]->getTeamType());
+                else if (arg.getPiece(i, j) == ChessPiece::piece_type::bishop) {
+                    grid[i][j] = new Bishop(i, j, arg.getTeam(i, j));
                 }
-                else if (grid[i][j]->getPieceType() == ChessPiece::piece_type::king) {
-                    grid[i][j] = new King(i, j, arg.grid[i][j]->getTeamType());
+                else if (arg.getPiece(i, j) == ChessPiece::piece_type::king) {
+                    grid[i][j] = new King(i, j, arg.getTeam(i, j));
                 }
                 else {  // if (grid[i][j]->getPieceType() == ChessPiece::piece_type::queen) 
-                    grid[i][j] = new Queen(i, j, arg.grid[i][j]->getTeamType());
+                    grid[i][j] = new Queen(i, j, arg.getTeam(i, j));
                 }
             }
         }
+
+        wKingRow = arg.wKingRow;
+        wKingCol = arg.wKingCol;
+        bKingRow = arg.bKingRow;
+        bKingCol = arg.bKingCol;
     }
 
 

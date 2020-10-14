@@ -23,7 +23,7 @@ namespace chess {
 		ChessBoard();
 		ChessBoard(const ChessBoard&);
 		~ChessBoard();
-		ChessBoard operator=(const ChessBoard);
+		ChessBoard operator=(const ChessBoard&);
 
 		void moveWhite(int pos1, int pos2, int move1, int move2); // indices 0-7 
 		void moveBlack(int pos1, int pos2, int move1, int move2); // (col ,row)
@@ -58,11 +58,11 @@ namespace chess {
 		// helper functions
 		void initPieces();
 		void evaluatePath(int* path) const;
-		void move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type);
+		void move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type inTeam);
 		void remove(int x, int y);
 		void removePiece(int pos1, int pos2, int move1, int move2);
 		void clear();
-		void copy(const ChessBoard);
+		void copy(const ChessBoard&);
 		bool isPiece(int inCol, int inRow) const;
 		int* validPawnMove(int pos1, int pos2, int move1, int move2) const;
 		bool isCapture(int pos1, int pos2, int move1, int move2) const;
@@ -73,6 +73,8 @@ namespace chess {
 
 		// determines if the given position and suit places a king in check
 		void isCheck(ChessPiece::team_type team) const;
+
+		// isCheck() helper functions
 		bool checkLaterals(ChessPiece::team_type kingTeam, int kCol, int kRow) const;
 		bool singleLateral(ChessPiece::team_type kingTeam, int kCol, int kRow, int colSign, int rowSign) const;
 		bool checkCorners(ChessPiece::team_type kingTeam, int kCol, int kRow) const;
