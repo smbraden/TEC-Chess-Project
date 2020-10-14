@@ -106,9 +106,12 @@ namespace chess {
 		Rook(int inCol, int inRow, team_type color);
 		class RookMoveError {};
 		int* validMove(int inCol, int inRow) const;
+		bool getCastleStatus();
+		void setCastleStatus(bool arg);
 
 	private:
 
+		bool castle;						// true as long as rook  has never moved yet
 		int* getPath(int inCol, int inRow) const;
 
 	};

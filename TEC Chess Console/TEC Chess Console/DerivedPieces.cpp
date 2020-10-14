@@ -354,6 +354,7 @@ namespace chess {
 	Rook::Rook() : Queen()
 	{
 		setPieceType(piece_type::rook);
+		castle = true;
 	}
 
 
@@ -364,6 +365,7 @@ namespace chess {
 	Rook::Rook(int inCol, int inRow, team_type color) : Queen(inCol, inRow, color)
 	{
 		setPieceType(piece_type::rook);
+		castle = true;
 	}
 
 
@@ -384,6 +386,26 @@ namespace chess {
 			throw PieceMoveError();
 
 		return path;
+	}
+
+
+
+
+
+
+	bool Rook::getCastleStatus()
+	{
+		return castle;
+	}
+
+
+
+
+
+
+	void Rook::setCastleStatus(bool arg)
+	{
+		castle = arg;
 	}
 
 
@@ -458,7 +480,7 @@ namespace chess {
 	King::King() : ChessPiece()
 	{
 		setPieceType(piece_type::king);
-		castle = false;
+		castle = true;
 		check = false;
 		checkMate = false;
 	}
@@ -471,7 +493,7 @@ namespace chess {
 	King::King(int inCol, int inRow, team_type color) : ChessPiece(inCol, inRow, color)
 	{
 		setPieceType(piece_type::king);
-		castle = false;
+		castle = true;
 		check = false;
 		checkMate = false;
 	}
@@ -509,6 +531,11 @@ namespace chess {
 	{
 		return castle;
 	}
+
+
+
+
+
 
 	void King::setCastleStatus(bool arg)
 	{

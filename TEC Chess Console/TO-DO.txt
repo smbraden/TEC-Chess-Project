@@ -2,7 +2,7 @@ Some tasks to be completed in finishing up the ChessBoard class
 
 //--------------------------------------------------------------------------//
 
-Implement the following rules and condition checks:
+Implement the following rules:
 
 
 -Castling

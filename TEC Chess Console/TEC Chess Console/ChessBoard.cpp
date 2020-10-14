@@ -295,6 +295,7 @@ namespace chess {
                 
                 if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) { // Pawns have special rules to assess
                     evaluatePath(validPawnMove(pos1, pos2, move1, move2));  // might throw piece or ilegal move error 
+                    // pawnPromote(pos1, pos2, move1, move2);  // if moving to 8th rank move, promote pawn
                 }
                 else {  // all the other pieces
                     evaluatePath(grid[pos1][pos2]->validMove(move1, move2));// throws PieceMoveError, IlegalMoveError
@@ -643,13 +644,15 @@ namespace chess {
             nextRow = nextRow + rowSign;
         }
 
-        if (isPiece(nextCol, nextRow) && getTeam(nextCol, nextRow) != kingTeam
-            && (getPiece(nextCol, nextRow) == ChessPiece::piece_type::queen
-                || getPiece(nextCol, nextRow) == ChessPiece::piece_type::rook))
-            return true;
-        else if (getPiece(nextCol, nextRow) == ChessPiece::piece_type::king &&
-            abs(nextCol - kCol) == 1 || abs(nextRow - kRow) == 1)
-            return true;
+        if (isPiece(nextCol, nextRow) && getTeam(nextCol, nextRow) != kingTeam) {
+            if (getPiece(nextCol, nextRow) == ChessPiece::piece_type::queen
+                || getPiece(nextCol, nextRow) == ChessPiece::piece_type::rook)
+                return true;
+            else if (getPiece(nextCol, nextRow) == ChessPiece::piece_type::king &&
+                (abs(nextCol - kCol) == 1 || abs(nextRow - kRow) == 1))
+                return true;
+        }
+        
         
         return false;
     }
