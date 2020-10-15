@@ -52,33 +52,21 @@ namespace chess {
 
 			// if starting row and move two rows forward, or otherwise move only one row forward 
 			if ((row == 6 && inRow == 4 && col == inCol) || (inRow == (row - 1) && col == inCol)) {
-				if (row == 6 && inRow == 4) {			// col == inCol implied
+				if (row == 6 && inRow == 4)			// col == inCol implied
 					path = getPath(inCol, inRow);	// only need path if moved two spaces
-					// setEnPassant(true);
-				}
-			}
-			else if (row == inRow + 1 && abs(col - inCol) == 1) {	// diagonal capture, no path
-
-			}
-			else {
+			  }
+			else if (!(row == inRow + 1 && abs(col - inCol) == 1)) // diagonal capture, no path
 				throw PieceMoveError();
-			}
 		}
 		else { //  if (team == white)
 
 			// if starting row and move two rows forward, or otherwise move only one row forward 
 			if ((row == 1 && inRow == 3 && col == inCol) || (inRow == row + 1 && col == inCol)) {
-				if (row == 1 && inRow == 3) {		//  col == inCol
+				if (row == 1 && inRow == 3)			//  col == inCol
 					path = getPath(inCol, inRow);	// only need path if moved two spaces
-					// setEnPassant(true);
-				}
 			}
-			else if (inRow == row + 1 && abs(col - inCol) == 1) {	// diagonal capture, no path
-
-			}
-			else {
+			else if (!(inRow == row + 1 && abs(col - inCol) == 1)) // diagonal capture, no path
 				throw PieceMoveError();
-			} 
 		}
 
 		return path; // could be condensed, but with lengthy, less-readable condition statements
@@ -251,10 +239,7 @@ namespace chess {
 
 			if (col == inCol) {		// same column
 
-				if (row > inRow)
-					next = inRow + 1;
-				else				// if row < inRow
-					next = row + 1;
+				next = (row > inRow) ? inRow + 1 : row + 1;
 
 				while (next != row && next != inRow) {
 
@@ -267,11 +252,8 @@ namespace chess {
 			}
 			else if (row == inRow) {	// same column
 
-				if (col > inCol)
-					next = inCol + 1;
-				else					// if col < inCol
-					next = col + 1;
-					
+				next = (col > inCol) ? inCol + 1 : col + 1;
+
 				while (next != col && next != inCol) {
 
 					path[2 * j + 1] = inRow;
@@ -451,13 +433,11 @@ namespace chess {
 		int col = getCol();
 		int row = getRow();
 
-		if ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow)) {
+		if ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow))
 			path = getPath(inCol, inRow);
-		}
-		else {
+		else
 			throw PieceMoveError();
-		}
-
+		
 		return path;
 	}
 
@@ -512,12 +492,9 @@ namespace chess {
 		int row = getRow();
 		int col = getCol();
 
-		if ((inRow <= row + 1) && (inRow >= row - 1) && (inCol <= col + 1) && (inCol >= col - 1)) {
-			
-		}
-		else {
+		// if ((inRow > row + 1) || (inRow < row - 1) || (inCol > col + 1) || (inCol < col - 1))
+		if (!((inRow <= row + 1) && (inRow >= row - 1) && (inCol <= col + 1) && (inCol >= col - 1))) 
 			throw PieceMoveError();
-		}
 
 		return  nullptr;
 	}

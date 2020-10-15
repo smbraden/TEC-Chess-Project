@@ -65,11 +65,17 @@ namespace chess {
 		void copy(const ChessBoard&);
 		bool isPiece(int inCol, int inRow) const;
 		int* validPawnMove(int pos1, int pos2, int move1, int move2) const;
+
+		// Pawn-related functions
 		bool isCapture(int pos1, int pos2, int move1, int move2) const;
 		bool simpleAdvance(int pos1, int pos2, int move1, int move2) const;
 		bool isEnPassant(int pos1, int pos2, int move1, int move2) const;
 		void pawnPromote(int pos1, int pos2, int move1, int move2);
 		void resetEnPassant(int pos1, int pos2);
+
+		// King-related functions
+		bool isCastle(int pos1, int pos2, int move1, int move2);
+		void setKing(int pos1, int pos2, int move1, int move2);
 
 		// determines if the given position and suit places a king in check
 		void isCheck(ChessPiece::team_type team) const;
@@ -82,7 +88,6 @@ namespace chess {
 		bool singleDiagonal(ChessPiece::team_type kingTeam, int kCol, int kRow, int colSign, int rowSign) const;
 		bool checkKnight(ChessPiece::team_type kingTeam, int kCol, int kRow) const;
 		bool singleKnight(ChessPiece::team_type kingTeam,int kCol, int kRow, int colSign, int rowSign) const;
-		void setKing(int pos1, int pos2, int move1, int move2);
 		
 	};
 

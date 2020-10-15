@@ -293,15 +293,17 @@ namespace chess {
 
             try {
                 
-                if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) { // Pawns have special rules to assess
-                    evaluatePath(validPawnMove(pos1, pos2, move1, move2));  // might throw piece or ilegal move error 
-                    // pawnPromote(pos1, pos2, move1, move2);  // if moving to 8th rank move, promote pawn
+                if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {  // Pawns have special rules to assess
+                    evaluatePath(validPawnMove(pos1, pos2, move1, move2));  // might throw piece or ilegal move error
+                    pawnPromote(pos1, pos2, move1, move2);  // if moving to 8th rank move, promote pawn
+                }
+                else if (getPiece(pos1, pos2) == ChessPiece::piece_type::king) {
+                    if (!isCastle(pos1, pos2, move1, move2))
+                        evaluatePath(grid[pos1][pos2]->validMove(move1, move2));
+                    setKing(pos1, pos2, move1, move2);
                 }
                 else {  // all the other pieces
                     evaluatePath(grid[pos1][pos2]->validMove(move1, move2));// throws PieceMoveError, IlegalMoveError
-                    
-                    if (getPiece(pos1, pos2) == ChessPiece::piece_type::king)
-                        setKing(pos1, pos2, move1, move2);
                 }
             }
             catch (ChessPiece::PieceMoveError e) {
@@ -311,7 +313,7 @@ namespace chess {
                 throw IndirectPathError();
             }
 
-            pawnPromote(pos1, pos2, move1, move2);  // if moving to 8th rank move, promote pawn
+            // pawnPromote(pos1, pos2, move1, move2);  // if moving to 8th rank move, promote pawn
             setPiece(pos1, pos2, move1, move2);     // set new pos on grid and internally, remove captures
             resetEnPassant(move1, move2);           // resets all EnPassant to false, except a moved pawn
             
@@ -763,6 +765,30 @@ namespace chess {
         return false;
     }
 
+
+
+
+
+
+    // Return:  true if a valid castling move
+    // Post:    the castling rook has been set to the new position, if applicable
+    bool ChessBoard::isCastle(int pos1, int pos2, int move1, int move2)
+    {
+        // if valid castle move 
+            // move the castling rook
+            // return true;
+        
+        return false;
+    }
+    /*
+        Castling consists of moving the king two squares towards a rook 
+        on the player's first rank, then moving the rook to the square 
+        over which the king crossed. Castling may only be done if the king 
+        has never moved, the rook involved has never moved, 
+        the squares between the king and the rook involved are unoccupied, 
+        the king is not in check, and the king does not cross over 
+        or end on a square attacked by an enemy piece.
+    */
 
 
 
