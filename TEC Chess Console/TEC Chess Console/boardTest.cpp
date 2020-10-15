@@ -18,7 +18,8 @@ using namespace chess;
 
 #define char2col(ch) tolower(ch) - 97
 #define int2row(in) in - 1
-
+#define validInput(a, b, c, d) (a >= 'a' && a <= 'h' && b >= 'a' && b <= 'h' && \
+									c > 0    && c <= 8   && d > 0    && d <= 8 )
 
 
 bool testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2);
@@ -43,8 +44,9 @@ int main() {
 	cout << endl << endl;
 
 	cout << "Welcome to the TEC Chess Test Console!" << endl;
-	cout << "To enter moves, use the format 'ColRow': a7, b3, etc"<< endl;
-	cout << "Enter 'q' to exit at the continue/quit promt after each round" << endl;
+	cout << "To enter moves, use the format 'ColRow': a7, b3, etc" << endl;
+	cout << "Don't hit 'enter' without any input. This is a quick n dirty test that will break." << endl;
+	cout << "Enter 'q' to exit at the continue/quit prompt after each round" << endl;
 	cout << "Play? Hit quit/continue now (q/c): ";
 	cin >> option;
 	cout << endl;
@@ -70,13 +72,13 @@ void play(ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& 
 	do {
 
 		do {
-
+			
 			cout << "White move. Current position:	";
 			cin >> x1 >> y1;
 			cout << "White move. New position:	";
 			cin >> x2 >> y2;
 			cout << endl;
-
+			
 		} while (!testMoveW(argBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2)));
 
 		do {
@@ -87,7 +89,7 @@ void play(ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& 
 			cin >> x2 >> y2;
 			cout << endl;
 
-		} while (!testMoveB(argBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2)));
+		} while ( !testMoveB(argBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2)));
 
 
 		// Continue prompt

@@ -293,18 +293,23 @@ namespace chess {
 
             try {
                 
-                if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {  // Pawns have special rules to assess
+                if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) { // Pawns have special rules to assess
                     evaluatePath(validPawnMove(pos1, pos2, move1, move2));  // might throw piece or ilegal move error
-                    pawnPromote(pos1, pos2, move1, move2);  // if moving to 8th rank move, promote pawn
+                    pawnPromote(pos1, pos2, move1, move2);                  // if moving to 8th rank move, promote pawn
                 }
                 else if (getPiece(pos1, pos2) == ChessPiece::piece_type::king) {
-                    if (!isCastle(pos1, pos2, move1, move2))
+                    if (!Castle(pos1, pos2, move1, move2)) {                
                         evaluatePath(grid[pos1][pos2]->validMove(move1, move2));
+                        ((King*)grid[pos1][pos2])->setCastleStatus(false);
+                    }
                     setKing(pos1, pos2, move1, move2);
                 }
                 else {  // all the other pieces
                     evaluatePath(grid[pos1][pos2]->validMove(move1, move2));// throws PieceMoveError, IlegalMoveError
+                    if (getPiece(pos1, pos2) == ChessPiece::piece_type::rook)
+                        ((Rook*)grid[pos1][pos2])->setCastleStatus(false);
                 }
+
             }
             catch (ChessPiece::PieceMoveError e) {
                 throw ChessPiece::PieceMoveError();
@@ -317,10 +322,7 @@ namespace chess {
             setPiece(pos1, pos2, move1, move2);     // set new pos on grid and internally, remove captures
             resetEnPassant(move1, move2);           // resets all EnPassant to false, except a moved pawn
             
-            try {
-                isCheck(inTeamType);            // throws CheckError if move results in Check                        
-            }
-            catch (CheckError e) {
+            if(isCheck(inTeamType)) {   // throws CheckError if move results in Check
                 *this = tempBoard;
                 throw CheckError();
             }
@@ -583,7 +585,7 @@ namespace chess {
 
 
 
-    void ChessBoard::isCheck(ChessPiece::team_type team) const
+    bool ChessBoard::isCheck(ChessPiece::team_type team) const
     {
         int kRow;
         int kCol;
@@ -599,16 +601,41 @@ namespace chess {
 
         // if there is attacking queen or rook from laterals
         if (checkLaterals(team, kCol, kRow))
-            throw CheckError();
+            return true;
         // if threatened by pawn from corners
         else if (checkCorners(team, kCol, kRow))
-            throw CheckError();
+            return true;
         // else if there is an attacking queen or bishop in diagonals
         else if (checkDiagonals(team, kCol, kRow))
-            throw CheckError();
+            return true;
         // else if there are any attacking knights
         else if (checkKnight(team, kCol, kRow))
-            throw CheckError();
+            return true;
+        
+        return false;
+    }
+
+
+
+
+
+
+    bool ChessBoard::isCheck(ChessPiece::team_type team, int pos1, int pos2) const
+    {
+        // if there is attacking queen or rook from laterals
+        if (checkLaterals(team, pos1, pos2))
+            return true;
+        // if threatened by pawn from corners
+        else if (checkCorners(team, pos1, pos2))
+            return true;
+        // else if there is an attacking queen or bishop in diagonals
+        else if (checkDiagonals(team, pos1, pos2))
+            return true;
+        // else if there are any attacking knights
+        else if (checkKnight(team, pos1, pos2))
+            return true;
+
+        return false;
     }
 
 
@@ -716,7 +743,7 @@ namespace chess {
 
         if (isPiece(nextCol, nextRow) && getTeam(nextCol, nextRow) != kingTeam ) {
             if (getPiece(nextCol, nextRow) == ChessPiece::piece_type::queen ||
-                getPiece(nextCol, nextRow) == ChessPiece::piece_type::rook)
+                getPiece(nextCol, nextRow) == ChessPiece::piece_type::bishop)
                 return true;
             else if (getPiece(nextCol, nextRow) == ChessPiece::piece_type::king && 
                 abs(nextCol - kCol) == 1 && abs(nextRow - kRow) == 1)
@@ -771,15 +798,69 @@ namespace chess {
 
 
     // Return:  true if a valid castling move
-    // Post:    the castling rook has been set to the new position, if applicable
-    bool ChessBoard::isCastle(int pos1, int pos2, int move1, int move2)
+    // Post:    If invalid castle move, no change
+    //          If valid castle move:
+    //              - Both castling pieces have Piece.castle == false
+    //              - The castling rook has been set to post-castling position
+    //              - The king has not been placed in the new position, move() will reposition the king
+
+    bool ChessBoard::Castle(int pos1, int pos2, int move1, int move2)
     {
-        // if valid castle move 
-            // move the castling rook
-            // return true;
+        assert(isPiece(pos1, pos2));
+        ChessPiece::team_type team = getTeam(pos1, pos2);
+
+        // confirm the basic conditions
+        if (getPiece(pos1, pos2) != ChessPiece::piece_type::king || !((King*)grid[pos1][pos2])->getCastleStatus() || isCheck(team))
+            return false;
         
+        if (team == ChessPiece::team_type::white) {
+            if (move1 == 2 && move2 == 0) {
+                if (isPiece(0, 0) && getPiece(0, 0) == ChessPiece::piece_type::rook && ((Rook*)grid[0][0])->getCastleStatus()) {
+                    if (validCastlePath(4, 0, 0, 0)) {
+                        ((Rook*)grid[0][0])->setCastleStatus(false);
+                        ((King*)grid[4][0])->setCastleStatus(false);
+                        setPiece(0, 0, 3, 0);
+                        return true;
+                    }
+                }
+            }
+            else if(move1 == 6 && move2 == 0) {
+                if (isPiece(7, 0) && getPiece(7, 0) == ChessPiece::piece_type::rook && ((Rook*)grid[7][0])->getCastleStatus()) {
+                    if (validCastlePath(4, 0, 7, 0)) {
+                        ((Rook*)grid[7][0])->setCastleStatus(false);
+                        ((King*)grid[4][0])->setCastleStatus(false);
+                        setPiece(7, 0, 5, 0);
+                        return true;
+                    }
+                }
+            }
+        }
+        else {  // if team == ChessPiece::team_type::black
+            if (move1 == 6 && move2 == 7) {
+                if (isPiece(7, 7) && getPiece(7, 7) == ChessPiece::piece_type::rook && ((Rook*)grid[7][7])->getCastleStatus()) {
+                    if (validCastlePath(4, 7, 7, 7)) {
+                        ((Rook*)grid[7][7])->setCastleStatus(false);
+                        ((King*)grid[4][7])->setCastleStatus(false);
+                        setPiece(7, 7, 5, 7);
+                        return true;
+                    }
+                }
+            }
+            else if (move1 == 2 && move2 == 7) {
+                if (isPiece(0, 7) && getPiece(0, 7) == ChessPiece::piece_type::rook && ((Rook*)grid[0][7])->getCastleStatus()) {
+                     if (validCastlePath(4, 7, 0, 7)) {
+                        ((Rook*)grid[0][7])->setCastleStatus(false);
+                        ((King*)grid[4][7])->setCastleStatus(false);
+                        setPiece(0, 7, 3, 7);
+                        return true;
+                     }
+                }
+            }
+        }
+       
         return false;
     }
+
     /*
         Castling consists of moving the king two squares towards a rook 
         on the player's first rank, then moving the rook to the square 
@@ -789,6 +870,27 @@ namespace chess {
         the king is not in check, and the king does not cross over 
         or end on a square attacked by an enemy piece.
     */
+
+
+
+
+
+
+    bool ChessBoard::validCastlePath(int k1, int k2, int r1, int r2)
+    {
+        int sign = -(k1 - r1) / abs(k1 - r1);
+        int nextCol = k1 + sign;
+        ChessPiece::team_type kTeam = getTeam(k1, k2);
+        // while no piece obstructing path, and no square in path checked
+        while (!isPiece(nextCol, k2) && !isCheck(kTeam, nextCol, k2))     
+            nextCol = nextCol + sign;
+            
+        if (nextCol == r1)  // if the first obstructing piece is the castling rook
+            return true;
+
+        return false;
+    }
+
 
 
 
