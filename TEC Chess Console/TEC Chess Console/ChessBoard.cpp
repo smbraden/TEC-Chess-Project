@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include <cassert>
-#include "S_ChessBoard.h"
+#include "ChessBoard.h"
 
 // #define toGrid(c, r) (r * BOARD_SIZE + c)
 #define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )

@@ -24,10 +24,10 @@
     <ClInclude Include="ChessTeam.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="S_ChessBoard.h">
+    <ClInclude Include="Grid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Grid.h">
+    <ClInclude Include="ChessBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,10 +44,10 @@
     <ClCompile Include="ChessTeam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="S_ChessBoard.cpp">
+    <ClCompile Include="Grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Grid.cpp">
+    <ClCompile Include="ChessBoard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
