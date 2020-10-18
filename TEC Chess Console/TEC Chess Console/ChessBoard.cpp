@@ -29,6 +29,8 @@ namespace chess {
         wKingCol = 4;
         bKingRow = 7;
         bKingCol = 4;
+        checkmateStatus = false;
+        Winner = ChessPiece::team_type::nullType;
 
         // initialize a "blank" grid
         for (int i = 0; i < BOARD_SIZE; i++)
@@ -116,6 +118,13 @@ namespace chess {
 
 
     
+
+
+
+
+
+
+
     ChessPiece::team_type ChessBoard::getTeam(int pos1, int pos2) const
     {
         assert(isPiece(pos1, pos2));
@@ -184,9 +193,11 @@ namespace chess {
 
 
 
-    bool ChessBoard::blackCheck()
+
+
+    bool ChessBoard::getCheckmateStatus()
     {
-        return false;
+        return checkmateStatus;
     }
 
 
@@ -194,9 +205,29 @@ namespace chess {
 
 
 
-    bool ChessBoard::whiteCheck()
+    void ChessBoard::setCheckmateStatus(bool arg)
     {
-        return false;
+        checkmateStatus = arg;
+    }
+
+
+
+
+
+
+    ChessPiece::team_type ChessBoard::getWinner()
+    {
+        return Winner;
+    }
+
+
+
+
+
+
+    void ChessBoard::setWinner(ChessPiece::team_type arg) {
+
+        Winner = arg;
     }
 
 
@@ -411,6 +442,8 @@ namespace chess {
         wKingCol = arg.wKingCol;
         bKingRow = arg.bKingRow;
         bKingCol = arg.bKingCol;
+        Winner = arg.Winner;
+        checkmateStatus = arg.checkmateStatus;
     }
 
 
@@ -796,6 +829,9 @@ namespace chess {
 
 
 
+    // Might be nice to add an exception throw embedded in this function
+    // in order to provide feedback about the nature of the invalid move 
+    // (ie, if the rook or king have been moved previously vs. a checked square in the path, etc)
 
     // Return:  true if a valid castling move
     // Post:    If invalid castle move, no change
@@ -861,15 +897,6 @@ namespace chess {
         return false;
     }
 
-    /*
-        Castling consists of moving the king two squares towards a rook 
-        on the player's first rank, then moving the rook to the square 
-        over which the king crossed. Castling may only be done if the king 
-        has never moved, the rook involved has never moved, 
-        the squares between the king and the rook involved are unoccupied, 
-        the king is not in check, and the king does not cross over 
-        or end on a square attacked by an enemy piece.
-    */
 
 
 

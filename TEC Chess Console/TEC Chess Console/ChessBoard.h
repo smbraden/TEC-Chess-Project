@@ -54,6 +54,14 @@ namespace chess {
 		int wKingCol;
 		int bKingRow;
 		int bKingCol;
+		bool checkmateStatus;
+		ChessPiece::team_type Winner;
+
+		// Check status Accessors and Mutators
+		bool getCheckmateStatus();
+		void setCheckmateStatus(bool arg);
+		ChessPiece::team_type getWinner();
+		void setWinner(ChessPiece::team_type arg);
 
 		// helper functions
 		void initPieces();
@@ -64,9 +72,10 @@ namespace chess {
 		void clear();
 		void copy(const ChessBoard&);
 		bool isPiece(int inCol, int inRow) const;	// verifies coordinates in bounds and correspond to an object
-		int* validPawnMove(int pos1, int pos2, int move1, int move2) const;
+		
 
 		// Pawn-related functions
+		int* validPawnMove(int pos1, int pos2, int move1, int move2) const;
 		bool isCapture(int pos1, int pos2, int move1, int move2) const;
 		bool simpleAdvance(int pos1, int pos2, int move1, int move2) const;
 		bool isEnPassant(int pos1, int pos2, int move1, int move2) const;
@@ -78,7 +87,7 @@ namespace chess {
 		bool validCastlePath(int k1, int k2, int r1, int r2);
 		void setKing(int pos1, int pos2, int move1, int move2);
 
-		// determines if the given position or suit is in check
+		// Check functions
 		bool isCheck(ChessPiece::team_type team) const;						// for assessing Game State
 		bool isCheck(ChessPiece::team_type team, int pos1, int pos2) const;	// for evaluating specific squares
 

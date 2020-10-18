@@ -461,8 +461,6 @@ namespace chess {
 	{
 		setPieceType(piece_type::king);
 		castle = true;
-		check = false;
-		checkMate = false;
 	}
 
 
@@ -474,8 +472,6 @@ namespace chess {
 	{
 		setPieceType(piece_type::king);
 		castle = true;
-		check = false;
-		checkMate = false;
 	}
 
 
@@ -517,46 +513,6 @@ namespace chess {
 	void King::setCastleStatus(bool arg)
 	{
 		castle = arg;
-	}
-
-
-
-
-
-
-	bool King::getCheckStatus()
-	{
-		return check;
-	}
-
-
-
-
-
-
-	void King::setCheckStatus(bool arg)
-	{
-		check = arg;
-	}
-
-
-
-
-
-
-	bool King::getMateStatus()
-	{
-		return checkMate;
-	}
-
-
-
-
-
-
-	void King::setMateStatus(bool arg)
-	{
-		checkMate = arg;
 	}
 
 

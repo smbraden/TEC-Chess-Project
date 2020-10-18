@@ -59,10 +59,10 @@ namespace chess {
 	class ChessPiece {
 
 		public:
-
+			
 			enum class team_type : unsigned char
 			{
-				white = 'w', black = 'b'
+				white = 'w', black = 'b', nullType = 'n'	// nullType is only for initializing ChessBoard 'Winner' member
 			};
 
 			enum class piece_type : unsigned char

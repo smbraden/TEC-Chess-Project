@@ -132,16 +132,10 @@ namespace chess {
 		int* validMove(int inCol, int inRow) const;
 		bool getCastleStatus();
 		void setCastleStatus(bool arg);
-		bool getCheckStatus();
-		void setCheckStatus(bool arg);
-		bool getMateStatus();
-		void setMateStatus(bool arg);
 
 	private:
 
 		bool castle;	// true as long as king has never moved yet
-		bool check;
-		bool checkMate;
 		int* getPath(int inCol, int inRow) const;
 		
 	};
