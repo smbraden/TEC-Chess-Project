@@ -1,4 +1,4 @@
-# TEC-Chess-Project
+# TEC-Chess-Project: Symmetry-Implementation
  
 This branch is for investigating an implementation where the symmetry of Black vs White moves is managed by BlackTeam and WhiteTeam Classes, derived from the ChessTeam base class.
 
@@ -8,4 +8,4 @@ In master, this grid data structure is managed by ChessBoard, as are the Black a
 
 We still have some black/white symmetry that must be managed internally by the Pawn class, however, and this remains unchanged. The goal is to tease out the black/white symettry managed by the ChessBoard class and transfer these responsiblitie to the ChessTeam's.
 
-Another note: the addition the grid class could be applied to the current implementation in Master.
+Note: the addition the grid class could be applied to the current implementation in Master.
