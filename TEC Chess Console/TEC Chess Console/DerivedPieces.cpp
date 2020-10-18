@@ -107,7 +107,7 @@ namespace chess {
 
 		if (abs(inRow - getRow()) == 2) {
 
-			path = new int[2]{-1,-1 };
+			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
 			path[0] = inCol;
 			path[1] = (team == team_type::black ? inRow + 1 : row + 1);
 			
