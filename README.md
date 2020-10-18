@@ -9,3 +9,6 @@ In master, this grid data structure is managed by ChessBoard, as are the Black a
 We still have some black/white symmetry that must be managed internally by the Pawn class, however, and this remains unchanged. The goal is to tease out the black/white symetry currently managed by the ChessBoard class, and transfer these responsiblitie to the ChessTeam's.
 
 Note: the addition the Grid class to this branch could also be applied to the current implementation in Master, as this is an idependent feature.
+
+
+A further simplified implementation would involve only the board differentiating black and white teams. The teams would use exactly the same set of move() functions, but their perception/orientation of the Grid would differ. This would take advantage of all the Pieces, Board, and Teams' symmetry, resulting in the least amount of total code.   
