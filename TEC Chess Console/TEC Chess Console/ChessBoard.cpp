@@ -183,7 +183,7 @@ namespace chess {
 
 
 
-
+    
     void ChessBoard::initPieces()
     {
         
@@ -199,7 +199,7 @@ namespace chess {
 
         // white pawns
         for (int i = 0; i < BOARD_SIZE; i++) {
-            setElement(i, 6, new Pawn(i, 6, ChessPiece::team_type::white, false));
+            setElement(i, 1, new Pawn(i, 1, ChessPiece::team_type::white, false));
         }
 
         // instantiate and map the black team pieces
@@ -217,7 +217,47 @@ namespace chess {
              setElement(i, 6, new Pawn(i, 6, ChessPiece::team_type::black, false));
         }
     }
+    
 
+
+
+
+
+    /*
+    void ChessBoard::initPieces()
+    {
+
+        // instantiate and map the white team
+        setElement(0, 0, new Rook(0, 0, ChessPiece::team_type::white));
+        setElement(0, 1, new Knight(0, 1, ChessPiece::team_type::white));
+        setElement(0, 2, new Bishop(0, 2, ChessPiece::team_type::white));
+        setElement(0, 3, new Queen(0, 3, ChessPiece::team_type::white));
+        setElement(0, 4, new King(0, 4, ChessPiece::team_type::white));
+        setElement(0, 5, new Bishop(0, 5, ChessPiece::team_type::white));
+        setElement(0, 6, new Knight(0, 6, ChessPiece::team_type::white));
+        setElement(0, 7, new Rook(0, 7, ChessPiece::team_type::white));
+
+        // white pawns
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            setElement(1, i, new Pawn(1, i, ChessPiece::team_type::white, false));
+        }
+
+        // instantiate and map the black team pieces
+        setElement(7, 0, new Rook(7, 0, ChessPiece::team_type::black));
+        setElement(7, 1, new Knight(7, 1, ChessPiece::team_type::black));
+        setElement(7, 2, new Bishop(7, 2, ChessPiece::team_type::black));
+        setElement(7, 3, new Queen(7, 3, ChessPiece::team_type::black));
+        setElement(7, 4, new King(7, 4, ChessPiece::team_type::black));
+        setElement(7, 5, new Bishop(7, 5, ChessPiece::team_type::black));
+        setElement(7, 6, new Knight(7, 6, ChessPiece::team_type::black));
+        setElement(7, 7, new Rook(7, 7, ChessPiece::team_type::black));
+
+        // black pawns
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            setElement(6, i, new Pawn(6, i, ChessPiece::team_type::black, false));
+        }
+    }
+    */
 
 
 
@@ -251,7 +291,7 @@ namespace chess {
     // Precondition:    isPiece(row, col) == true
     ChessPiece* ChessBoard::getElement(int col, int row) const
     {
-        return grid.getElement(row, col);
+        return grid.getElement(col, row);
     }
 
 
@@ -260,7 +300,7 @@ namespace chess {
     // Precondition:    inBounds2(row, col) == true
     void ChessBoard::setElement(int col, int row, ChessPiece* ptr)
     {
-        grid.setElement(row, col, ptr);
+        grid.setElement(col, row, ptr);
     }
 
 

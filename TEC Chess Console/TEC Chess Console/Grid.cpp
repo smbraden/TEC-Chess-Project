@@ -9,7 +9,7 @@
 
 #include "Grid.h"
 
-#define toGrid(c, r) (r * BOARD_SIZE + c)
+#define toGrid(c, r) (c + BOARD_SIZE * r)
 #define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
 #define inBounds4(a, b, c, d) (a >= 0 && b >= 0 && c >= 0 && d >= 0 &&  \
                             a < BOARD_SIZE&& b < BOARD_SIZE&& c < BOARD_SIZE&& d < BOARD_SIZE)
@@ -20,9 +20,9 @@ namespace chess {
 	Grid::Grid()
 	{
 		// initialize a "blank" grid
-		for (int i = 0; i < BOARD_SIZE; i++)
-			for (int j = 0; j < BOARD_SIZE; j++)
-				setElement(j, i, nullptr);
+		int SPACES = BOARD_SIZE * BOARD_SIZE;
+		for (int i = 0; i < SPACES; i++)
+			grid[i] = nullptr;
 	}
 	
 	
@@ -85,8 +85,8 @@ namespace chess {
 
 	void Grid::copy(const Grid& arg)
 	{
-		for (int i = 0; i < BOARD_SIZE; i++) {
-			for (int j = 0; j < BOARD_SIZE; j++) {
+		for (int j = 0; j < BOARD_SIZE; j++) {
+			for (int i = 0; i < BOARD_SIZE; i++) {
 
 				ChessPiece* ptr = nullptr;
 
@@ -152,9 +152,9 @@ namespace chess {
 
 
 
-	bool Grid::isPiece(int inCol, int inRow) const
+	bool Grid::isPiece(int col, int row) const
 	{
-		if (inBounds2(inCol, inRow) && grid[toGrid(inCol, inRow)] != nullptr)
+		if (inBounds2(col, row) && grid[toGrid(col, row)] != nullptr)
 			return true;
 		return false;
 	}

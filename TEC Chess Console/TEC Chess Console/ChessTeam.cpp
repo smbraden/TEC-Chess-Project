@@ -55,40 +55,6 @@ namespace chess {
 
 
 
-    /*
-    // all dynamic types handled by Grid class, copy constructor might be uncessary
-    ChessTeam::ChessTeam(const ChessTeam& arg)
-    {
-        kCol = arg.kCol;
-        kRow = arg.kRow;
-        team = arg.team;
-        gridPtr = arg.gridPtr;
-        checkmateStatus = arg.checkmateStatus;
-    }
-
-
-
-
-    
-    // all dynamic types handled by Grid class, assignment op might be uncessary
-    ChessTeam ChessTeam::operator=(const ChessTeam& arg) {
-
-        if (this != &arg) {
-
-            kCol = arg.kCol;
-            kRow = arg.kRow;
-            team = arg.team;
-            gridPtr = arg.gridPtr;
-            checkmateStatus = arg.checkmateStatus;
-        }
-
-        return *this;
-    }
-    */
-
-
-
-
 
     ChessPiece::team_type ChessTeam::getTeam(int pos1, int pos2) const
     {
@@ -246,9 +212,8 @@ namespace chess {
     // Note:    inTeam is the team whose turn it is to move
     void ChessTeam::move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type inTeamType)
     {
-        if (!inBounds4(pos1, pos2, move1, move2)) {
+        if (!inBounds4(pos1, pos2, move1, move2))
             throw BoundsError();
-        }
         else if (!isPiece(pos1, pos2))  // moving a non-exsistent piece   
             throw EmptySquareError();
         else if (getTeam(pos1, pos2) != inTeamType)     // wrong team being move
