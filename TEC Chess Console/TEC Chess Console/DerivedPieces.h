@@ -21,7 +21,7 @@ namespace chess {
 		Pawn();
 		Pawn(int inCol, int inRow, team_type color, bool passVal);
 		class PawnMoveError {};
-		int* validMove(int inCol, int inRow) const;	// no "const" for Pawns b/c need to setEnPassant()  
+		int* validMove(int inCol, int inRow) const;
 		void setEnPassant(bool);
 		bool getEnPassant() const;
 
@@ -71,7 +71,8 @@ namespace chess {
 
 		int* getLateralPath(int inCol, int inRow) const;
 		int* getDiagonalPath(int inCol, int inRow) const;
-		int* buildPath(signed int colSign, signed int rowSign, int inCol, int inRow) const; // getDiagonalPath() helper function
+		// getDiagonalPath() helper function
+		int* buildPath(signed int colSign, signed int rowSign, int inCol, int inRow) const;
 	};
 
 
@@ -111,7 +112,7 @@ namespace chess {
 
 	private:
 
-		bool castle;						// true as long as rook  has never moved yet
+		bool castle;	// true as long as rook  has never moved yet
 		int* getPath(int inCol, int inRow) const;
 
 	};

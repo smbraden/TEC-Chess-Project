@@ -73,8 +73,7 @@ namespace chess {
 
 			ChessPiece();											// Default constructor
 			ChessPiece(int inCol , int inRow , team_type color);	// Parameterized constructor
-			// ChessPiece(const ChessPiece&);							// Copy
-
+			
 			team_type getTeamType() const;
 			void setTeamType(team_type);
 			piece_type getPieceType() const;

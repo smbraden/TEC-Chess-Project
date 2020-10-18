@@ -7,10 +7,8 @@
     Description:        Implementation  of the ChessTeam class.
 //-------------------------------------------------------------------------------------/*/
 
-//#include <cassert>
 #include "ChessTeam.h"
 
-// #define toGrid(c, r) (r * BOARD_SIZE + c)
 #define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
 #define inBounds4(a, b, c, d) (a >= 0 && b >= 0 && c >= 0 && d >= 0 &&  \
                             a < BOARD_SIZE&& b < BOARD_SIZE&& c < BOARD_SIZE&& d < BOARD_SIZE)
@@ -256,69 +254,6 @@ namespace chess {
         }
     }
 
-
-
-
-
-    /*
-    //pre-inheritance phase: 
-    
-    // Note:    inTeam is the team whose turn it is to move
-    void ChessTeam::move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type inTeamType)
-    {
-        if (!inBounds4(pos1, pos2, move1, move2))
-            throw BoundsError();
-        else if (!isPiece(pos1, pos2))  // moving a non-exsistent piece   
-            throw EmptySquareError();
-        else if (getTeam(pos1, pos2) != inTeamType)     // wrong team being move
-            throw TurnMoveError();
-        else if (pos1 == move1 && pos2 == move2)        // the source is the destination
-            throw NoTurnPassError();
-        else if (isPiece(move1, move2) && getTeam(move1, move2) == inTeamType)  // destination occupied by a piece
-            throw SelfCapturError();                                            // belonging to the moving player
-        else {  // basic rules have been followed. Now, are the rules followed for the specific piece?
-
-            Grid tempGrid = *gridPtr;
-            
-            try {
-
-                if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) { // Pawns have special rules to assess
-                    evaluatePath(validPawnMove(pos1, pos2, move1, move2));  // might throw piece or ilegal move error
-                    pawnPromote(pos1, pos2, move1, move2);                  // if moving to 8th rank move, promote pawn
-                }
-                else if (getPiece(pos1, pos2) == ChessPiece::piece_type::king) {
-                    if (!Castle(pos1, pos2, move1, move2)) {
-                        evaluatePath(getElement(pos1, pos2)->validMove(move1, move2));
-                        ((King*)getElement(pos1, pos2))->setCastleStatus(false);
-                    }
-                    setKing(move1, move2);
-                }
-                else {  // all the other pieces
-                    evaluatePath(getElement(pos1, pos2)->validMove(move1, move2));// throws PieceMoveError, IlegalMoveError
-                    if (getPiece(pos1, pos2) == ChessPiece::piece_type::rook)
-                        ((Rook*)getElement(pos1, pos2))->setCastleStatus(false);
-                }
-
-            }
-            catch (ChessPiece::PieceMoveError e) {
-                throw ChessPiece::PieceMoveError();
-            }
-            catch (IndirectPathError e) {
-                throw IndirectPathError();
-            }
-
-            // pawnPromote(pos1, pos2, move1, move2);  // if moving to 8th rank move, promote pawn
-            setPiece(pos1, pos2, move1, move2);     // set new pos on grid and internally, remove captures
-            resetEnPassant(move1, move2);           // resets all EnPassant to false, except a moved pawn
-
-            if (isCheck()) {
-                
-                gridPtr = &tempGrid;
-                throw CheckError();
-            }
-        }
-    }
-    */
 
 
 
@@ -845,37 +780,3 @@ namespace chess {
 
 
 
-
-
-    /*
-    //    Precondition: Either colSign or rowSign is 0
-    //                  Either colSign or RowSign is 1 or -1
-    //                  kCol is the king's column
-    //                  kRow is the king's row
-    bool ChessBoard::singleLateral(ChessPiece::team_type kingTeam, int kCol, int kRow, int colSign, int rowSign) const
-    {
-        int nextRow = kRow + rowSign;
-        int nextCol = kCol + colSign;
-
-        if (colSign != 0) {
-            while (nextCol < BOARD_SIZE && nextCol >= 0 && !isPiece(nextCol, kRow))
-                nextCol = nextCol + colSign;
-
-            if (isPiece(nextCol, kRow) && getTeam(nextCol, kRow) != kingTeam
-                && (getPiece(nextCol, kRow) == ChessPiece::piece_type::queen
-                || getPiece(nextCol, kRow) == ChessPiece::piece_type::rook))
-                return true;
-        }
-        else if (rowSign != 0) {  // if (kCol == nextCol)
-            while (nextRow < BOARD_SIZE && nextRow >= 0 && !isPiece(kCol, nextRow))
-                nextRow = nextRow + rowSign;
-
-            if (isPiece(kCol, nextRow) && getTeam(nextCol, kRow) != kingTeam
-                && (getPiece(kCol, nextRow) == ChessPiece::piece_type::queen
-                || getPiece(kCol, nextRow) == ChessPiece::piece_type::rook))
-                return true;
-        }
-
-        return false;
-    }
-    */

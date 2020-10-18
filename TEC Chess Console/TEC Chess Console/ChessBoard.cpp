@@ -73,12 +73,6 @@ namespace chess {
     void ChessBoard::moveWhite(int pos1, int pos2, int move1, int move2)
     {
         whiteT.move(pos1, pos2, move1, move2);
-        /*
-        if (getTeam(pos1, pos2) == ChessPiece::team_type::white)
-            whiteT.move(pos1, pos2, move1, move2);
-        else
-            throw TurnMoveError();
-            */
     }
 
 
@@ -90,12 +84,6 @@ namespace chess {
     void ChessBoard::moveBlack(int pos1, int pos2, int move1, int move2)
     {
         blackT.move(pos1, pos2, move1, move2);
-        /*
-        if (getTeam(pos1, pos2) == ChessPiece::team_type::black)
-            blackT.move(pos1, pos2, move1, move2);
-        else
-            throw TurnMoveError();
-            */
     }
 
 

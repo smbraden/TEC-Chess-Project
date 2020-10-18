@@ -76,7 +76,7 @@ namespace chess {
 		void setPiece(int pos1, int pos2, int move1, int move2);
 
 		// Other helpers 
-		bool isPiece(int inCol, int inRow) const;	// verifies coordinates in bounds and correspond to an object
+		bool isPiece(int inCol, int inRow) const;
 		void evaluatePath(int* path) const;
 		
 

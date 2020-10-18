@@ -123,7 +123,7 @@ bool testMoveB(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 	catch (ChessTeam::EmptySquareError e) {
 		cout << "Cannot move an empty square" << endl << endl;
 	}
-	catch (ChessBoard::TurnMoveError e) {
+	catch (ChessTeam::TurnMoveError e) {
 		cout << "Not your turn, or you're moving the other player's piece" << endl << endl;
 	}
 	catch (ChessTeam::NoTurnPassError e) {
@@ -166,7 +166,7 @@ bool testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 	catch (ChessTeam::EmptySquareError e) {
 		cout << "Cannot move an empty square" << endl << endl;
 	}
-	catch (ChessBoard::TurnMoveError e) {
+	catch (ChessTeam::TurnMoveError e) {
 		cout << "Not your turn, or you're moving the other player's piece" << endl << endl;
 	}
 	catch (ChessTeam::NoTurnPassError e) {

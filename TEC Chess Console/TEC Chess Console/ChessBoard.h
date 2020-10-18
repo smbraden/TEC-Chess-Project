@@ -25,9 +25,7 @@ namespace chess {
 		void moveWhite(int pos1, int pos2, int move1, int move2); // indices 0-7 
 		void moveBlack(int pos1, int pos2, int move1, int move2); // (col ,row)
 		void printBoard() const;
-
-		class TurnMoveError {};		// when a player attempts to move the opponent's piece
-				
+						
 		static const int BOARD_SIZE = 8;
 		
 	private:

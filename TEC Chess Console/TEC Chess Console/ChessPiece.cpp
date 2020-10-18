@@ -16,6 +16,7 @@
 
 namespace chess {
 
+	// Default constructor
 	ChessPiece::ChessPiece()
 	{
 		col = 0;
@@ -29,7 +30,7 @@ namespace chess {
 
 
 
-	// Default and Parameterized constructor
+	// Parameterized constructor
 	ChessPiece::ChessPiece(int inCol, int inRow, team_type color)
 	{
 		assert((inCol < BOARD_SIZE) && (inRow < BOARD_SIZE) && (inCol >= 0) && (inRow >= 0));
