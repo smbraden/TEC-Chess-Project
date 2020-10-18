@@ -16,7 +16,7 @@
 #include <cassert>
 #include "ChessBoard.h"
 
-// #define toGrid(c, r) (r * BOARD_SIZE + c)
+
 #define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
 #define inBounds4(a, b, c, d) (a >= 0 && b >= 0 && c >= 0 && d >= 0 &&  \
                             a < BOARD_SIZE&& b < BOARD_SIZE&& c < BOARD_SIZE&& d < BOARD_SIZE)
@@ -32,13 +32,13 @@ namespace chess {
     {
         initPieces();   // instantiate the pieces and map them on grid
 
-        whiteT.setTeam(ChessPiece::team_type::white);
         whiteT.setGridPtr(&grid);
-        blackT.setKing(4, 0);
+        // whiteT.setTeam(ChessPiece::team_type::white);
+        // blackT.setKing(4, 0);
 
-        blackT.setTeam(ChessPiece::team_type::black);
         blackT.setGridPtr(&grid);
-        blackT.setKing(4, 7);
+        // blackT.setTeam(ChessPiece::team_type::black);
+        // blackT.setKing(4, 7);
 
         Winner = ChessPiece::team_type::nullType;
     }
@@ -72,21 +72,13 @@ namespace chess {
 
     void ChessBoard::moveWhite(int pos1, int pos2, int move1, int move2)
     {
+        whiteT.move(pos1, pos2, move1, move2);
+        /*
         if (getTeam(pos1, pos2) == ChessPiece::team_type::white)
-            whiteT.move(pos1, pos2, move1, move2, ChessPiece::team_type::white);
+            whiteT.move(pos1, pos2, move1, move2);
         else
             throw TurnMoveError();
-
-        /*
-        if (isPiece(pos1, pos2))
-            if (getTeam(pos1, pos2) == ChessPiece::team_type::white)
-                whiteT.move(pos1, pos2, move1, move2, ChessPiece::team_type::white);
-            else
-                throw TurnMoveError();
-        else
-            throw EmptySquareError();
             */
-
     }
 
 
@@ -97,19 +89,12 @@ namespace chess {
 
     void ChessBoard::moveBlack(int pos1, int pos2, int move1, int move2)
     {
+        blackT.move(pos1, pos2, move1, move2);
+        /*
         if (getTeam(pos1, pos2) == ChessPiece::team_type::black)
-            blackT.move(pos1, pos2, move1, move2, ChessPiece::team_type::black);
+            blackT.move(pos1, pos2, move1, move2);
         else
             throw TurnMoveError();
-        
-        /*
-        if (isPiece(pos1, pos2))
-            if (getTeam(pos1, pos2) == ChessPiece::team_type::black)
-                blackT.move(pos1, pos2, move1, move2, ChessPiece::team_type::black);
-            else
-                throw TurnMoveError();
-        else
-            throw EmptySquareError();
             */
     }
 

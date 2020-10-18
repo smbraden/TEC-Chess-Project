@@ -10,7 +10,7 @@
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
 
-#include "ChessTeam.h"
+#include "DerivedTeams.h"
 
 
 namespace chess {
@@ -35,8 +35,11 @@ namespace chess {
 		// main data members
 		Grid grid;
 		ChessPiece::team_type Winner;
-		ChessTeam whiteT;
-		ChessTeam blackT;
+		
+		WhiteTeam whiteT;
+		BlackTeam blackT;
+		//ChessTeam whiteT;
+		//ChessTeam blackT;
 
 		void copy(const ChessBoard&);
 		void initPieces();

@@ -42,19 +42,6 @@ namespace chess {
 
 
 
-	/*
-	// Copy constructor
-	ChessPiece::ChessPiece(const ChessPiece& source)
-	{
-		row = source.row;
-		col = source.col;
-		team = source.team;
-		piece = source.piece;
-	}
-	*/
-
-
-
 
 	// Accessor
 	void ChessPiece::getPosition(int& inCol, int& inRow) const
@@ -159,7 +146,7 @@ namespace chess {
 		return path;
 	}
 
-	/* Real pieces will take the folloing form 
+	/* Real pieces will take the following form 
  		
 		int* ChessPiece::setPosition(int inCol, int inRow)
 		{

@@ -11,6 +11,7 @@
 
 #include "DerivedPieces.h"
 #include "Grid.h"
+#include <cassert>
 
 namespace chess {
 
@@ -37,7 +38,7 @@ namespace chess {
 		void setGridPtr(Grid* arg);
 
 		// Other
-		void move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type inTeam);
+		void move(int pos1, int pos2, int move1, int move2);
 
 		// Error handling
 		class SelfCapturError {};	// moving a piece to a position already occupied by that team
@@ -51,7 +52,7 @@ namespace chess {
 		const int MAX_PATH = 7; // 6 spaces for max path, and 1 more for an extra delimiter
 		static const int BOARD_SIZE = 8;
 
-	private:
+	protected:	// I'm being lazy for the moment
 
 		// primary members
 		Grid* gridPtr;					
@@ -78,31 +79,40 @@ namespace chess {
 		bool isPiece(int inCol, int inRow) const;	// verifies coordinates in bounds and correspond to an object
 		void evaluatePath(int* path) const;
 		
-		// Pawn-related functions
+
+		//-------------------Pawn-related functions------------------//
 		int* validPawnMove(int pos1, int pos2, int move1, int move2) const;
-		bool isCapture(int pos1, int pos2, int move1, int move2) const;
 		bool simpleAdvance(int pos1, int pos2, int move1, int move2) const;
-		bool isEnPassant(int pos1, int pos2, int move1, int move2) const;
-		void pawnPromote(int pos1, int pos2, int move1, int move2);
 		void resetEnPassant(int pos1, int pos2);
 
-		// King-related functions
-		bool Castle(int pos1, int pos2, int move1, int move2);
-		bool validCastlePath(int k1, int k2, int r1, int r2);
-		
+		// Symmetry-dependent//
+		virtual bool isCapture(int pos1, int pos2, int move1, int move2) const;
+		virtual bool isEnPassant(int pos1, int pos2, int move1, int move2) const;
+		virtual void pawnPromote(int pos1, int pos2, int move1, int move2);
 
-		// Check functions
+
+
+		//------------------King-related functions-------------------//
+		bool validCastlePath(int k1, int k2, int r1, int r2);
+
+		// Symmetry-dependent//
+		virtual bool Castle(int pos1, int pos2, int move1, int move2);
+
+
+
+		//-----------------------Check functions---------------------//
 		bool isCheck() const;						// for assessing Game State
 		bool isCheck(int pos1, int pos2) const;		// for evaluating specific squares
 
-		// isCheck() helper functions
 		bool checkLaterals(int kCol, int kRow) const;
 		bool singleLateral(int kCol, int kRow, int colSign, int rowSign) const;
-		bool checkCorners(int kCol, int kRow) const;
 		bool checkDiagonals(int kCol, int kRow) const;
 		bool singleDiagonal(int kCol, int kRow, int colSign, int rowSign) const;
 		bool checkKnight(int kCol, int kRow) const;
 		bool singleKnight(int kCol, int kRow, int colSign, int rowSign) const;
+
+		// Symmetry-dependent//
+		virtual bool checkCorners(int kCol, int kRow) const;
 
 		
 	};

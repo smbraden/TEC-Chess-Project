@@ -144,6 +144,7 @@
     <ClCompile Include="ChessPiece.cpp" />
     <ClCompile Include="ChessTeam.cpp" />
     <ClCompile Include="DerivedPieces.cpp" />
+    <ClCompile Include="DerivedTeams.cpp" />
     <ClCompile Include="Grid.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +152,7 @@
     <ClInclude Include="ChessPiece.h" />
     <ClInclude Include="ChessTeam.h" />
     <ClInclude Include="DerivedPieces.h" />
+    <ClInclude Include="DerivedTeams.h" />
     <ClInclude Include="Grid.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
