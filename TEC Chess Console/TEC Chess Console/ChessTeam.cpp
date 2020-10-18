@@ -80,7 +80,7 @@ namespace chess {
 
     ChessPiece* ChessTeam::getElement(int col, int row) const
     {
-        return gridPtr->getElement(row, col);
+        return gridPtr->getElement(col, row);
     }
 
 
@@ -272,7 +272,10 @@ namespace chess {
 
     void ChessTeam::setPiece(int pos1, int pos2, int move1, int move2)
     {
-        if (isEnPassant(pos1, pos2, move1, move2))
+        // after this, isEnPassant() called twice in move() in the case of pawn moves, 
+        // could set a flag to capture the result, 
+        // in order to reduce it to one isEnPassant() call per move() call
+        if (isEnPassant(pos1, pos2, move1, move2))  
             remove(move1, pos2);
         else if (isPiece(move1, move2))
             remove(move1, move2);
@@ -445,15 +448,16 @@ namespace chess {
     {
         //Pawn* ptr = nullptr;
 
-        for (int c = 0; c < BOARD_SIZE; c++) {
-            for (int r = 0; r < BOARD_SIZE; r++) {      //  !(pos1 == c && pos2 == r)
+        for (int r = 0; r < BOARD_SIZE; r++) {
+            for (int c = 0; c < BOARD_SIZE; c++) {      //  !(pos1 == c && pos2 == r)
                 if (isPiece(c, r) && getPiece(c, r) == ChessPiece::piece_type::pawn) {
                     ((Pawn*)getElement(c, r))->setEnPassant(false);
                 }
             }
         }
 
-        if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {     // This might need more specific conditions
+        // should already be true: isPiece(pos, pos2) == true
+        if (isPiece(pos1, pos2) && getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {     // This might need more specific conditions
             ((Pawn*)getElement(pos1, pos2))->setEnPassant(true);
         }
     }
