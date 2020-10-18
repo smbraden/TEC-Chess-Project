@@ -1,3 +1,12 @@
+/*/-------------------------------------------------------------------------------------//
+	Filename:           Grid.h
+	Contributor:        Sonja Braden
+	Date:               10/16/2020
+	Reference:
+	Description:        Implementation  of the Grid class, used for managing the dynamic
+						dynamic ChessPiece objects via an array of pointers
+//-------------------------------------------------------------------------------------/*/
+
 #include "Grid.h"
 
 #define toGrid(c, r) (r * BOARD_SIZE + c)
@@ -65,7 +74,7 @@ namespace chess {
 
 
 
-	ChessPiece* Grid::setElement(int col, int row, ChessPiece* ptr)
+	void Grid::setElement(int col, int row, ChessPiece* ptr)
 	{
 		assert(inBounds2(col, row));
 		grid[row * BOARD_SIZE + col] = ptr;

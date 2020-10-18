@@ -1,20 +1,18 @@
 /*/-------------------------------------------------------------------------------------//
 	Filename:           ChessBoard.h
 	Contributor:        Sonja Braden
-	Date:               9/21/2020
+	Date:               10/16/2020
 	Reference:
-	Description:        Annoyingly, I have index the Board coordinates as [Column][Row],
-						as this is how a chess board is labeled
-						(eg, a1, a2, b5, etc. where letters are columns ).
+	Description:        
 //-------------------------------------------------------------------------------------/*/
 
 
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
 
-#include "DerivedPieces.h"
+//#include "DerivedPieces.h"
 #include "ChessTeam.h"
-#include "Grid.h"
+//#include "Grid.h"
 
 namespace chess {
 
@@ -46,7 +44,7 @@ namespace chess {
 
 		// Private Grid Element Accessors/Mutators
 		ChessPiece* getElement(int col, int row) const;
-		ChessPiece* setElement(int col, int row, ChessPiece* ptr);
+		void setElement(int col, int row, ChessPiece* ptr);
 		ChessPiece::team_type getTeam(int pos1, int pos2) const;
 		ChessPiece::piece_type getPiece(int pos1, int pos2) const;
 		

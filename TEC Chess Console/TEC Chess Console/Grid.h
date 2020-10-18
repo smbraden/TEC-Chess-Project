@@ -1,3 +1,14 @@
+/*/-------------------------------------------------------------------------------------//
+	Filename:           Grid.cpp
+	Contributor:        Sonja Braden
+	Date:               10/16/2020
+	Reference:
+	Description:        
+//-------------------------------------------------------------------------------------/*/
+
+#ifndef GRID_H
+#define GRID_H
+
 #include "DerivedPieces.h"
 #include <cassert>
 
@@ -16,7 +27,7 @@ namespace chess {
 		Grid operator=(const Grid&);
 
 		ChessPiece* getElement(int col, int row) const;
-		ChessPiece* setElement(int col, int row, ChessPiece* ptr);
+		void setElement(int col, int row, ChessPiece* ptr);
 		void remove(int c, int r);
 		bool isPiece(int inCol, int inRow) const;	// verifies coordinates in bounds and correspond to an object
 
@@ -34,3 +45,4 @@ namespace chess {
 
 } // closes namespace
 
+#endif

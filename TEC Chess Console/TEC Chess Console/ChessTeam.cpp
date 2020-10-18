@@ -56,7 +56,7 @@ namespace chess {
 
 
 
-
+    // all dynamic types handled by Grid class, copy constructor might be uncessary
     ChessTeam::ChessTeam(const ChessTeam& arg)
     {
         kCol = arg.kCol;
@@ -70,14 +70,19 @@ namespace chess {
 
 
 
-
+    // all dynamic types handled by Grid class, assignment op might be uncessary
     ChessTeam ChessTeam::operator=(const ChessTeam& arg) {
 
-        kCol = arg.kCol;
-        kRow = arg.kRow;
-        team = arg.team;
-        gridPtr = arg.gridPtr;
-        checkmateStatus = arg.checkmateStatus;
+        if (this != &arg) {
+
+            kCol = arg.kCol;
+            kRow = arg.kRow;
+            team = arg.team;
+            gridPtr = arg.gridPtr;
+            checkmateStatus = arg.checkmateStatus;
+        }
+
+        return *this;
     }
 
 
@@ -117,7 +122,7 @@ namespace chess {
 
 
 
-    ChessPiece* ChessTeam::setElement(int col, int row, ChessPiece* ptr)
+    void ChessTeam::setElement(int col, int row, ChessPiece* ptr)
     {
         gridPtr->setElement(col, row, ptr);
     }
@@ -810,17 +815,6 @@ namespace chess {
     {
         team = t;
     }
-
-
-
-
-
-
-    void ChessTeam::setGridPtr(Grid* g)
-    {
-        gridPtr = g;
-    }
-
 
 
 

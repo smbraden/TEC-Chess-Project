@@ -1,12 +1,15 @@
 /*/-------------------------------------------------------------------------------------//
     Filename:           ChessBoard.cpp
     Contributor:        Sonja Braden
-    Date:               10/4/2020
+    Date:               10/16/2020
     Reference:
-
     Description:        Implementation  of the ChessBoard class, used for creating objects
                         with properties of a chess board, including enforcement of
-                        the rules of chess.
+                        the rules of chess. 
+                        
+                        Note: Annoyingly, I have indexed the Board coordinates as 
+						(Column, Row) because this is how a chess board is labeled
+						(eg, a1, a2, b5, etc. where letters are columns ).
 //-------------------------------------------------------------------------------------/*/
 
 #include <iostream>
@@ -255,7 +258,7 @@ namespace chess {
 
 
     // Precondition:    inBounds2(row, col) == true
-    ChessPiece* ChessBoard::setElement(int col, int row, ChessPiece* ptr)
+    void ChessBoard::setElement(int col, int row, ChessPiece* ptr)
     {
         grid.setElement(row, col, ptr);
     }

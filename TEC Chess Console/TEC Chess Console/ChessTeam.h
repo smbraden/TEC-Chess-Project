@@ -67,7 +67,7 @@ namespace chess {
 
 		// private accessors
 		ChessPiece* getElement(int col, int row) const;
-		ChessPiece* setElement(int col, int row, ChessPiece* ptr);
+		void setElement(int col, int row, ChessPiece* ptr);
 
 		// Grid element accessors
 		ChessPiece::team_type getTeam(int pos1, int pos2) const;
