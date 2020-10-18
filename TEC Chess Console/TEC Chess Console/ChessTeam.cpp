@@ -11,7 +11,7 @@
 #include <cassert>
 #include "ChessTeam.h"
 
-#define toGrid(c, r) (r * BOARD_SIZE + c)
+// #define toGrid(c, r) (r * BOARD_SIZE + c)
 #define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
 #define inBounds4(a, b, c, d) (a >= 0 && b >= 0 && c >= 0 && d >= 0 &&  \
                             a < BOARD_SIZE&& b < BOARD_SIZE&& c < BOARD_SIZE&& d < BOARD_SIZE)
@@ -55,7 +55,7 @@ namespace chess {
 
 
 
-
+    /*
     // all dynamic types handled by Grid class, copy constructor might be uncessary
     ChessTeam::ChessTeam(const ChessTeam& arg)
     {
@@ -69,7 +69,7 @@ namespace chess {
 
 
 
-
+    
     // all dynamic types handled by Grid class, assignment op might be uncessary
     ChessTeam ChessTeam::operator=(const ChessTeam& arg) {
 
@@ -84,7 +84,7 @@ namespace chess {
 
         return *this;
     }
-
+    */
 
 
 
@@ -216,7 +216,7 @@ namespace chess {
             while (x != -1 && y != -1 && i < (MAX_PATH * 2)) {
 
                 assert(inBounds2(x, y));
-                if (getElement(x, y) != nullptr) {    // if an object is in path 
+                if (isPiece(x, y)) {    // if an object is in path 
                     delete[] path;
                     path = nullptr;
                     throw IndirectPathError();
@@ -336,9 +336,7 @@ namespace chess {
 
     bool ChessTeam::isPiece(int inCol, int inRow) const
     {
-        if (inBounds2(inCol, inRow) && getElement(inCol, inRow) != nullptr)
-            return true;
-        return false;
+        return gridPtr->isPiece(inCol, inRow);
     }
 
 

@@ -61,14 +61,11 @@ namespace chess {
 		public:
 			
 			enum class team_type : unsigned char
-			{
-				white = 'w', black = 'b', nullType = 'n'	// nullType is only for initializing ChessBoard 'Winner' member
-			};
+			{ white = 'w', black = 'b', nullType = 'n'};	// nullType for init ChessBoard 'Winner' member
+			
 
 			enum class piece_type : unsigned char
-			{
-				none = '0', pawn = 'P', rook = 'R', knight = 'N', bishop = 'B', queen = 'Q', king = 'K'
-			};
+			{ none = '0', pawn = 'P', rook = 'R', knight = 'N', bishop = 'B', queen = 'Q', king = 'K' };
 
 			const static int BOARD_SIZE = 8;
 			const static int MAX_PATH = 7;	 // 6 spaces for max path, and 1 more for an extra delimiter
@@ -76,7 +73,7 @@ namespace chess {
 
 			ChessPiece();											// Default constructor
 			ChessPiece(int inCol , int inRow , team_type color);	// Parameterized constructor
-			ChessPiece(const ChessPiece&);							// Copy
+			// ChessPiece(const ChessPiece&);							// Copy
 
 			team_type getTeamType() const;
 			void setTeamType(team_type);

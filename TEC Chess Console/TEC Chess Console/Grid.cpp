@@ -65,8 +65,7 @@ namespace chess {
 
 	ChessPiece* Grid::getElement(int col, int row) const
 	{
-		assert(isPiece(row, col));
-		return grid[row * BOARD_SIZE + col];
+		return grid[toGrid(col, row)];
 	}
 
 
@@ -77,7 +76,7 @@ namespace chess {
 	void Grid::setElement(int col, int row, ChessPiece* ptr)
 	{
 		assert(inBounds2(col, row));
-		grid[row * BOARD_SIZE + col] = ptr;
+		grid[toGrid(col, row)] = ptr;
 	}
 
 
@@ -91,11 +90,11 @@ namespace chess {
 
 				ChessPiece* ptr = nullptr;
 
-				if (arg.getElement(i, j) == nullptr)
-					ChessPiece* ptr = nullptr;
+				if (!arg.isPiece(i, j))
+					ptr = nullptr;
 				else if (arg.getElement(i, j)->getPieceType() == ChessPiece::piece_type::pawn) {
 					bool passVal = ((Pawn*)arg.getElement(i, j))->getEnPassant();
-					ChessPiece* ptr = new Pawn(i, j, arg.getElement(i, j)->getTeamType(), passVal);
+					ptr = new Pawn(i, j, arg.getElement(i, j)->getTeamType(), passVal);
 				}
 				else if (arg.getElement(i, j)->getPieceType() == ChessPiece::piece_type::rook) {
 					ptr = new Rook(i, j, arg.getElement(i, j)->getTeamType());
@@ -126,7 +125,7 @@ namespace chess {
 
 	void Grid::remove(int c, int r)
 	{
-		if (getElement(c, r) != nullptr) {
+		if (isPiece(c, r)) {
 			ChessPiece* objPtr = getElement(c, r);
 			delete objPtr;                      // destroy the object
 			setElement(c, r, nullptr);          // set the grid square to nullptr
@@ -155,7 +154,7 @@ namespace chess {
 
 	bool Grid::isPiece(int inCol, int inRow) const
 	{
-		if (inBounds2(inCol, inRow) && getElement(inCol, inRow) != nullptr)
+		if (inBounds2(inCol, inRow) && grid[toGrid(inCol, inRow)] != nullptr)
 			return true;
 		return false;
 	}

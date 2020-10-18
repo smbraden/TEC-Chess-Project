@@ -189,9 +189,38 @@ bool testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 }
 
 
+/*
+
+Debug session 10/16/20...
+
+  a  b  c  d  e  f  g  h
+8 wR __ __ __ __ __ bP bR 8
+7 wN __ __ __ __ __ bP bN 7
+6 wB __ __ __ __ __ bP bB 6
+5 wK __ __ __ __ __ bP bK 5
+4 wQ __ __ __ __ __ bP bQ 4
+3 wB __ __ __ __ __ bP bB 3
+2 wN __ __ __ __ __ bP bN 2
+1 wR __ __ __ __ __ bP bR 1
+  a  b  c  d  e  f  g  h
+
+
+Welcome to the TEC Chess Test Console!
+To enter moves, use the format 'ColRow': a7, b3, etc
+Don't hit 'enter' without any input. This is a quick n dirty test that will break.
+Enter 'q' to exit at the continue/quit prompt after each round
+Play? Hit quit/continue now (q/c):
+
+
+
+
+*/
+
+
 
 
 /*
+
 
 Sample output...
 

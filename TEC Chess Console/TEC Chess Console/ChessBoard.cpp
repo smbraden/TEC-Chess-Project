@@ -134,7 +134,7 @@ namespace chess {
             cout << row_label << " ";   // row labels
             for (int col = 0; col < BOARD_SIZE; col++) {
 
-                if (getElement(col, row) == nullptr)
+                if (!grid.isPiece(col, row))
                     std::cout << "__";
                 else {
                     ChessPiece::team_type team = getTeam(col, row);     // grid[col][row]->getTeamType();
@@ -270,6 +270,7 @@ namespace chess {
     // Precondition:    isPiece(pos1, pos2) == true
     ChessPiece::team_type ChessBoard::getTeam(int pos1, int pos2) const
     {
+        assert(grid.isPiece(pos1, pos2));
         return grid.getElement(pos1, pos2)->getTeamType();
     }
 
@@ -280,6 +281,7 @@ namespace chess {
     // Precondition:    isPiece(pos1, pos2) == true
     ChessPiece::piece_type ChessBoard::getPiece(int pos1, int pos2) const
     {
+        assert(grid.isPiece(pos1, pos2));
         return grid.getElement(pos1, pos2)->getPieceType();
     }
 

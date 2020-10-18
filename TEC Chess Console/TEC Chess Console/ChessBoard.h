@@ -10,9 +10,8 @@
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
 
-//#include "DerivedPieces.h"
 #include "ChessTeam.h"
-//#include "Grid.h"
+
 
 namespace chess {
 

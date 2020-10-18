@@ -21,8 +21,8 @@ namespace chess {
 		// Constructors
 		ChessTeam();
 		ChessTeam(ChessPiece::team_type t, Grid* g, bool m);
-		ChessTeam(const ChessTeam&);
-		ChessTeam operator=(const ChessTeam&);
+		// ChessTeam(const ChessTeam&);
+		// ChessTeam operator=(const ChessTeam&);
 
 		// Accessors
 		int getKCol() const;

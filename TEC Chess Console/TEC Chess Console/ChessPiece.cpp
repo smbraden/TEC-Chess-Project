@@ -42,7 +42,7 @@ namespace chess {
 
 
 
-
+	/*
 	// Copy constructor
 	ChessPiece::ChessPiece(const ChessPiece& source)
 	{
@@ -51,7 +51,7 @@ namespace chess {
 		team = source.team;
 		piece = source.piece;
 	}
-
+	*/
 
 
 
