@@ -11,11 +11,11 @@
 #include <cassert>
 #include "ChessTeam.h"
 
+#define toGrid(c, r) (r * BOARD_SIZE + c)
+#define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
 #define inBounds4(a, b, c, d) (a >= 0 && b >= 0 && c >= 0 && d >= 0 &&  \
                             a < BOARD_SIZE&& b < BOARD_SIZE&& c < BOARD_SIZE&& d < BOARD_SIZE)
-#define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
 
-#define mapGrid(c, r) (r * BOARD_SIZE + c)
 
 using namespace std;
 
@@ -28,7 +28,7 @@ namespace chess {
         kCol = 4;
         kRow = 0;
         team = ChessPiece::team_type::white;
-        grid = nullptr;
+        gridPtr = nullptr;
         checkmateStatus = false;
     }
 
@@ -36,7 +36,7 @@ namespace chess {
 
 
 
-    ChessTeam::ChessTeam(ChessPiece::team_type t, ChessPiece** g, bool m)
+    ChessTeam::ChessTeam(ChessPiece::team_type t, Grid* g, bool m)
     {
         if (t == ChessPiece::team_type::white) {
             kCol = 4;
@@ -48,7 +48,7 @@ namespace chess {
         }
 
         team = t;
-        grid = g;
+        gridPtr = g;
         checkmateStatus = m;
     }
 
@@ -62,7 +62,7 @@ namespace chess {
         kCol = arg.kCol;
         kRow = arg.kRow;
         team = arg.team;
-        grid = arg.grid;
+        gridPtr = arg.gridPtr;
         checkmateStatus = arg.checkmateStatus;
     }
 
@@ -76,7 +76,7 @@ namespace chess {
         kCol = arg.kCol;
         kRow = arg.kRow;
         team = arg.team;
-        grid = arg.grid;
+        gridPtr = arg.gridPtr;
         checkmateStatus = arg.checkmateStatus;
     }
 
@@ -109,7 +109,7 @@ namespace chess {
 
     ChessPiece* ChessTeam::getElement(int col, int row) const
     {
-        return grid[row * BOARD_SIZE + col];
+        return gridPtr->getElement(row, col);
     }
 
 
@@ -119,7 +119,7 @@ namespace chess {
 
     ChessPiece* ChessTeam::setElement(int col, int row, ChessPiece* ptr)
     {
-        grid[row * BOARD_SIZE + col] = ptr;
+        gridPtr->setElement(col, row, ptr);
     }
 
 
@@ -147,9 +147,20 @@ namespace chess {
 
 
 
-    ChessPiece** ChessTeam::setGridPtr()
+
+
+    Grid* ChessTeam::getGridPtr()
     {
-        return grid;
+        return gridPtr;
+    }
+
+
+
+
+
+    void ChessTeam::setGridPtr(Grid* arg)
+    {
+        gridPtr = arg;
     }
 
 
@@ -220,17 +231,7 @@ namespace chess {
 
 
 
-    ChessPiece** ChessTeam::gridCopy(ChessPiece** arg)
-    {
-        ChessPiece** ptr = new ChessPiece* [BOARD_SIZE * BOARD_SIZE];
-        for (int r = 0; r < BOARD_SIZE; r++) {
-            for (int c = 0; c < BOARD_SIZE; c++) {
-                ptr[mapGrid(r, c)] = arg[mapGrid(r, c)];
-            }
-        }
 
-        return ptr;
-    }
 
 
 
@@ -253,7 +254,7 @@ namespace chess {
             throw SelfCapturError();                                            // belonging to the moving player
         else {  // basic rules have been followed. Now, are the rules followed for the specific piece?
 
-            ChessPiece** tempGrid = ddCopyGrid(grid);
+            Grid tempGrid = *gridPtr;
             
             try {
 
@@ -288,8 +289,7 @@ namespace chess {
 
             if (isCheck()) {
                 
-                deleteGrid(grid);
-                grid = tempGrid;
+                gridPtr = &tempGrid;
                 throw CheckError();
             }
         }
@@ -306,47 +306,22 @@ namespace chess {
             remove(move1, pos2);
         else if (isPiece(move1, move2))
             remove(move1, move2);
-
-        grid[move1][move2] = grid[pos1][pos2];          // map the object with the destination coordinate
-        getElement(pos1, pos2)->setPosition(move1, move2);    // set the object's internal position
-        setElement(pos1, pos2, nullptr);                     // set previous coordinate to empty
+                                                                
+        setElement(move1, move2, getElement(pos1, pos2));       // map the object with the destination coordinate
+        getElement(pos1, pos2)->setPosition(move1, move2);      // set the object's internal position
+        setElement(pos1, pos2, nullptr);                        // set previous coordinate to empty
     }
 
 
 
 
 
-
+       
     void ChessTeam::remove(int x, int y)
     {
-        if (getElement(x, y) != nullptr) {
-            ChessPiece* objPtr = getElement(x, y);
-            delete objPtr;                      // destroy the object
-            setElement(x, y, nullptr);               // set the grid square to nullptr
-        }
+        gridPtr->remove(x, y);
     }
 
-
-
-
-
-
-
-
-    ChessPiece** ChessTeam::ddCopyGrid(ChessPiece** arg)
-    {
-        return nullptr;
-    }
-
-
-
-
-
-
-
-    void ChessTeam::deleteGrid(ChessPiece** arg)
-    {
-    }
 
 
 
@@ -841,9 +816,9 @@ namespace chess {
 
 
 
-    void ChessTeam::setGridPtr(ChessPiece** g)
+    void ChessTeam::setGridPtr(Grid* g)
     {
-        grid = g;
+        gridPtr = g;
     }
 
 

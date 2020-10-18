@@ -10,6 +10,7 @@
 #define CHESSTEAM_H
 
 #include "DerivedPieces.h"
+#include "Grid.h"
 
 namespace chess {
 
@@ -19,7 +20,7 @@ namespace chess {
 
 		// Constructors
 		ChessTeam();
-		ChessTeam(ChessPiece::team_type t, ChessPiece** g, bool m);
+		ChessTeam(ChessPiece::team_type t, Grid* g, bool m);
 		ChessTeam(const ChessTeam&);
 		ChessTeam operator=(const ChessTeam&);
 
@@ -28,14 +29,14 @@ namespace chess {
 		int getKRow() const;
 		bool getCheckmateStatus() const;
 		ChessPiece::team_type getTeam() const;
-		ChessPiece** setGridPtr();
+		Grid* getGridPtr();
 
 
 		// Mutator
 		void setKing(int move1, int move2);
 		void setCheckmateStatus(bool arg);
 		void setTeam(ChessPiece::team_type t);
-		void setGridPtr(ChessPiece** g);
+		void setGridPtr(Grid* arg);
 
 		// Other
 		void move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type inTeam);
@@ -55,16 +56,14 @@ namespace chess {
 	private:
 
 		// primary members
+		Grid* gridPtr;					
 		int kCol;						// column of team's king
 		int kRow;						// row of team's king
 		ChessPiece::team_type team;		// team's type, white or black
-		(ChessPiece*)* grid;			// point to array of Chess Piece pointers
 		bool checkmateStatus;
 
 		// helper functions
 		void remove(int x, int y);
-		ChessPiece** ddCopyGrid(ChessPiece** arg);	// returns deep deep copy of the arg
-		void deleteGrid(ChessPiece** arg);
 
 		// private accessors
 		ChessPiece* getElement(int col, int row) const;
@@ -80,8 +79,7 @@ namespace chess {
 		// Other helpers 
 		bool isPiece(int inCol, int inRow) const;	// verifies coordinates in bounds and correspond to an object
 		void evaluatePath(int* path) const;
-		ChessPiece** gridCopy(ChessPiece** arg);
-
+		
 		// Pawn-related functions
 		int* validPawnMove(int pos1, int pos2, int move1, int move2) const;
 		bool isCapture(int pos1, int pos2, int move1, int move2) const;

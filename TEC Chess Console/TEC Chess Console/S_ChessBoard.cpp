@@ -13,11 +13,11 @@
 #include <cassert>
 #include "S_ChessBoard.h"
 
+// #define toGrid(c, r) (r * BOARD_SIZE + c)
+#define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
 #define inBounds4(a, b, c, d) (a >= 0 && b >= 0 && c >= 0 && d >= 0 &&  \
                             a < BOARD_SIZE&& b < BOARD_SIZE&& c < BOARD_SIZE&& d < BOARD_SIZE)
-#define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
 
-//#define accessGrid(col, row) (grid[row * BOARD_SIZE + col])
 
 using namespace std;
 
@@ -27,23 +27,14 @@ namespace chess {
 
     ChessBoard::ChessBoard()
     {
-        // Allocate for the grid
-        grid = new ChessPiece* [BOARD_SIZE * BOARD_SIZE];
-
-        // initialize a "blank" grid
-        for (int i = 0; i < BOARD_SIZE; i++)
-            for (int j = 0; j < BOARD_SIZE; j++)
-                setElement(j, i, nullptr);
-
-        // instantiate the pieces and map them on grid
-        initPieces();
+        initPieces();   // instantiate the pieces and map them on grid
 
         whiteT.setTeam(ChessPiece::team_type::white);
-        whiteT.setGridPtr(grid);
+        whiteT.setGridPtr(&grid);
         blackT.setKing(4, 0);
 
         blackT.setTeam(ChessPiece::team_type::black);
-        blackT.setGridPtr(grid);
+        blackT.setGridPtr(&grid);
         blackT.setKing(4, 7);
 
         Winner = ChessPiece::team_type::nullType;
@@ -56,33 +47,19 @@ namespace chess {
 
     ChessBoard::ChessBoard(const ChessBoard& arg)
     {
-        copy(arg);
-    }
+        grid = arg.grid;
 
+        Winner = arg.Winner;
 
+        whiteT.setGridPtr(&grid);
+        whiteT.setKing(arg.whiteT.getKCol(), arg.whiteT.getKRow());
+        whiteT.setTeam(ChessPiece::team_type::white);
+        whiteT.setCheckmateStatus(arg.whiteT.getCheckmateStatus());
 
-
-
-
-
-    ChessBoard::~ChessBoard()
-    {
-        clear();
-    }
-
-
-
-
-
-
-    ChessBoard ChessBoard::operator=(const ChessBoard& right)
-    {
-        if (this != &right) {
-            clear();
-            copy(right);
-        }
-
-        return *this;
+        blackT.setGridPtr(&grid);
+        blackT.setKing(arg.blackT.getKCol(), arg.blackT.getKRow());
+        blackT.setTeam(ChessPiece::team_type::black);
+        blackT.setCheckmateStatus(arg.blackT.getCheckmateStatus());
     }
 
 
@@ -242,87 +219,22 @@ namespace chess {
 
 
 
-
-
-    void ChessBoard::remove(int x, int y)
-    {
-        if (getElement(x, y) != nullptr) {
-            ChessPiece* objPtr = getElement(x, y);
-            delete objPtr;                      // destroy the object
-            setElement(x, y, nullptr);          // set the grid square to nullptr
-        }
-    }
-
-
-
-
-
-    // Purpose:         Helper to assignment operator and destructor
-    // Precondition:    Only to be called from assignment operator or destructor
-    void ChessBoard::clear()
-    {
-        // deallocate all the ChessPiece objects
-        for (int i = 0; i < BOARD_SIZE; i++)
-            for (int j = 0; j < BOARD_SIZE; j++)
-                remove(i, j);
-
-        // deallocate the grid of ChessPiece poiters
-        delete[] grid;
-        grid = nullptr;
-        whiteT.setGridPtr(nullptr); // leave other members of white an black team?
-        blackT.setGridPtr(nullptr);
-    }
-
-
-
-
-
-
+    
     // Purpose:         Helper to assignment operator and copy constructor
     // Precondition:    Only to be called from assignment operator or copy constructor
     void ChessBoard::copy(const ChessBoard& arg)
     {
-        grid = new ChessPiece * [BOARD_SIZE * BOARD_SIZE];
-
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
-
-                ChessPiece* ptr = nullptr;
-
-                if (arg.getElement(i, j) == nullptr)
-                    ChessPiece* ptr = nullptr;
-                else if (arg.getPiece(i, j) == ChessPiece::piece_type::pawn) {
-                    bool passVal = ((Pawn*)arg.getElement(i, j))->getEnPassant();
-                    ptr = new Pawn(i, j, arg.getTeam(i, j), passVal);
-                }
-                else if (arg.getPiece(i, j) == ChessPiece::piece_type::rook) {
-                    ptr = new Rook(i, j, arg.getTeam(i, j));
-                }
-                else if (arg.getPiece(i, j) == ChessPiece::piece_type::knight) {
-                    ptr = new Knight(i, j, arg.getTeam(i, j));
-                }
-                else if (arg.getPiece(i, j) == ChessPiece::piece_type::bishop) {
-                    ptr = new Bishop(i, j, arg.getTeam(i, j));
-                }
-                else if (arg.getPiece(i, j) == ChessPiece::piece_type::king) {
-                    ptr = new King(i, j, arg.getTeam(i, j));
-                }
-                else {  // if (grid[i][j]->getPieceType() == ChessPiece::piece_type::queen) 
-                    ptr = new Queen(i, j, arg.getTeam(i, j));
-                }
-
-                setElement(i, j, ptr);
-            }
-        }
+        
+        grid = arg.grid;
 
         Winner = arg.Winner;
 
-        whiteT.setGridPtr(grid);
+        whiteT.setGridPtr(&grid);
         whiteT.setKing(arg.whiteT.getKCol(), arg.whiteT.getKRow());
         whiteT.setTeam(ChessPiece::team_type::white);
         whiteT.setCheckmateStatus(arg.whiteT.getCheckmateStatus());
 
-        blackT.setGridPtr(grid);
+        blackT.setGridPtr(&grid);
         blackT.setKing(arg.blackT.getKCol(), arg.blackT.getKRow());
         blackT.setTeam(ChessPiece::team_type::black);
         blackT.setCheckmateStatus(arg.blackT.getCheckmateStatus());
@@ -336,8 +248,7 @@ namespace chess {
     // Precondition:    isPiece(row, col) == true
     ChessPiece* ChessBoard::getElement(int col, int row) const
     {
-        assert(isPiece(row, col));
-        return grid[row * BOARD_SIZE + col];
+        return grid.getElement(row, col);
     }
 
 
@@ -346,20 +257,7 @@ namespace chess {
     // Precondition:    inBounds2(row, col) == true
     ChessPiece* ChessBoard::setElement(int col, int row, ChessPiece* ptr)
     {
-        assert(inBounds2(col, row));
-        grid[row * BOARD_SIZE + col] = ptr;
-    }
-
-
-
-
-
-
-    bool ChessBoard::isPiece(int inCol, int inRow) const
-    {
-        if (inBounds2(inCol, inRow) && getElement(inCol, inRow) != nullptr)
-            return true;
-        return false;
+        grid.setElement(row, col, ptr);
     }
 
 
@@ -369,8 +267,7 @@ namespace chess {
     // Precondition:    isPiece(pos1, pos2) == true
     ChessPiece::team_type ChessBoard::getTeam(int pos1, int pos2) const
     {
-        assert(isPiece(pos1, pos2));
-        return (grid[pos1 * BOARD_SIZE + pos2])->getTeamType();
+        return grid.getElement(pos1, pos2)->getTeamType();
     }
 
 
@@ -380,8 +277,7 @@ namespace chess {
     // Precondition:    isPiece(pos1, pos2) == true
     ChessPiece::piece_type ChessBoard::getPiece(int pos1, int pos2) const
     {
-        assert(isPiece(pos1, pos2));
-        return (grid[pos1 * BOARD_SIZE + pos2])->getPieceType();
+        return grid.getElement(pos1, pos2)->getPieceType();
     }
 
 
@@ -389,40 +285,3 @@ namespace chess {
 
 }  // closes namespace
 
-
-
-
-
-
-    /*
-    //    Precondition: Either colSign or rowSign is 0
-    //                  Either colSign or RowSign is 1 or -1
-    //                  kCol is the king's column
-    //                  kRow is the king's row
-    bool ChessBoard::singleLateral(ChessPiece::team_type kingTeam, int kCol, int kRow, int colSign, int rowSign) const
-    {
-        int nextRow = kRow + rowSign;
-        int nextCol = kCol + colSign;
-
-        if (colSign != 0) {
-            while (nextCol < BOARD_SIZE && nextCol >= 0 && !isPiece(nextCol, kRow))
-                nextCol = nextCol + colSign;
-
-            if (isPiece(nextCol, kRow) && getTeam(nextCol, kRow) != kingTeam
-                && (getPiece(nextCol, kRow) == ChessPiece::piece_type::queen
-                || getPiece(nextCol, kRow) == ChessPiece::piece_type::rook))
-                return true;
-        }
-        else if (rowSign != 0) {  // if (kCol == nextCol)
-            while (nextRow < BOARD_SIZE && nextRow >= 0 && !isPiece(kCol, nextRow))
-                nextRow = nextRow + rowSign;
-
-            if (isPiece(kCol, nextRow) && getTeam(nextCol, kRow) != kingTeam
-                && (getPiece(kCol, nextRow) == ChessPiece::piece_type::queen
-                || getPiece(kCol, nextRow) == ChessPiece::piece_type::rook))
-                return true;
-        }
-
-        return false;
-    }
-    */

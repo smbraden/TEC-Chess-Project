@@ -22,32 +22,25 @@ namespace chess {
 
 	public:
 
-		// Big-3
 		ChessBoard();
 		ChessBoard(const ChessBoard&);
-		~ChessBoard();
-		ChessBoard operator=(const ChessBoard&);
 
 		void moveWhite(int pos1, int pos2, int move1, int move2); // indices 0-7 
 		void moveBlack(int pos1, int pos2, int move1, int move2); // (col ,row)
 		void printBoard() const;
 
 		class TurnMoveError {};		// when a player attempts to move the opponent's piece
-		// class EmptySquareError {};	// Attempt to move an empty square
-		
+				
 		static const int BOARD_SIZE = 8;
 		
 	private:
 
 		// main data members
-		ChessPiece** grid;
+		Grid grid;
 		ChessPiece::team_type Winner;
 		ChessTeam whiteT;
 		ChessTeam blackT;
 
-		// 3-Big helper functions
-		void remove(int x, int y);
-		void clear();
 		void copy(const ChessBoard&);
 		void initPieces();
 
@@ -56,8 +49,7 @@ namespace chess {
 		ChessPiece* setElement(int col, int row, ChessPiece* ptr);
 		ChessPiece::team_type getTeam(int pos1, int pos2) const;
 		ChessPiece::piece_type getPiece(int pos1, int pos2) const;
-		bool isPiece(int inCol, int inRow) const;	// verifies coordinates in bounds and correspond to an object
-
+		
 		// Check status Accessors and Mutators
 		ChessPiece::team_type getWinner();
 		void setWinner(ChessPiece::team_type arg);
