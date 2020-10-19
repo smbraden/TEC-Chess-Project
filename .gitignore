@@ -8,6 +8,11 @@ LinkedBag.h
 LinkedBag.cpp
 BagInterface.h
 
+# Project files
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
 # User-specific files
 *.rsuser
 *.suo

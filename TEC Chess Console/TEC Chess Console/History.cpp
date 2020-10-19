@@ -42,6 +42,7 @@ namespace chess {
 
 
 
+
 	// This is problematic, working on a solution
 	PieceRecord History::toRecord(const ChessPiece* arg)
 	{
