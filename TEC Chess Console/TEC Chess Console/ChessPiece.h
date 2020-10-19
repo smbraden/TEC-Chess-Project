@@ -7,51 +7,9 @@
 
 //-------------------------------------------------------------------------------------/*/
 
-	/**	Stores the current col and row position in the two arguments
-		@pre inCol and inRow are variable integers (can be passed by reference)
-		@post inCol and inRow arguments now contain the values of
-			calling objext's col and row members
-		@return void
-		
-	void getPosition(int& inCol, int& inRow) const;  */
-
-
-	/**	Returns the piece type
-		@pre An instantiated ChessPiece object
-		@post No change to the object
-		@return the piece_type: bishop, king, queen, etc.
-			(an enumerated type belong to the ChessPiece Class) 
-
-	piece_type getPieceType() const;	*/
-
-
-	/**	Returns the team type
-		@pre An instantiated ChessPiece object
-		@post No change to the object
-		@return the team_type: black or white
-			(an enumerated type belong to the ChessPiece Class) 
-	
-	char getTeamType() const = 0;	*/
-
-
-	/**	Mutator. Changes the position coordinates members, col and row
-		@pre An instantiated ChessPiece object
-		@post The new position (inCol, inRow) will be set to the members
-			if the move complies with the rules of movement defined for the piece
-			(but excluding conditions involving relativity to other pieces,
-			and the boundaries of the board)
-		@return Pointer to int array of size MAX_PATH.
-			The int array contains the set of spaces that the piece has
-			to traverse to reach the destination
-	
-	virtual int* setPosition(int inCol, int inRow) = 0;	*/
-
-
 #ifndef CHESSPIECE_H
 #define CHESSPIECE_H
 
-#include <cassert>			// for assert()
-#include <stdlib.h>			// for abs()
 
 namespace chess {
 
@@ -61,14 +19,10 @@ namespace chess {
 		public:
 
 			enum class team_type : unsigned char
-			{
-				white = 'w', black = 'b'
-			};
+			{ white = 'w', black = 'b', nullType = 'n' };
 
 			enum class piece_type : unsigned char
-			{
-				none = '0', pawn = 'P', rook = 'R', knight = 'N', bishop = 'B', queen = 'Q', king = 'K'
-			};
+			{ none = '0', pawn = 'P', rook = 'R', knight = 'N', bishop = 'B', queen = 'Q', king = 'K' };
 
 			const static int BOARD_SIZE = 8;
 			const static int MAX_PATH = 7;	 // 6 spaces for max path, and 1 more for an extra delimiter
@@ -76,17 +30,18 @@ namespace chess {
 
 			ChessPiece();											// Default constructor
 			ChessPiece(int inCol , int inRow , team_type color);	// Parameterized constructor
-			ChessPiece(const ChessPiece&);							// Copy
-
+			
+			// Accessors
 			team_type getTeamType() const;
-			void setTeamType(team_type);
 			piece_type getPieceType() const;
-			void setPieceType(piece_type);
 			void getPosition(int& inCol, int& inRow) const;
-			void setPosition(int inCol, int inRow);
 			int getCol() const;
 			int getRow() const;
 			
+			// Mutators
+			void setPosition(int inCol, int inRow);
+			void setTeamType(team_type);
+			void setPieceType(piece_type);
 			virtual int* validMove(int inCol, int inRow) const;
 
 		private:

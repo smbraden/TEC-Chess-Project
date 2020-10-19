@@ -4,15 +4,17 @@
 	Date:               10/4/2020
 	Reference:
 	Description:		Implementation  of the ChessPiece class. This is the base
-						class from which unique types of pieces are derived 
-						(queen, king, etc.) Unique types have different error checking 
-						for valid movement by the rules of chess.						
+						class from which unique types of pieces are derived
+						(queen, king, etc.) Unique types have different error checking
+						for valid movement by the rules of chess.
 //-------------------------------------------------------------------------------------/*/
 
 
 
 
 #include "ChessPiece.h"
+#include <cassert>			// for assert()
+
 
 namespace chess {
 
@@ -23,8 +25,8 @@ namespace chess {
 		team = team_type::white;
 		piece = piece_type::none;
 	}
-	
-	
+
+
 
 
 
@@ -39,18 +41,6 @@ namespace chess {
 		piece = piece_type::none;
 	}
 
-
-
-
-
-	// Copy constructor
-	ChessPiece::ChessPiece(const ChessPiece& source)
-	{
-		row = source.row;
-		col = source.col;
-		team = source.team;
-		piece = source.piece;
-	}
 
 
 
@@ -119,7 +109,7 @@ namespace chess {
 
 
 
-	
+
 	// Mutator
 	void ChessPiece::setPieceType(piece_type arg)
 	{
@@ -134,7 +124,7 @@ namespace chess {
 	//					AND the path returned has been evualted, and is clear
 	void ChessPiece::setPosition(int inCol, int inRow)
 	{
-		assert(inCol < BOARD_SIZE && inRow < BOARD_SIZE && inCol >= 0 && inRow >= 0);
+		assert(inCol < BOARD_SIZE&& inRow < BOARD_SIZE&& inCol >= 0 && inRow >= 0);
 		col = inCol;
 		row = inRow;
 	}
@@ -147,29 +137,29 @@ namespace chess {
 
 	/*	Returns the "path" to the destination if move is otherwise valid.
 		Validity of moves in the ChessPiece class does not consider board bounds, nor
-		"jumps" over other pieces, or other relations to board state. The "path" returned 
-		represents the spaces between current position and destination (not inclusive). 
-		compliance with non-jump moves will be evaluated by 
+		"jumps" over other pieces, or other relations to board state. The "path" returned
+		represents the spaces between current position and destination (not inclusive).
+		compliance with non-jump moves will be evaluated by
 		the ChessBoard client, which manages info regarding all piece positions	*/
 
 	int* ChessPiece::validMove(int inCol, int inRow) const
 	{
-		assert(inCol < BOARD_SIZE && inRow < BOARD_SIZE && inCol >= 0 && inRow >= 0);
+		assert(inCol < BOARD_SIZE&& inRow < BOARD_SIZE&& inCol >= 0 && inRow >= 0);
 		int* path = nullptr;
 		return path;
 	}
 
-	/* Real pieces will take the folloing form 
- 		
+	/* Real pieces will take the folloing form
+
 		int* ChessPiece::setPosition(int inCol, int inRow)
 		{
 			int* path = nullptr;
-		
+
 			if ( Valid move )
 				path = getPath();
 			else
 				throw PieceMoveError();
-			
+
 			return path;
 		}
 	*/
@@ -181,13 +171,13 @@ namespace chess {
 
 	int* ChessPiece::getPath(int inCol, int inRow)
 	{
-		assert(inCol < BOARD_SIZE && inRow < BOARD_SIZE && inCol >= 0 && inRow >= 0);
+		assert(inCol < BOARD_SIZE&& inRow < BOARD_SIZE&& inCol >= 0 && inRow >= 0);
 		int* path = nullptr;
-		
+
 		/*	Real pieces will calculate the path:
-		
+
 			path = new int[2 * MAX_PATH];
-		
+
 			for ( r = 0; r < MAX_PATH; r++) {
 				path[2 * r] =		pathCol_r;
 				path[2 * r + 1] =	pathRow_r;

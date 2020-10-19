@@ -25,7 +25,6 @@ namespace chess {
 		void setEnPassant(bool);
 		bool getEnPassant() const;
 
-
 	protected:
 
 		bool enPassant;

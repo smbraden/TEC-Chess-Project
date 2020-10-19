@@ -49,7 +49,7 @@ namespace chess {
 	private:
 
 		// main data members
-		ChessPiece* grid[BOARD_SIZE][BOARD_SIZE];
+		ChessPiece* grid[BOARD_SIZE][BOARD_SIZE];	// ChessPiece* grid[BOARD_SIZE * BOARD_SIZE];
 		int wKingRow;
 		int wKingCol;
 		int bKingRow;

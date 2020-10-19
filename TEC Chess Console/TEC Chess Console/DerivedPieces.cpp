@@ -8,7 +8,7 @@
 
 
 #include "DerivedPieces.h"
-
+#include <cstdlib>
 
 
 namespace chess {

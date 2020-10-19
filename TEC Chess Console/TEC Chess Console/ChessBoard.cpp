@@ -9,13 +9,14 @@
                         the rules of chess.
 //-------------------------------------------------------------------------------------/*/
 
+#include "ChessBoard.h"
 #include <iostream>
 #include <cassert>
-#include "ChessBoard.h"
 
+
+#define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
 #define inBounds4(a, b, c, d) (a >= 0 && b >= 0 && c >= 0 && d >= 0 &&  \
                             a < BOARD_SIZE&& b < BOARD_SIZE&& c < BOARD_SIZE&& d < BOARD_SIZE)
-#define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
 
 using namespace std;
 
@@ -82,15 +83,7 @@ namespace chess {
 
     void ChessBoard::moveWhite(int pos1, int pos2, int move1, int move2)
     {
-        // isPiece() is checked in move(),  but getTeam() has the precondition
-        if (isPiece(pos1, pos2))    // that the object at pos1, po2 is real
-            if (getTeam(pos1, pos2) == ChessPiece::team_type::white)
-                move(pos1, pos2, move1, move2, ChessPiece::team_type::white);
-            else
-                throw TurnMoveError();
-        else
-            throw EmptySquareError();
-
+        move(pos1, pos2, move1, move2, ChessPiece::team_type::white);
     }
 
 
@@ -101,13 +94,7 @@ namespace chess {
 
     void ChessBoard::moveBlack(int pos1, int pos2, int move1, int move2)
     {
-        if(isPiece(pos1, pos2))
-            if (getTeam(pos1, pos2) == ChessPiece::team_type::black)
-                move(pos1, pos2, move1, move2, ChessPiece::team_type::black);
-            else
-                throw TurnMoveError();
-        else
-            throw EmptySquareError();
+        move(pos1, pos2, move1, move2, ChessPiece::team_type::black);
     }
 
 
@@ -276,9 +263,8 @@ namespace chess {
     // Note:    inTeam is the team whose turn it is to move
     void ChessBoard::move(int pos1, int pos2, int move1, int move2, ChessPiece::team_type inTeamType)
     {
-        if (!inBounds4(pos1, pos2, move1, move2)){
+        if (!inBounds4(pos1, pos2, move1, move2))
             throw BoundsError();
-        }
         else if (!isPiece(pos1, pos2))  // moving a non-exsistent piece   
             throw EmptySquareError();
         else if (getTeam(pos1, pos2) != inTeamType)     // wrong team being move
@@ -860,16 +846,6 @@ namespace chess {
        
         return false;
     }
-
-    /*
-        Castling consists of moving the king two squares towards a rook 
-        on the player's first rank, then moving the rook to the square 
-        over which the king crossed. Castling may only be done if the king 
-        has never moved, the rook involved has never moved, 
-        the squares between the king and the rook involved are unoccupied, 
-        the king is not in check, and the king does not cross over 
-        or end on a square attacked by an enemy piece.
-    */
 
 
 
