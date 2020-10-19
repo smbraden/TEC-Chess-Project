@@ -33,7 +33,7 @@
     <ClInclude Include="DerivedTeams.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Chess History Class\History.h">
+    <ClInclude Include="History.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -59,7 +59,7 @@
     <ClCompile Include="DerivedTeams.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Chess History Class\History.cpp">
+    <ClCompile Include="History.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
