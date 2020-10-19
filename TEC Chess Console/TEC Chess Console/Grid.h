@@ -35,7 +35,7 @@ namespace chess {
 
 	private:
 
-		ChessPiece* grid[BOARD_SIZE * BOARD_SIZE];
+		ChessPiece* grid[BOARD_SIZE * BOARD_SIZE];	// ChessPiece* grid[BOARD_SIZE][BOARD_SIZE];
 
 		// Big-3 helpers
 		void copy(const Grid& arg);

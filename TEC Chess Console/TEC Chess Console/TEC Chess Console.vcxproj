@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="boardTest.cpp" />
+    <ClCompile Include="Chess History Class\History.cpp" />
     <ClCompile Include="ChessBoard.cpp" />
     <ClCompile Include="ChessPiece.cpp" />
     <ClCompile Include="ChessTeam.cpp" />
@@ -148,6 +149,7 @@
     <ClCompile Include="Grid.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Chess History Class\History.h" />
     <ClInclude Include="ChessBoard.h" />
     <ClInclude Include="ChessPiece.h" />
     <ClInclude Include="ChessTeam.h" />

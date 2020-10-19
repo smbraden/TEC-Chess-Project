@@ -6,7 +6,12 @@
 	Description:		Implementation  of the ChessPiece class. This is the base
 						class from which unique types of pieces are derived 
 						(queen, king, etc.) Unique types have different error checking 
-						for valid movement by the rules of chess.						
+						for valid movement by the rules of chess.	
+
+						Mutators for the piece and team members are intentionally absent.
+						For the derived ChessPiece's, we want to set these members 
+						at construction, and allow them to never change
+						(accidentally, or otherwise)
 //-------------------------------------------------------------------------------------/*/
 
 
@@ -86,18 +91,7 @@ namespace chess {
 
 
 
-	/*
-	// Mutator
-	void ChessPiece::setTeamType(team_type arg)
-	{
-		team = arg;
-	}
-	*/
-
-
-
-
-
+	
 	// Accessor
 	ChessPiece::piece_type ChessPiece::getPieceType() const
 	{
@@ -105,15 +99,6 @@ namespace chess {
 	}
 
 
-
-
-	/*
-	// Mutator
-	void ChessPiece::setPieceType(piece_type arg)
-	{
-		piece = arg;
-	}
-	*/
 
 
 

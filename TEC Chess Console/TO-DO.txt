@@ -23,6 +23,12 @@ occupy the same squares, the same player has the move, the remaining
 castling rights are the same and the possibility to capture 
 en passant is the same. The repeated positions need not occur in succession. 
 
+-Checkmate
+
+-Stalemate
+
+-Add equivalence operator to ChessPiece/DerivedPieces 
+(other comparison operators later, if ranking of pieces becomes relevant)
 
 DONE:
 
