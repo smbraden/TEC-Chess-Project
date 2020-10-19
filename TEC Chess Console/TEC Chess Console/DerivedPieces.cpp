@@ -19,7 +19,7 @@ namespace chess {
 	Pawn::Pawn() : ChessPiece()
 	{
 		enPassant = false;
-		setPieceType(piece_type::pawn);
+		piece = piece_type::pawn;
 	}
 
 
@@ -30,7 +30,7 @@ namespace chess {
 	Pawn::Pawn(int inCol, int inRow, team_type color, bool passVal) : ChessPiece(inCol, inRow, color)
 	{
 		enPassant = passVal;
-		setPieceType(piece_type::pawn);
+		piece = piece_type::pawn;
 	}
 
 
@@ -125,7 +125,7 @@ namespace chess {
 
 	Knight::Knight() : ChessPiece()
 	{
-		setPieceType(piece_type::knight);
+		piece = piece_type::knight;
 	}
 
 
@@ -135,7 +135,7 @@ namespace chess {
 
 	Knight::Knight(int inCol, int inRow, team_type color) : ChessPiece(inCol, inRow, color)
 	{
-		setPieceType(piece_type::knight);
+		piece = piece_type::knight;
 	}
 
 
@@ -179,7 +179,7 @@ namespace chess {
 
 	Queen::Queen() : ChessPiece()
 	{
-		setPieceType(piece_type::queen);
+		piece = piece_type::queen;
 	}
 
 
@@ -189,7 +189,7 @@ namespace chess {
 
 	Queen::Queen(int inCol, int inRow, team_type color) : ChessPiece(inCol, inRow, color)
 	{
-		setPieceType(piece_type::queen);
+		piece = piece_type::queen;
 	}
 
 
@@ -335,7 +335,7 @@ namespace chess {
 
 	Rook::Rook() : Queen()
 	{
-		setPieceType(piece_type::rook);
+		piece = piece_type::rook;
 		castle = true;
 	}
 
@@ -346,7 +346,7 @@ namespace chess {
 
 	Rook::Rook(int inCol, int inRow, team_type color) : Queen(inCol, inRow, color)
 	{
-		setPieceType(piece_type::rook);
+		piece = piece_type::rook;
 		castle = true;
 	}
 
@@ -409,7 +409,7 @@ namespace chess {
 
 	Bishop::Bishop() : Queen()
 	{
-		setPieceType(piece_type::bishop);
+		piece = piece_type::bishop;
 	}
 
 
@@ -419,7 +419,7 @@ namespace chess {
 
 	Bishop::Bishop(int inCol, int inRow, team_type color) : Queen(inCol, inRow, color)
 	{
-		setPieceType(piece_type::bishop);
+		piece = piece_type::bishop;
 	}
 
 
@@ -459,7 +459,7 @@ namespace chess {
 
 	King::King() : ChessPiece()
 	{
-		setPieceType(piece_type::king);
+		piece = piece_type::king;
 		castle = true;
 	}
 
@@ -470,7 +470,7 @@ namespace chess {
 
 	King::King(int inCol, int inRow, team_type color) : ChessPiece(inCol, inRow, color)
 	{
-		setPieceType(piece_type::king);
+		piece = piece_type::king;
 		castle = true;
 	}
 

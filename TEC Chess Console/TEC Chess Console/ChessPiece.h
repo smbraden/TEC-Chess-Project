@@ -74,18 +74,22 @@ namespace chess {
 			ChessPiece();											// Default constructor
 			ChessPiece(int inCol , int inRow , team_type color);	// Parameterized constructor
 			
+			// Acessors
 			team_type getTeamType() const;
-			void setTeamType(team_type);
 			piece_type getPieceType() const;
-			void setPieceType(piece_type);
 			void getPosition(int& inCol, int& inRow) const;
-			void setPosition(int inCol, int inRow);
 			int getCol() const;
 			int getRow() const;
 			
+			// Mutators
+			// void setTeamType(team_type);
+			// void setPieceType(piece_type);
+			void setPosition(int inCol, int inRow);
+
+			// Piece-specific evaluation
 			virtual int* validMove(int inCol, int inRow) const;
 
-		private:
+		protected:
 
 			int col;
 			int row;

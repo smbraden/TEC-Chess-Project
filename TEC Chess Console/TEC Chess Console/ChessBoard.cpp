@@ -33,12 +33,7 @@ namespace chess {
         initPieces();   // instantiate the pieces and map them on grid
 
         whiteT.setGridPtr(&grid);
-        // whiteT.setTeam(ChessPiece::team_type::white);
-        // blackT.setKing(4, 0);
-
         blackT.setGridPtr(&grid);
-        // blackT.setTeam(ChessPiece::team_type::black);
-        // blackT.setKing(4, 7);
 
         Winner = ChessPiece::team_type::nullType;
     }
@@ -110,8 +105,8 @@ namespace chess {
                 if (!grid.isPiece(col, row))
                     std::cout << "__";
                 else {
-                    ChessPiece::team_type team = getTeam(col, row);     // grid[col][row]->getTeamType();
-                    ChessPiece::piece_type piece = getPiece(col, row);   // grid[col][row]->getPieceType();
+                    ChessPiece::team_type team = getTeam(col, row);
+                    ChessPiece::piece_type piece = getPiece(col, row);
                     std::cout << static_cast<std::underlying_type<ChessPiece::team_type>::type>(team)
                         << static_cast<std::underlying_type<ChessPiece::team_type>::type>(piece);
                     // cast the team and piece types beack to underlying types for printing

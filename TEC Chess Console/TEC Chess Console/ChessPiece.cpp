@@ -86,13 +86,13 @@ namespace chess {
 
 
 
-
+	/*
 	// Mutator
 	void ChessPiece::setTeamType(team_type arg)
 	{
 		team = arg;
 	}
-
+	*/
 
 
 
@@ -107,13 +107,13 @@ namespace chess {
 
 
 
-	
+	/*
 	// Mutator
 	void ChessPiece::setPieceType(piece_type arg)
 	{
 		piece = arg;
 	}
-
+	*/
 
 
 
