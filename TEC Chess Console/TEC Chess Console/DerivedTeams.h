@@ -11,6 +11,7 @@
 #define DERIVEDTEAMS_H
 
 #include "ChessTeam.h"
+#include "History.h"
 
 namespace chess {
 	

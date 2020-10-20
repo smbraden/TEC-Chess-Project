@@ -33,9 +33,7 @@ namespace chess {
 	
 	private:
 
-		bool draw;
-
-		typedef struct PieceRecord {
+		struct PieceRecord {
 			int col;
 			int row;
 			bool enPassant;
@@ -45,22 +43,24 @@ namespace chess {
 
 			// piece(ChessPiece::piece_type::nulType)
 			PieceRecord() : col(0), row(0), enPassant(false), castle(false), 
-				piece(ChessPiece::piece_type::pawn), team(ChessPiece::team_type::nullType) {}	
+				piece(ChessPiece::piece_type::nullType), team(ChessPiece::team_type::nullType) {}
 		};
 
-		PieceRecord toRecord(const ChessPiece* arg);
-		typedef LinkedBag<PieceRecord> GameState;
-		LinkedBag<GameState> GameHistory;
-		void addRecord(const PieceRecord& arg, GameState& state);
+		bool draw;
+		typedef LinkedBag<PieceRecord> GameState;	// single snapshot of the board	
+		LinkedBag<GameState> GameHistory;			// history of all snapshots
+
+		void toRecord(const ChessPiece* arg, PieceRecord& newRecord) const;
+		void addRecord(const PieceRecord& arg, GameState& state) const;
 		bool addGameState(const GameState& state);
 
 	public:
 
 		History();
-		bool newPage(const Grid& argGrid);
+		bool newPage(const Grid& argGrid);	// returns true if addition results in 3-fold repetition
 		bool getDrawStatus() const;
-		// void remove();
-
+		void remove();
+		int getFrequencyOf(const Grid& argGrid) const;
 	};
 }
 

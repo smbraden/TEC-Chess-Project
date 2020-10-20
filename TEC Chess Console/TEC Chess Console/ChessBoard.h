@@ -12,7 +12,6 @@
 
 #include "DerivedTeams.h"
 
-
 namespace chess {
 
 	class ChessBoard {
@@ -33,11 +32,10 @@ namespace chess {
 		// main data members
 		Grid grid;
 		ChessPiece::team_type Winner;
-		
+		History history;
+
 		WhiteTeam whiteT;
 		BlackTeam blackT;
-		//ChessTeam whiteT;
-		//ChessTeam blackT;
 
 		void copy(const ChessBoard&);
 		void initPieces();

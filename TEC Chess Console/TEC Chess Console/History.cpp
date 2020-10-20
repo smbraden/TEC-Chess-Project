@@ -26,12 +26,14 @@ namespace chess {
 	bool History::newPage(const Grid& argGrid)
 	{
 		GameState newState;
+		PieceRecord newRecord;
 
 		for (int i = 0; i < ChessPiece::BOARD_SIZE; i++) {
 			for (int j = 0; j < ChessPiece::BOARD_SIZE; j++) {
-
-				PieceRecord newRecord = toRecord(argGrid.getElement(j, i));
-				addRecord(newRecord, newState);		// add the new record to the GameState
+				if (argGrid.isPiece(j, i)) {
+					toRecord(argGrid.getElement(j, i), newRecord);
+					addRecord(newRecord, newState);		// add the new record to the GameState
+				}
 			}
 		}
 
@@ -43,13 +45,10 @@ namespace chess {
 
 
 
-	// This is problematic, working on a solution
-	PieceRecord History::toRecord(const ChessPiece* arg)
+	// Translates a ChessPiece to a PieceRecord
+	void History::toRecord(const ChessPiece* arg, PieceRecord& newRecord) const
 	{
 		PieceRecord newRecord;
-		
-		// newRecord.col = argGrid.getElement(i, j)->getCol();
-		// newRecord.row = argGrid.getElement(i, j)->getRow();
 		arg->getPosition(newRecord.col, newRecord.row);
 		newRecord.piece = arg->getPieceType();
 		newRecord.team = arg->getTeamType();
@@ -60,8 +59,6 @@ namespace chess {
 			newRecord.castle = ((Rook*)arg)->getCastleStatus();
 		if (newRecord.piece == ChessPiece::piece_type::pawn)
 			newRecord.enPassant = ((Pawn*)arg)->getEnPassant();
-
-		return newRecord;
 	}
 
 
@@ -69,7 +66,7 @@ namespace chess {
 
 
 
-	void History::addRecord(const PieceRecord& arg, GameState& state)
+	void History::addRecord(const PieceRecord& arg, GameState& state) const
 	{
 		state.add(arg);
 	}
@@ -99,5 +96,35 @@ namespace chess {
 	bool History::getDrawStatus() const
 	{
 		return draw;
+	}
+
+
+
+
+
+
+	void History::remove()
+	{
+	}
+
+
+
+
+
+
+	int History::getFrequencyOf(const Grid& argGrid) const
+	{
+		GameState newState;
+		PieceRecord newRecord;
+		for (int i = 0; i < ChessPiece::BOARD_SIZE; i++) {
+			for (int j = 0; j < ChessPiece::BOARD_SIZE; j++) {
+				if (argGrid.isPiece(j, i)) {
+					toRecord(argGrid.getElement(j, i), newRecord);
+					addRecord(newRecord, newState);		// add the new record to the GameState
+				}
+			}
+		}
+
+		return GameHistory.getFrequencyOf(newState);
 	}
 }
