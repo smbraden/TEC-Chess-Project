@@ -21,13 +21,16 @@ namespace chess {
 		ChessBoard();
 		ChessBoard(const ChessBoard&);
 
-		void moveWhite(int pos1, int pos2, int move1, int move2); // indices 0-7 
-		void moveBlack(int pos1, int pos2, int move1, int move2); // (col ,row)
+		void move(int pos1, int pos2, int move1, int move2);
 		void printBoard() const;
 		
 		// Check status Accessors and Mutators
 		ChessPiece::team_type getWinner();
 		void setWinner(ChessPiece::team_type arg);
+
+		// Turn Accessors and Mutators
+		ChessPiece::team_type getTurn();
+		void setTurn(ChessPiece::team_type arg);
 
 		static const int BOARD_SIZE = 8;
 		
@@ -38,6 +41,7 @@ namespace chess {
 
 		// main data members
 		Grid grid;
+		ChessPiece::team_type turn;
 		ChessPiece::team_type winner;
 		History history;
 		
@@ -53,6 +57,7 @@ namespace chess {
 		ChessPiece::team_type getTeam(int pos1, int pos2) const;
 		ChessPiece::piece_type getPiece(int pos1, int pos2) const;
 		
+
 	};
 
 

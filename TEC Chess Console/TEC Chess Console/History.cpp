@@ -23,7 +23,7 @@ namespace chess {
 
 
 
-	bool History::newPage(const Grid& argGrid)
+	bool History::newPage(const ChessPiece::team_type turn, const Grid& argGrid)
 	{
 		GameState newState;
 		PieceRecord newRecord;
@@ -81,9 +81,9 @@ namespace chess {
 		int reps = GameHistory.getFrequencyOf(state);
 
 		if (reps >= 3) {
-			return (draw = true);
+			draw = true;
+			return true;
 		}
-
 		return false;
 	}
 

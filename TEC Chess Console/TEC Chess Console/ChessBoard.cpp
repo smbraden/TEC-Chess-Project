@@ -37,6 +37,7 @@ namespace chess {
         blackT.setGridPtr(&grid);
 
         winner = ChessPiece::team_type::nullType;
+        turn = ChessPiece::team_type::white;
     }
 
 
@@ -47,9 +48,11 @@ namespace chess {
     ChessBoard::ChessBoard(const ChessBoard& arg)
     {
         grid = arg.grid;
-
         winner = arg.winner;
+        turn = arg.turn;
 
+        // these wouldn't be neccessary if wrote an assignment op for ChessTeam;
+        // then no copy constructor needed
         whiteT.setGridPtr(&grid);
         whiteT.setKing(arg.whiteT.getKCol(), arg.whiteT.getKRow());
         whiteT.setTeam(ChessPiece::team_type::white);
@@ -66,24 +69,19 @@ namespace chess {
 
 
 
-    void ChessBoard::moveWhite(int pos1, int pos2, int move1, int move2)
+    void ChessBoard::move(int pos1, int pos2, int move1, int move2)
     {
-        whiteT.move(pos1, pos2, move1, move2);
-        if (history.newPage(grid))      // newPage() returns true when 3-fold repetition reached
-            throw DrawSignal();
-    }
+        if (turn == ChessPiece::team_type::white) {
+            whiteT.move(pos1, pos2, move1, move2);
+            turn = ChessPiece::team_type::black;
+        }
+        else {  // if (turn == ChessPiece::team_type::black)
+            blackT.move(pos1, pos2, move1, move2);
+            turn = ChessPiece::team_type::white;
+        }
 
-
-
-
-
-
-
-    void ChessBoard::moveBlack(int pos1, int pos2, int move1, int move2)
-    {
-        blackT.move(pos1, pos2, move1, move2);
-        if (history.newPage(grid))      // newPage() returns true when 3-fold repetition reached
-            throw DrawSignal();
+        // if (history.newPage(turn, grid))      // newPage() returns true when 3-fold repetition reached
+        //    throw DrawSignal();
     }
 
 
@@ -150,6 +148,27 @@ namespace chess {
     void ChessBoard::setWinner(ChessPiece::team_type arg) {
 
         winner = arg;
+    }
+
+
+
+
+
+
+
+    ChessPiece::team_type ChessBoard::getTurn()
+    {
+        return turn;
+    }
+
+
+
+
+
+
+    void ChessBoard::setTurn(ChessPiece::team_type arg)
+    {
+        turn = arg;
     }
 
 

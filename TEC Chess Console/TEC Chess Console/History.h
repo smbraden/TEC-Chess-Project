@@ -41,19 +41,21 @@ namespace chess {
 			bool castle;
 			ChessPiece::piece_type piece;
 			ChessPiece::team_type team;
+			ChessPiece::team_type turn;
 
 			// piece(ChessPiece::piece_type::nulType)
 			PieceRecord() : col(0), row(0), enPassant(false), castle(false), 
-				piece(ChessPiece::piece_type::nullType), team(ChessPiece::team_type::nullType) {}
+				piece(ChessPiece::piece_type::nullType), team(ChessPiece::team_type::nullType),
+				turn(ChessPiece::team_type::white)  {}
 		
 			bool operator==(const PieceRecord& r) const {
 				return (col == r.col && row == r.row && enPassant == r.enPassant &&
-					castle == r.castle && piece == r.piece && team == r.team);
+					castle == r.castle && piece == r.piece && team == r.team && turn == r.turn);
 			}
 
 			bool operator!=(const PieceRecord& r) const {
 				return (col != r.col || row != r.row || enPassant != r.enPassant ||
-					castle != r.castle || piece != r.piece || team != r.team);
+					castle != r.castle || piece != r.piece || team != r.team || turn != r.turn);
 			}
 		};
 
@@ -68,7 +70,7 @@ namespace chess {
 	public:
 
 		History();
-		bool newPage(const Grid& argGrid);	// returns true if addition results in 3-fold repetition
+		bool newPage(const ChessPiece::team_type turn, const Grid& argGrid);	// returns true if addition results in 3-fold repetition
 		bool getDrawStatus() const;
 		void remove();
 		int getFrequencyOf(const Grid& argGrid) const;
