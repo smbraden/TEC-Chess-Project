@@ -145,11 +145,13 @@ bool testMoveB(ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag)
 	catch (ChessBoard::DrawSignal e) {
 		cout << "The game is a draw. The cause is 3-fold repetition of the game state..." << endl << endl;
 		flag = true;
+		//return true;
 	}
 	catch (ChessBoard::WinSignal e) {
 		string winner = (argBoard.getWinner() == ChessPiece::team_type::white) ? "white" : "black";
 		cout << "The winner is " << winner << "!" << endl << endl;
 		flag = true;
+		//return true;
 	}
 
 	return false;
@@ -197,11 +199,13 @@ bool testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag)
 	catch (ChessBoard::DrawSignal e) {
 		cout << "The game is a draw. The cause is 3-fold repetition of the game state..." << endl << endl;
 		flag = true;
+		//return true;
 	}
 	catch (ChessBoard::WinSignal e) {
 		string winner = (argBoard.getWinner() == ChessPiece::team_type::white) ? "white" : "black";
 		cout << "The winner is " << winner << "!" << endl << endl;
 		flag = true;
+		//return true;
 	}
 
 

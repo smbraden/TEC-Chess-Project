@@ -2,7 +2,7 @@
 	Filename:           History.h
 	Contributor:        Sonja Braden
 	Date:               10/19/2020
-	Reference:
+	Reference:			https://en.wikipedia.org/wiki/Threefold_repetition
 	Description:        Class for tracking the history of a game in order to determine
 						3-fold repetition, and later for analysis/AI development
 						
@@ -17,6 +17,7 @@
 						occupy the same squares, the same player has the move, the remaining
 						castling rights are the same and the possibility to capture en passant 
 						is the same. The repeated positions need not occur in succession.
+
 //-------------------------------------------------------------------------------------/*/
 
 
@@ -45,9 +46,14 @@ namespace chess {
 			PieceRecord() : col(0), row(0), enPassant(false), castle(false), 
 				piece(ChessPiece::piece_type::nullType), team(ChessPiece::team_type::nullType) {}
 		
-			bool operator==(PieceRecord& r) {
+			bool operator==(const PieceRecord& r) const {
 				return (col == r.col && row == r.row && enPassant == r.enPassant &&
 					castle == r.castle && piece == r.piece && team == r.team);
+			}
+
+			bool operator!=(const PieceRecord& r) const {
+				return (col != r.col || row != r.row || enPassant != r.enPassant ||
+					castle != r.castle || piece != r.piece || team != r.team);
 			}
 		};
 
