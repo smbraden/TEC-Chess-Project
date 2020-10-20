@@ -48,7 +48,6 @@ namespace chess {
 	// Translates a ChessPiece to a PieceRecord
 	void History::toRecord(const ChessPiece* arg, PieceRecord& newRecord) const
 	{
-		PieceRecord newRecord;
 		arg->getPosition(newRecord.col, newRecord.row);
 		newRecord.piece = arg->getPieceType();
 		newRecord.team = arg->getTeamType();

@@ -44,6 +44,11 @@ namespace chess {
 			// piece(ChessPiece::piece_type::nulType)
 			PieceRecord() : col(0), row(0), enPassant(false), castle(false), 
 				piece(ChessPiece::piece_type::nullType), team(ChessPiece::team_type::nullType) {}
+		
+			bool operator==(PieceRecord& r) {
+				return (col == r.col && row == r.row && enPassant == r.enPassant &&
+					castle == r.castle && piece == r.piece && team == r.team);
+			}
 		};
 
 		bool draw;

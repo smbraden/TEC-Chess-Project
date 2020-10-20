@@ -36,7 +36,7 @@ namespace chess {
         whiteT.setGridPtr(&grid);
         blackT.setGridPtr(&grid);
 
-        Winner = ChessPiece::team_type::nullType;
+        winner = ChessPiece::team_type::nullType;
     }
 
 
@@ -48,7 +48,7 @@ namespace chess {
     {
         grid = arg.grid;
 
-        Winner = arg.Winner;
+        winner = arg.winner;
 
         whiteT.setGridPtr(&grid);
         whiteT.setKing(arg.whiteT.getKCol(), arg.whiteT.getKRow());
@@ -69,6 +69,8 @@ namespace chess {
     void ChessBoard::moveWhite(int pos1, int pos2, int move1, int move2)
     {
         whiteT.move(pos1, pos2, move1, move2);
+        if (history.newPage(grid))      // newPage() returns true when 3-fold repetition reached
+            throw DrawSignal();
     }
 
 
@@ -80,6 +82,8 @@ namespace chess {
     void ChessBoard::moveBlack(int pos1, int pos2, int move1, int move2)
     {
         blackT.move(pos1, pos2, move1, move2);
+        if (history.newPage(grid))      // newPage() returns true when 3-fold repetition reached
+            throw DrawSignal();
     }
 
 
@@ -135,7 +139,7 @@ namespace chess {
 
     ChessPiece::team_type ChessBoard::getWinner()
     {
-        return Winner;
+        return winner;
     }
 
 
@@ -145,7 +149,7 @@ namespace chess {
 
     void ChessBoard::setWinner(ChessPiece::team_type arg) {
 
-        Winner = arg;
+        winner = arg;
     }
 
 
@@ -199,7 +203,7 @@ namespace chess {
         
         grid = arg.grid;
 
-        Winner = arg.Winner;
+        winner = arg.winner;
 
         whiteT.setGridPtr(&grid);
         whiteT.setKing(arg.whiteT.getKCol(), arg.whiteT.getKRow());

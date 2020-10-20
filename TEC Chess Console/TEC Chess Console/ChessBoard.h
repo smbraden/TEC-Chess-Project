@@ -24,16 +24,23 @@ namespace chess {
 		void moveWhite(int pos1, int pos2, int move1, int move2); // indices 0-7 
 		void moveBlack(int pos1, int pos2, int move1, int move2); // (col ,row)
 		void printBoard() const;
-						
+		
+		// Check status Accessors and Mutators
+		ChessPiece::team_type getWinner();
+		void setWinner(ChessPiece::team_type arg);
+
 		static const int BOARD_SIZE = 8;
 		
+		class DrawSignal {};
+		class WinSignal {};
+
 	private:
 
 		// main data members
 		Grid grid;
-		ChessPiece::team_type Winner;
+		ChessPiece::team_type winner;
 		History history;
-
+		
 		WhiteTeam whiteT;
 		BlackTeam blackT;
 
@@ -46,10 +53,6 @@ namespace chess {
 		ChessPiece::team_type getTeam(int pos1, int pos2) const;
 		ChessPiece::piece_type getPiece(int pos1, int pos2) const;
 		
-		// Check status Accessors and Mutators
-		ChessPiece::team_type getWinner();
-		void setWinner(ChessPiece::team_type arg);
-
 	};
 
 

@@ -147,7 +147,6 @@
     <ClCompile Include="DerivedTeams.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="History.cpp" />
-    <ClCompile Include="LinkedBag.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BagInterface.h" />
