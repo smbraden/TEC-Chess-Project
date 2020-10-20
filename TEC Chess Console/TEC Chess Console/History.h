@@ -25,6 +25,9 @@
 #include "LinkedBag.h"
 #include "Grid.h"
 
+// if using vectors
+#include <vector>
+
 using namespace cs_bag;
 
 namespace chess {
@@ -59,12 +62,15 @@ namespace chess {
 			}
 		};
 
+		typedef std::vector<PieceRecord> GameState;	// single snapshot of the board	
+		//typedef LinkedBag<PieceRecord> GameState;	// single snapshot of the board	
+
+		//--------Chief members--------//
 		bool draw;
-		typedef LinkedBag<PieceRecord> GameState;	// single snapshot of the board	
 		LinkedBag<GameState> GameHistory;			// history of all snapshots
 
 		void toRecord(const ChessPiece* arg, PieceRecord& newRecord) const;
-		void addRecord(const PieceRecord& arg, GameState& state) const;
+		void addRecord(PieceRecord& arg, GameState& state) const;
 		bool addGameState(const GameState& state);
 
 	public:

@@ -80,8 +80,8 @@ namespace chess {
             turn = ChessPiece::team_type::white;
         }
 
-        // if (history.newPage(turn, grid))      // newPage() returns true when 3-fold repetition reached
-        //    throw DrawSignal();
+        if (history.newPage(turn, grid))      // newPage() returns true when 3-fold repetition reached
+            throw DrawSignal();
     }
 
 

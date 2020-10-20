@@ -65,9 +65,11 @@ namespace chess {
 
 
 
-	void History::addRecord(const PieceRecord& arg, GameState& state) const
+	void History::addRecord(PieceRecord& arg, GameState& state) const
 	{
-		state.add(arg);
+		// LinkedBag:	state.add(arg);
+		// vector:
+		state.push_back(arg);
 	}
 
 
