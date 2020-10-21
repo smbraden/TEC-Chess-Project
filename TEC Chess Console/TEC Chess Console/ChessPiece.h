@@ -7,9 +7,12 @@
 
 //-------------------------------------------------------------------------------------/*/
 
+
 #ifndef CHESSPIECE_H
 #define CHESSPIECE_H
 
+#include <cassert>			// for assert()
+#include <stdlib.h>			// for abs()
 
 namespace chess {
 
@@ -17,12 +20,13 @@ namespace chess {
 	class ChessPiece {
 
 		public:
-
+			
 			enum class team_type : unsigned char
-			{ white = 'w', black = 'b', nullType = 'n' };
+			{ white = 'w', black = 'b', nullType = 't'};	// nullType for init ChessBoard 'Winner' member
+			
 
 			enum class piece_type : unsigned char
-			{ none = '0', pawn = 'P', rook = 'R', knight = 'N', bishop = 'B', queen = 'Q', king = 'K' };
+			{ none = '0', pawn = 'P', rook = 'R', knight = 'N', bishop = 'B', queen = 'Q', king = 'K', nullType = 't'};
 
 			const static int BOARD_SIZE = 8;
 			const static int MAX_PATH = 7;	 // 6 spaces for max path, and 1 more for an extra delimiter
@@ -31,7 +35,7 @@ namespace chess {
 			ChessPiece();											// Default constructor
 			ChessPiece(int inCol , int inRow , team_type color);	// Parameterized constructor
 			
-			// Accessors
+			// Acessors
 			team_type getTeamType() const;
 			piece_type getPieceType() const;
 			void getPosition(int& inCol, int& inRow) const;
@@ -40,11 +44,11 @@ namespace chess {
 			
 			// Mutators
 			void setPosition(int inCol, int inRow);
-			void setTeamType(team_type);
-			void setPieceType(piece_type);
+
+			// Piece-specific evaluation
 			virtual int* validMove(int inCol, int inRow) const;
 
-		private:
+		protected:
 
 			int col;
 			int row;
@@ -71,14 +75,13 @@ namespace chess {
 			path[n * 2 + 1]		= {r1, r2, r3,...rn,}
 
 
-	Note:	According to Dave Harden, in "real" production code 
+	Note:	According to our CS instructor, in "real" production code 
 			one would never use the "protected" keyword. 
-			Instead, one would provide accessors and mutators to allow 
-			derived classes to access or mutate the private data members.
-
-			The code was recently refactored to avoid using a 
-			protected Base Class Access Specification.
-			Derived classes now access base memebers only via accessors/mutators
+			This branch does so in all cases of inheritence anyways.
+			Doing so simplifies the code, and all base and derived classes 
+			never interface with a client; they are all modules 
+			contributing to the ultimate client-facing class, ChessBoard,
+			which has only private members.
 
 	Note:	Some member functions would be better as pure virtual functions;
 			however, it is not desirable to make this an abstract class
