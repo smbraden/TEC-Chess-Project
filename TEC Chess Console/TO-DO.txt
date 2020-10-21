@@ -15,14 +15,6 @@ The choice of the new piece is not limited to pieces previously captured,
 thus promotion can result in a player owning, for example, 
 two or more queens despite starting the game with one.
 
--Three-fold repetition
-This rule states that if the same position is repeated three times 
-and no progress is made, you can claim a draw. 
-Two positions are by definition "the same" if the same types of pieces 
-occupy the same squares, the same player has the move, the remaining 
-castling rights are the same and the possibility to capture 
-en passant is the same. The repeated positions need not occur in succession. 
-
 -Checkmate
 
 -Stalemate
@@ -30,10 +22,10 @@ en passant is the same. The repeated positions need not occur in succession.
 -Add equivalence operator to ChessPiece/DerivedPieces 
 (other comparison operators later, if ranking of pieces becomes relevant)
 
-DONE:
+//----------------DONE----------------//
 
--Pawn capture via diagonals and prohibit false Pawn "captures" via row moves
-implement via ChessBoard; need board information
+-Pawn capture via diagonals,
+and prohibit false Pawn "captures" via simple row advances
 
 -En Passant (aka, "why are pawns so needy?")
 En passant itself can only occur in a game when a player exercises 
@@ -59,6 +51,13 @@ the squares between the king and the rook involved are unoccupied,
 the king is not in check, and the king does not cross over 
 or end on a square attacked by an enemy piece.
 
+-Three-fold repetition
+This rule states that if the same position is repeated three times 
+and no progress is made, you can claim a draw. 
+Two positions are by definition "the same" if the same types of pieces 
+occupy the same squares, the same player has the move, the remaining 
+castling rights are the same and the possibility to capture 
+en passant is the same. The repeated positions need not occur in succession. 
 
 
 //--------------------------------------------------------------------------//

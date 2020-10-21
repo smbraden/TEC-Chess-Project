@@ -9,9 +9,9 @@
 
 #include "Grid.h"
 
-#define toGrid(c, r) (c + BOARD_SIZE * r)
-#define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
-#define inBounds4(a, b, c, d) (a >= 0 && b >= 0 && c >= 0 && d >= 0 &&  \
+// #define toGrid(c, r) (c + BOARD_SIZE * r)
+// #define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
+// #define inBounds4(a, b, c, d) (a >= 0 && b >= 0 && c >= 0 && d >= 0 &&  \
                             a < BOARD_SIZE&& b < BOARD_SIZE&& c < BOARD_SIZE&& d < BOARD_SIZE)
 
 
@@ -56,6 +56,39 @@ namespace chess {
 		}
 
 		return *this;
+	}
+
+
+
+
+
+
+	inline int Grid::toGrid(const int c, const int r) const
+	{
+		return (c + BOARD_SIZE * r);
+	}
+
+
+
+
+
+
+	inline bool Grid::inBounds2(const int a, const int b) const
+	{
+		return ((a < BOARD_SIZE) && (b < BOARD_SIZE)
+			&& a >= 0 && b >= 0);
+	}
+
+
+
+
+
+
+	inline bool Grid::inBounds4(const int a, const int b, const int c, const int d) const
+	{
+		return (a >= 0 && b >= 0 && c >= 0 && d >= 0
+			&& (a < BOARD_SIZE) && (b < BOARD_SIZE)
+			&& (c < BOARD_SIZE) && (d < BOARD_SIZE));
 	}
 
 
@@ -145,7 +178,6 @@ namespace chess {
 			for (int j = 0; j < BOARD_SIZE; j++)
 				remove(i, j);
 	}
-
 
 
 

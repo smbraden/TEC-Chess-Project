@@ -2,15 +2,15 @@
     Filename:           ChessTeam.cpp
     Contributor:        Sonja Braden
     Date:               10/16/2020
-    Reference:
+    Reference:          https://www.ibm.com/support/knowledgecenter/ssw_ibm_i_72/rzarg/inline_member.htm
 
     Description:        Implementation  of the ChessTeam class.
 //-------------------------------------------------------------------------------------/*/
 
 #include "ChessTeam.h"
 
-#define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
-#define inBounds4(a, b, c, d) (a >= 0 && b >= 0 && c >= 0 && d >= 0 &&  \
+// #define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
+// #define inBounds4(a, b, c, d) (a >= 0 && b >= 0 && c >= 0 && d >= 0 &&  \
                             a < BOARD_SIZE&& b < BOARD_SIZE&& c < BOARD_SIZE&& d < BOARD_SIZE)
 
 
@@ -48,6 +48,8 @@ namespace chess {
         gridPtr = g;
         checkmateStatus = m;
     }
+
+
 
 
 
@@ -161,6 +163,29 @@ namespace chess {
         return kRow;
     }
 
+
+
+
+
+
+
+    inline bool ChessTeam::inBounds2(const int a, const int b)  const
+    {
+        return ((a < BOARD_SIZE) && (b < BOARD_SIZE)
+            && a >= 0 && b >= 0);
+    }
+
+
+
+
+
+
+    inline bool ChessTeam::inBounds4(const int a, const int b, const int c, const int d)  const
+    {
+        return (a >= 0 && b >= 0 && c >= 0 && d >= 0
+            && (a < BOARD_SIZE) && (b < BOARD_SIZE)
+            && (c < BOARD_SIZE) && (d < BOARD_SIZE));
+    }
 
 
 
@@ -772,7 +797,6 @@ namespace chess {
     {
         team = t;
     }
-
 
 
 }  // closes namespace

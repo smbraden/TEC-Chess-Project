@@ -2,7 +2,7 @@
 	Filename:           History.cpp
 	Contributor:        Sonja Braden
 	Date:               10/19/2020
-	Reference:
+	Reference:			https://en.wikipedia.org/wiki/Threefold_repetition
 	Description:        Class for tracking the history of a game in order to determine
 						3-fold repetition, and later for analysis/AI development
 //-------------------------------------------------------------------------------------/*/
@@ -32,7 +32,8 @@ namespace chess {
 			for (int j = 0; j < ChessPiece::BOARD_SIZE; j++) {
 				if (argGrid.isPiece(j, i)) {
 					toRecord(argGrid.getElement(j, i), newRecord);
-					addRecord(newRecord, newState);		// add the new record to the GameState
+					newState.push_back(newRecord);		// add the new record to the GameState
+					// addRecord(newRecord, newState);	// equivalent to above
 				}
 			}
 		}
@@ -64,14 +65,12 @@ namespace chess {
 
 
 
-
+	/*
 	void History::addRecord(PieceRecord& arg, GameState& state) const
 	{
-		// LinkedBag:	state.add(arg);
-		// vector:
 		state.push_back(arg);
 	}
-
+	*/
 
 
 
@@ -104,15 +103,6 @@ namespace chess {
 
 
 
-	void History::remove()
-	{
-	}
-
-
-
-
-
-
 	int History::getFrequencyOf(const Grid& argGrid) const
 	{
 		GameState newState;
@@ -121,11 +111,11 @@ namespace chess {
 			for (int j = 0; j < ChessPiece::BOARD_SIZE; j++) {
 				if (argGrid.isPiece(j, i)) {
 					toRecord(argGrid.getElement(j, i), newRecord);
-					addRecord(newRecord, newState);		// add the new record to the GameState
+					newState.push_back(newRecord);		// add the new record to the GameState
+					// addRecord(newRecord, newState);	// equivalent to above
 				}
 			}
 		}
-
 		return GameHistory.getFrequencyOf(newState);
 	}
 }

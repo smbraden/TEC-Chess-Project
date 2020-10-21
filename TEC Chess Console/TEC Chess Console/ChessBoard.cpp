@@ -18,8 +18,8 @@
 
 
 
-#define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
-#define inBounds4(a, b, c, d) (a >= 0 && b >= 0 && c >= 0 && d >= 0 &&  \
+// #define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
+// #define inBounds4(a, b, c, d) (a >= 0 && b >= 0 && c >= 0 && d >= 0 &&  \
                             a < BOARD_SIZE&& b < BOARD_SIZE&& c < BOARD_SIZE&& d < BOARD_SIZE)
 
 
@@ -62,6 +62,29 @@ namespace chess {
         blackT.setKing(arg.blackT.getKCol(), arg.blackT.getKRow());
         blackT.setTeam(ChessPiece::team_type::black);
         blackT.setCheckmateStatus(arg.blackT.getCheckmateStatus());
+    }
+
+
+
+
+
+
+    inline bool ChessBoard::inBounds2(const int a, const int b)  const
+    {
+        return ((a < BOARD_SIZE) && (b < BOARD_SIZE)
+            && a >= 0 && b >= 0);
+    }
+
+
+
+
+
+
+    inline bool ChessBoard::inBounds4(const int a, const int b, const int c, const int d)  const
+    {
+        return (a >= 0 && b >= 0 && c >= 0 && d >= 0
+            && (a < BOARD_SIZE) && (b < BOARD_SIZE)
+            && (c < BOARD_SIZE) && (d < BOARD_SIZE));
     }
 
 
@@ -134,7 +157,7 @@ namespace chess {
 
 
 
-
+    
     ChessPiece::team_type ChessBoard::getWinner()
     {
         return winner;
@@ -145,30 +168,9 @@ namespace chess {
 
 
 
-    void ChessBoard::setWinner(ChessPiece::team_type arg) {
-
-        winner = arg;
-    }
-
-
-
-
-
-
-
     ChessPiece::team_type ChessBoard::getTurn()
     {
         return turn;
-    }
-
-
-
-
-
-
-    void ChessBoard::setTurn(ChessPiece::team_type arg)
-    {
-        turn = arg;
     }
 
 
@@ -276,8 +278,6 @@ namespace chess {
         assert(grid.isPiece(pos1, pos2));
         return grid.getElement(pos1, pos2)->getPieceType();
     }
-
-
 
 
 }  // closes namespace

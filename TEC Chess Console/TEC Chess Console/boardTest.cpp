@@ -16,18 +16,14 @@ using namespace chess;
 
 
 
-#define char2col(ch) tolower(ch) - 97
-#define int2row(in) in - 1
-#define validInput(a, b, c, d) (a >= 'a' && a <= 'h' && b >= 'a' && b <= 'h' && \
-									c > 0    && c <= 8   && d > 0    && d <= 8 )
+// #define char2col(ch) tolower(ch) - 97
+// #define int2row(in) in - 1
+
 
 bool testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag);
-//bool testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag);
-//bool testMoveB(ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag);
 void play(ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& y2);
-
-
-
+inline int char2col(char ch);
+inline int int2row(int arg);
 
 
 
@@ -150,6 +146,27 @@ void play(ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& 
 
 	} while (tolower(option) != 'q' && !endFlag);
 }
+
+
+
+
+
+
+inline int char2col(char ch)
+{
+	return (tolower(ch) - 97);
+}
+
+
+
+
+
+
+inline int int2row(int arg)
+{
+	return (arg - 1);
+}
+
 
 
 

@@ -25,9 +25,6 @@
 #include "LinkedBag.h"
 #include "Grid.h"
 
-// if using vectors
-#include <vector>
-
 using namespace cs_bag;
 
 namespace chess {
@@ -35,6 +32,13 @@ namespace chess {
 	class History
 	{
 	
+	public:
+
+		History();
+		bool newPage(const ChessPiece::team_type turn, const Grid& argGrid);	// returns true if addition results in 3-fold repetition
+		bool getDrawStatus() const;
+		int getFrequencyOf(const Grid& argGrid) const;
+
 	private:
 
 		struct PieceRecord {
@@ -47,10 +51,10 @@ namespace chess {
 			ChessPiece::team_type turn;
 
 			// piece(ChessPiece::piece_type::nulType)
-			PieceRecord() : col(0), row(0), enPassant(false), castle(false), 
+			PieceRecord() : col(0), row(0), enPassant(false), castle(false),
 				piece(ChessPiece::piece_type::nullType), team(ChessPiece::team_type::nullType),
-				turn(ChessPiece::team_type::white)  {}
-		
+				turn(ChessPiece::team_type::white) {}
+
 			bool operator==(const PieceRecord& r) const {
 				return (col == r.col && row == r.row && enPassant == r.enPassant &&
 					castle == r.castle && piece == r.piece && team == r.team && turn == r.turn);
@@ -63,23 +67,15 @@ namespace chess {
 		};
 
 		typedef std::vector<PieceRecord> GameState;	// single snapshot of the board	
-		//typedef LinkedBag<PieceRecord> GameState;	// single snapshot of the board	
 
-		//--------Chief members--------//
+		//---------------Chief members--------------//
 		bool draw;
 		LinkedBag<GameState> GameHistory;			// history of all snapshots
 
 		void toRecord(const ChessPiece* arg, PieceRecord& newRecord) const;
-		void addRecord(PieceRecord& arg, GameState& state) const;
 		bool addGameState(const GameState& state);
+		// void addRecord(PieceRecord& arg, GameState& state) const;
 
-	public:
-
-		History();
-		bool newPage(const ChessPiece::team_type turn, const Grid& argGrid);	// returns true if addition results in 3-fold repetition
-		bool getDrawStatus() const;
-		void remove();
-		int getFrequencyOf(const Grid& argGrid) const;
 	};
 }
 

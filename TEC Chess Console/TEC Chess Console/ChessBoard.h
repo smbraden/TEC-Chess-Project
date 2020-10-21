@@ -2,7 +2,7 @@
 	Filename:           ChessBoard.h
 	Contributor:        Sonja Braden
 	Date:               10/16/2020
-	Reference:
+	Reference:			
 	Description:        
 //-------------------------------------------------------------------------------------/*/
 
@@ -23,14 +23,8 @@ namespace chess {
 
 		void move(int pos1, int pos2, int move1, int move2);
 		void printBoard() const;
-		
-		// Check status Accessors and Mutators
-		ChessPiece::team_type getWinner();
-		void setWinner(ChessPiece::team_type arg);
-
-		// Turn Accessors and Mutators
 		ChessPiece::team_type getTurn();
-		void setTurn(ChessPiece::team_type arg);
+		ChessPiece::team_type getWinner();
 
 		static const int BOARD_SIZE = 8;
 		
@@ -48,16 +42,19 @@ namespace chess {
 		WhiteTeam whiteT;
 		BlackTeam blackT;
 
+		// constructor helpers
 		void copy(const ChessBoard&);
 		void initPieces();
 
-		// Private Grid Element Accessors/Mutators
+		// For convenient access to Grid Elements
 		ChessPiece* getElement(int col, int row) const;
 		void setElement(int col, int row, ChessPiece* ptr);
 		ChessPiece::team_type getTeam(int pos1, int pos2) const;
 		ChessPiece::piece_type getPiece(int pos1, int pos2) const;
 		
-
+		// inline helpers to replace macros (*)
+		bool inBounds2(const int a, const int b) const;
+		bool inBounds4(const int a, const int b, const int c, const int d) const;
 	};
 
 
@@ -65,3 +62,6 @@ namespace chess {
 } // closes namespace
 
 #endif
+
+
+// (*) https://www.ibm.com/support/knowledgecenter/ssw_ibm_i_72/rzarg/inline_member.htm
