@@ -149,7 +149,6 @@
     <ClCompile Include="History.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BagInterface.h" />
     <ClInclude Include="ChessBoard.h" />
     <ClInclude Include="ChessPiece.h" />
     <ClInclude Include="ChessTeam.h" />

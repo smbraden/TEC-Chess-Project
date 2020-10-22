@@ -36,9 +36,6 @@
     <ClInclude Include="History.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BagInterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LinkedBag.h">
       <Filter>Header Files</Filter>
     </ClInclude>
