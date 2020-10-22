@@ -2,7 +2,7 @@
  
 Recently merged with Symmetry-Implementation-Piece-Protected
  
-The merged branch was for investigating an implementation where the symmetry of Black vs White moves is managed by BlackTeam and WhiteTeam Classes, derived from the ChessTeam base class. There are several aspects of this implementation that are more maintainable/modular. However, the design may be less efficient in total code bulk, since the common elements of Black and White Team classes are duplicated between each object.Ideally, we could make the non-virtual base class members static in order to resolve this; however, we have exstive use of the "this" pointer that, so this may not be an option.
+The merged branch was for investigating an implementation where the symmetry of Black vs White moves is managed by BlackTeam and WhiteTeam Classes, derived from the ChessTeam base class. There are several aspects of this implementation that are more maintainable/modular. However, the design might be less efficient. Each of the Black and White Team objects has copies of their common base class members. Ideally, we could make the non-virtual base class members static in order to reduce this to one copy; however, we have exstive use of the "this" pointer, so this may not be an option.
 
 
 
