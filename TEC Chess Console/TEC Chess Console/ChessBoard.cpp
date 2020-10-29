@@ -98,7 +98,7 @@ namespace chess {
         }
 
         if (history.newPage(turn, grid))      // newPage() returns true when 3-fold repetition reached
-            throw DrawSignal();
+            throw chess_except::DrawSignal("The cause is 3-fold repetition of the game state...");
     }
 
 

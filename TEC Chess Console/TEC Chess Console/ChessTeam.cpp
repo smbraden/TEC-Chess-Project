@@ -10,8 +10,6 @@
 #include "ChessTeam.h"
 
 
-using namespace std;
-
 namespace chess {
 
 
@@ -203,7 +201,7 @@ namespace chess {
                 if (isPiece(x, y)) {    // if an object is in path 
                     delete[] path;
                     path = nullptr;
-                    throw IndirectPathError();
+                    throw chess_except::IndirectPathError();
                 }
 
                 i++;
@@ -223,46 +221,36 @@ namespace chess {
     void ChessTeam::move(int pos1, int pos2, int move1, int move2)
     {
         if (!inBounds4(pos1, pos2, move1, move2))
-            throw BoundsError();
+            throw chess_except::BoundsError();
         else if (!isPiece(pos1, pos2))  // moving a non-exsistent piece   
-            throw EmptySquareError();
+            throw chess_except::EmptySquareError();
         else if (getTeam(pos1, pos2) != team)     // wrong team being move
-            throw TurnMoveError();
+            throw chess_except::TurnMoveError();
         else if (pos1 == move1 && pos2 == move2)        // the source is the destination
-            throw NoTurnPassError();
+            throw chess_except::NoTurnPassError();
         else if (isPiece(move1, move2) && getTeam(move1, move2) == team)  // destination occupied by a piece
-            throw SelfCapturError();                                            // belonging to the moving player
+            throw chess_except::SelfCapturError();                                            // belonging to the moving player
         else {  // basic rules have been followed. Now, are the rules followed for the specific piece?
 
             Grid tempGrid = *gridPtr;
-
-            //try {
-
-                if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) { // Pawns have special rules to assess
-                    evaluatePath(validPawnMove(pos1, pos2, move1, move2));  // might throw piece or ilegal move error
-                    pawnPromote(pos1, pos2, move1, move2);                  // if moving to 8th rank move, promote pawn
-                }
-                else if (getPiece(pos1, pos2) == ChessPiece::piece_type::king) {
-                    if (!Castle(pos1, pos2, move1, move2)) {
-                        evaluatePath(getElement(pos1, pos2)->validMove(move1, move2));
-                        ((King*)getElement(pos1, pos2))->setCastleStatus(false);
-                    }
-                    setKing(move1, move2);
-                }
-                else {  // all the other pieces
-                    evaluatePath(getElement(pos1, pos2)->validMove(move1, move2));// throws PieceMoveError, IlegalMoveError
-                    if (getPiece(pos1, pos2) == ChessPiece::piece_type::rook)
-                        ((Rook*)getElement(pos1, pos2))->setCastleStatus(false);
-                }
-                /*
+                        
+            if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) { // Pawns have special rules to assess
+                evaluatePath(validPawnMove(pos1, pos2, move1, move2));  // might throw piece or ilegal move error
+                pawnPromote(pos1, pos2, move1, move2);                  // if moving to 8th rank move, promote pawn
             }
-            catch (ChessPiece::PieceMoveError e) {
-                throw ChessPiece::PieceMoveError();
+            else if (getPiece(pos1, pos2) == ChessPiece::piece_type::king) {
+                if (!Castle(pos1, pos2, move1, move2)) {
+                    evaluatePath(getElement(pos1, pos2)->validMove(move1, move2));
+                    ((King*)getElement(pos1, pos2))->setCastleStatus(false);
+                }
+                setKing(move1, move2);
             }
-            catch (IndirectPathError e) {
-                throw IndirectPathError();
+            else {  // all the other pieces
+                evaluatePath(getElement(pos1, pos2)->validMove(move1, move2));// throws PieceMoveError, IlegalMoveError
+                if (getPiece(pos1, pos2) == ChessPiece::piece_type::rook)
+                    ((Rook*)getElement(pos1, pos2))->setCastleStatus(false);
             }
-            */
+                
             // pawnPromote(pos1, pos2, move1, move2);  // if moving to 8th rank move, promote pawn
             setPiece(pos1, pos2, move1, move2);     // set new pos on grid and internally, remove captures
             resetEnPassant(move1, move2);           // resets all EnPassant to false, except a moved pawn
@@ -270,7 +258,7 @@ namespace chess {
             if (isCheck()) {
 
                 gridPtr = &tempGrid;
-                throw CheckError();
+                throw chess_except::CheckError();
             }
         }
     }
@@ -338,43 +326,12 @@ namespace chess {
             path = getElement(pos1, pos2)->validMove(move1, move2);
         }
         else {
-            throw PieceMoveError("Invalid Pawn move."); // it's an invalid move if neither
+            throw chess_except::PieceMoveError("Invalid Pawn move."); // it's an invalid move if neither
         }                                               // SimpleAdvance(), isCapture(), nor isEnPassant()
 
         return path;
     }
 
-
-
-
-
-
-    /*
-    int* ChessTeam::validPawnMove(int pos1, int pos2, int move1, int move2) const
-    {
-
-        assert(getPiece(pos1, pos2) == ChessPiece::piece_type::pawn);   // terminate if not pawn
-                                                                        // isPiece(pos1, pos2) is implied
-        int* path = nullptr;
-
-        if (isCapture(pos1, pos2, move1, move2) ||
-            isEnPassant(pos1, pos2, move1, move2) ||
-            simpleAdvance(pos1, pos2, move1, move2)) {
-
-            try {
-                path = getElement(pos1, pos2)->validMove(move1, move2);
-            }
-            catch (ChessPiece::PieceMoveError e) {
-                throw ChessPiece::PieceMoveError();
-            }
-        }
-        else {
-            throw ChessPiece::PieceMoveError();     // it's an invalid move if neither
-        }                                           // SimpleAdvance(), isCapture(), nor isEnPassant()
-
-        return path;
-    }
-    */
 
 
 

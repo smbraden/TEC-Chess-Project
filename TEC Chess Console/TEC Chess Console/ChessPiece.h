@@ -4,7 +4,6 @@
 	Date:               10/4/2020
 	Reference:
 	Description:
-
 //-------------------------------------------------------------------------------------/*/
 
 
@@ -14,6 +13,8 @@
 #include <cassert>				// for assert()
 #include <stdlib.h>				// for abs()
 #include "ChessExceptions.h"
+
+// using namespace chess_except;
 
 namespace chess {
 
@@ -31,8 +32,7 @@ namespace chess {
 
 			const static int BOARD_SIZE = 8;
 			const static int MAX_PATH = 7;	 // 6 spaces for max path, and 1 more for an extra delimiter
-			// class PieceMoveError {};
-
+			
 			ChessPiece();											// Default constructor
 			ChessPiece(int inCol , int inRow , team_type color);	// Parameterized constructor
 			

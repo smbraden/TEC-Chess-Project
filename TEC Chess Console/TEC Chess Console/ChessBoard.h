@@ -28,8 +28,7 @@ namespace chess {
 
 		static const int BOARD_SIZE = 8;
 		
-		class DrawSignal {};
-		class WinSignal {};
+
 
 	private:
 

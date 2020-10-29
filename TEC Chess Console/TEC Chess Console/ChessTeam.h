@@ -13,6 +13,8 @@
 #include "Grid.h"
 #include <cassert>
 
+// using namespace chess_except;
+
 namespace chess {
 
 	class ChessTeam
@@ -40,16 +42,6 @@ namespace chess {
 		// Other
 		void move(int pos1, int pos2, int move1, int move2);
 
-		// Error handling
-		/*
-		class SelfCapturError {};	// moving a piece to a position already occupied by that team
-		class NoTurnPassError {};	// Equivalent to moving a piece to it's current position
-		class TurnMoveError {};		// when a player attempts to move the opponent's piece
-		class BoundsError {};		// for moves that go out of board bounds
-		class EmptySquareError {};	// Attempt to move an empty square
-		class IndirectPathError {};	// For attempts to jump over other pieces if not knight 
-		class CheckError {};		// if King in Check, must escape the check
-		*/
 		const int MAX_PATH = 7; // 6 spaces for max path, and 1 more for an extra delimiter
 		static const int BOARD_SIZE = 8;
 
