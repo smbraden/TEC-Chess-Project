@@ -7,7 +7,7 @@
                         with properties of a chess board, including enforcement of
                         the rules of chess. 
                         
-                        Note: Annoyingly, I have indexed the Board coordinates as 
+                        Note: Annoyingly, I originally indexed the Board coordinates as 
 						(Column, Row) because this is how a chess board is labeled
 						(eg, a1, a2, b5, etc. where letters are columns ).
 //-------------------------------------------------------------------------------------/*/
@@ -17,7 +17,6 @@
 #include "ChessBoard.h"
 
 
-using namespace std;
 
 namespace chess {
 
@@ -88,6 +87,9 @@ namespace chess {
 
     void ChessBoard::move(int pos1, int pos2, int move1, int move2)
     {
+        if (isCheck()) {
+            throw chess_except::WinSignal((getWinner() == ChessPiece::team_type::white) ? "White" : "Black");
+        }
         if (turn == ChessPiece::team_type::white) {
             whiteT.move(pos1, pos2, move1, move2);
             turn = ChessPiece::team_type::black;
@@ -96,7 +98,6 @@ namespace chess {
             blackT.move(pos1, pos2, move1, move2);
             turn = ChessPiece::team_type::white;
         }
-
         if (history.newPage(turn, grid))      // newPage() returns true when 3-fold repetition reached
             throw chess_except::DrawSignal("The cause is 3-fold repetition of the game state...");
     }
@@ -115,11 +116,11 @@ namespace chess {
         std::cout << "  ";
         for (char col_label = 'a'; col_label < 'i'; col_label++)
             std::cout << col_label << "  ";
-        std::cout << endl;
+        std::cout << std::endl;
 
         //black-oriented would be: (int row = 0; row < BOARD_SIZE; row++)
         for (int row = (BOARD_SIZE - 1); row >= 0; row--) {
-            cout << row_label << " ";   // row labels
+            std::cout << row_label << " ";   // row labels
             for (int col = 0; col < BOARD_SIZE; col++) {
 
                 if (!grid.isPiece(col, row))
@@ -135,7 +136,7 @@ namespace chess {
                 std::cout << " ";
             }
             std::cout << row_label; // row labels
-            std::cout << endl;
+            std::cout << std::endl;
             row_label--;
         }
 
@@ -143,7 +144,7 @@ namespace chess {
         std::cout << "  ";
         for (char col_label = 'a'; col_label < 'i'; col_label++)
             std::cout << col_label << "  ";
-        std::cout << endl;
+        std::cout << std::endl;
     }
 
 
@@ -271,6 +272,20 @@ namespace chess {
     {
         assert(grid.isPiece(pos1, pos2));
         return grid.getElement(pos1, pos2)->getPieceType();
+    }
+
+
+
+
+
+
+    bool ChessBoard::isCheck()
+    {
+        // if 'turn' team's king in danger from all surrounding squares, and 
+        // no captures/blocks of immediately threatening piece available
+            // winner = ~turn;  // opponent
+        // return true;
+        return false;
     }
 
 

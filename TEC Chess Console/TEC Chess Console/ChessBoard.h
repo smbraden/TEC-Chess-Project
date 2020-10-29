@@ -51,6 +51,9 @@ namespace chess {
 		ChessPiece::team_type getTeam(int pos1, int pos2) const;
 		ChessPiece::piece_type getPiece(int pos1, int pos2) const;
 		
+		// check check
+		bool isCheck();
+
 		// inline helpers to replace macros (*)
 		bool inBounds2(const int a, const int b) const;
 		bool inBounds4(const int a, const int b, const int c, const int d) const;
