@@ -2,16 +2,12 @@
     Filename:           ChessTeam.cpp
     Contributor:        Sonja Braden
     Date:               10/16/2020
-    Reference:          https://www.ibm.com/support/knowledgecenter/ssw_ibm_i_72/rzarg/inline_member.htm
+    Reference:          
 
     Description:        Implementation  of the ChessTeam class.
 //-------------------------------------------------------------------------------------/*/
 
 #include "ChessTeam.h"
-
-// #define inBounds2(a, b) (a < BOARD_SIZE && b < BOARD_SIZE && a >= 0 && b >= 0 )
-// #define inBounds4(a, b, c, d) (a >= 0 && b >= 0 && c >= 0 && d >= 0 &&  \
-                            a < BOARD_SIZE&& b < BOARD_SIZE&& c < BOARD_SIZE&& d < BOARD_SIZE)
 
 
 using namespace std;
@@ -240,7 +236,7 @@ namespace chess {
 
             Grid tempGrid = *gridPtr;
 
-            try {
+            //try {
 
                 if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) { // Pawns have special rules to assess
                     evaluatePath(validPawnMove(pos1, pos2, move1, move2));  // might throw piece or ilegal move error
@@ -258,7 +254,7 @@ namespace chess {
                     if (getPiece(pos1, pos2) == ChessPiece::piece_type::rook)
                         ((Rook*)getElement(pos1, pos2))->setCastleStatus(false);
                 }
-
+                /*
             }
             catch (ChessPiece::PieceMoveError e) {
                 throw ChessPiece::PieceMoveError();
@@ -266,7 +262,7 @@ namespace chess {
             catch (IndirectPathError e) {
                 throw IndirectPathError();
             }
-
+            */
             // pawnPromote(pos1, pos2, move1, move2);  // if moving to 8th rank move, promote pawn
             setPiece(pos1, pos2, move1, move2);     // set new pos on grid and internally, remove captures
             resetEnPassant(move1, move2);           // resets all EnPassant to false, except a moved pawn
@@ -320,6 +316,7 @@ namespace chess {
     bool ChessTeam::isPiece(int inCol, int inRow) const
     {
         return gridPtr->isPiece(inCol, inRow);
+        // return (*gridPtr).isPiece(inCol, inRow);
     }
 
 
@@ -327,7 +324,32 @@ namespace chess {
 
 
 
+    int* ChessTeam::validPawnMove(int pos1, int pos2, int move1, int move2) const
+    {
 
+        assert(getPiece(pos1, pos2) == ChessPiece::piece_type::pawn);   // terminate if not pawn
+                                                                        // isPiece(pos1, pos2) is implied
+        int* path = nullptr;
+
+        if (isCapture(pos1, pos2, move1, move2) ||
+            isEnPassant(pos1, pos2, move1, move2) ||
+            simpleAdvance(pos1, pos2, move1, move2)) {
+
+            path = getElement(pos1, pos2)->validMove(move1, move2);
+        }
+        else {
+            throw PieceMoveError("Invalid Pawn move."); // it's an invalid move if neither
+        }                                               // SimpleAdvance(), isCapture(), nor isEnPassant()
+
+        return path;
+    }
+
+
+
+
+
+
+    /*
     int* ChessTeam::validPawnMove(int pos1, int pos2, int move1, int move2) const
     {
 
@@ -352,7 +374,7 @@ namespace chess {
 
         return path;
     }
-
+    */
 
 
 

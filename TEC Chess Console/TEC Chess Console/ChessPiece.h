@@ -11,8 +11,9 @@
 #ifndef CHESSPIECE_H
 #define CHESSPIECE_H
 
-#include <cassert>			// for assert()
-#include <stdlib.h>			// for abs()
+#include <cassert>				// for assert()
+#include <stdlib.h>				// for abs()
+#include "ChessExceptions.h"
 
 namespace chess {
 
@@ -30,7 +31,7 @@ namespace chess {
 
 			const static int BOARD_SIZE = 8;
 			const static int MAX_PATH = 7;	 // 6 spaces for max path, and 1 more for an extra delimiter
-			class PieceMoveError {};
+			// class PieceMoveError {};
 
 			ChessPiece();											// Default constructor
 			ChessPiece(int inCol , int inRow , team_type color);	// Parameterized constructor

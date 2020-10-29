@@ -70,7 +70,7 @@ namespace chess {
 
 		int* getLateralPath(int inCol, int inRow) const;
 		int* getDiagonalPath(int inCol, int inRow) const;
-		// getDiagonalPath() helper function
+		// helper function to getDiagonalPath() 
 		int* buildPath(signed int colSign, signed int rowSign, int inCol, int inRow) const;
 	};
 

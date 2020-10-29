@@ -56,7 +56,8 @@ namespace chess {
 					path = getPath(inCol, inRow);	// only need path if moved two spaces
 			  }
 			else if (!(row == inRow + 1 && abs(col - inCol) == 1)) // diagonal capture, no path
-				throw PieceMoveError();
+				// throw PieceMoveError();
+				throw PieceMoveError("Invalid Pawn move.");
 		}
 		else { //  if (team == white)
 
@@ -66,7 +67,8 @@ namespace chess {
 					path = getPath(inCol, inRow);	// only need path if moved two spaces
 			}
 			else if (!(inRow == row + 1 && abs(col - inCol) == 1)) // diagonal capture, no path
-				throw PieceMoveError();
+				// throw PieceMoveError();
+				throw PieceMoveError("Invalid Pawn move.");
 		}
 
 		return path; // could be condensed, but with lengthy, less-readable condition statements
@@ -153,7 +155,8 @@ namespace chess {
 		bool cond2 = abs(row - inRow) == 2 && abs(col - inCol) == 1;
 
 		if (!(cond1 || cond2)) {	// neither satisfied
-			throw PieceMoveError();
+			// throw PieceMoveError();
+			throw PieceMoveError("Invalid Knight move.");
 		}
 		
 		return nullptr;
@@ -214,7 +217,8 @@ namespace chess {
 			path = getDiagonalPath(inCol, inRow);
 		}
 		else {
-			throw PieceMoveError();
+			// throw PieceMoveError();
+			throw PieceMoveError("Invalid Queen move.");
 		}
 
 		return path;
@@ -365,7 +369,8 @@ namespace chess {
 		if ((row == inRow) || (col == inCol)) // if moving only along columns or rows
 			path = getPath(inCol, inRow);
 		else
-			throw PieceMoveError();
+			throw PieceMoveError("Invalid Rook move.");
+			// throw PieceMoveError();
 
 		return path;
 	}
@@ -436,7 +441,8 @@ namespace chess {
 		if ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow))
 			path = getPath(inCol, inRow);
 		else
-			throw PieceMoveError();
+			throw PieceMoveError("Invalid Bishop move.");
+			// throw PieceMoveError();
 		
 		return path;
 	}
@@ -490,7 +496,9 @@ namespace chess {
 
 		// if ((inRow > row + 1) || (inRow < row - 1) || (inCol > col + 1) || (inCol < col - 1))
 		if (!((inRow <= row + 1) && (inRow >= row - 1) && (inCol <= col + 1) && (inCol >= col - 1))) 
-			throw PieceMoveError();
+			throw PieceMoveError("Invalid King move.");
+			// throw PieceMoveError();
+
 
 		return  nullptr;
 	}

@@ -39,6 +39,9 @@
     <ClInclude Include="LinkedBag.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ChessExceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChessPiece.cpp">
