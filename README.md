@@ -2,7 +2,7 @@
  
 Recently merged with Symmetry-Implementation-Piece-Protected
  
-The merged branch was for investigating an implementation where the symmetry of Black vs White moves is managed by BlackTeam and WhiteTeam Classes, derived from the ChessTeam base class. There are several aspects of this implementation that are more maintainable/modular. However, the design might be less efficient. Each of the Black and White Team objects has copies of their common base class members. Ideally, we could make the non-virtual base class members static in order to reduce this to one copy; however, we have exstive use of the "this" pointer, so this may not be an option.
+The merged branch was for investigating an implementation where the symmetry of Black vs White moves is managed by BlackTeam and WhiteTeam Classes, derived from the ChessTeam base class. There are several aspects of this implementation that are more maintainable/modular. However, the design might be slightly less space-efficient, as each of the Black and White Team objects now has a copy of their common base class members.
 
 In the Symmetry Implementation, dynamic allocation/deallocation of the ChessPieces is managed by a new Grid class, implemented via an array of pointers to the pieces. The design is more convenient, as Grid manages all dynamic operations that the other classes (ChessBoard, ChessPiece, ChessTeam) need not be concerned about.  
 
