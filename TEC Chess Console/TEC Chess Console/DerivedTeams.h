@@ -32,8 +32,11 @@ namespace chess {
 		// Symmetry-dependent King-related functions//
 		virtual bool Castle(int pos1, int pos2, int move1, int move2);
 
-		// Symmetry-dependent Check functions//
+		// Symmetry-dependent Check & Checkmate helper functions//
 		virtual bool checkCorners(int kCol, int kRow) const;
+		
+		int* PawnMovesSet(int pos1, int pos2) const;
+
 	};
 
 
@@ -58,8 +61,11 @@ namespace chess {
 		// Symmetry-dependent King-related functions//
 		virtual bool Castle(int pos1, int pos2, int move1, int move2);
 
-		// Symmetry-dependent Check functions//
+		// Symmetry-dependent Check & Checkmate helper functions//
 		virtual bool checkCorners(int kCol, int kRow) const;
+		
+		int* PawnMovesSet(int pos1, int pos2) const;
+		
 	};
 
 

@@ -217,6 +217,16 @@ namespace chess {
 
 
 
+
+    bool ChessTeam::isValidMove(int pos1, int pos2, int move1, int move2) const
+    {
+        return false;
+    }
+
+
+
+
+
     // Note:    inTeam is the team whose turn it is to move
     void ChessTeam::move(int pos1, int pos2, int move1, int move2)
     {
@@ -224,7 +234,7 @@ namespace chess {
             throw chess_except::BoundsError();
         else if (!isPiece(pos1, pos2))  // moving a non-exsistent piece   
             throw chess_except::EmptySquareError();
-        else if (getTeam(pos1, pos2) != team)     // wrong team being move
+        else if (getTeam(pos1, pos2) != team)     // wrong team being moved
             throw chess_except::TurnMoveError();
         else if (pos1 == move1 && pos2 == move2)        // the source is the destination
             throw chess_except::NoTurnPassError();
@@ -512,6 +522,199 @@ namespace chess {
 
 
 
+    // determines whether a piece has any legal moves available (ie 'trapped' or not)
+    bool ChessTeam::isTrapped(int pos1, int pos2) const
+    {
+        int* points = nullptr;
+        int counter = 0;
+        if (!isPiece(pos1, pos2))
+            return false;
+        else if (getPiece(pos1, pos2) == ChessPiece::piece_type::pawn)
+            points = PawnMovesSet(pos1, pos2);  // the integers in 'coodinates' may range from -1 to 8
+        else if (getPiece(pos1, pos2) == ChessPiece::piece_type::rook)
+            points = RookMovesSet(pos1, pos2);  // the integers in 'coodinates' may range from -1 to 8
+        else if (getPiece(pos1, pos2) == ChessPiece::piece_type::knight)
+            points = KnightMovesSet(pos1, pos2);    // the integers in 'coodinates' may range from -2 to 9
+        else if (getPiece(pos1, pos2) == ChessPiece::piece_type::bishop)
+            points = BishopMovesSet(pos1, pos2); // the integers in 'coodinates' may range from -1 to 8
+        else if (getPiece(pos1, pos2) == ChessPiece::piece_type::king)
+            points = KingMovesSet(pos1, pos2); // the integers in 'coodinates' may range from -1 to 8
+        else
+            points = QueenMovesSet(pos1, pos2);
+        
+        while (points[counter] != ARRAY_END) {
+            try {   // the try/catch is necessary if we are to reuse functions from ChesssPiece classes
+                if (isValidMove(pos1, pos2, points[counter], points[counter + 1]))
+                    return false;
+            }
+            catch (const chess_except::InvalidMoveExcep& e) {
+                counter += 2;
+            }
+        }   // complete loop without any successful moves
+
+        delete[] points;
+
+        return true;   // must be trapped
+    }
+
+
+
+
+
+
+
+    int* ChessTeam::PawnMovesSet(int pos1, int pos2) const
+    {
+        assert(getPiece(pos1, pos2) != ChessPiece::piece_type::pawn);
+        int rowShift = (getTeam(pos1, pos2) == ChessPiece::team_type::white) ? 1 : -1;
+      
+        const int SIZE = 7;
+        int* coordinates = new int[SIZE];  // 3 coordinates plus null terminator
+        int displacement = -1;
+
+        for (int j = 0; j < (SIZE - 1); j += 2) {
+            coordinates[j] = pos1 + displacement;
+            coordinates[j + 1] = pos2 + rowShift;
+            displacement++;
+        }
+        coordinates[SIZE - 1] = ARRAY_END;
+
+        return coordinates;
+    }
+
+
+
+
+
+
+    int* ChessTeam::KnightMovesSet(int pos1, int pos2) const
+    {
+        assert(getPiece(pos1, pos2) != ChessPiece::piece_type::knight);
+        
+        const int SIZE = 17;
+        int* coordinates = new int[SIZE]; // 8 coordinates plus null terminator
+        
+        // list the points
+        
+        coordinates[SIZE - 1] = ARRAY_END;
+
+        return coordinates;
+    }
+
+
+
+
+
+
+    int* ChessTeam::RookMovesSet(int pos1, int pos2) const
+    {
+        assert(getPiece(pos1, pos2) != ChessPiece::piece_type::rook);
+
+        const int SIZE = 9;
+        int* coordinates = new int[SIZE]; // 4 coordinates plus null terminator
+
+        coordinates[0] = pos1;
+        coordinates[1] = pos2 + 1;
+
+        coordinates[2] = pos1;
+        coordinates[3] = pos2 - 1;
+        
+        coordinates[4] = pos2;
+        coordinates[5] = pos1 + 1;
+
+        coordinates[6] = pos2;
+        coordinates[7] = pos1 - 1;
+
+        coordinates[8] = ARRAY_END;
+
+        return coordinates;
+    }
+
+
+
+
+
+
+    int* ChessTeam::BishopMovesSet(int pos1, int pos2) const
+    {
+        assert(getPiece(pos1, pos2) != ChessPiece::piece_type::bishop);
+
+        const int SIZE = 9;
+        int* coordinates = new int[SIZE]; // 4 coordinates plus null terminator
+
+        coordinates[0] = pos1 - 1;
+        coordinates[1] = pos2 - 1;
+
+        coordinates[2] = pos1 + 1;
+        coordinates[3] = pos2 - 1;
+
+        coordinates[4] = pos1 + 1;
+        coordinates[5] = pos2 + 1;
+
+        coordinates[6] = pos1 - 1;
+        coordinates[7] = pos2 + 1;
+
+        coordinates[8] = ARRAY_END;
+
+        return coordinates;
+    }
+
+
+
+
+
+
+    int* ChessTeam::QueenMovesSet(int pos1, int pos2) const
+    {
+        assert(getPiece(pos1, pos2) != ChessPiece::piece_type::rook);
+
+        const int SIZE = 17;
+        int* coordinates = new int[SIZE]; // 8 coordinates plus null terminator
+
+        coordinates[0] = pos1;
+        coordinates[1] = pos2 + 1;
+
+        coordinates[2] = pos1;
+        coordinates[3] = pos2 - 1;
+
+        coordinates[4] = pos2;
+        coordinates[5] = pos1 + 1;
+
+        coordinates[6] = pos2;
+        coordinates[7] = pos1 - 1;
+
+        coordinates[8] = pos1 - 1;
+        coordinates[9] = pos2 - 1;
+
+        coordinates[10] = pos1 + 1;
+        coordinates[11] = pos2 - 1;
+
+        coordinates[12] = pos1 + 1;
+        coordinates[13] = pos2 + 1;
+
+        coordinates[14] = pos1 - 1;
+        coordinates[15] = pos2 + 1;
+
+        coordinates[16] = ARRAY_END;
+
+        return coordinates;
+    }
+
+
+
+
+
+
+    int* ChessTeam::KingMovesSet(int pos1, int pos2) const
+    {
+        return QueenMovesSet(pos1, pos2);
+    }
+
+
+
+
+
+
 
     bool ChessTeam::checkLaterals(int kCol, int kRow) const
     {
@@ -778,6 +981,43 @@ namespace chess {
     }
 
 
+
+
+    bool ChessTeam::isCheckmate()
+    {
+        if(!isCheck())
+            return false;
+        // if king in danger from all surrounding squares, and 
+        // no captures/blocks of immediately threatening piece available
+            // winner = ~turn;  // opponent
+        // return true;
+        
+    }
+
+
+
+
+
+
+    bool ChessTeam::isStalemate()
+    {
+        if (isCheck())
+            return false;
+        else { // if no legal moves
+            
+            for (int i = 0; i < BOARD_SIZE; i++) {
+                for (int j = 0; j < BOARD_SIZE; j++) {
+
+                    ChessPiece* p = gridPtr->getElement(i, j);
+                    if (isPiece(i, j) && getTeam(i, j) == team && !isTrapped(i, j)) {
+                        // if a piece from this team has somewhere to go
+                        return false;
+                    }   
+                }
+            }   // tested every piece on the board, without finding a legal move
+            return true;
+        }
+    }
 }  // closes namespace
 
 

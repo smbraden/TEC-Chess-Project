@@ -38,9 +38,7 @@ namespace chess {
 
 
 
-	/* Precondition:	the potential validity of the move with respect to 
-						other pieces on the board has been evaluated and confirmed.
-						(ie pieces blocking the pawn vs pieces captured by the pawn)	*/
+	
 	int* Pawn::validMove(int inCol, int inRow) const
 	{
 		int* path = nullptr;

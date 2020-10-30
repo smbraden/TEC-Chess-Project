@@ -41,11 +41,15 @@ namespace chess {
 
 		// Other
 		void move(int pos1, int pos2, int move1, int move2);
+		bool isCheckmate();
+		bool isStalemate();
 
-		const int MAX_PATH = 7; // 6 spaces for max path, and 1 more for an extra delimiter
+		static const int MAX_PATH = 7; // 6 spaces for max path, and 1 more for an extra delimiter
 		static const int BOARD_SIZE = 8;
 
 	protected:
+
+		static const int ARRAY_END = -8;
 
 		// primary data members
 		Grid* gridPtr;					
@@ -71,7 +75,7 @@ namespace chess {
 		void remove(int x, int y);
 		bool isPiece(int inCol, int inRow) const;
 		void evaluatePath(int* path) const;
-		
+		bool isValidMove(int pos1, int pos2, int move1, int move2) const;
 
 		//-------------------Pawn-related functions------------------//
 		
@@ -95,7 +99,7 @@ namespace chess {
 
 
 
-		//-----------------------Check functions---------------------//
+		//-----------------Check & Checkmate functions----------------//
 		
 		bool isCheck() const;						// for assessing Game State
 		bool isCheck(int pos1, int pos2) const;		// for evaluating specific squares
@@ -109,6 +113,19 @@ namespace chess {
 
 		// Symmetry-dependent//
 		virtual bool checkCorners(int kCol, int kRow) const;
+		
+		//---------------StaleMate & Checkmate functions--------------//
+
+		bool isTrapped(int pos1, int pos2) const;	// if a piece has any legal moves available
+		
+		int* KnightMovesSet(int pos1, int pos2) const;
+		int* RookMovesSet(int pos1, int pos2) const;
+		int* BishopMovesSet(int pos1, int pos2) const;
+		int* QueenMovesSet(int pos1, int pos2) const;
+		int* KingMovesSet(int pos1, int pos2) const;
+		
+		// Symmetry-dependent//
+		virtual int* PawnMovesSet(int pos1, int pos2) const;
 
 		//------------------------------------------------------------//
 

@@ -87,19 +87,23 @@ namespace chess {
 
     void ChessBoard::move(int pos1, int pos2, int move1, int move2)
     {
-        if (isCheck()) {
-            throw chess_except::WinSignal((getWinner() == ChessPiece::team_type::white) ? "White" : "Black");
-        }
+ 
         if (turn == ChessPiece::team_type::white) {
             whiteT.move(pos1, pos2, move1, move2);
             turn = ChessPiece::team_type::black;
+            if (blackT.isCheckmate())
+                throw chess_except::WinSignal("White");
         }
         else {  // if (turn == ChessPiece::team_type::black)
             blackT.move(pos1, pos2, move1, move2);
             turn = ChessPiece::team_type::white;
+            if (whiteT.isCheckmate())
+                throw chess_except::WinSignal("Black");
         }
         if (history.newPage(turn, grid))      // newPage() returns true when 3-fold repetition reached
             throw chess_except::DrawSignal("The cause is 3-fold repetition of the game state...");
+        else if (blackT.isStalemate() || whiteT.isStalemate())
+            throw chess_except::DrawSignal("The cause is Stalemate...");
     }
 
 
@@ -274,19 +278,6 @@ namespace chess {
         return grid.getElement(pos1, pos2)->getPieceType();
     }
 
-
-
-
-
-
-    bool ChessBoard::isCheck()
-    {
-        // if 'turn' team's king in danger from all surrounding squares, and 
-        // no captures/blocks of immediately threatening piece available
-            // winner = ~turn;  // opponent
-        // return true;
-        return false;
-    }
 
 
 }  // closes namespace

@@ -160,6 +160,29 @@ namespace chess {
 
 
 
+
+	int* WhiteTeam::PawnMovesSet(int pos1, int pos2) const
+	{
+		assert(getPiece(pos1, pos2) != ChessPiece::piece_type::pawn);
+		
+		int* coordinates = new int[6];
+
+		int displacement = -1;
+
+		for (int j = 0; j < 6; j += 2) {
+			coordinates[j] = pos1 + displacement;
+			coordinates[j + 1] = pos2 + 1;
+			displacement++;
+		}
+
+		return coordinates;
+	}
+
+
+
+
+
+
 	BlackTeam::BlackTeam()
 	{
 		kCol = 4;
@@ -303,6 +326,28 @@ namespace chess {
 			return true;
 
 		return false;
+	}
+
+
+
+
+
+
+	int* BlackTeam::PawnMovesSet(int pos1, int pos2) const
+	{
+		assert(getPiece(pos1, pos2) != ChessPiece::piece_type::pawn);
+
+		int* coordinates = new int[6];
+
+		int displacement = -1;
+
+		for (int j = 0; j < 6; j += 2) {
+			coordinates[j] = pos1 + displacement;
+			coordinates[j + 1] = pos2 - 1;
+			displacement++;
+		}
+
+		return coordinates;
 	}
 
 }
