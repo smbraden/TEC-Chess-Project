@@ -10,7 +10,9 @@
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
 
-#include "DerivedTeams.h"
+// #include "DerivedTeams.h"
+#include "ChessTeam.h"
+#include "History.h"
 
 namespace chess {
 

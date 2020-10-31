@@ -107,7 +107,7 @@ namespace chess {
 	public:
 
 		Rook();
-		Rook(int inCol, int inRow, team_type color);
+		Rook(int inCol, int inRow, team_type color, bool c);
 		class RookMoveError {};
 		int* validMove(int inCol, int inRow) const;
 		int* getTrapSet(int inCol, int inRow) const;
@@ -132,7 +132,7 @@ namespace chess {
 	public:
 
 		King();
-		King(int inCol, int inRow, team_type color);
+		King(int inCol, int inRow, team_type color, bool c);
 		class KingMoveError {};
 		int* validMove(int inCol, int inRow) const;
 		int* getTrapSet(int inCol, int inRow) const;

@@ -16,7 +16,7 @@ namespace chess {
 		kCol = 4;
 		kRow = 0;
 		team = ChessPiece::team_type::white;
-		gridPtr = nullptr;
+		grid = Grid();
 		checkmateStatus = false;
 	}
 
@@ -25,12 +25,12 @@ namespace chess {
 
 
 
-	WhiteTeam::WhiteTeam(Grid* g, bool m)
+	WhiteTeam::WhiteTeam(Grid g, bool m)
 	{
 		kCol = 4;
 		kRow = 0;
 		team = ChessPiece::team_type::white;
-		gridPtr = g;
+		grid = g;
 		checkmateStatus = m;
 	}
 
@@ -188,7 +188,7 @@ namespace chess {
 		kCol = 4;
 		kRow = 7;
 		team = ChessPiece::team_type::black;
-		gridPtr = nullptr;
+		grid = Grid();
 		checkmateStatus = false;
 	}
 
@@ -197,12 +197,12 @@ namespace chess {
 
 
 
-	BlackTeam::BlackTeam(Grid* g, bool m)
+	BlackTeam::BlackTeam(Grid g, bool m)
 	{
 		kCol = 4;
 		kRow = 7;
 		team = ChessPiece::team_type::black;
-		gridPtr = g;
+		grid = g;
 		checkmateStatus = m;
 	}
 

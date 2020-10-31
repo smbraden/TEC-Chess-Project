@@ -13,7 +13,6 @@
 #include "Grid.h"
 #include <cassert>
 
-// using namespace chess_except;
 
 namespace chess {
 

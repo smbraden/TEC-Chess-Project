@@ -844,7 +844,7 @@ namespace chess {
         // no captures/blocks of immediately threatening piece available
             // winner = ~turn;  // opponent
         // return true;
-        
+        return true;
     }
 
 

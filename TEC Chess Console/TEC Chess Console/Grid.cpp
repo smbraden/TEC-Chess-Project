@@ -148,7 +148,8 @@ namespace chess {
 					ptr = new Pawn(i, j, arg.getElement(i, j)->getTeamType(), passVal);
 				}
 				else if (arg.getElement(i, j)->getPieceType() == ChessPiece::piece_type::rook) {
-					ptr = new Rook(i, j, arg.getElement(i, j)->getTeamType());
+					bool CastleVal = ((Rook*)arg.getElement(i, j))->getCastleStatus();
+					ptr = new Rook(i, j, arg.getElement(i, j)->getTeamType(), CastleVal);
 				}
 				else if (arg.getElement(i, j)->getPieceType() == ChessPiece::piece_type::knight) {
 					ptr = new Knight(i, j, arg.getElement(i, j)->getTeamType());
@@ -157,7 +158,8 @@ namespace chess {
 					ptr = new Bishop(i, j, arg.getElement(i, j)->getTeamType());
 				}
 				else if (arg.getElement(i, j)->getPieceType() == ChessPiece::piece_type::king) {
-					ptr = new King(i, j, arg.getElement(i, j)->getTeamType());
+					bool CastleVal = ((King*)arg.getElement(i, j))->getCastleStatus();
+					ptr = new King(i, j, arg.getElement(i, j)->getTeamType(), CastleVal);
 				}
 				else {  // if (grid[i][j]->getPieceType() == ChessPiece::piece_type::queen) 
 					ptr = new Queen(i, j, arg.getElement(i, j)->getTeamType());

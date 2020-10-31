@@ -423,10 +423,10 @@ namespace chess {
 
 
 
-	Rook::Rook(int inCol, int inRow, team_type color) : Queen(inCol, inRow, color)
+	Rook::Rook(int inCol, int inRow, team_type color, bool c) : Queen(inCol, inRow, color)
 	{
 		piece = piece_type::rook;
-		castle = true;
+		castle = c;
 	}
 
 
@@ -604,10 +604,10 @@ namespace chess {
 
 
 
-	King::King(int inCol, int inRow, team_type color) : ChessPiece(inCol, inRow, color)
+	King::King(int inCol, int inRow, team_type color, bool c) : ChessPiece(inCol, inRow, color)
 	{
 		piece = piece_type::king;
-		castle = true;
+		castle = c;
 	}
 
 

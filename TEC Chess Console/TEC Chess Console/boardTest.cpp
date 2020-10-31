@@ -119,6 +119,8 @@ void play(ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& 
 			break;
 
 	} while (tolower(option) != 'q' && !endFlag);
+
+	argBoard.printBoard();	// the final print will not execute (win or draw signaled by exception)
 }
 
 

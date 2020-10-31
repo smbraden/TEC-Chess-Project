@@ -1,0 +1,50 @@
+  a  b  c  d  e  f  g  h
+8 __ __ bR __ __ __ __ __ 8
+7 wR __ __ __ __ __ __ __ 7
+6 __ __ __ __ __ __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ bP __ __ __ __ __ 4
+3 __ bK __ __ __ __ __ __ 3
+2 __ __ __ __ __ __ __ __ 2
+1 __ bP __ __ __ __ __ __ 1
+  a  b  c  d  e  f  g  h
+
+
+Welcome to the TEC Chess Test Console!
+To enter moves, use the format 'ColRow': a7, b3, etc
+Don't hit 'enter' without any input. This is a quick n dirty test that will break.
+Enter 'q' to exit at the continue/quit prompt after each round
+Play? Hit quit/continue now (q/c): c
+
+White move. Current position:   a7
+White move. New position:       c7
+
+
+  a  b  c  d  e  f  g  h
+8 __ __ bR __ __ __ __ __ 8
+7 __ __ wR __ __ __ __ __ 7
+6 __ __ __ __ __ __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ bP __ __ __ __ __ 4
+3 __ bK __ __ __ __ __ __ 3
+2 __ __ __ __ __ __ __ __ 2
+1 __ bP __ __ __ __ __ __ 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): c
+
+Black move. Current position:   c8
+Black move. New position:       c7
+
+The game is a draw. The cause is Stalemate...
+
+  a  b  c  d  e  f  g  h
+8 __ __ __ __ __ __ __ __ 8
+7 __ __ bR __ __ __ __ __ 7
+6 __ __ __ __ __ __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ bP __ __ __ __ __ 4
+3 __ bK __ __ __ __ __ __ 3
+2 __ __ __ __ __ __ __ __ 2
+1 __ bP __ __ __ __ __ __ 1
+  a  b  c  d  e  f  g  h

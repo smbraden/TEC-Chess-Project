@@ -20,7 +20,7 @@ namespace chess {
 	public:
 
 		WhiteTeam();
-		WhiteTeam(Grid* g, bool m);
+		WhiteTeam(Grid g, bool m);
 
 	private:
 
@@ -49,7 +49,7 @@ namespace chess {
 	public:
 
 		BlackTeam();
-		BlackTeam(Grid* g, bool m);
+		BlackTeam(Grid g, bool m);
 
 	private:
 

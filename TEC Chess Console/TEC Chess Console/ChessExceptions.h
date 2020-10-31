@@ -149,7 +149,7 @@ namespace chess_except {
 	{
 
 	public:
-		CheckError(const std::string& message = "Check Error: Your King is still in check...") :
+		CheckError(const std::string& message = "Check Error: Your King is still in check, or this move places him in check...") :
 			InvalidMoveExcep(message) {}
 
 	};		// if King in Check, must escape the check
