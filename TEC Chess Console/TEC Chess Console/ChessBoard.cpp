@@ -165,10 +165,10 @@ namespace chess {
         setElement(1, 0, new King(1, 0, ChessPiece::team_type::white, false));
         
         setElement(2, 7, new Rook(2, 7, ChessPiece::team_type::black, false));
-        setElement(1, 0, new Pawn(1, 0, ChessPiece::team_type::black, false));
-        setElement(2, 3, new Pawn(2, 3, ChessPiece::team_type::black, false));
+        setElement(1, 1, new Pawn(1, 1, ChessPiece::team_type::black, false));
         setElement(1, 2, new King(1, 2, ChessPiece::team_type::black, false));
-        
+        setElement(1, 3, new Pawn(1, 3, ChessPiece::team_type::black, false));
+
         // these moves give stalemate:
         // a7 -> c7
         // c8 -> c7
@@ -204,6 +204,7 @@ namespace chess {
         for (int i = 0; i < BOARD_SIZE; i++) {
              setElement(i, 6, new Pawn(i, 6, ChessPiece::team_type::black, false));
         }
+        
     }
 
 
