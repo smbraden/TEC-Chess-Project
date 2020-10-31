@@ -19,7 +19,6 @@ namespace chess {
 	public:
 
 		ChessBoard();
-		ChessBoard(const ChessBoard&);
 
 		void move(int pos1, int pos2, int move1, int move2);
 		void printBoard() const;
@@ -38,11 +37,12 @@ namespace chess {
 		ChessPiece::team_type winner;
 		History history;
 		
-		WhiteTeam whiteT;
-		BlackTeam blackT;
+		ChessTeam whiteT;
+		ChessTeam blackT;
+		// WhiteTeam whiteT;
+		// BlackTeam blackT;
 
 		// constructor helpers
-		void copy(const ChessBoard&);
 		void initPieces();
 
 		// For convenient access to Grid Elements

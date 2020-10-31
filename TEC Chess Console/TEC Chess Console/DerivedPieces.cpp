@@ -115,7 +115,30 @@ namespace chess {
 		return path;	// path is nullptr if no spaces between position and destination
 	}
 	
-	
+
+
+
+
+
+	int* Pawn::getTrapSet(int pos1, int pos2) const
+	{
+		int rowShift = (team == team_type::white) ? 1 : -1;
+
+		const int SIZE = 7;
+		int* coordinates = new int[SIZE];  // 3 coordinates plus null terminator
+		int displacement = -1;
+
+		for (int j = 0; j < (SIZE - 1); j += 2) {
+			coordinates[j] = pos1 + displacement;
+			coordinates[j + 1] = pos2 + rowShift;
+			displacement++;
+		}
+		coordinates[SIZE - 1] = ARRAY_END;
+
+		return coordinates;
+		
+	}
+
 
 
 
@@ -175,7 +198,21 @@ namespace chess {
 
 
 
-	
+	int* Knight::getTrapSet(int pos1, int pos2) const
+	{
+		const int SIZE = 17;
+		int* coordinates = new int[SIZE]; // 8 coordinates plus null terminator
+
+		// list the points
+
+		coordinates[SIZE - 1] = ARRAY_END;
+
+		return coordinates;
+	}
+
+
+
+
 	//------------------------------Queen-----------------------------------//
 
 	Queen::Queen() : ChessPiece()
@@ -326,11 +363,51 @@ namespace chess {
 
 		return path;
 	}
-	
 
 
 
-	
+
+
+
+
+	int* Queen::getTrapSet(int pos1, int pos2) const
+	{
+		const int SIZE = 17;
+		int* coordinates = new int[SIZE]; // 8 coordinates plus null terminator
+
+		coordinates[0] = pos1;
+		coordinates[1] = pos2 + 1;
+
+		coordinates[2] = pos1;
+		coordinates[3] = pos2 - 1;
+
+		coordinates[4] = pos2;
+		coordinates[5] = pos1 + 1;
+
+		coordinates[6] = pos2;
+		coordinates[7] = pos1 - 1;
+
+		coordinates[8] = pos1 - 1;
+		coordinates[9] = pos2 - 1;
+
+		coordinates[10] = pos1 + 1;
+		coordinates[11] = pos2 - 1;
+
+		coordinates[12] = pos1 + 1;
+		coordinates[13] = pos2 + 1;
+
+		coordinates[14] = pos1 - 1;
+		coordinates[15] = pos2 + 1;
+
+		coordinates[16] = ARRAY_END;
+
+		return coordinates;
+	}
+
+
+
+
+
 
 
 	//------------------------------Rook-----------------------------------//
@@ -408,12 +485,39 @@ namespace chess {
 
 
 
+	int* Rook::getTrapSet(int pos1, int pos2) const
+	{
+		const int SIZE = 9;
+		int* coordinates = new int[SIZE]; // 4 coordinates plus null terminator
+
+		coordinates[0] = pos1;
+		coordinates[1] = pos2 + 1;
+
+		coordinates[2] = pos1;
+		coordinates[3] = pos2 - 1;
+
+		coordinates[4] = pos2;
+		coordinates[5] = pos1 + 1;
+
+		coordinates[6] = pos2;
+		coordinates[7] = pos1 - 1;
+
+		coordinates[8] = ARRAY_END;
+
+		return coordinates;
+	}
+
+
+
+
+
 	//------------------------------Bishop-----------------------------------//
 
 	Bishop::Bishop() : Queen()
 	{
 		piece = piece_type::bishop;
 	}
+
 
 
 
@@ -453,6 +557,34 @@ namespace chess {
 	int* Bishop::getPath(int inCol, int inRow) const
 	{
 		return getDiagonalPath(inCol, inRow);
+	}
+
+
+
+
+
+	
+
+	int* Bishop::getTrapSet(int pos1, int pos2) const
+	{
+		const int SIZE = 9;
+		int* coordinates = new int[SIZE]; // 4 coordinates plus null terminator
+
+		coordinates[0] = pos1 - 1;
+		coordinates[1] = pos2 - 1;
+
+		coordinates[2] = pos1 + 1;
+		coordinates[3] = pos2 - 1;
+
+		coordinates[4] = pos1 + 1;
+		coordinates[5] = pos2 + 1;
+
+		coordinates[6] = pos1 - 1;
+		coordinates[7] = pos2 + 1;
+
+		coordinates[8] = ARRAY_END;
+
+		return coordinates;
 	}
 
 
@@ -531,6 +663,44 @@ namespace chess {
 		return nullptr;	// no path for Kings, they only move by 1 space at a time
 	}
 
+
+
+
+
+
+	int* King::getTrapSet(int pos1, int pos2) const
+	{
+		const int SIZE = 17;
+		int* coordinates = new int[SIZE]; // 8 coordinates plus null terminator
+
+		coordinates[0] = pos1;
+		coordinates[1] = pos2 + 1;
+
+		coordinates[2] = pos1;
+		coordinates[3] = pos2 - 1;
+
+		coordinates[4] = pos2;
+		coordinates[5] = pos1 + 1;
+
+		coordinates[6] = pos2;
+		coordinates[7] = pos1 - 1;
+
+		coordinates[8] = pos1 - 1;
+		coordinates[9] = pos2 - 1;
+
+		coordinates[10] = pos1 + 1;
+		coordinates[11] = pos2 - 1;
+
+		coordinates[12] = pos1 + 1;
+		coordinates[13] = pos2 + 1;
+
+		coordinates[14] = pos1 - 1;
+		coordinates[15] = pos2 + 1;
+
+		coordinates[16] = ARRAY_END;
+
+		return coordinates;
+	}
 
 
 

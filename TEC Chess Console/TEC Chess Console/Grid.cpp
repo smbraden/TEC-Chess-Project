@@ -102,6 +102,28 @@ namespace chess {
 
 
 
+	ChessPiece::piece_type Grid::getPieceType(int col, int row) const
+	{
+		assert(isPiece(col, row));
+		return getElement(col, row)->getPieceType();
+	}
+
+
+
+
+
+
+	ChessPiece::team_type Grid::getTeamType(int col, int row) const
+	{
+		assert(isPiece(col, row));
+		return getElement(col, row)->getTeamType();
+	}
+
+
+
+
+
+
 	void Grid::setElement(int col, int row, ChessPiece* ptr)
 	{
 		assert(inBounds2(col, row));

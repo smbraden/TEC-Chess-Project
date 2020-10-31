@@ -20,13 +20,16 @@ namespace chess {
 
 	public:
 
-		// Big-3
 		Grid();
+		
+		// Big-3
 		Grid(const Grid&);
 		~Grid();
 		Grid operator=(const Grid&);
 
 		ChessPiece* getElement(int col, int row) const;
+		ChessPiece::piece_type getPieceType(int col, int row) const;
+		ChessPiece::team_type getTeamType(int col, int row) const;
 		void setElement(int col, int row, ChessPiece* ptr);
 		void remove(int c, int r);
 		bool isPiece(int inCol, int inRow) const;	// verifies coordinates in bounds and correspond to an object

@@ -131,7 +131,6 @@ namespace chess {
 		int* path = nullptr;
 		return path;
 	}
-
 	/* Real pieces will take the following form 
  		
 		int* ChessPiece::setPosition(int inCol, int inRow)
@@ -146,6 +145,16 @@ namespace chess {
 			return path;
 		}
 	*/
+
+
+
+
+
+	int* ChessPiece::getTrapSet(int inCol, int inRow) const
+	{
+		return nullptr;
+	}
+
 
 
 
