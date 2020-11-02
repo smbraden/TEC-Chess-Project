@@ -15,6 +15,7 @@
 #include <cassert>
 
 
+
 namespace chess {
 
 	class ChessTeam
@@ -31,7 +32,10 @@ namespace chess {
 				kCol(c), kRow(r), team(t) {}
 
 			team_ID operator=(const team_ID& right) {
-				kCol = right.kCol;	kRow = right.kRow;	team = right.team;
+				kCol = right.kCol;	
+				kRow = right.kRow;
+				team = right.team;
+				return *this;
 			}			
 		};
 
@@ -40,17 +44,11 @@ namespace chess {
 		ChessTeam(Grid g, team_ID w, team_ID b, team_ID t);
 				
 		// Accessors
-		// Grid getGrid() const;
-		// int getKCol() const;
-		// int getKRow() const;
-		// bool getCheckmateStatus() const;
+		Grid getGrid() const;
+		bool isPiece(int inCol, int inRow) const;
 		ChessPiece::team_type getTurnTeam() const;
-		
-		// Mutators
-		// void setGrid(const Grid& arg);
-		
-		// void setCheckmateStatus(bool arg);
-		// void setTeam(ChessPiece::team_type t);
+		ChessPiece::team_type getTeamType(int pos1, int pos2) const;
+		ChessPiece::piece_type getPieceType(int pos1, int pos2) const;
 		
 		// Other
 		void move(int pos1, int pos2, int move1, int move2);
@@ -67,20 +65,13 @@ namespace chess {
 		team_ID white;
 		team_ID black;
 		team_ID turn;
-		// int kCol;						// column of team's king
-		// int kRow;						// row of team's king
-		// ChessPiece::team_type team;		// team's type, white or black
-		// bool checkmateStatus;
-
-
+		
 		// inline helpers to replace macros
 		bool inBounds2(const int a, const int b) const;
 		bool inBounds4(const int a, const int b, const int c, const int d) const;
 
 		// Grid element accessors
 		ChessPiece* getElement(int col, int row) const;
-		ChessPiece::team_type getTeam(int pos1, int pos2) const;
-		ChessPiece::piece_type getPiece(int pos1, int pos2) const;
 
 		// Grid element mutators
 		void setPiece(int pos1, int pos2, int move1, int move2);
@@ -89,11 +80,9 @@ namespace chess {
 		// Other helpers 
 		ChessTeam isValidMove(int pos1, int pos2, int move1, int move2) const;
 		void remove(int x, int y);
-		bool isPiece(int inCol, int inRow) const;
+		
 		void evaluatePath(int* path) const;
-		void setKing(int move1, int move2);
-
-
+		void setTurnKing(int move1, int move2);
 
 
 		//-------------------Pawn-related functions------------------//
@@ -101,18 +90,14 @@ namespace chess {
 		int* validPawnMove(int pos1, int pos2, int move1, int move2) const;
 		bool simpleAdvance(int pos1, int pos2, int move1, int move2) const;
 		void resetEnPassant(int pos1, int pos2);
-
-		// Symmetry-dependent //
-		virtual bool isCapture(int pos1, int pos2, int move1, int move2) const;
-		virtual bool isEnPassant(int pos1, int pos2, int move1, int move2) const;
-		virtual void pawnPromote(int pos1, int pos2, int move1, int move2);
+		bool isCapture(int pos1, int pos2, int move1, int move2) const;
+		bool isEnPassant(int pos1, int pos2, int move1, int move2) const;
+		void pawnPromote(int pos1, int pos2, int move1, int move2);
 
 		//------------------King-related functions-------------------//
 		
 		bool validCastlePath(int k1, int k2, int r1, int r2);
-
-		// Symmetry-dependent //
-		virtual bool Castle(int pos1, int pos2, int move1, int move2);
+		bool Castle(int pos1, int pos2, int move1, int move2);
 
 		//-----------------Check & Checkmate functions---------------//
 		
@@ -129,7 +114,7 @@ namespace chess {
 		bool singleDiagonal(int kCol, int kRow, int colSign, int rowSign, int& attack1, int& attack2) const;
 		bool checkKnight(int kCol, int kRow, int& attack1, int& attack2) const;
 		bool singleKnight(int kCol, int kRow, int colSign, int rowSign, int& attack1, int& attack2) const;
-		virtual bool checkCorners(int kCol, int kRow, int& attack1, int& attack2) const;
+		bool checkCorners(int kCol, int kRow, int& attack1, int& attack2) const;
 
 		//-------------------Stalemate helper function------------------//
 

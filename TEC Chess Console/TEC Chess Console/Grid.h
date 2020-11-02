@@ -38,14 +38,18 @@ namespace chess {
 
 	private:
 
-		ChessPiece* grid[BOARD_SIZE * BOARD_SIZE];	// ChessPiece* grid[BOARD_SIZE][BOARD_SIZE];
+		// ChessPiece* grid[BOARD_SIZE * BOARD_SIZE];	
+		ChessPiece* grid[BOARD_SIZE][BOARD_SIZE];
 
 		// Big-3 helpers
 		void copy(const Grid& arg);
 		void clear();
-		
+
+		// constructor helper
+		void initPieces();
+
 		// inline helpers to replace macros (*)
-		int toGrid(const int c, const int r) const;
+		// int toGrid(const int c, const int r) const;
 		bool inBounds2(const int a, const int b) const;
 		bool inBounds4(const int a, const int b, const int c, const int d) const;
 	};

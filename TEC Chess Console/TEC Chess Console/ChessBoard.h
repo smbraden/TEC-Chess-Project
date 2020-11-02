@@ -10,7 +10,6 @@
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
 
-// #include "DerivedTeams.h"
 #include "ChessTeam.h"
 #include "History.h"
 
@@ -37,16 +36,7 @@ namespace chess {
 		ChessPiece::team_type winner;
 		History history;
 		ChessTeam turnMachine;
-		
-		// ChessPiece::team_type turn;
-		// ChessTeam whiteT;
-		// ChessTeam blackT;
-		// WhiteTeam whiteT;
-		// BlackTeam blackT;
-
-		// constructor helpers
-		void initPieces();
-
+				
 		// For convenient access to Grid Elements
 		ChessPiece* getElement(int col, int row) const;
 		void setElement(int col, int row, ChessPiece* ptr);

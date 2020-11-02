@@ -16,9 +16,13 @@ namespace chess {
 	Grid::Grid()
 	{
 		// initialize a "blank" grid
-		int SPACES = BOARD_SIZE * BOARD_SIZE;
-		for (int i = 0; i < SPACES; i++)
-			grid[i] = nullptr;
+		// int SPACES = BOARD_SIZE * BOARD_SIZE;
+		
+		for (int i = 0; i < BOARD_SIZE; i++)
+			for(int j = 0; j < BOARD_SIZE; j++)
+				grid[i][j] = nullptr;
+		
+		initPieces();
 	}
 	
 	
@@ -58,12 +62,12 @@ namespace chess {
 
 
 
-
+	/*
 	inline int Grid::toGrid(const int c, const int r) const
 	{
 		return (c + BOARD_SIZE * r);
 	}
-
+	*/
 
 
 
@@ -95,7 +99,8 @@ namespace chess {
 	ChessPiece* Grid::getElement(int col, int row) const
 	{
 		assert(inBounds2(col, row));
-		return grid[toGrid(col, row)];
+		// return grid[toGrid(col, row)];
+		return grid[col][row];
 	}
 
 
@@ -128,7 +133,8 @@ namespace chess {
 	void Grid::setElement(int col, int row, ChessPiece* ptr)
 	{
 		assert(inBounds2(col, row));
-		grid[toGrid(col, row)] = ptr;
+		// grid[toGrid(col, row)] = ptr;
+		grid[col][row] = ptr;
 	}
 
 
@@ -176,6 +182,59 @@ namespace chess {
 
 
 
+	void Grid::initPieces()
+	{
+		/*// uncomment this to more quickly test a possible stalemate
+		setElement(0, 6, new Rook(0, 6, ChessPiece::team_type::white, false));
+		setElement(1, 0, new King(1, 0, ChessPiece::team_type::white, false));
+
+		setElement(2, 7, new Rook(2, 7, ChessPiece::team_type::black, false));
+		setElement(1, 1, new Pawn(1, 1, ChessPiece::team_type::black, false));
+		setElement(1, 2, new King(1, 2, ChessPiece::team_type::black, false));
+		setElement(1, 3, new Pawn(1, 3, ChessPiece::team_type::black, false));
+
+		// these moves give stalemate:
+		// a7 -> c7
+		// c8 -> c7
+		*/
+
+
+		// instantiate and map the white team
+		setElement(0, 0, new Rook(0, 0, ChessPiece::team_type::white, false));
+		setElement(1, 0, new Knight(1, 0, ChessPiece::team_type::white));
+		setElement(2, 0, new Bishop(2, 0, ChessPiece::team_type::white));
+		setElement(3, 0, new Queen(3, 0, ChessPiece::team_type::white));
+		setElement(4, 0, new King(4, 0, ChessPiece::team_type::white, false));
+		setElement(5, 0, new Bishop(5, 0, ChessPiece::team_type::white));
+		setElement(6, 0, new Knight(6, 0, ChessPiece::team_type::white));
+		setElement(7, 0, new Rook(7, 0, ChessPiece::team_type::white, false));
+
+		// white pawns
+		for (int i = 0; i < BOARD_SIZE; i++) {
+			setElement(i, 1, new Pawn(i, 1, ChessPiece::team_type::white, false));
+		}
+
+		// instantiate and map the black team pieces
+		setElement(0, 7, new Rook(0, 7, ChessPiece::team_type::black, false));
+		setElement(1, 7, new Knight(1, 7, ChessPiece::team_type::black));
+		setElement(2, 7, new Bishop(2, 7, ChessPiece::team_type::black));
+		setElement(3, 7, new Queen(3, 7, ChessPiece::team_type::black));
+		setElement(4, 7, new King(4, 7, ChessPiece::team_type::black, false));
+		setElement(5, 7, new Bishop(5, 7, ChessPiece::team_type::black));
+		setElement(6, 7, new Knight(6, 7, ChessPiece::team_type::black));
+		setElement(7, 7, new Rook(7, 7, ChessPiece::team_type::black, false));
+
+		// black pawns
+		for (int i = 0; i < BOARD_SIZE; i++) {
+			setElement(i, 6, new Pawn(i, 6, ChessPiece::team_type::black, false));
+		}
+
+	}
+
+
+
+
+
 
 	void Grid::remove(int c, int r)
 	{
@@ -207,7 +266,8 @@ namespace chess {
 
 	bool Grid::isPiece(int col, int row) const
 	{
-		if (inBounds2(col, row) && grid[toGrid(col, row)] != nullptr)
+		// if (inBounds2(col, row) && grid[toGrid(col, row)] != nullptr)
+		if (inBounds2(col, row) && grid[col][row] != nullptr)
 			return true;
 		return false;
 	}

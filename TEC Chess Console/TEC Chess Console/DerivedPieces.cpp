@@ -747,6 +747,10 @@ namespace chess {
 
 
 /*
+
+Some alternative implementations...
+
+
 int* Queen::getDiagonalPath(int inCol, int inRow) const
 {
 	int* path = nullptr;

@@ -82,7 +82,7 @@ namespace chess_except {
 		NoTurnPassError(const std::string& message = "Turn Pass Error: No moving to the same square, no passing turns...") :
 			InvalidMoveExcep(message) {}
 
-	};	// Equivalent to moving a piece to it's current position
+	};	// Equivalent to moving a piece to its current position
 
 
 

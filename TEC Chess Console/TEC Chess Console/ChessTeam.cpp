@@ -16,12 +16,6 @@ namespace chess {
     // Default sets to a white team
     ChessTeam::ChessTeam()
     {
-        // kCol = 4;
-        // kRow = 0;
-        // team = ChessPiece::team_type::white;
-        // checkmateStatus = false;
-        
-        
         white = team_ID();
         black = team_ID(4, 7, ChessPiece::team_type::black);
         turn = white;
@@ -46,7 +40,7 @@ namespace chess {
 
 
     
-    ChessPiece::team_type ChessTeam::getTeam(int pos1, int pos2) const
+    ChessPiece::team_type ChessTeam::getTeamType(int pos1, int pos2) const
     {
         return grid.getTeamType(pos1, pos2);
     }
@@ -56,7 +50,7 @@ namespace chess {
 
 
 
-    ChessPiece::piece_type ChessTeam::getPiece(int pos1, int pos2) const
+    ChessPiece::piece_type ChessTeam::getPieceType(int pos1, int pos2) const
     {
         return grid.getPieceType(pos1, pos2);
     }
@@ -86,16 +80,6 @@ namespace chess {
 
 
 
-    /*
-    bool ChessTeam::getCheckmateStatus() const
-    {
-        return checkmateStatus;
-    }
-    */
-
-
-
-
 
     ChessPiece::team_type ChessTeam::getTurnTeam() const
     {
@@ -106,44 +90,12 @@ namespace chess {
 
 
 
-
-    /*
-    void ChessTeam::setCheckmateStatus(bool arg)
-    {
-        checkmateStatus = arg;
-    }
-    */
-
-
-
-
-    /*
+        
     Grid ChessTeam::getGrid() const
     {
         return grid;
     }
-    */
-
-
-
-
-    /*
-    int ChessTeam::getKCol() const
-    {
-        return turn.kCol;
-    }
-
-
-
-
-
-
-    int ChessTeam::getKRow() const
-    {
-        return turn.kRow;
-    }
-    */
-
+    
 
 
 
@@ -214,34 +166,39 @@ namespace chess {
             throw chess_except::BoundsError();
         else if (!isPiece(pos1, pos2))
             throw chess_except::EmptySquareError();
-        else if (getTeam(pos1, pos2) != turn.team)
+        else if (getTeamType(pos1, pos2) != testTeam.turn.team)
             throw chess_except::TurnMoveError();
         else if (pos1 == move1 && pos2 == move2)
             throw chess_except::NoTurnPassError();
-        else if (isPiece(move1, move2) && getTeam(move1, move2) == turn.team)
+        else if (isPiece(move1, move2) && getTeamType(move1, move2) == testTeam.turn.team)
             throw chess_except::SelfCapturError();
-        else {  // basic rules have been followed. Next, are the rules followed for the specific piece?
+        else {  // basic rules have been followed. Next check validity of piece moves...
 
-            if (testTeam.getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {
-                testTeam.evaluatePath(testTeam.validPawnMove(pos1, pos2, move1, move2)); // throws PieceMoveError, IlegalMoveError
-                testTeam.pawnPromote(pos1, pos2, move1, move2); // mutator
+            if (testTeam.getPieceType(pos1, pos2) == ChessPiece::piece_type::pawn) {
+                // throws PieceMoveError, IlegalMoveError
+                testTeam.evaluatePath(testTeam.validPawnMove(pos1, pos2, move1, move2));
+                // if moving to 8th rank move, promote pawn
+                testTeam.pawnPromote(pos1, pos2, move1, move2);     // mutator
             }
-            else if (getPiece(pos1, pos2) == ChessPiece::piece_type::king) {
-                if (!testTeam.Castle(pos1, pos2, move1, move2)) { // mutator
-                    testTeam.evaluatePath(testTeam.getElement(pos1, pos2)->validMove(move1, move2));// throws PieceMoveError, IlegalMoveError
+            else if (getPieceType(pos1, pos2) == ChessPiece::piece_type::king) {
+                if (!testTeam.Castle(pos1, pos2, move1, move2)) {   // mutator
+                    // throws PieceMoveError, IlegalMoveError
+                    testTeam.evaluatePath(testTeam.getElement(pos1, pos2)->validMove(move1, move2));
                     ((King*)testTeam.getElement(pos1, pos2))->setCastleStatus(false);
                 }
-                testTeam.setKing(move1, move2);// mutator
+                testTeam.setTurnKing(move1, move2);                 // mutator
             }
             else {  // for all the other pieces
-                testTeam.evaluatePath(testTeam.getElement(pos1, pos2)->validMove(move1, move2));// throws PieceMoveError, IlegalMoveError
-                if (testTeam.getPiece(pos1, pos2) == ChessPiece::piece_type::rook)
+                // throws PieceMoveError, IlegalMoveError
+                testTeam.evaluatePath(testTeam.getElement(pos1, pos2)->validMove(move1, move2));
+                if (testTeam.getPieceType(pos1, pos2) == ChessPiece::piece_type::rook)
                     ((Rook*)testTeam.getElement(pos1, pos2))->setCastleStatus(false);
             }
 
-            // pawnPromote(pos1, pos2, move1, move2);  // if moving to 8th rank move, promote pawn
-            testTeam.setPiece(pos1, pos2, move1, move2);     // set new pos on grid and internally, remove captures
-            testTeam.resetEnPassant(move1, move2);           // resets all EnPassant to false, except a moved pawn
+            // set new pos on grid and internally, remove captures
+            testTeam.setPiece(pos1, pos2, move1, move2);
+            // resets all EnPassant to false, except a moved pawn
+            testTeam.resetEnPassant(move1, move2);
 
         }
         return testTeam;
@@ -263,11 +220,15 @@ namespace chess {
         *this = testTeam;
 
         if (turn.team == ChessPiece::team_type::white) {
+            white.kCol = turn.kCol;
+            white.kRow = turn.kRow;
             turn = black;
             if (isCheckmate())
                 throw chess_except::WinSignal("White");
         }
         else {  // if (turn == ChessPiece::team_type::black)
+            black.kCol = turn.kCol;
+            black.kRow = turn.kRow;
             turn = white;
             if (isCheckmate())
                 throw chess_except::WinSignal("Black");
@@ -328,7 +289,7 @@ namespace chess {
     int* ChessTeam::validPawnMove(int pos1, int pos2, int move1, int move2) const
     {
 
-        assert(getPiece(pos1, pos2) == ChessPiece::piece_type::pawn);   // terminate if not pawn
+        assert(getPieceType(pos1, pos2) == ChessPiece::piece_type::pawn);   // terminate if not pawn
                                                                         // isPiece(pos1, pos2) is implied
         int* path = nullptr;
 
@@ -354,14 +315,14 @@ namespace chess {
     bool ChessTeam::isCapture(int pos1, int pos2, int move1, int move2) const
     {
         // if opponent occupies destination
-        if (isPiece(move1, move2) && getTeam(move1, move2) != getTeam(pos1, pos2)) {
+        if (isPiece(move1, move2) && getTeamType(move1, move2) != getTeamType(pos1, pos2)) {
             // single diagonal move, white piece
-            if (getTeam(pos1, pos2) == ChessPiece::team_type::white &&
+            if (getTeamType(pos1, pos2) == ChessPiece::team_type::white &&
                 move2 == pos2 + 1 && abs(pos1 - move1) == 1) {
                 return true;
             }
             // single diagonal move, black piece
-            else if (getTeam(pos1, pos2) == ChessPiece::team_type::black &&
+            else if (getTeamType(pos1, pos2) == ChessPiece::team_type::black &&
                 pos2 == move2 + 1 && abs(pos1 - move1) == 1) {
                 return true;
             }
@@ -396,10 +357,10 @@ namespace chess {
     {
         assert(inBounds4(pos1, pos2, move1, move2));
 
-        if (isPiece(pos1, pos2) && getPiece(pos1, pos2) != ChessPiece::piece_type::pawn) {
+        if (isPiece(pos1, pos2) && getPieceType(pos1, pos2) != ChessPiece::piece_type::pawn) {
             return false;
         }
-        if (isPiece(pos1, pos2) && getTeam(pos1, pos2) == ChessPiece::team_type::white) {
+        if (isPiece(pos1, pos2) && getTeamType(pos1, pos2) == ChessPiece::team_type::white) {
             if (pos2 != 4 || move2 != 5)    // if current position is not fifth rank
                 return false;               // and moving to the proper row
             // if either of the objects to the left or right has enPassant == true
@@ -410,7 +371,7 @@ namespace chess {
                 && ((Pawn*)getElement(pos1 + 1, pos2))->getEnPassant())
                 return true;
         }
-        else {  // if (getTeam(pos1, pos2) == ChessPiece::team_type::black)
+        else {  // if (getTeamType(pos1, pos2) == ChessPiece::team_type::black)
             if (pos2 != 3 || move2 != 2)    // if current position is not fifth rank
                 return false;               // and moving to the proper row
             // if either of the objects to the left or right has enPassant == true
@@ -435,9 +396,9 @@ namespace chess {
     void ChessTeam::pawnPromote(int pos1, int pos2, int move1, int move2)
     {
         assert(inBounds4(pos1, pos2, move1, move2));
-        ChessPiece::team_type team = getTeam(pos1, pos2);
+        ChessPiece::team_type team = getTeamType(pos1, pos2);
 
-        if (isPiece(pos1, pos2) && getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {
+        if (isPiece(pos1, pos2) && getPieceType(pos1, pos2) == ChessPiece::piece_type::pawn) {
             if ((team == ChessPiece::team_type::white && move2 == 7) ||
                 (team == ChessPiece::team_type::black && move2 == 0)) {
                 // later, promote with options HERE
@@ -459,14 +420,14 @@ namespace chess {
     {
         for (int r = 0; r < BOARD_SIZE; r++) {
             for (int c = 0; c < BOARD_SIZE; c++) {      //  !(pos1 == c && pos2 == r)
-                if (isPiece(c, r) && getPiece(c, r) == ChessPiece::piece_type::pawn) {
+                if (isPiece(c, r) && getPieceType(c, r) == ChessPiece::piece_type::pawn) {
                     ((Pawn*)getElement(c, r))->setEnPassant(false);
                 }
             }
         }
 
         // should already be true: isPiece(pos, pos2) == true
-        if (isPiece(pos1, pos2) && getPiece(pos1, pos2) == ChessPiece::piece_type::pawn) {     // This might need more specific conditions
+        if (isPiece(pos1, pos2) && getPieceType(pos1, pos2) == ChessPiece::piece_type::pawn) {     // This might need more specific conditions
             ((Pawn*)getElement(pos1, pos2))->setEnPassant(true);
         }
     }
@@ -493,13 +454,13 @@ namespace chess {
         assert(isPiece(pos1, pos2));
         
         // confirm the basic conditions
-        if (getPiece(pos1, pos2) != ChessPiece::piece_type::king 
+        if (getPieceType(pos1, pos2) != ChessPiece::piece_type::king
             || !((King*)getElement(pos1, pos2))->getCastleStatus() || isCheck(turn.kCol, turn.kRow))
             return false;
 
         if (turn.team == ChessPiece::team_type::white) {
             if (move1 == 2 && move2 == 0) {
-                if (isPiece(0, 0) && getPiece(0, 0) == ChessPiece::piece_type::rook 
+                if (isPiece(0, 0) && getPieceType(0, 0) == ChessPiece::piece_type::rook
                     && ((Rook*)getElement(0, 0))->getCastleStatus()) {
                     if (validCastlePath(4, 0, 0, 0)) {
                         ((Rook*)getElement(0, 0))->setCastleStatus(false);
@@ -510,7 +471,7 @@ namespace chess {
                 }
             }
             else if (move1 == 6 && move2 == 0) {
-                if (isPiece(7, 0) && getPiece(7, 0) == ChessPiece::piece_type::rook 
+                if (isPiece(7, 0) && getPieceType(7, 0) == ChessPiece::piece_type::rook
                     && ((Rook*)getElement(7, 0))->getCastleStatus()) {
                     if (validCastlePath(4, 0, 7, 0)) {
                         ((Rook*)getElement(7, 0))->setCastleStatus(false);
@@ -523,7 +484,7 @@ namespace chess {
         }
         else {  // if team == ChessPiece::team_type::black
             if (move1 == 6 && move2 == 7) {
-                if (isPiece(7, 7) && getPiece(7, 7) == ChessPiece::piece_type::rook 
+                if (isPiece(7, 7) && getPieceType(7, 7) == ChessPiece::piece_type::rook
                     && ((Rook*)getElement(7, 7))->getCastleStatus()) {
                     if (validCastlePath(4, 7, 7, 7)) {
                         ((Rook*)getElement(7, 7))->setCastleStatus(false);
@@ -534,7 +495,7 @@ namespace chess {
                 }
             }
             else if (move1 == 2 && move2 == 7) {
-                if (isPiece(0, 7) && getPiece(0, 7) == ChessPiece::piece_type::rook 
+                if (isPiece(0, 7) && getPieceType(0, 7) == ChessPiece::piece_type::rook
                     && ((Rook*)getElement(0, 7))->getCastleStatus()) {
                     if (validCastlePath(4, 7, 0, 7)) {
                         ((Rook*)getElement(0, 7))->setCastleStatus(false);
@@ -574,18 +535,8 @@ namespace chess {
 
 
 
-    /*
-    void ChessTeam::setGrid(const Grid& arg)
-    {
-        grid = arg;
-    }
-    */
-
-
-
-
-
-    void ChessTeam::setKing(int move1, int move2)
+    
+    void ChessTeam::setTurnKing(int move1, int move2)
     {
         assert(inBounds2(move1, move2));
         
@@ -594,15 +545,6 @@ namespace chess {
     }
 
 
-
-
-
-    /*
-    void ChessTeam::setTeam(ChessPiece::team_type t)
-    {
-        turn.team = t;
-    }
-    */
 
 
 
@@ -650,7 +592,7 @@ namespace chess {
             for (int i = 0; i < BOARD_SIZE; i++) {
                 for (int j = 0; j < BOARD_SIZE; j++) {
 
-                    if (isPiece(i, j) && getTeam(i, j) == turn.team && !isTrapped(i, j)) {
+                    if (isPiece(i, j) && getTeamType(i, j) == turn.team && !isTrapped(i, j)) {
                         // if a piece from this team has somewhere to go
                         return false;
                     }   
@@ -660,8 +602,4 @@ namespace chess {
         }
     }
 }  // closes namespace
-
-
-
-
 

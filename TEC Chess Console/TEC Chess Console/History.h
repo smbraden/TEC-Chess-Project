@@ -50,7 +50,6 @@ namespace chess {
 			ChessPiece::team_type team;
 			ChessPiece::team_type turn;
 
-			// piece(ChessPiece::piece_type::nulType)
 			PieceRecord() : col(0), row(0), enPassant(false), castle(false),
 				piece(ChessPiece::piece_type::nullType), team(ChessPiece::team_type::nullType),
 				turn(ChessPiece::team_type::white) {}
