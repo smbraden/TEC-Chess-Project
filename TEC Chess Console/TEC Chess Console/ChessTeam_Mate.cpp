@@ -117,10 +117,6 @@ namespace chess {
                 (abs(attack1 - kCol) == 1 || abs(attack2 - kRow) == 1))
                 return true;
         }
-        else {
-            attack1 = -1;
-            attack2 = -1;
-        }
 
         return false;
     }
@@ -164,10 +160,7 @@ namespace chess {
                 abs(attack1 - kCol) == 1 && abs(attack2 - kRow) == 1)
                 return true;
         }
-        else {
-            attack1 = -1;
-            attack2 = -1;
-        }
+
         return false;
     }
 
@@ -205,11 +198,7 @@ namespace chess {
         if (isPiece(attack1, attack2) && getTeam(attack1, attack2) != team
             && getPiece(attack1, attack2) == ChessPiece::piece_type::knight)
             return true;
-        else {
-            attack1 = -1;
-            attack2 = -1;
-        }
-
+        
         return false;
     }
 
@@ -259,32 +248,34 @@ namespace chess {
 
     bool ChessTeam::findBlock(int attack1, int attack2)
     {
+        // get the path from attacker to king, if there is one
         int* path = grid.getElement(attack1, attack2)->validMove(kCol, kRow);
         int k = 0;
-        int col;
-        int row;
+        
+        if (path != nullptr) {
+            while (path[2 * k] != ChessPiece::ARRAY_END && (2 * k) < ChessPiece::MAX_PATH_LEN) {  // && path[2 * k + 1] != ChessPiece::ARRAY_END
 
-        while (path[k] != -1) {
+                for (int i = 0; i < BOARD_SIZE; i++) {
+                    for (int j = 0; j < BOARD_SIZE; j++) {
+                        if (isPiece(i, j) && getTeam(i, j) == team && i != kCol && j != kRow) {
+                            try {
+                                isValidMove(i, j, path[2 * k], path[2 * k + 1]);
+                                return true;    // will execute only if we find a legal move 
+                            }
+                            catch (const chess_except::InvalidMoveExcep& e) {
 
-            for (int i = 0; i < BOARD_SIZE; i++) {
-                for (int j = 0; j < BOARD_SIZE; j++) {
-                    if (isPiece(i, j) && getTeam(i, j) == team && i != kCol && j != kRow) {
-                        try {
-                            isValidMove(i, j, path[k], path[k + 1]);
-                            return true;    // will execute only if we find a legal move 
-                        }
-                        catch (const chess_except::InvalidMoveExcep& e) {
-
+                            }
                         }
                     }
                 }
+                k++;    // increment array access counter
             }
-            k += 2;
         }
 
         delete[] path;
         return false;
     }
+
 
 
 

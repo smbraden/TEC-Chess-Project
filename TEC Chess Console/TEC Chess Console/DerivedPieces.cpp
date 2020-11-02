@@ -107,7 +107,11 @@ namespace chess {
 
 		if (abs(inRow - getRow()) == 2) {
 
-			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
+			path = new int[MAX_PATH_LEN];
+			for (int i = 0; i < MAX_PATH_LEN; i++) {
+				path[i] = ARRAY_END;
+			}
+
 			path[0] = inCol;
 			path[1] = (team == team_type::black ? inRow + 1 : row + 1);
 			
@@ -290,7 +294,11 @@ namespace chess {
 
 		if (abs(inCol - col) > 1 || abs(inRow - row) > 1) {	// if more than 1 squares traversed
 
-			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
+			path = new int[MAX_PATH_LEN];
+			for (int i = 0; i < MAX_PATH_LEN; i++) {
+				path[i] = ARRAY_END;
+			}
+
 			int j = 0;
 			int next = 0;
 
@@ -331,7 +339,11 @@ namespace chess {
 	
 	int* Queen::buildPath(signed int colSign, signed int rowSign, int inCol, int inRow) const {
 
-		int* path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
+		int* path = new int[MAX_PATH_LEN];
+		for (int i = 0; i < MAX_PATH_LEN; i++) {
+			path[i] = ARRAY_END;
+		}
+
 		int row = getRow();
 		int col = getCol();
 

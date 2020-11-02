@@ -31,8 +31,9 @@ namespace chess {
 			{ none = '0', pawn = 'P', rook = 'R', knight = 'N', bishop = 'B', queen = 'Q', king = 'K', nullType = 't'};
 
 			const static int BOARD_SIZE = 8;
-			const static int MAX_PATH = 7;		// 6 spaces for max path, and 1 more for an extra delimiter
-			static const int ARRAY_END = -8;	// signals the end of a trapSet array returned by getTrapSet
+			// const static int MAX_PATH = 7;
+			const static int MAX_PATH_LEN = 14;		// 6 spaces for max path, and 1 more for an extra delimiter
+			const static int ARRAY_END = -8;	// signals the end of a trapSet and path arrays
 
 			ChessPiece();											// Default constructor
 			ChessPiece(int inCol , int inRow , team_type color);	// Parameterized constructor

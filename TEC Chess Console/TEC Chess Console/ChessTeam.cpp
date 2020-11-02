@@ -183,7 +183,7 @@ namespace chess {
             int x = path[2 * i];
             int y = path[2 * i + 1];
 
-            while (x != -1 && y != -1 && i < (MAX_PATH * 2)) {
+            while (x != ChessPiece::ARRAY_END && i < (MAX_PATH * 2)) { // && y != ChessPiece::ARRAY_END
 
                 assert(inBounds2(x, y));
                 if (isPiece(x, y)) {    // if an object is in path 

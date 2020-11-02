@@ -72,8 +72,6 @@ namespace chess{
                 (abs(nextCol - kCol) == 1 || abs(nextRow - kRow) == 1))
                 return true;
         }
-
-
         return false;
     }
 
