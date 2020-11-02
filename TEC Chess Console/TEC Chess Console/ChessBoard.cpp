@@ -15,7 +15,7 @@
 #include <iostream>
 #include <cassert>
 #include "ChessBoard.h"
-
+// #include "ChessExceptions.h"
 
 
 namespace chess {
@@ -24,10 +24,11 @@ namespace chess {
 
     ChessBoard::ChessBoard()
     {
-        grid = Grid();
+        // grid = Grid();
         history = History();
         turnMachine = ChessTeam();
         winner = ChessPiece::team_type::nullType;
+        draw = false;
     }
 
 
@@ -60,10 +61,23 @@ namespace chess {
 
     void ChessBoard::move(int pos1, int pos2, int move1, int move2)
     {
-        turnMachine.move(pos1, pos2, move1, move2);
-        grid = turnMachine.getGrid();
+        // Could get rid of winner and draw members
+        try {
+            turnMachine.move(pos1, pos2, move1, move2);
+        }
+        catch (const chess_except::WinSignal& e) {
+            winner = (turnMachine.getTurnTeam() == ChessPiece::team_type::white) ?
+                ChessPiece::team_type::black : ChessPiece::team_type::white;
+            throw e;
+        }
+        catch (const chess_except::DrawSignal& e) {
+            draw = true;
+            throw e;
+        }
 
-        if (history.newPage(turnMachine.getTurnTeam(), grid))      // newPage() returns true when 3-fold repetition reached
+        turnMachine.move(pos1, pos2, move1, move2);
+
+        if (history.newPage(turnMachine.getTurnTeam(), turnMachine.getGrid()))      // newPage() returns true when 3-fold repetition reached
             throw chess_except::DrawSignal("The cause is 3-fold repetition of the game state...");
     }
 
@@ -87,11 +101,11 @@ namespace chess {
             std::cout << row_label << " ";   // row labels
             for (int col = 0; col < BOARD_SIZE; col++) {
 
-                if (!turnMachine.isPiece(col, row))
+                if (!isPiece(col, row))
                     std::cout << "__";
                 else {
-                    ChessPiece::team_type team = turnMachine.getTeamType(col, row);
-                    ChessPiece::piece_type piece = turnMachine.getPieceType(col, row);
+                    ChessPiece::team_type team = getTeamType(col, row);
+                    ChessPiece::piece_type piece = getPieceType(col, row);
                     std::cout << static_cast<std::underlying_type<ChessPiece::team_type>::type>(team)
                         << static_cast<std::underlying_type<ChessPiece::team_type>::type>(piece);
                     // cast the team and piece types beack to underlying types for printing
@@ -135,19 +149,22 @@ namespace chess {
 
 
 
-    // Precondition:    isPiece(row, col) == true
-    ChessPiece* ChessBoard::getElement(int col, int row) const
+    bool ChessBoard::isPiece(int pos1, int pos2) const
     {
-        return grid.getElement(col, row);
+
+        return turnMachine.isPiece(pos1, pos2);
     }
 
 
 
 
-    // Precondition:    inBounds2(row, col) == true
-    void ChessBoard::setElement(int col, int row, ChessPiece* ptr)
+
+
+    // Precondition:    isPiece(pos1, pos2) == true
+    ChessPiece::team_type ChessBoard::getTeamType(int pos1, int pos2) const
     {
-        grid.setElement(col, row, ptr);
+        assert(turnMachine.isPiece(pos1, pos2));
+        return turnMachine.getTeamType(pos1, pos2);
     }
 
 
@@ -155,21 +172,10 @@ namespace chess {
 
 
     // Precondition:    isPiece(pos1, pos2) == true
-    ChessPiece::team_type ChessBoard::getTeam(int pos1, int pos2) const
+    ChessPiece::piece_type ChessBoard::getPieceType(int pos1, int pos2) const
     {
-        assert(grid.isPiece(pos1, pos2));
-        return grid.getElement(pos1, pos2)->getTeamType();
-    }
-
-
-
-
-
-    // Precondition:    isPiece(pos1, pos2) == true
-    ChessPiece::piece_type ChessBoard::getPiece(int pos1, int pos2) const
-    {
-        assert(grid.isPiece(pos1, pos2));
-        return grid.getElement(pos1, pos2)->getPieceType();
+        assert(turnMachine.isPiece(pos1, pos2));
+        return turnMachine.getPieceType(pos1, pos2);
     }
 
 

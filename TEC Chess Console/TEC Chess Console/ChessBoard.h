@@ -29,19 +29,18 @@ namespace chess {
 		static const int BOARD_SIZE = 8;
 		
 
-
 	private:
 
-		Grid grid;
+		// Grid grid;
 		ChessPiece::team_type winner;
 		History history;
 		ChessTeam turnMachine;
-				
+		bool draw;
+
 		// For convenient access to Grid Elements
-		ChessPiece* getElement(int col, int row) const;
-		void setElement(int col, int row, ChessPiece* ptr);
-		ChessPiece::team_type getTeam(int pos1, int pos2) const;
-		ChessPiece::piece_type getPiece(int pos1, int pos2) const;
+		bool isPiece(int pos1, int pos2) const;
+		ChessPiece::team_type getTeamType(int pos1, int pos2) const;
+		ChessPiece::piece_type getPieceType(int pos1, int pos2) const;
 		
 		// inline helpers to replace macros (*)
 		bool inBounds2(const int a, const int b) const;
