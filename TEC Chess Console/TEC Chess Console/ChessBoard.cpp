@@ -35,30 +35,6 @@ namespace chess {
 
 
 
-
-    inline bool ChessBoard::inBounds2(const int a, const int b)  const
-    {
-        return ((a < BOARD_SIZE) && (b < BOARD_SIZE)
-            && a >= 0 && b >= 0);
-    }
-
-
-
-
-
-
-    inline bool ChessBoard::inBounds4(const int a, const int b, const int c, const int d)  const
-    {
-        return (a >= 0 && b >= 0 && c >= 0 && d >= 0
-            && (a < BOARD_SIZE) && (b < BOARD_SIZE)
-            && (c < BOARD_SIZE) && (d < BOARD_SIZE));
-    }
-
-
-
-
-
-
     void ChessBoard::move(int pos1, int pos2, int move1, int move2)
     {
         // Could get rid of winner and draw members
@@ -98,9 +74,9 @@ namespace chess {
         std::cout << std::endl;
 
         //black-oriented would be: (int row = 0; row < BOARD_SIZE; row++)
-        for (int row = (BOARD_SIZE - 1); row >= 0; row--) {
+        for (int row = (ChessPiece::BOARD_SIZE - 1); row >= 0; row--) {
             std::cout << row_label << " ";   // row labels
-            for (int col = 0; col < BOARD_SIZE; col++) {
+            for (int col = 0; col < ChessPiece::BOARD_SIZE; col++) {
 
                 if (!isPiece(col, row))
                     std::cout << "__";
@@ -140,6 +116,16 @@ namespace chess {
 
 
 
+    void ChessBoard::reset()
+    {
+        *this = ChessBoard();
+    }
+
+
+
+
+    
+
     ChessPiece::team_type ChessBoard::getTurnTeam()
     {
         return turnMachine.getTurnTeam();
@@ -152,7 +138,6 @@ namespace chess {
 
     bool ChessBoard::isPiece(int pos1, int pos2) const
     {
-
         return turnMachine.isPiece(pos1, pos2);
     }
 

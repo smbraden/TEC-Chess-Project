@@ -26,7 +26,9 @@ namespace chess {
 		ChessPiece::team_type getTurnTeam();
 		ChessPiece::team_type getWinner();
 
-		static const int BOARD_SIZE = 8;
+		void reset();
+
+		// static const int BOARD_SIZE = 8;
 		
 
 	private:
@@ -42,9 +44,6 @@ namespace chess {
 		ChessPiece::team_type getTeamType(int pos1, int pos2) const;
 		ChessPiece::piece_type getPieceType(int pos1, int pos2) const;
 		
-		// inline helpers to replace macros (*)
-		bool inBounds2(const int a, const int b) const;
-		bool inBounds4(const int a, const int b, const int c, const int d) const;
 	};
 
 

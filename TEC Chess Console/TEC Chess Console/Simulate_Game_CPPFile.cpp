@@ -25,13 +25,26 @@ inline int int2row(int arg);
 int main() {
 
 	ChessBoard testBoard;
-	
+	int result;
+
 	cout << endl << "Welcome to the Chess Game Simulator. Let's test some games..." << endl << endl;
 	
-	const string filename = "testGame.txt";
-	
-	int result = play(filename, testBoard);
-	
+	const string game1 = "testGame1.txt";
+	const string game2 = "testGame2.txt";
+	const string game3 = "testGame3.txt";
+
+	cout << "Begin Game 1..." << endl << endl;
+	result = play(game1, testBoard);
+	testBoard.reset();
+
+	cout << endl << "Begin Game 3..." << endl << endl;
+	result = play(game3, testBoard);
+	testBoard.reset();
+
+	cout << endl << "Begin Game 2..." << endl << endl;
+	result = play(game2, testBoard);
+	testBoard.reset();
+
 	return 0;
 }
 
@@ -56,11 +69,15 @@ bool testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag)
 	}
 	catch (const chess_except::DrawSignal& e) {
 		cout << e.getMsg() << endl << endl;
+		argBoard.printBoard();	// final print() will not execute in the play() while loop
+		cout << endl;
 		flag = true;
 		return true;
 	}
 	catch (const chess_except::WinSignal& e) {
 		cout << e.getMsg() << endl << endl;
+		argBoard.printBoard();	// final print() will not execute in the play() while loop
+		cout << endl;
 		flag = true;
 		return true;
 	}
@@ -105,8 +122,6 @@ int play(const string filename, ChessBoard& argBoard)
 
 	inputFile.clear();
 	inputFile.close();
-
-	argBoard.printBoard();	// the final print will not execute (win or draw signaled by exception)
 
 	return EXIT_SUCCESS;
 }
