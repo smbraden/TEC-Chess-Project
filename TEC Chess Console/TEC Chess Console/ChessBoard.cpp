@@ -62,6 +62,8 @@ namespace chess {
     void ChessBoard::move(int pos1, int pos2, int move1, int move2)
     {
         // Could get rid of winner and draw members
+        // turnMachine.move(pos1, pos2, move1, move2);
+
         try {
             turnMachine.move(pos1, pos2, move1, move2);
         }
@@ -74,8 +76,7 @@ namespace chess {
             draw = true;
             throw e;
         }
-
-        turnMachine.move(pos1, pos2, move1, move2);
+        
 
         if (history.newPage(turnMachine.getTurnTeam(), turnMachine.getGrid()))      // newPage() returns true when 3-fold repetition reached
             throw chess_except::DrawSignal("The cause is 3-fold repetition of the game state...");

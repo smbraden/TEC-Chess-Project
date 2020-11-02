@@ -47,9 +47,6 @@
     <ClCompile Include="DerivedPieces.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="boardTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ChessTeam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -63,6 +60,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ChessTeam_Mate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulate_Game_CFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

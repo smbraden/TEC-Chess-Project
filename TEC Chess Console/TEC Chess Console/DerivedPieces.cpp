@@ -411,11 +411,11 @@ namespace chess {
 		coordinates[2] = col;
 		coordinates[3] = row - 1;
 
-		coordinates[4] = row;
-		coordinates[5] = col + 1;
+		coordinates[4] = col + 1;
+		coordinates[5] = row;
 
-		coordinates[6] = row;
-		coordinates[7] = col - 1;
+		coordinates[6] = col - 1;
+		coordinates[7] = row;
 
 		coordinates[8] = col - 1;
 		coordinates[9] = row - 1;
@@ -526,11 +526,11 @@ namespace chess {
 		coordinates[2] = col;
 		coordinates[3] = row - 1;
 
-		coordinates[4] = row;
-		coordinates[5] = col + 1;
+		coordinates[4] = col + 1;
+		coordinates[5] = row;
 
-		coordinates[6] = row;
-		coordinates[7] = col - 1;
+		coordinates[6] = col - 1;
+		coordinates[7] = row;
 
 		coordinates[8] = ARRAY_END;
 
@@ -709,11 +709,11 @@ namespace chess {
 		coordinates[2] = col;
 		coordinates[3] = row - 1;
 
-		coordinates[4] = row;
-		coordinates[5] = col + 1;
+		coordinates[4] = col + 1;
+		coordinates[5] = row;
 
-		coordinates[6] = row;
-		coordinates[7] = col - 1;
+		coordinates[6] = col - 1;
+		coordinates[7] = row;
 
 		coordinates[8] = col - 1;
 		coordinates[9] = row - 1;

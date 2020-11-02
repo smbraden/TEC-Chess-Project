@@ -139,7 +139,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="boardTest.cpp" />
     <ClCompile Include="ChessBoard.cpp" />
     <ClCompile Include="ChessPiece.cpp" />
     <ClCompile Include="ChessTeam.cpp" />
@@ -147,6 +146,7 @@
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="History.cpp" />
     <ClCompile Include="ChessTeam_Mate.cpp" />
+    <ClCompile Include="Simulate_Game_CFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChessBoard.h" />
