@@ -203,9 +203,27 @@ namespace chess {
 		const int SIZE = 17;
 		int* coordinates = new int[SIZE]; // 8 coordinates plus null terminator
 
-		// list the points
+		coordinates[0] = pos1 - 2;
+		coordinates[1] = pos2 + 1;
+		coordinates[2] = pos1 - 1;
+		coordinates[3] = pos2 + 2;
 
-		coordinates[SIZE - 1] = ARRAY_END;
+		coordinates[4] = pos1 + 1;
+		coordinates[5] = pos2 + 2;
+		coordinates[6] = pos1 + 2;
+		coordinates[7] = pos2 + 1;
+
+		coordinates[8] = pos1 + 2;
+		coordinates[9] = pos2 - 1;
+		coordinates[10] = pos1 + 1;
+		coordinates[11] = pos2 - 2;
+
+		coordinates[12] = pos1 - 1;
+		coordinates[13] = pos2 - 2;
+		coordinates[14] = pos1 - 2;
+		coordinates[15] = pos2 - 1;
+
+		coordinates[16] = ARRAY_END;
 
 		return coordinates;
 	}

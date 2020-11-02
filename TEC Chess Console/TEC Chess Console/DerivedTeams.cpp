@@ -106,7 +106,7 @@ namespace chess {
 
 		// confirm the basic conditions
 		if (getPiece(pos1, pos2) != ChessPiece::piece_type::king || 
-				!((King*)getElement(pos1, pos2))->getCastleStatus() || isCheck())
+				!((King*)getElement(pos1, pos2))->getCastleStatus() || isCheck(kCol, kRow))
 			return false;
 
 		if (move1 == 2 && move2 == 0) {
@@ -278,7 +278,7 @@ namespace chess {
 
 		// confirm the basic conditions
 		if (getPiece(pos1, pos2) != ChessPiece::piece_type::king 
-					|| !((King*)getElement(pos1, pos2))->getCastleStatus() || isCheck())
+					|| !((King*)getElement(pos1, pos2))->getCastleStatus() || isCheck(kCol, kRow))
 			return false;
 
 		if (move1 == 6 && move2 == 7) {

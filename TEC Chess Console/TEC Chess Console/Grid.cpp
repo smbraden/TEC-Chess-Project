@@ -94,6 +94,7 @@ namespace chess {
 
 	ChessPiece* Grid::getElement(int col, int row) const
 	{
+		assert(inBounds2(col, row));
 		return grid[toGrid(col, row)];
 	}
 

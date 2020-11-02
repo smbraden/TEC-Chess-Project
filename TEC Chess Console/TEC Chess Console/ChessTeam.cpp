@@ -9,6 +9,7 @@
 
 #include "ChessTeam.h"
 
+
 namespace chess {
 
 
@@ -49,9 +50,7 @@ namespace chess {
     
     ChessPiece::team_type ChessTeam::getTeam(int pos1, int pos2) const
     {
-        assert(isPiece(pos1, pos2));
         return grid.getTeamType(pos1, pos2);
-        // return getElement(pos1, pos2)->getTeamType();
     }
 
 
@@ -61,9 +60,7 @@ namespace chess {
 
     ChessPiece::piece_type ChessTeam::getPiece(int pos1, int pos2) const
     {
-        assert(isPiece(pos1, pos2));
         return grid.getPieceType(pos1, pos2);
-        // return grid.getElement(pos1, pos2)->getPieceType();
     }
     
 
@@ -209,7 +206,8 @@ namespace chess {
 
 
 
-    
+    // Purpose:     checks if a move is valid, but does not account for 
+    //              action/inaction regarding a Checked king; this is done in move()
     ChessTeam ChessTeam::isValidMove(int pos1, int pos2, int move1, int move2) const
     {
         ChessTeam testTeam(*this);
@@ -247,8 +245,6 @@ namespace chess {
             testTeam.setPiece(pos1, pos2, move1, move2);     // set new pos on grid and internally, remove captures
             testTeam.resetEnPassant(move1, move2);           // resets all EnPassant to false, except a moved pawn
 
-            if (testTeam.isCheck())
-                throw chess_except::CheckError();
         }
         return testTeam;
     }
@@ -266,7 +262,12 @@ namespace chess {
         // isValidMove() throws exception for client if not a valid move,
         // or if it executes to completion, then the new move has been set 
         // in the returned ChessTeam object
-        *this = isValidMove(pos1, pos2, move1, move2);
+        ChessTeam testTeam = isValidMove(pos1, pos2, move1, move2);
+
+        if (testTeam.isCheck(testTeam.kCol, testTeam.kRow))
+            throw chess_except::CheckError();
+        
+        *this = testTeam;
     }
 
 
@@ -464,245 +465,7 @@ namespace chess {
     }
 
 
-
-
-
-
-    bool ChessTeam::isCheck() const
-    {
-        int row;
-        int col;
-
-        row = kRow;
-        col = kCol;
-
-        // if there is attacking queen or rook from laterals
-        if (checkLaterals(col, row))
-            return true;
-        // if threatened by pawn from corners
-        else if (checkCorners(col, row))
-            return true;
-        // else if there is an attacking queen or bishop in diagonals
-        else if (checkDiagonals(col, row))
-            return true;
-        // else if there are any attacking knights
-        else if (checkKnight(col, row))
-            return true;
-
-        return false;
-    }
-
-
-
-
-
-
-    bool ChessTeam::isCheck(int pos1, int pos2) const
-    {
-        // if there is attacking queen or rook from laterals
-        if (checkLaterals(pos1, pos2))
-            return true;
-        // if threatened by pawn from corners
-        else if (checkCorners(pos1, pos2))
-            return true;
-        // else if there is an attacking queen or bishop in diagonals
-        else if (checkDiagonals(pos1, pos2))
-            return true;
-        // else if there are any attacking knights
-        else if (checkKnight(pos1, pos2))
-            return true;
-
-        return false;
-    }
-
-
-
-
-
-    // determines whether a piece has any legal moves available (ie 'trapped' or not)
-    bool ChessTeam::isTrapped(int pos1, int pos2) const
-    {
-        int* points = nullptr;
-        int counter = 0;
-
-        if (!isPiece(pos1, pos2))
-            return false;
-
-        else {
-            // the integers in 'coodinates' may range from -1 to 8
-            points = getElement(pos1, pos2)->getTrapSet(pos1, pos2);
-        }
-
-        while (points[counter] != ChessPiece::ARRAY_END) {
-            try {   // must try/catch if we are to reuse functions from ChessPiece classes
-                isValidMove(pos1, pos2, points[counter], points[counter + 1]);
-                return false;   // only executes is it is a valid move
-            }
-            catch (const chess_except::InvalidMoveExcep& e) {
-                counter += 2;
-            }
-        }   // complete loop without any successful moves
-
-        delete[] points;
-
-        return true;   // must be trapped
-    }
-
-
-
-
-
-
-    bool ChessTeam::checkLaterals(int kCol, int kRow) const
-    {
-        if (singleLateral(kCol, kRow,  1,  0) ||
-            singleLateral(kCol, kRow, -1,  0) ||
-            singleLateral(kCol, kRow,  0,  1) ||
-            singleLateral(kCol, kRow,  0, -1))
-            return true;
-
-        return false;
-    }
-
-
-
-
-
-
-    //    Precondition: Either colSign or rowSign is 0
-    //                  Either colSign or RowSign is 1 or -1
-    //                  kCol is the king's column
-    //                  kRow is the king's row
-    bool ChessTeam::singleLateral(int kCol, int kRow, int colSign, int rowSign) const
-    {
-        int nextCol = kCol + colSign;
-        int nextRow = kRow + rowSign;
-
-        while (inBounds2(nextCol, nextRow) && !isPiece(nextCol, nextRow)) {
-            nextCol = nextCol + colSign;
-            nextRow = nextRow + rowSign;
-        }
-
-        if (isPiece(nextCol, nextRow) && getTeam(nextCol, nextRow) != team) {
-            if (getPiece(nextCol, nextRow) == ChessPiece::piece_type::queen
-                || getPiece(nextCol, nextRow) == ChessPiece::piece_type::rook)
-                return true;
-            else if (getPiece(nextCol, nextRow) == ChessPiece::piece_type::king &&
-                (abs(nextCol - kCol) == 1 || abs(nextRow - kRow) == 1))
-                return true;
-        }
-
-
-        return false;
-    }
-
-
-
-
-
-
-    // if threatened by pawn
-    bool ChessTeam::checkCorners(int kCol, int kRow) const
-    {
-        int left = kCol - 1;
-        int right = kCol + 1;
-        int pRow;
-
-        pRow = (team == ChessPiece::team_type::white) ? (kRow + 1) : (kRow - 1);
-
-        if ((isPiece(right, pRow) && getTeam(right, pRow) != team
-            && getPiece(right, pRow) == ChessPiece::piece_type::pawn) ||
-            (isPiece(left, pRow) && getTeam(left, pRow) != team
-                && getPiece(left, pRow) == ChessPiece::piece_type::pawn))
-            return true;
-
-        return false;
-    }
-
-
-
-
-
-
-    // Precondition:    colSign and rowSign are 1 or -1
-    bool ChessTeam::checkDiagonals(int kCol, int kRow) const
-    {
-        if (singleDiagonal(kCol, kRow, 1, -1) ||
-            singleDiagonal(kCol, kRow, 1, 1) ||
-            singleDiagonal(kCol, kRow, -1, 1) ||
-            singleDiagonal(kCol, kRow, -1, -1))
-            return true;
-
-        return false; // if not threatened from diagonal by opponent queen or bishop
-    }
-
-
-
-
-
-
-
-    bool ChessTeam::singleDiagonal(int kCol, int kRow, int colSign, int rowSign) const
-    {
-        int nextCol = kCol + colSign;
-        int nextRow = kRow + rowSign;
-
-        while (inBounds2(nextCol, nextRow) && !isPiece(nextCol, nextRow)) {
-            nextCol = nextCol + colSign;
-            nextRow = nextRow + rowSign;
-        }
-
-        if (isPiece(nextCol, nextRow) && getTeam(nextCol, nextRow) != team) {
-            if (getPiece(nextCol, nextRow) == ChessPiece::piece_type::queen ||
-                getPiece(nextCol, nextRow) == ChessPiece::piece_type::bishop)
-                return true;
-            else if (getPiece(nextCol, nextRow) == ChessPiece::piece_type::king &&
-                abs(nextCol - kCol) == 1 && abs(nextRow - kRow) == 1)
-                return true;
-        }
-
-        return false;
-    }
-
-
-
-
-
-
-
-    bool ChessTeam::checkKnight(int kCol, int kRow) const
-    {
-        // if threatened by an opponent knight
-        if (singleKnight(kCol, kRow,  1,  2) || singleKnight(kCol, kRow,  1, -2) ||
-            singleKnight(kCol, kRow, -1,  2) || singleKnight(kCol, kRow, -1, -2) ||
-            singleKnight(kCol, kRow,  2,  1) || singleKnight(kCol, kRow, -2,  1) ||
-            singleKnight(kCol, kRow,  2, -1) || singleKnight(kCol, kRow, -2, -1))
-            return true;
-
-        return false;
-    }
-
-
-
-
-
-
-    // Precondition: Either colSign or rowSign is in {2, -2} and,
-    //               Either colSign or RowSign is in {1, -1}
-    //               kCol is the king's column
-    //               kRow is the king's row
-    bool ChessTeam::singleKnight(int kCol, int kRow, int colSign, int rowSign) const
-    {
-        int col = kCol + colSign;
-        int row = kRow + rowSign;
-
-        if (isPiece(col, row) && getTeam(col, row) != team
-            && getPiece(col, row) == ChessPiece::piece_type::knight)
-            return true;
-
-        return false;
-    }
-
+       
 
 
 
@@ -724,7 +487,7 @@ namespace chess {
         
         // confirm the basic conditions
         if (getPiece(pos1, pos2) != ChessPiece::piece_type::king 
-            || !((King*)getElement(pos1, pos2))->getCastleStatus() || isCheck())
+            || !((King*)getElement(pos1, pos2))->getCastleStatus() || isCheck(kCol, kRow))
             return false;
 
         if (team == ChessPiece::team_type::white) {
@@ -789,7 +552,7 @@ namespace chess {
     {
         int sign = -(k1 - r1) / abs(k1 - r1);
         int nextCol = k1 + sign;
-        
+
         // while no piece obstructing path, and no square in path checked
         while (!isPiece(nextCol, k2) && !isCheck(nextCol, k2))
             nextCol = nextCol + sign;
@@ -836,15 +599,34 @@ namespace chess {
 
 
 
-    bool ChessTeam::isCheckmate()
+
+    // determines whether a piece has any legal moves available (ie 'trapped' or not)
+    bool ChessTeam::isTrapped(int pos1, int pos2) const
     {
-        if(!isCheck())
+        int* points = nullptr;
+        int counter = 0;
+
+        if (!isPiece(pos1, pos2))
             return false;
-        // if king in danger from all surrounding squares, and 
-        // no captures/blocks of immediately threatening piece available
-            // winner = ~turn;  // opponent
-        // return true;
-        return true;
+
+        else {
+            // the integers in 'coodinates' may range from -1 to 8
+            points = getElement(pos1, pos2)->getTrapSet(pos1, pos2);
+        }
+
+        while (points[counter] != ChessPiece::ARRAY_END) {
+            try {   // must try/catch if we are to reuse functions from ChessPiece classes
+                isValidMove(pos1, pos2, points[counter], points[counter + 1]);
+                return false;   // only executes is it is a valid move
+            }
+            catch (const chess_except::InvalidMoveExcep& e) {
+                counter += 2;
+            }
+        }   // complete loop without any successful moves
+
+        delete[] points;
+
+        return true;   // must be trapped
     }
 
 
@@ -854,7 +636,7 @@ namespace chess {
 
     bool ChessTeam::isStalemate()
     {
-        if (isCheck())
+        if (isCheck(kCol, kRow))
             return false;
         else { // if no legal moves
             

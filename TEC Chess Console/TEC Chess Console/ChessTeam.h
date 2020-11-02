@@ -10,6 +10,7 @@
 #define CHESSTEAM_H
 
 #include "DerivedPieces.h"
+#include "ChessExceptions.h"
 #include "Grid.h"
 #include <cassert>
 
@@ -73,6 +74,10 @@ namespace chess {
 		bool isPiece(int inCol, int inRow) const;
 		void evaluatePath(int* path) const;
 		
+
+
+
+
 		//-------------------Pawn-related functions------------------//
 		
 		int* validPawnMove(int pos1, int pos2, int move1, int move2) const;
@@ -91,9 +96,8 @@ namespace chess {
 		// Symmetry-dependent //
 		virtual bool Castle(int pos1, int pos2, int move1, int move2);
 
-		//-----------------Check & Checkmate functions----------------//
+		//---------------------Check functions--------------------//
 		
-		bool isCheck() const;						// for assessing Game State
 		bool isCheck(int pos1, int pos2) const;		// for evaluating specific squares
 
 		bool checkLaterals(int kCol, int kRow) const;
@@ -106,10 +110,26 @@ namespace chess {
 		// Symmetry-dependent//
 		virtual bool checkCorners(int kCol, int kRow) const;
 		
-		//---------------StaleMate & Checkmate functions--------------//
+		//-------------------Checkmate functions------------------//
+
+		bool KingIsTrapped();
+		bool findBlockCapture(int attack1, int attack2);
+		bool findBlock(int attack1, int attack2);
+		bool findCapture(int attack1, int attack2);
+		bool checkLaterals(int kCol, int kRow, int& attack1, int& attack2) const;
+		bool singleLateral(int kCol, int kRow, int colSign, int rowSign, int& attack1, int& attack2) const;
+		bool checkDiagonals(int kCol, int kRow, int& attack1, int& attack2) const;
+		bool singleDiagonal(int kCol, int kRow, int colSign, int rowSign, int& attack1, int& attack2) const;
+		bool checkKnight(int kCol, int kRow, int& attack1, int& attack2) const;
+		bool singleKnight(int kCol, int kRow, int colSign, int rowSign, int& attack1, int& attack2) const;
+
+		virtual bool checkCorners(int kCol, int kRow, int& attack1, int& attack2) const;
+
+
+		//-------------------Stalemate helper function------------------//
 
 		bool isTrapped(int pos1, int pos2) const;	// if a piece has any legal moves available
-		
+
 	};
 
 }	// closes namespace

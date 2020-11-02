@@ -22,7 +22,7 @@ namespace chess_except {
 
 	class WinSignal {
 	public:
-		WinSignal(const std::string& message = "") : msg("Game over. The winner is " + message) {}
+		WinSignal(const std::string& message = "") : msg("Checkmate. The winner is " + message) {}
 		std::string getMsg() const { return msg; }
 	protected:
 		std::string msg;
