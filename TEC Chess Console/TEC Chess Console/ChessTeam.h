@@ -96,35 +96,22 @@ namespace chess {
 		// Symmetry-dependent //
 		virtual bool Castle(int pos1, int pos2, int move1, int move2);
 
-		//---------------------Check functions--------------------//
+		//-----------------Check & Checkmate functions---------------//
 		
 		bool isCheck(int pos1, int pos2) const;		// for evaluating specific squares
-
-		bool checkLaterals(int kCol, int kRow) const;
-		bool singleLateral(int kCol, int kRow, int colSign, int rowSign) const;
-		bool checkDiagonals(int kCol, int kRow) const;
-		bool singleDiagonal(int kCol, int kRow, int colSign, int rowSign) const;
-		bool checkKnight(int kCol, int kRow) const;
-		bool singleKnight(int kCol, int kRow, int colSign, int rowSign) const;
-
-		// Symmetry-dependent//
-		virtual bool checkCorners(int kCol, int kRow) const;
-		
-		//-------------------Checkmate functions------------------//
 
 		bool KingIsTrapped();
 		bool findBlockCapture(int attack1, int attack2);
 		bool findBlock(int attack1, int attack2);
 		bool findCapture(int attack1, int attack2);
+
 		bool checkLaterals(int kCol, int kRow, int& attack1, int& attack2) const;
 		bool singleLateral(int kCol, int kRow, int colSign, int rowSign, int& attack1, int& attack2) const;
 		bool checkDiagonals(int kCol, int kRow, int& attack1, int& attack2) const;
 		bool singleDiagonal(int kCol, int kRow, int colSign, int rowSign, int& attack1, int& attack2) const;
 		bool checkKnight(int kCol, int kRow, int& attack1, int& attack2) const;
 		bool singleKnight(int kCol, int kRow, int colSign, int rowSign, int& attack1, int& attack2) const;
-
 		virtual bool checkCorners(int kCol, int kRow, int& attack1, int& attack2) const;
-
 
 		//-------------------Stalemate helper function------------------//
 

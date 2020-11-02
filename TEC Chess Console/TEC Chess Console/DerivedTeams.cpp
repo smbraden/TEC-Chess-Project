@@ -140,17 +140,22 @@ namespace chess {
 
 
 
-	bool WhiteTeam::checkCorners(int kCol, int kRow) const
+	bool WhiteTeam::checkCorners(int kCol, int kRow, int& attack1, int& attack2) const
 	{
 		int left = kCol - 1;
 		int right = kCol + 1;
 		int pRow = kRow + 1;
 
-		if ((isPiece(right, pRow) && getTeam(right, pRow) != team
-			&& getPiece(right, pRow) == ChessPiece::piece_type::pawn) ||
-			(isPiece(left, pRow) && getTeam(left, pRow) != team
-				&& getPiece(left, pRow) == ChessPiece::piece_type::pawn))
+		if (isPiece(right, attack2) && getTeam(right, attack2) != team
+			&& getPiece(right, attack2) == ChessPiece::piece_type::pawn) {
+			attack1 = right;
 			return true;
+		}
+		if (isPiece(left, attack2) && getTeam(left, attack2) != team
+			&& getPiece(left, attack2) == ChessPiece::piece_type::pawn) {
+			attack1 = left;
+			return true;
+		}
 
 		return false;
 	}
@@ -313,17 +318,22 @@ namespace chess {
 
 
 
-	bool BlackTeam::checkCorners(int kCol, int kRow) const
+	bool BlackTeam::checkCorners(int kCol, int kRow, int& attack1, int& attack2) const
 	{
 		int left = kCol - 1;
 		int right = kCol + 1;
 		int pRow = kRow - 1;
 
-		if ((isPiece(right, pRow) && getTeam(right, pRow) != team
-			&& getPiece(right, pRow) == ChessPiece::piece_type::pawn) ||
-			(isPiece(left, pRow) && getTeam(left, pRow) != team
-				&& getPiece(left, pRow) == ChessPiece::piece_type::pawn))
+		if (isPiece(right, attack2) && getTeam(right, attack2) != team
+			&& getPiece(right, attack2) == ChessPiece::piece_type::pawn) {
+			attack1 = right;
 			return true;
+		}
+		if (isPiece(left, attack2) && getTeam(left, attack2) != team
+			&& getPiece(left, attack2) == ChessPiece::piece_type::pawn) {
+			attack1 = left;
+			return true;
+		}
 
 		return false;
 	}

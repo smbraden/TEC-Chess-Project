@@ -68,9 +68,6 @@
     <ClCompile Include="History.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChessTeam_Check.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ChessTeam_Mate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

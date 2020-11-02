@@ -3,7 +3,7 @@
     Contributor:        Sonja Braden
     Date:               11/1/2020
     Description:        This file includes the implementations of ChessTeam members
-                        that facilitate the identitfaction of Checkmates
+                        that facilitate the identitfaction of Checkmates and Check
 //-------------------------------------------------------------------------------------/*/
 
 #include "ChessTeam.h"
@@ -18,8 +18,9 @@ namespace chess {
             return false;
         
         // next, identify a block or capture that relieves the check,
-        // and/or determine if there is Double check,
-        // which implies direct checkmate since the king is cornered/smothered by now.
+        // and/or determine if there is Double check 
+        // (which can only occur by combinations of different pieces)
+        // If the king has been found to be cornered/smothered, a double check will imply checkmate
         int attack1 = -1;
         int attack2 = -1;
         int totalAttackers = 0;
@@ -45,6 +46,30 @@ namespace chess {
             if ( (++totalAttackers) > 1 || !findBlockCapture(attack1, attack2))
                 return true;
         }
+
+        return false;
+    }
+
+
+
+
+
+    bool ChessTeam::isCheck(int pos1, int pos2) const
+    {
+        int dummyArg1;
+        int dummyArg2;
+        // if there is attacking queen or rook from laterals
+        if (checkLaterals(pos1, pos2, dummyArg1, dummyArg2))
+            return true;
+        // if threatened by pawn from corners
+        else if (checkCorners(pos1, pos2, dummyArg1, dummyArg2))
+            return true;
+        // else if there is an attacking queen or bishop in diagonals
+        else if (checkDiagonals(pos1, pos2, dummyArg1, dummyArg2))
+            return true;
+        // else if there are any attacking knights
+        else if (checkKnight(pos1, pos2, dummyArg1, dummyArg2))
+            return true;
 
         return false;
     }
