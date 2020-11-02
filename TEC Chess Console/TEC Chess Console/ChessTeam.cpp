@@ -16,31 +16,29 @@ namespace chess {
     // Default sets to a white team
     ChessTeam::ChessTeam()
     {
-        kCol = 4;
-        kRow = 0;
-        team = ChessPiece::team_type::white;
+        // kCol = 4;
+        // kRow = 0;
+        // team = ChessPiece::team_type::white;
+        // checkmateStatus = false;
+        
+        
+        white = team_ID();
+        black = team_ID(4, 7, ChessPiece::team_type::black);
+        turn = white;
         grid = Grid();
-        checkmateStatus = false;
     }
 
 
 
 
 
-    ChessTeam::ChessTeam(ChessPiece::team_type t, Grid g, bool m)
+    ChessTeam::ChessTeam(Grid g, team_ID w, team_ID b, team_ID t)
     {
-        if (t == ChessPiece::team_type::white) {
-            kCol = 4;
-            kRow = 0;
-        }
-        else {
-            kCol = 4;
-            kRow = 7;
-        }
-
-        team = t;
+        white = w;
+        black = b;
+        turn = t;
         grid = g;
-        checkmateStatus = m;
+        
     }
 
 
@@ -88,20 +86,20 @@ namespace chess {
 
 
 
-
+    /*
     bool ChessTeam::getCheckmateStatus() const
     {
         return checkmateStatus;
     }
+    */
 
 
 
 
 
-
-    ChessPiece::team_type ChessTeam::getTeam() const
+    ChessPiece::team_type ChessTeam::getTurnTeam() const
     {
-        return team;
+        return turn.team;
     }
 
 
@@ -109,30 +107,30 @@ namespace chess {
 
 
 
-
+    /*
     void ChessTeam::setCheckmateStatus(bool arg)
     {
         checkmateStatus = arg;
     }
+    */
 
 
 
 
-
-
+    /*
     Grid ChessTeam::getGrid() const
     {
         return grid;
     }
+    */
 
 
 
 
-
-
+    /*
     int ChessTeam::getKCol() const
     {
-        return kCol;
+        return turn.kCol;
     }
 
 
@@ -142,9 +140,9 @@ namespace chess {
 
     int ChessTeam::getKRow() const
     {
-        return kRow;
+        return turn.kRow;
     }
-
+    */
 
 
 
@@ -216,11 +214,11 @@ namespace chess {
             throw chess_except::BoundsError();
         else if (!isPiece(pos1, pos2))
             throw chess_except::EmptySquareError();
-        else if (getTeam(pos1, pos2) != team)
+        else if (getTeam(pos1, pos2) != turn.team)
             throw chess_except::TurnMoveError();
         else if (pos1 == move1 && pos2 == move2)
             throw chess_except::NoTurnPassError();
-        else if (isPiece(move1, move2) && getTeam(move1, move2) == team)
+        else if (isPiece(move1, move2) && getTeam(move1, move2) == turn.team)
             throw chess_except::SelfCapturError();
         else {  // basic rules have been followed. Next, are the rules followed for the specific piece?
 
@@ -259,15 +257,24 @@ namespace chess {
     // Note:    inTeam is the team whose turn it is to move
     void ChessTeam::move(int pos1, int pos2, int move1, int move2)
     {
-        // isValidMove() throws exception for client if not a valid move,
-        // or if it executes to completion, then the new move has been set 
-        // in the returned ChessTeam object
         ChessTeam testTeam = isValidMove(pos1, pos2, move1, move2);
-
-        if (testTeam.isCheck(testTeam.kCol, testTeam.kRow))
+        if (testTeam.isCheck(testTeam.turn.kCol, testTeam.turn.kRow))
             throw chess_except::CheckError();
-        
         *this = testTeam;
+
+        if (turn.team == ChessPiece::team_type::white) {
+            turn = black;
+            if (isCheckmate())
+                throw chess_except::WinSignal("White");
+        }
+        else {  // if (turn == ChessPiece::team_type::black)
+            turn = white;
+            if (isCheckmate())
+                throw chess_except::WinSignal("Black");
+        }
+
+        if (isStalemate())
+            throw chess_except::DrawSignal("The cause is Stalemate...");
     }
 
 
@@ -487,10 +494,10 @@ namespace chess {
         
         // confirm the basic conditions
         if (getPiece(pos1, pos2) != ChessPiece::piece_type::king 
-            || !((King*)getElement(pos1, pos2))->getCastleStatus() || isCheck(kCol, kRow))
+            || !((King*)getElement(pos1, pos2))->getCastleStatus() || isCheck(turn.kCol, turn.kRow))
             return false;
 
-        if (team == ChessPiece::team_type::white) {
+        if (turn.team == ChessPiece::team_type::white) {
             if (move1 == 2 && move2 == 0) {
                 if (isPiece(0, 0) && getPiece(0, 0) == ChessPiece::piece_type::rook 
                     && ((Rook*)getElement(0, 0))->getCastleStatus()) {
@@ -567,12 +574,12 @@ namespace chess {
 
 
 
-
+    /*
     void ChessTeam::setGrid(const Grid& arg)
     {
         grid = arg;
     }
-
+    */
 
 
 
@@ -582,20 +589,20 @@ namespace chess {
     {
         assert(inBounds2(move1, move2));
         
-        kCol = move1;
-        kRow = move2;
+        turn.kCol = move1;
+        turn.kRow = move2;
     }
 
 
 
 
 
-
+    /*
     void ChessTeam::setTeam(ChessPiece::team_type t)
     {
-        team = t;
+        turn.team = t;
     }
-
+    */
 
 
 
@@ -611,7 +618,7 @@ namespace chess {
 
         else {
             // the integers in 'coodinates' may range from -1 to 8
-            points = getElement(pos1, pos2)->getTrapSet(pos1, pos2);
+            points = getElement(pos1, pos2)->getTrapSet();
         }
 
         while (points[counter] != ChessPiece::ARRAY_END) {
@@ -636,14 +643,14 @@ namespace chess {
 
     bool ChessTeam::isStalemate()
     {
-        if (isCheck(kCol, kRow))
+        if (isCheck(turn.kCol, turn.kRow))
             return false;
         else { // if no legal moves
             
             for (int i = 0; i < BOARD_SIZE; i++) {
                 for (int j = 0; j < BOARD_SIZE; j++) {
 
-                    if (isPiece(i, j) && getTeam(i, j) == team && !isTrapped(i, j)) {
+                    if (isPiece(i, j) && getTeam(i, j) == turn.team && !isTrapped(i, j)) {
                         // if a piece from this team has somewhere to go
                         return false;
                     }   

@@ -50,7 +50,7 @@ namespace chess {
 
 			// Piece-specific evaluation
 			virtual int* validMove(int inCol, int inRow) const;
-			virtual int* getTrapSet(int inCol, int inRow) const;
+			virtual int* getTrapSet() const;
 
 		protected:
 

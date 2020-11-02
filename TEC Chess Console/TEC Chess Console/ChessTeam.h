@@ -21,22 +21,36 @@ namespace chess {
 	{
 	public:
 
+		struct team_ID { 
+
+			int kCol;
+			int kRow;
+			ChessPiece::team_type team; 
+			
+			team_ID(int c = 4, int r = 0, ChessPiece::team_type t = ChessPiece::team_type::white) :
+				kCol(c), kRow(r), team(t) {}
+
+			team_ID operator=(const team_ID& right) {
+				kCol = right.kCol;	kRow = right.kRow;	team = right.team;
+			}			
+		};
+
 		// Constructors
 		ChessTeam();
-		ChessTeam(ChessPiece::team_type t, Grid g, bool m);
+		ChessTeam(Grid g, team_ID w, team_ID b, team_ID t);
 				
 		// Accessors
-		Grid getGrid() const;
-		int getKCol() const;
-		int getKRow() const;
-		bool getCheckmateStatus() const;
-		ChessPiece::team_type getTeam() const;
+		// Grid getGrid() const;
+		// int getKCol() const;
+		// int getKRow() const;
+		// bool getCheckmateStatus() const;
+		ChessPiece::team_type getTurnTeam() const;
 		
 		// Mutators
-		void setGrid(const Grid& arg);
-		void setKing(int move1, int move2);
-		void setCheckmateStatus(bool arg);
-		void setTeam(ChessPiece::team_type t);
+		// void setGrid(const Grid& arg);
+		
+		// void setCheckmateStatus(bool arg);
+		// void setTeam(ChessPiece::team_type t);
 		
 		// Other
 		void move(int pos1, int pos2, int move1, int move2);
@@ -50,10 +64,14 @@ namespace chess {
 
 		// primary data members
 		Grid grid;
-		int kCol;						// column of team's king
-		int kRow;						// row of team's king
-		ChessPiece::team_type team;		// team's type, white or black
-		bool checkmateStatus;
+		team_ID white;
+		team_ID black;
+		team_ID turn;
+		// int kCol;						// column of team's king
+		// int kRow;						// row of team's king
+		// ChessPiece::team_type team;		// team's type, white or black
+		// bool checkmateStatus;
+
 
 		// inline helpers to replace macros
 		bool inBounds2(const int a, const int b) const;
@@ -73,7 +91,7 @@ namespace chess {
 		void remove(int x, int y);
 		bool isPiece(int inCol, int inRow) const;
 		void evaluatePath(int* path) const;
-		
+		void setKing(int move1, int move2);
 
 
 

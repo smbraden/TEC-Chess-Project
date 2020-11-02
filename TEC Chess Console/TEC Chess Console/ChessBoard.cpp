@@ -26,11 +26,9 @@ namespace chess {
     {
         initPieces();   // instantiate the pieces and map them on grid
 
-        whiteT = ChessTeam(ChessPiece::team_type::white, grid, false);
-        blackT = ChessTeam(ChessPiece::team_type::black, grid, false);
-
+        turnMachine = ChessTeam();
         winner = ChessPiece::team_type::nullType;
-        turn = ChessPiece::team_type::white;
+        //turn = ChessPiece::team_type::white;
     }
 
 
@@ -64,27 +62,10 @@ namespace chess {
     void ChessBoard::move(int pos1, int pos2, int move1, int move2)
     {
  
-        if (turn == ChessPiece::team_type::white) {
-            whiteT.move(pos1, pos2, move1, move2);
-            blackT.setGrid(whiteT.getGrid());   // set the new grid for the other team and board
-            grid = whiteT.getGrid();
-            turn = ChessPiece::team_type::black;
-            if (blackT.isCheckmate())
-                throw chess_except::WinSignal("White");
-        }
-        else {  // if (turn == ChessPiece::team_type::black)
-            blackT.move(pos1, pos2, move1, move2);
-            whiteT.setGrid(blackT.getGrid());   // set the new grid for the other team and board
-            grid = blackT.getGrid();
-            turn = ChessPiece::team_type::white;
-            if (whiteT.isCheckmate())
-                throw chess_except::WinSignal("Black");
-        }
+        turnMachine.move(pos1, pos2, move1, move2);
 
-        if (history.newPage(turn, grid))      // newPage() returns true when 3-fold repetition reached
+        if (history.newPage(turnMachine.getTurnTeam(), grid))      // newPage() returns true when 3-fold repetition reached
             throw chess_except::DrawSignal("The cause is 3-fold repetition of the game state...");
-        else if (blackT.isStalemate() || whiteT.isStalemate())
-            throw chess_except::DrawSignal("The cause is Stalemate...");
     }
 
 
@@ -147,12 +128,11 @@ namespace chess {
 
 
 
-
-    ChessPiece::team_type ChessBoard::getTurn()
+    ChessPiece::team_type ChessBoard::getTurnTeam()
     {
-        return turn;
+        return turnMachine.getTurnTeam();
     }
-
+    
 
 
 

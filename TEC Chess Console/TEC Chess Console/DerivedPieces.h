@@ -24,7 +24,7 @@ namespace chess {
 		int* validMove(int inCol, int inRow) const;
 		void setEnPassant(bool);
 		bool getEnPassant() const;
-		int* getTrapSet(int inCol, int inRow) const;
+		int* getTrapSet() const;
 
 	protected:
 
@@ -46,7 +46,7 @@ namespace chess {
 		Knight(int inCol, int inRow, team_type color);
 		class KnightMoveError {};
 		int* validMove(int inCol, int inRow) const;
-		int* getTrapSet(int inCol, int inRow) const;
+		int* getTrapSet() const;
 
 	private:
 
@@ -67,7 +67,7 @@ namespace chess {
 		Queen(int inCol, int inRow, team_type color);
 		class QueenMoveError {};
 		int* validMove(int inCol, int inRow) const;
-		int* getTrapSet(int inCol, int inRow) const;
+		int* getTrapSet() const;
 
 	protected:	// for Rook and Bishop access to these getPath()'s
 
@@ -89,7 +89,7 @@ namespace chess {
 		Bishop(int inCol, int inRow, team_type color);
 		class BishopMoveError {};
 		int* validMove(int inCol, int inRow) const;
-		int* getTrapSet(int inCol, int inRow) const;
+		int* getTrapSet() const;
 
 	private:
 
@@ -110,7 +110,7 @@ namespace chess {
 		Rook(int inCol, int inRow, team_type color, bool c);
 		class RookMoveError {};
 		int* validMove(int inCol, int inRow) const;
-		int* getTrapSet(int inCol, int inRow) const;
+		int* getTrapSet() const;
 		bool getCastleStatus();
 		void setCastleStatus(bool arg);
 
@@ -135,7 +135,7 @@ namespace chess {
 		King(int inCol, int inRow, team_type color, bool c);
 		class KingMoveError {};
 		int* validMove(int inCol, int inRow) const;
-		int* getTrapSet(int inCol, int inRow) const;
+		int* getTrapSet() const;
 		bool getCastleStatus();
 		void setCastleStatus(bool arg);
 		

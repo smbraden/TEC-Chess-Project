@@ -14,6 +14,9 @@ namespace chess {
 
     bool ChessTeam::isCheckmate()
     {
+        int kCol = turn.kCol;
+        int kRow = turn.kCol;
+
         if (!isCheck(kCol, kRow) || !KingIsTrapped())   // if king cornered and/or smothered
             return false;
         
@@ -82,12 +85,12 @@ namespace chess {
     bool ChessTeam::KingIsTrapped() 
     {
 
-        int* points = getElement(kCol, kRow)->getTrapSet(kCol, kRow);
+        int* points = getElement(turn.kCol, turn.kRow)->getTrapSet();
         int counter = 0;
 
         while (points[counter] != ChessPiece::ARRAY_END) {
             try {   // must try/catch if we are to reuse functions from ChessPiece classes
-                isValidMove(kCol, kRow, points[counter], points[counter + 1]);
+                isValidMove(turn.kCol, turn.kRow, points[counter], points[counter + 1]);
                 if (!isCheck(points[counter], points[counter + 1]))
                     return false;
             }
@@ -134,7 +137,7 @@ namespace chess {
             attack2 = attack2 + rowSign;
         }
 
-        if (isPiece(attack1, attack2) && getTeam(attack1, attack2) != team) {
+        if (isPiece(attack1, attack2) && getTeam(attack1, attack2) != turn.team) {
             if (getPiece(attack1, attack2) == ChessPiece::piece_type::queen
                 || getPiece(attack1, attack2) == ChessPiece::piece_type::rook)
                 return true;
@@ -177,7 +180,7 @@ namespace chess {
             attack2 = attack2 + rowSign;
         }
 
-        if (isPiece(attack1, attack2) && getTeam(attack1, attack2) != team) {
+        if (isPiece(attack1, attack2) && getTeam(attack1, attack2) != turn.team) {
             if (getPiece(attack1, attack2) == ChessPiece::piece_type::queen ||
                 getPiece(attack1, attack2) == ChessPiece::piece_type::bishop)
                 return true;
@@ -220,7 +223,7 @@ namespace chess {
         attack1 = kCol + colSign;
         attack2 = kRow + rowSign;
 
-        if (isPiece(attack1, attack2) && getTeam(attack1, attack2) != team
+        if (isPiece(attack1, attack2) && getTeam(attack1, attack2) != turn.team
             && getPiece(attack1, attack2) == ChessPiece::piece_type::knight)
             return true;
         
@@ -237,14 +240,14 @@ namespace chess {
         int left = kCol - 1;
         int right = kCol + 1;
 
-        attack2 = (team == ChessPiece::team_type::white) ? (kRow + 1) : (kRow - 1);
+        attack2 = (turn.team == ChessPiece::team_type::white) ? (kRow + 1) : (kRow - 1);
 
-        if (isPiece(right, attack2) && getTeam(right, attack2) != team
+        if (isPiece(right, attack2) && getTeam(right, attack2) != turn.team
             && getPiece(right, attack2) == ChessPiece::piece_type::pawn) {
             attack1 = right;
             return true;
         }
-        if (isPiece(left, attack2) && getTeam(left, attack2) != team
+        if (isPiece(left, attack2) && getTeam(left, attack2) != turn.team
             && getPiece(left, attack2) == ChessPiece::piece_type::pawn) {
             attack1 = left;
             return true;
@@ -274,7 +277,7 @@ namespace chess {
     bool ChessTeam::findBlock(int attack1, int attack2)
     {
         // get the path from attacker to king, if there is one
-        int* path = grid.getElement(attack1, attack2)->validMove(kCol, kRow);
+        int* path = grid.getElement(attack1, attack2)->validMove(turn.kCol, turn.kRow);
         int k = 0;
         
         if (path != nullptr) {
@@ -282,7 +285,7 @@ namespace chess {
 
                 for (int i = 0; i < BOARD_SIZE; i++) {
                     for (int j = 0; j < BOARD_SIZE; j++) {
-                        if (isPiece(i, j) && getTeam(i, j) == team && i != kCol && j != kRow) {
+                        if (isPiece(i, j) && getTeam(i, j) == turn.team && i != turn.kCol && j != turn.kRow) {
                             try {
                                 isValidMove(i, j, path[2 * k], path[2 * k + 1]);
                                 return true;    // will execute only if we find a legal move 
@@ -311,7 +314,7 @@ namespace chess {
     {
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
-                if (isPiece(i, j) && getTeam(i, j) == team && i != kCol && j != kRow) {
+                if (isPiece(i, j) && getTeam(i, j) == turn.team && i != turn.kCol && j != turn.kRow) {
                     try {
                         isValidMove(i, j, attack1, attack2);
                         return true;    // will execute only if we find a legal move 

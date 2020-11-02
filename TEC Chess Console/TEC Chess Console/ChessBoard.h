@@ -24,7 +24,7 @@ namespace chess {
 
 		void move(int pos1, int pos2, int move1, int move2);
 		void printBoard() const;
-		ChessPiece::team_type getTurn();
+		ChessPiece::team_type getTurnTeam();
 		ChessPiece::team_type getWinner();
 
 		static const int BOARD_SIZE = 8;
@@ -33,14 +33,14 @@ namespace chess {
 
 	private:
 
-		// main data members
 		Grid grid;
-		ChessPiece::team_type turn;
 		ChessPiece::team_type winner;
 		History history;
+		ChessTeam turnMachine;
 		
-		ChessTeam whiteT;
-		ChessTeam blackT;
+		// ChessPiece::team_type turn;
+		// ChessTeam whiteT;
+		// ChessTeam blackT;
 		// WhiteTeam whiteT;
 		// BlackTeam blackT;
 

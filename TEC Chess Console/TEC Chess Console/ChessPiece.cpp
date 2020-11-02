@@ -150,7 +150,7 @@ namespace chess {
 
 
 
-	int* ChessPiece::getTrapSet(int inCol, int inRow) const
+	int* ChessPiece::getTrapSet() const
 	{
 		return nullptr;
 	}

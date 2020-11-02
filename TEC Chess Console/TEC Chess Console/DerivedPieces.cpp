@@ -124,7 +124,7 @@ namespace chess {
 
 
 
-	int* Pawn::getTrapSet(int pos1, int pos2) const
+	int* Pawn::getTrapSet() const
 	{
 		int rowShift = (team == team_type::white) ? 1 : -1;
 
@@ -133,8 +133,8 @@ namespace chess {
 		int displacement = -1;
 
 		for (int j = 0; j < (SIZE - 1); j += 2) {
-			coordinates[j] = pos1 + displacement;
-			coordinates[j + 1] = pos2 + rowShift;
+			coordinates[j] = col + displacement;
+			coordinates[j + 1] = row + rowShift;
 			displacement++;
 		}
 		coordinates[SIZE - 1] = ARRAY_END;
@@ -202,30 +202,30 @@ namespace chess {
 
 
 
-	int* Knight::getTrapSet(int pos1, int pos2) const
+	int* Knight::getTrapSet() const
 	{
 		const int SIZE = 17;
 		int* coordinates = new int[SIZE]; // 8 coordinates plus null terminator
 
-		coordinates[0] = pos1 - 2;
-		coordinates[1] = pos2 + 1;
-		coordinates[2] = pos1 - 1;
-		coordinates[3] = pos2 + 2;
+		coordinates[0] = col - 2;
+		coordinates[1] = row + 1;
+		coordinates[2] = col - 1;
+		coordinates[3] = row + 2;
 
-		coordinates[4] = pos1 + 1;
-		coordinates[5] = pos2 + 2;
-		coordinates[6] = pos1 + 2;
-		coordinates[7] = pos2 + 1;
+		coordinates[4] = col + 1;
+		coordinates[5] = row + 2;
+		coordinates[6] = col + 2;
+		coordinates[7] = row + 1;
 
-		coordinates[8] = pos1 + 2;
-		coordinates[9] = pos2 - 1;
-		coordinates[10] = pos1 + 1;
-		coordinates[11] = pos2 - 2;
+		coordinates[8] = col + 2;
+		coordinates[9] = row - 1;
+		coordinates[10] = col + 1;
+		coordinates[11] = row - 2;
 
-		coordinates[12] = pos1 - 1;
-		coordinates[13] = pos2 - 2;
-		coordinates[14] = pos1 - 2;
-		coordinates[15] = pos2 - 1;
+		coordinates[12] = col - 1;
+		coordinates[13] = row - 2;
+		coordinates[14] = col - 2;
+		coordinates[15] = row - 1;
 
 		coordinates[16] = ARRAY_END;
 
@@ -400,34 +400,34 @@ namespace chess {
 
 
 
-	int* Queen::getTrapSet(int pos1, int pos2) const
+	int* Queen::getTrapSet() const
 	{
 		const int SIZE = 17;
 		int* coordinates = new int[SIZE]; // 8 coordinates plus null terminator
 
-		coordinates[0] = pos1;
-		coordinates[1] = pos2 + 1;
+		coordinates[0] = col;
+		coordinates[1] = row + 1;
 
-		coordinates[2] = pos1;
-		coordinates[3] = pos2 - 1;
+		coordinates[2] = col;
+		coordinates[3] = row - 1;
 
-		coordinates[4] = pos2;
-		coordinates[5] = pos1 + 1;
+		coordinates[4] = row;
+		coordinates[5] = col + 1;
 
-		coordinates[6] = pos2;
-		coordinates[7] = pos1 - 1;
+		coordinates[6] = row;
+		coordinates[7] = col - 1;
 
-		coordinates[8] = pos1 - 1;
-		coordinates[9] = pos2 - 1;
+		coordinates[8] = col - 1;
+		coordinates[9] = row - 1;
 
-		coordinates[10] = pos1 + 1;
-		coordinates[11] = pos2 - 1;
+		coordinates[10] = col + 1;
+		coordinates[11] = row - 1;
 
-		coordinates[12] = pos1 + 1;
-		coordinates[13] = pos2 + 1;
+		coordinates[12] = col + 1;
+		coordinates[13] = row + 1;
 
-		coordinates[14] = pos1 - 1;
-		coordinates[15] = pos2 + 1;
+		coordinates[14] = col - 1;
+		coordinates[15] = row + 1;
 
 		coordinates[16] = ARRAY_END;
 
@@ -515,22 +515,22 @@ namespace chess {
 
 
 
-	int* Rook::getTrapSet(int pos1, int pos2) const
+	int* Rook::getTrapSet() const
 	{
 		const int SIZE = 9;
 		int* coordinates = new int[SIZE]; // 4 coordinates plus null terminator
 
-		coordinates[0] = pos1;
-		coordinates[1] = pos2 + 1;
+		coordinates[0] = col;
+		coordinates[1] = row + 1;
 
-		coordinates[2] = pos1;
-		coordinates[3] = pos2 - 1;
+		coordinates[2] = col;
+		coordinates[3] = row - 1;
 
-		coordinates[4] = pos2;
-		coordinates[5] = pos1 + 1;
+		coordinates[4] = row;
+		coordinates[5] = col + 1;
 
-		coordinates[6] = pos2;
-		coordinates[7] = pos1 - 1;
+		coordinates[6] = row;
+		coordinates[7] = col - 1;
 
 		coordinates[8] = ARRAY_END;
 
@@ -595,22 +595,22 @@ namespace chess {
 
 	
 
-	int* Bishop::getTrapSet(int pos1, int pos2) const
+	int* Bishop::getTrapSet() const
 	{
 		const int SIZE = 9;
 		int* coordinates = new int[SIZE]; // 4 coordinates plus null terminator
 
-		coordinates[0] = pos1 - 1;
-		coordinates[1] = pos2 - 1;
+		coordinates[0] = col - 1;
+		coordinates[1] = row - 1;
 
-		coordinates[2] = pos1 + 1;
-		coordinates[3] = pos2 - 1;
+		coordinates[2] = col + 1;
+		coordinates[3] = row - 1;
 
-		coordinates[4] = pos1 + 1;
-		coordinates[5] = pos2 + 1;
+		coordinates[4] = col + 1;
+		coordinates[5] = row + 1;
 
-		coordinates[6] = pos1 - 1;
-		coordinates[7] = pos2 + 1;
+		coordinates[6] = col - 1;
+		coordinates[7] = row + 1;
 
 		coordinates[8] = ARRAY_END;
 
@@ -698,34 +698,34 @@ namespace chess {
 
 
 
-	int* King::getTrapSet(int pos1, int pos2) const
+	int* King::getTrapSet() const
 	{
 		const int SIZE = 17;
 		int* coordinates = new int[SIZE]; // 8 coordinates plus null terminator
 
-		coordinates[0] = pos1;
-		coordinates[1] = pos2 + 1;
+		coordinates[0] = col;
+		coordinates[1] = row + 1;
 
-		coordinates[2] = pos1;
-		coordinates[3] = pos2 - 1;
+		coordinates[2] = col;
+		coordinates[3] = row - 1;
 
-		coordinates[4] = pos2;
-		coordinates[5] = pos1 + 1;
+		coordinates[4] = row;
+		coordinates[5] = col + 1;
 
-		coordinates[6] = pos2;
-		coordinates[7] = pos1 - 1;
+		coordinates[6] = row;
+		coordinates[7] = col - 1;
 
-		coordinates[8] = pos1 - 1;
-		coordinates[9] = pos2 - 1;
+		coordinates[8] = col - 1;
+		coordinates[9] = row - 1;
 
-		coordinates[10] = pos1 + 1;
-		coordinates[11] = pos2 - 1;
+		coordinates[10] = col + 1;
+		coordinates[11] = row - 1;
 
-		coordinates[12] = pos1 + 1;
-		coordinates[13] = pos2 + 1;
+		coordinates[12] = col + 1;
+		coordinates[13] = row + 1;
 
-		coordinates[14] = pos1 - 1;
-		coordinates[15] = pos2 + 1;
+		coordinates[14] = col - 1;
+		coordinates[15] = row + 1;
 
 		coordinates[16] = ARRAY_END;
 

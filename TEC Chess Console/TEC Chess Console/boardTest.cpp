@@ -98,7 +98,7 @@ void play(ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& 
 
 		do {
 			
-			string team = (argBoard.getTurn() == ChessPiece::team_type::white) ? "White" : "Black";
+			string team = (argBoard.getTurnTeam() == ChessPiece::team_type::white) ? "White" : "Black";
 
 			cout << team << " move. Current position:	";
 			cin >> x1 >> y1;
