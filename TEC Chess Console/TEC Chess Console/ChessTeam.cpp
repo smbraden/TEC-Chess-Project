@@ -482,7 +482,7 @@ namespace chess {
                 }
             }
         }
-        else {  // if team == ChessPiece::team_type::black
+        else {  // if turn.team == ChessPiece::team_type::black
             if (move1 == 6 && move2 == 7) {
                 if (isPiece(7, 7) && getPieceType(7, 7) == ChessPiece::piece_type::rook
                     && ((Rook*)getElement(7, 7))->getCastleStatus()) {
@@ -521,7 +521,7 @@ namespace chess {
         int sign = -(k1 - r1) / abs(k1 - r1);
         int nextCol = k1 + sign;
 
-        // while no piece obstructing path, and no square in path checked
+        // while no piece obstructing path, and no square in path is checked
         while (!isPiece(nextCol, k2) && !isCheck(nextCol, k2))
             nextCol = nextCol + sign;
 

@@ -1,5 +1,5 @@
 /*/-------------------------------------------------------------------------------------//
-   Filename:           boardTest.cpp
+   Filename:           Simulate_Game_CPPFile.cpp
    Contributor:        Sonja Braden
    Date:               11/2/2020
    Reference:
@@ -16,6 +16,7 @@ using namespace chess;
 
 
 bool testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag);
+void printHeader(int gameNum);
 int play(const string filename, ChessBoard& argBoard);
 inline int char2col(char ch);
 inline int int2row(int arg);
@@ -29,22 +30,21 @@ int main() {
 
 	cout << endl << "Welcome to the Chess Game Simulator. Let's test some games..." << endl << endl;
 	
-	const string game1 = "testGame1.txt";
-	const string game2 = "testGame2.txt";
-	const string game3 = "testGame3.txt";
-
-	cout << "Begin Game 1..." << endl << endl;
-	result = play(game1, testBoard);
-	testBoard.reset();
-
-	cout << endl << "Begin Game 3..." << endl << endl;
-	result = play(game3, testBoard);
-	testBoard.reset();
-
-	cout << endl << "Begin Game 2..." << endl << endl;
-	result = play(game2, testBoard);
-	testBoard.reset();
-
+	printHeader(1);
+	result = play("testGame1.txt", testBoard);
+	
+	printHeader(2); // should be a checkmate on black, but not getting this result
+	result = play("testGame2.txt", testBoard);	
+	
+	printHeader(3);
+	result = play("testGame3.txt", testBoard);
+	
+	printHeader(4);
+	result = play("testGame4.txt", testBoard);
+	
+	printHeader(5);
+	result = play("testGame5.txt", testBoard);
+	
 	return 0;
 }
 
@@ -68,16 +68,21 @@ bool testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag)
 		cout << e.getMsg() << endl << endl;
 	}
 	catch (const chess_except::DrawSignal& e) {
-		cout << e.getMsg() << endl << endl;
+		
+		cout << "//-----------------------------------------//" << endl;
+		cout << "    " << e.getMsg() << endl;
+		cout << "//-----------------------------------------//" << endl << endl;
 		argBoard.printBoard();	// final print() will not execute in the play() while loop
-		cout << endl;
+		cout << endl << endl;
 		flag = true;
 		return true;
 	}
 	catch (const chess_except::WinSignal& e) {
-		cout << e.getMsg() << endl << endl;
+		cout << "//-----------------------------------------//" << endl;
+		cout << "    " << e.getMsg() << endl;
+		cout << "//-----------------------------------------//" << endl << endl;
 		argBoard.printBoard();	// final print() will not execute in the play() while loop
-		cout << endl;
+		cout << endl << endl;
 		flag = true;
 		return true;
 	}
@@ -110,21 +115,38 @@ int play(const string filename, ChessBoard& argBoard)
 
 		string team = (argBoard.getTurnTeam() == ChessPiece::team_type::white) ? "White" : "Black";
 
-		cout << team << " move. Current position:	" << x1 << y1 << endl;
-		cout << team << " move. New position:	" << x2 << y2 << endl;
-		cout << endl;
-
-		testMove(argBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2), endFlag);
-
 		system("PAUSE");	// lazy pause
 		cout << endl;
+
+		cout << team << " move. Current position:	" << x1 << y1 << endl;
+		cout << team << " move. New position:	" << x2 << y2 << endl << endl;
+
+		testMove(argBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2), endFlag);
+		
 	}
 
 	inputFile.clear();
 	inputFile.close();
 
+	argBoard.reset();
+
 	return EXIT_SUCCESS;
 }
+
+
+
+
+
+void printHeader(int gameNum) 
+{
+
+	cout << "//-----------------------------------------//" << endl;
+	cout << "               Begin Game "		 << gameNum << endl;
+	cout << "//-----------------------------------------//" << endl;
+	cout << endl;
+
+}
+
 
 
 

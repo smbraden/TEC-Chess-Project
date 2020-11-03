@@ -200,14 +200,14 @@ namespace chess {
 
 
 		// instantiate and map the white team
-		setElement(0, 0, new Rook(0, 0, ChessPiece::team_type::white, false));
+		setElement(0, 0, new Rook(0, 0, ChessPiece::team_type::white, true));
 		setElement(1, 0, new Knight(1, 0, ChessPiece::team_type::white));
 		setElement(2, 0, new Bishop(2, 0, ChessPiece::team_type::white));
 		setElement(3, 0, new Queen(3, 0, ChessPiece::team_type::white));
-		setElement(4, 0, new King(4, 0, ChessPiece::team_type::white, false));
+		setElement(4, 0, new King(4, 0, ChessPiece::team_type::white, true));
 		setElement(5, 0, new Bishop(5, 0, ChessPiece::team_type::white));
 		setElement(6, 0, new Knight(6, 0, ChessPiece::team_type::white));
-		setElement(7, 0, new Rook(7, 0, ChessPiece::team_type::white, false));
+		setElement(7, 0, new Rook(7, 0, ChessPiece::team_type::white, true));
 
 		// white pawns
 		for (int i = 0; i < BOARD_SIZE; i++) {
@@ -215,14 +215,14 @@ namespace chess {
 		}
 
 		// instantiate and map the black team pieces
-		setElement(0, 7, new Rook(0, 7, ChessPiece::team_type::black, false));
+		setElement(0, 7, new Rook(0, 7, ChessPiece::team_type::black, true));
 		setElement(1, 7, new Knight(1, 7, ChessPiece::team_type::black));
 		setElement(2, 7, new Bishop(2, 7, ChessPiece::team_type::black));
 		setElement(3, 7, new Queen(3, 7, ChessPiece::team_type::black));
-		setElement(4, 7, new King(4, 7, ChessPiece::team_type::black, false));
+		setElement(4, 7, new King(4, 7, ChessPiece::team_type::black, true));
 		setElement(5, 7, new Bishop(5, 7, ChessPiece::team_type::black));
 		setElement(6, 7, new Knight(6, 7, ChessPiece::team_type::black));
-		setElement(7, 7, new Rook(7, 7, ChessPiece::team_type::black, false));
+		setElement(7, 7, new Rook(7, 7, ChessPiece::team_type::black, true));
 
 		// black pawns
 		for (int i = 0; i < BOARD_SIZE; i++) {
