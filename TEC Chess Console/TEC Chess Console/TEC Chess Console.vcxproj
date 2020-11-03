@@ -146,7 +146,7 @@
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="History.cpp" />
     <ClCompile Include="ChessTeam_Mate.cpp" />
-    <ClCompile Include="Simulate_Game_CPPFile.cpp" />
+    <ClCompile Include="Simulate_Games.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChessBoard.h" />

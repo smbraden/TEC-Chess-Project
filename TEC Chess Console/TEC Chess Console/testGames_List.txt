@@ -1,0 +1,63 @@
+e 2	e 4
+e 7	e 5
+d 1	h 5
+b 8	c 6
+f 1	c 4
+g 8	f 6
+h 5	f 7
+
+# w
+
+e 2	e 4
+c 7	c 6
+d 2	d 4
+d 7	d 5
+b 1	c 3
+d 5	e 4
+c 3	e 4
+g 8	f 6
+d 1	d 3
+e 7	e 5
+d 4	e 5
+d 8	a 5
+c 1	d 2
+a 5	e 5
+e 1	c 1
+f 6	e 4
+d 3	d 8
+e 8	d 8
+d 2	g 5
+d 8	c 7
+g 5	d 8
+
+# w
+
+g 2	g 4
+e 7	e 5
+f 2	f 3
+d 8	h 4
+
+# b
+
+e 2	e 4
+f 7	f 6
+b 1	c 3
+g 7	g 5
+d 1	h 5
+
+# w
+
+d 2	d 4
+g 8	f 6
+b 1	d 2
+e 7	e 5
+d 4	e 5
+f 6	g 4
+h 2	h 3
+g 4	e 3
+f 2	e 3
+d 8	h 4
+g 2	g 3
+h 4	g 3
+
+# b

@@ -62,7 +62,7 @@
     <ClCompile Include="ChessTeam_Mate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Simulate_Game_CPPFile.cpp">
+    <ClCompile Include="Simulate_Games.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
