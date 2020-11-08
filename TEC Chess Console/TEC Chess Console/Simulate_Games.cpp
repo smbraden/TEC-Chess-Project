@@ -23,9 +23,9 @@ inline int char2col(char ch);
 inline int int2row(int arg);
 
 const char DRAW = 'd';
+const char CONTINUE = 'c';
 const char BLACK_WIN = 'b';
 const char WHITE_WIN = 'w';
-const char CONTINUE = 'c';
 
 int main() {
 
@@ -53,11 +53,11 @@ char testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 		cout << endl;
 		argBoard.printBoard();
 		cout << endl;
-		return 'c';
+		return CONTINUE;
 	}
 	catch (const chess_except::InvalidMoveExcep& e) {
 		cout << e.getMsg() << endl << endl;
-		return 'c';
+		return CONTINUE;
 	}
 	catch (const chess_except::DrawSignal& e) {
 
@@ -66,7 +66,7 @@ char testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 		cout << "//-----------------------------------------//" << endl << endl;
 		argBoard.printBoard();	// final print() will not execute in the play() while loop
 		cout << endl;
-		return 'd';
+		return DRAW;
 	}
 	catch (const chess_except::WinSignal& e) {
 		cout << "//-----------------------------------------//" << endl;
@@ -74,6 +74,7 @@ char testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 		cout << "//-----------------------------------------//" << endl << endl;
 		argBoard.printBoard();	// final print() will not execute in the play() while loop
 		cout << endl;
+		// maybe should add a ChessBoard feature that gets the underlying type for the client...
 		return static_cast<std::underlying_type<ChessPiece::team_type>::type>(argBoard.getWinner());
 	}
 }
@@ -107,7 +108,9 @@ int play(const string filename, ChessBoard& argBoard)
 
 		string team = (argBoard.getTurnTeam() == ChessPiece::team_type::white) ? "White" : "Black";
 
-		system("PAUSE");	// lazy pause
+		cout << "Press [Enter] to continue..." ;
+		cin.get();
+		// system("PAUSE");	// lazy pause
 		cout << endl;
 
 		cout << team << " move. Current position:	" << x1 << y1 << endl;
@@ -128,7 +131,7 @@ int play(const string filename, ChessBoard& argBoard)
 			if (inputFile.peek() != EOF) {
 				gameNum++;
 				printHeader(gameNum);	// print header for the next game
-				result = 'n';
+				result = CONTINUE;
 				argBoard.reset();
 			}
 		}

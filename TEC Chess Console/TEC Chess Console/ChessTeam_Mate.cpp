@@ -90,8 +90,8 @@ namespace chess {
 
         while (points[counter] != ChessPiece::ARRAY_END) {
             try {   // must try/catch if we are to reuse functions from ChessPiece classes
-                isValidMove(turn.kCol, turn.kRow, points[counter], points[counter + 1]);
-                if (!isCheck(points[counter], points[counter + 1]))
+                ChessTeam testTeam = isValidMove(turn.kCol, turn.kRow, points[counter], points[counter + 1]);
+                if (!testTeam.isCheck(points[counter], points[counter + 1]))
                     return false;
             }
             catch (const chess_except::InvalidMoveExcep& e) {

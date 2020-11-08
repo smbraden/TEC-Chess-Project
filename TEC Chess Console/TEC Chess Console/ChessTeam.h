@@ -78,6 +78,7 @@ namespace chess {
 		void setElement(int col, int row, ChessPiece* ptr);
 
 		// Other helpers 
+		// void isValidMove(int pos1, int pos2, int move1, int move2);
 		ChessTeam isValidMove(int pos1, int pos2, int move1, int move2) const;
 		void remove(int x, int y);
 		
