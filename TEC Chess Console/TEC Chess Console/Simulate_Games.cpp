@@ -3,7 +3,8 @@
    Contributor:        Sonja Braden
    Date:               11/3/2020
    Reference:
-   Description:			A client for testing potential games with the ChessBoard class
+   Description:			A client for testing the specifications of the ChessBoard class
+						using a file of real chess games and their outcomes
 //-------------------------------------------------------------------------------------/*/
 
 #include <iostream>
@@ -17,8 +18,11 @@ using namespace chess;
 
 char testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2);
 void printHeader(int gameNum);
-void playOneGame(ChessBoard& argBoard, int x1, int y1, int x2, int y2);
-int play(const string filename, ChessBoard& argBoard);
+bool ws_comments(ifstream& inputFile);
+bool gameResult(ifstream& inputFile, ChessBoard& argBoard, int& gameNum, char& result, char& expected_result);
+bool oneMove(ifstream& inputFile, ChessBoard& argBoard, char& result);
+void playGames(const string filename, ChessBoard& argBoard);
+
 inline int char2col(char ch);
 inline int int2row(int arg);
 
@@ -26,15 +30,20 @@ const char DRAW = 'd';
 const char CONTINUE = 'c';
 const char BLACK_WIN = 'b';
 const char WHITE_WIN = 'w';
+const int MAX_BUFFER_SIZE = 63;
+
+
+
+
+
 
 int main() {
 
 	ChessBoard testBoard;
-	int result;
-
+	
 	cout << endl << "Welcome to the Chess Game Simulator. Let's test some games..." << endl << endl;
 
-	result = play("testGames_List.txt", testBoard);
+	playGames("testGames_List.txt", testBoard);
 
 	return 0;
 }
@@ -84,66 +93,135 @@ char testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 
 
 
+// Purpose:		skips white space and comments in teh buffer object
+bool ws_comments(ifstream& inputFile)
+{
+	inputFile >> ws;
+	char ch;
 
-int play(const string filename, ChessBoard& argBoard)
+	if (inputFile.peek() == '%') {			// if comment, skip this line
+		inputFile.get();
+		if (inputFile.peek() == '{') {		// multi-line comment
+			inputFile.get();
+			while (true) {
+				while ((ch = inputFile.get()) != '}' && ch != EOF) {}
+				if (inputFile.get() == '%' || inputFile.get() == EOF)
+					break;
+			}
+		}
+		else {								// single-line comment
+			while (inputFile.get() != '\n') {}
+		}
+
+		return true;
+	}
+	return false;
+}
+
+
+
+
+
+
+// Purpose:		Detects the game result character '#' and sets the result parameter to the 
+//				Game's expected result
+bool gameResult(ifstream& inputFile, ChessBoard& argBoard, int& gameNum, char& result, char& expected_result) {
+
+	inputFile >> ws;
+
+	if (inputFile.peek() == '#') {		// pound sign signals expected game result
+		inputFile >> expected_result >> expected_result;
+		if (expected_result == result)
+			cout << "PASS" << endl << endl;
+		else
+			cout << "FAIL" << endl << endl;
+
+		// Prepare for another game by clearing the board, printing the header
+		inputFile >> ws;
+		if (inputFile.peek() != EOF) {
+			gameNum++;
+			printHeader(gameNum);			// print header for the next game
+			result = CONTINUE;
+			argBoard.reset();
+		}
+
+		return true;
+	}
+	return false;
+}
+
+
+
+
+
+
+// Purpose:		Execute one move and store the test result in the reference parameter, result
+// Return:		returns false if a file formatting irregularity is encountered,
+//				Otherwise, returns true if the game is successfully completed
+bool oneMove(ifstream& inputFile, ChessBoard& argBoard, char& result)
+{
+	inputFile >> ws;
+	
+	char x1 = 'a';
+	int y1 = 2;
+	char x2 = 'a';
+	int y2 = 3;
+
+	if (!(inputFile >> x1 && inputFile >> y1 && inputFile >> x2 && inputFile >> y2))
+		return false;
+
+	string team = (argBoard.getTurnTeam() == ChessPiece::team_type::white) ? "White" : "Black";
+
+	cout << "Press [Enter] to continue...";
+	cin.get();
+	// system("PAUSE");	// lazy pause
+	cout << endl;
+
+	cout << team << " move. Current position:	" << x1 << y1 << endl;
+	cout << team << " move. New position:	" << x2 << y2 << endl << endl;
+
+	result = testMove(argBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2));
+
+	return true;
+}
+
+
+
+
+
+
+
+// Purpose:		Play all games in the referenced file
+void playGames(const string filename, ChessBoard& argBoard)
 {
 	ifstream inputFile;
 	inputFile.open(filename);
 	if (!inputFile) {
 		cout << "Problem opening the file, or the file doesn't exist." << endl;
-		return EXIT_FAILURE;
 	}
 
-	char x1 = 'a';
-	int y1 = 2;
-	char x2 = 'a';
-	int y2 = 3;
-	char expected_result;
+	char expected_result = 'n';
 	char result = 'n';
 	int gameNum = 1;
+	char ch;
 
+	printHeader(gameNum);	// print first game header
+	do {
 
-	printHeader(gameNum);	// print header for the next game
-	while (inputFile >> x1 && inputFile >> y1 && inputFile >> x2 && inputFile >> y2) {
-
-		string team = (argBoard.getTurnTeam() == ChessPiece::team_type::white) ? "White" : "Black";
-
-		cout << "Press [Enter] to continue..." ;
-		cin.get();
-		// system("PAUSE");	// lazy pause
-		cout << endl;
-
-		cout << team << " move. Current position:	" << x1 << y1 << endl;
-		cout << team << " move. New position:	" << x2 << y2 << endl << endl;
-
-		result = testMove(argBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2));
-
-		inputFile >> ws;
-		if (inputFile.peek() == '#') {
-			inputFile >> expected_result >> expected_result;
-			if (expected_result == result) 
-				cout << "PASS" << endl << endl;
-			else 
-				cout << "FAIL" << endl << endl;
-
-			// Prepare for another game by clearing the board, printing the header
-			inputFile >> ws;
-			if (inputFile.peek() != EOF) {
-				gameNum++;
-				printHeader(gameNum);	// print header for the next game
-				result = CONTINUE;
-				argBoard.reset();
-			}
-		}
-	}
+		if (ws_comments(inputFile)) {}
+		else if (gameResult(inputFile, argBoard, gameNum, result, expected_result)) {}
+		else if (!oneMove(inputFile, argBoard, result))
+			break;
+		
+	} while (inputFile.peek() != EOF);
+		
 	
 	inputFile.clear();
 	inputFile.close();
 
 	argBoard.reset();
-
-	return EXIT_SUCCESS;
 }
+
 
 
 
@@ -164,17 +242,6 @@ void printHeader(int gameNum)
 
 
 
-
-void playOneGame(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
-{
-}
-
-
-
-
-
-
-
 inline int char2col(char ch)
 {
 	return (tolower(ch) - 97);
@@ -189,6 +256,5 @@ inline int int2row(int arg)
 {
 	return (arg - 1);
 }
-
 
 
