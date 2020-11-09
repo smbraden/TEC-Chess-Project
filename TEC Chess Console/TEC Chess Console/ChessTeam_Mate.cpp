@@ -138,10 +138,10 @@ namespace chess {
         }
 
         if (isPiece(attack1, attack2) && getTeamType(attack1, attack2) != turn.team) {
-            if (getPieceType(attack1, attack2) == ChessPiece::piece_type::queen
-                || getPieceType(attack1, attack2) == ChessPiece::piece_type::rook)
+            if (getPieceType(attack1, attack2) == piece_type::queen
+                || getPieceType(attack1, attack2) == piece_type::rook)
                 return true;
-            else if (getPieceType(attack1, attack2) == ChessPiece::piece_type::king &&
+            else if (getPieceType(attack1, attack2) == piece_type::king &&
                 (abs(attack1 - kCol) == 1 || abs(attack2 - kRow) == 1))
                 return true;
         }
@@ -181,10 +181,10 @@ namespace chess {
         }
 
         if (isPiece(attack1, attack2) && getTeamType(attack1, attack2) != turn.team) {
-            if (getPieceType(attack1, attack2) == ChessPiece::piece_type::queen ||
-                getPieceType(attack1, attack2) == ChessPiece::piece_type::bishop)
+            if (getPieceType(attack1, attack2) == piece_type::queen ||
+                getPieceType(attack1, attack2) == piece_type::bishop)
                 return true;
-            else if (getPieceType(attack1, attack2) == ChessPiece::piece_type::king &&
+            else if (getPieceType(attack1, attack2) == piece_type::king &&
                 abs(attack1 - kCol) == 1 && abs(attack2 - kRow) == 1)
                 return true;
         }
@@ -224,7 +224,7 @@ namespace chess {
         attack2 = kRow + rowSign;
 
         if (isPiece(attack1, attack2) && getTeamType(attack1, attack2) != turn.team
-            && getPieceType(attack1, attack2) == ChessPiece::piece_type::knight)
+            && getPieceType(attack1, attack2) == piece_type::knight)
             return true;
         
         return false;
@@ -240,15 +240,15 @@ namespace chess {
         int left = kCol - 1;
         int right = kCol + 1;
 
-        attack2 = (turn.team == ChessPiece::team_type::white) ? (kRow + 1) : (kRow - 1);
+        attack2 = (turn.team == team_type::white) ? (kRow + 1) : (kRow - 1);
 
         if (isPiece(right, attack2) && getTeamType(right, attack2) != turn.team
-            && getPieceType(right, attack2) == ChessPiece::piece_type::pawn) {
+            && getPieceType(right, attack2) == piece_type::pawn) {
             attack1 = right;
             return true;
         }
         if (isPiece(left, attack2) && getTeamType(left, attack2) != turn.team
-            && getPieceType(left, attack2) == ChessPiece::piece_type::pawn) {
+            && getPieceType(left, attack2) == piece_type::pawn) {
             attack1 = left;
             return true;
         }

@@ -18,18 +18,21 @@
 
 namespace chess {
 
+	enum class team_type : unsigned char
+	{
+		white = 'w', black = 'b', nullType = 't'
+	};
+
+
+	enum class piece_type : unsigned char
+	{
+		pawn = 'P', rook = 'R', knight = 'N', bishop = 'B', queen = 'Q', king = 'K', nullType = 'T'
+	};
 
 	class ChessPiece {
 
 		public:
 			
-			enum class team_type : unsigned char
-			{ white = 'w', black = 'b', nullType = 't'};	// nullType for init ChessBoard 'Winner' member
-			
-
-			enum class piece_type : unsigned char
-			{ none = '0', pawn = 'P', rook = 'R', knight = 'N', bishop = 'B', queen = 'Q', king = 'K', nullType = 't'};
-
 			const static int BOARD_SIZE = 8;
 			// const static int MAX_PATH = 7;
 			const static int MAX_PATH_LEN = 14;		// 6 spaces for max path, and 1 more for an extra delimiter

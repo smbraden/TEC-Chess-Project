@@ -27,7 +27,7 @@ inline int char2col(char ch);
 inline int int2row(int arg);
 
 const char DRAW = 'd';
-const char CONTINUE = 'c';
+const char CONTINUE = 't';
 const char BLACK_WIN = 'b';
 const char WHITE_WIN = 'w';
 const int MAX_BUFFER_SIZE = 63;
@@ -84,10 +84,9 @@ char testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 		argBoard.printBoard();	// final print() will not execute in the play() while loop
 		cout << endl;
 		// maybe should add a ChessBoard feature that gets the underlying type for the client...
-		return static_cast<std::underlying_type<ChessPiece::team_type>::type>(argBoard.getWinner());
+		return argBoard.getWinnerUnlyingType();
 	}
 }
-
 
 
 
@@ -97,22 +96,30 @@ char testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 bool ws_comments(ifstream& inputFile)
 {
 	inputFile >> ws;
-	char ch;
+	char buffer[2];
 
-	if (inputFile.peek() == '%') {			// if comment, skip this line
-		inputFile.get();
-		if (inputFile.peek() == '{') {		// multi-line comment
-			inputFile.get();
+	char ch = inputFile.get();
+	buffer[0] = ch;
+	buffer[1] = inputFile.peek();
+	inputFile.putback(ch);
+
+	if (buffer[0] == EOF)
+		return true;
+	
+	if (buffer[0] == '/') {					// if comment, skip this line
+		if (buffer[1] == '/') {
+			while (inputFile.get() != '\n') {}
+		}
+		else if (buffer[1] == '*') {		// multi-line comment
+			inputFile.get();				// get the '/'
+			inputFile.get();				// get the '*'
 			while (true) {
-				while ((ch = inputFile.get()) != '}' && ch != EOF) {}
-				if (inputFile.get() == '%' || inputFile.get() == EOF)
+				while ((ch = inputFile.get()) != '*' && ch != EOF) {}
+				if ((ch = inputFile.get()) == '/' || ch == EOF)
 					break;
 			}
 		}
-		else {								// single-line comment
-			while (inputFile.get() != '\n') {}
-		}
-
+		
 		return true;
 	}
 	return false;
@@ -170,7 +177,7 @@ bool oneMove(ifstream& inputFile, ChessBoard& argBoard, char& result)
 	if (!(inputFile >> x1 && inputFile >> y1 && inputFile >> x2 && inputFile >> y2))
 		return false;
 
-	string team = (argBoard.getTurnTeam() == ChessPiece::team_type::white) ? "White" : "Black";
+	string team = (argBoard.getTurnTeam() == team_type::white) ? "White" : "Black";
 
 	cout << "Press [Enter] to continue...";
 	cin.get();
@@ -203,8 +210,7 @@ void playGames(const string filename, ChessBoard& argBoard)
 	char expected_result = 'n';
 	char result = 'n';
 	int gameNum = 1;
-	char ch;
-
+	
 	printHeader(gameNum);	// print first game header
 	do {
 

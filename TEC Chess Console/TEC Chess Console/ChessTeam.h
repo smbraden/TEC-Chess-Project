@@ -26,9 +26,9 @@ namespace chess {
 
 			int kCol;
 			int kRow;
-			ChessPiece::team_type team; 
+			team_type team; 
 			
-			team_ID(int c = 4, int r = 0, ChessPiece::team_type t = ChessPiece::team_type::white) :
+			team_ID(int c = 4, int r = 0, team_type t = team_type::white) :
 				kCol(c), kRow(r), team(t) {}
 
 			team_ID operator=(const team_ID& right) {
@@ -46,9 +46,9 @@ namespace chess {
 		// Accessors
 		Grid getGrid() const;
 		bool isPiece(int inCol, int inRow) const;
-		ChessPiece::team_type getTurnTeam() const;
-		ChessPiece::team_type getTeamType(int pos1, int pos2) const;
-		ChessPiece::piece_type getPieceType(int pos1, int pos2) const;
+		team_type getTurnTeam() const;
+		team_type getTeamType(int pos1, int pos2) const;
+		piece_type getPieceType(int pos1, int pos2) const;
 		
 		// Other
 		void move(int pos1, int pos2, int move1, int move2);

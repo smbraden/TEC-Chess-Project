@@ -23,7 +23,7 @@ namespace chess {
 
 
 
-	bool History::newPage(const ChessPiece::team_type turn, const Grid& argGrid)
+	bool History::newPage(const team_type turn, const Grid& argGrid)
 	{
 		GameState newState;
 		PieceRecord newRecord;
@@ -53,11 +53,11 @@ namespace chess {
 		newRecord.piece = arg->getPieceType();
 		newRecord.team = arg->getTeamType();
 				
-		if (newRecord.piece == ChessPiece::piece_type::king)
+		if (newRecord.piece == piece_type::king)
 			newRecord.castle = ((King*)arg)->getCastleStatus();
-		if (newRecord.piece == ChessPiece::piece_type::rook)
+		if (newRecord.piece == piece_type::rook)
 			newRecord.castle = ((Rook*)arg)->getCastleStatus();
-		if (newRecord.piece == ChessPiece::piece_type::pawn)
+		if (newRecord.piece == piece_type::pawn)
 			newRecord.enPassant = ((Pawn*)arg)->getEnPassant();
 	}
 

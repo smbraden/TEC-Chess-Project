@@ -23,9 +23,10 @@ namespace chess {
 
 		void move(int pos1, int pos2, int move1, int move2);
 		void printBoard() const;
-		ChessPiece::team_type getTurnTeam();
-		ChessPiece::team_type getWinner();
-
+		team_type getTurnTeam();
+		char getTurnTeamUnlyingType();
+		team_type getWinner();
+		char getWinnerUnlyingType();
 		void reset();
 
 		// static const int BOARD_SIZE = 8;
@@ -34,15 +35,15 @@ namespace chess {
 	private:
 
 		// Grid grid;
-		ChessPiece::team_type winner;
+		team_type winner;
 		History history;
 		ChessTeam turnMachine;
 		bool draw;
 
 		// For convenient access to Grid Elements
 		bool isPiece(int pos1, int pos2) const;
-		ChessPiece::team_type getTeamType(int pos1, int pos2) const;
-		ChessPiece::piece_type getPieceType(int pos1, int pos2) const;
+		team_type getTeamType(int pos1, int pos2) const;
+		piece_type getPieceType(int pos1, int pos2) const;
 		
 	};
 

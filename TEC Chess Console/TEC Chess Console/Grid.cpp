@@ -108,7 +108,7 @@ namespace chess {
 
 
 
-	ChessPiece::piece_type Grid::getPieceType(int col, int row) const
+	piece_type Grid::getPieceType(int col, int row) const
 	{
 		assert(isPiece(col, row));
 		return getElement(col, row)->getPieceType();
@@ -119,7 +119,7 @@ namespace chess {
 
 
 
-	ChessPiece::team_type Grid::getTeamType(int col, int row) const
+	team_type Grid::getTeamType(int col, int row) const
 	{
 		assert(isPiece(col, row));
 		return getElement(col, row)->getTeamType();
@@ -150,21 +150,21 @@ namespace chess {
 
 				if (!arg.isPiece(i, j))
 					ptr = nullptr;
-				else if (arg.getElement(i, j)->getPieceType() == ChessPiece::piece_type::pawn) {
+				else if (arg.getElement(i, j)->getPieceType() == piece_type::pawn) {
 					bool passVal = ((Pawn*)arg.getElement(i, j))->getEnPassant();
 					ptr = new Pawn(i, j, arg.getElement(i, j)->getTeamType(), passVal);
 				}
-				else if (arg.getElement(i, j)->getPieceType() == ChessPiece::piece_type::rook) {
+				else if (arg.getElement(i, j)->getPieceType() == piece_type::rook) {
 					bool CastleVal = ((Rook*)arg.getElement(i, j))->getCastleStatus();
 					ptr = new Rook(i, j, arg.getElement(i, j)->getTeamType(), CastleVal);
 				}
-				else if (arg.getElement(i, j)->getPieceType() == ChessPiece::piece_type::knight) {
+				else if (arg.getElement(i, j)->getPieceType() == piece_type::knight) {
 					ptr = new Knight(i, j, arg.getElement(i, j)->getTeamType());
 				}
-				else if (arg.getElement(i, j)->getPieceType() == ChessPiece::piece_type::bishop) {
+				else if (arg.getElement(i, j)->getPieceType() == piece_type::bishop) {
 					ptr = new Bishop(i, j, arg.getElement(i, j)->getTeamType());
 				}
-				else if (arg.getElement(i, j)->getPieceType() == ChessPiece::piece_type::king) {
+				else if (arg.getElement(i, j)->getPieceType() == piece_type::king) {
 					bool CastleVal = ((King*)arg.getElement(i, j))->getCastleStatus();
 					ptr = new King(i, j, arg.getElement(i, j)->getTeamType(), CastleVal);
 				}
@@ -200,33 +200,33 @@ namespace chess {
 
 
 		// instantiate and map the white team
-		setElement(0, 0, new Rook(0, 0, ChessPiece::team_type::white, true));
-		setElement(1, 0, new Knight(1, 0, ChessPiece::team_type::white));
-		setElement(2, 0, new Bishop(2, 0, ChessPiece::team_type::white));
-		setElement(3, 0, new Queen(3, 0, ChessPiece::team_type::white));
-		setElement(4, 0, new King(4, 0, ChessPiece::team_type::white, true));
-		setElement(5, 0, new Bishop(5, 0, ChessPiece::team_type::white));
-		setElement(6, 0, new Knight(6, 0, ChessPiece::team_type::white));
-		setElement(7, 0, new Rook(7, 0, ChessPiece::team_type::white, true));
+		setElement(0, 0, new Rook(0, 0, team_type::white, true));
+		setElement(1, 0, new Knight(1, 0, team_type::white));
+		setElement(2, 0, new Bishop(2, 0, team_type::white));
+		setElement(3, 0, new Queen(3, 0, team_type::white));
+		setElement(4, 0, new King(4, 0, team_type::white, true));
+		setElement(5, 0, new Bishop(5, 0, team_type::white));
+		setElement(6, 0, new Knight(6, 0, team_type::white));
+		setElement(7, 0, new Rook(7, 0, team_type::white, true));
 
 		// white pawns
 		for (int i = 0; i < BOARD_SIZE; i++) {
-			setElement(i, 1, new Pawn(i, 1, ChessPiece::team_type::white, false));
+			setElement(i, 1, new Pawn(i, 1, team_type::white, false));
 		}
 
 		// instantiate and map the black team pieces
-		setElement(0, 7, new Rook(0, 7, ChessPiece::team_type::black, true));
-		setElement(1, 7, new Knight(1, 7, ChessPiece::team_type::black));
-		setElement(2, 7, new Bishop(2, 7, ChessPiece::team_type::black));
-		setElement(3, 7, new Queen(3, 7, ChessPiece::team_type::black));
-		setElement(4, 7, new King(4, 7, ChessPiece::team_type::black, true));
-		setElement(5, 7, new Bishop(5, 7, ChessPiece::team_type::black));
-		setElement(6, 7, new Knight(6, 7, ChessPiece::team_type::black));
-		setElement(7, 7, new Rook(7, 7, ChessPiece::team_type::black, true));
+		setElement(0, 7, new Rook(0, 7, team_type::black, true));
+		setElement(1, 7, new Knight(1, 7, team_type::black));
+		setElement(2, 7, new Bishop(2, 7, team_type::black));
+		setElement(3, 7, new Queen(3, 7, team_type::black));
+		setElement(4, 7, new King(4, 7, team_type::black, true));
+		setElement(5, 7, new Bishop(5, 7, team_type::black));
+		setElement(6, 7, new Knight(6, 7, team_type::black));
+		setElement(7, 7, new Rook(7, 7, team_type::black, true));
 
 		// black pawns
 		for (int i = 0; i < BOARD_SIZE; i++) {
-			setElement(i, 6, new Pawn(i, 6, ChessPiece::team_type::black, false));
+			setElement(i, 6, new Pawn(i, 6, team_type::black, false));
 		}
 
 	}

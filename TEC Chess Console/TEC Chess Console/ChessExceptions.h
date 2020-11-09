@@ -1,5 +1,5 @@
-#ifndef INVALID_MOVE_EXCEP_H
-#define INVALID_MOVE_EXCEP_H
+#ifndef CHESS_EXCEPTIONS_H
+#define CHESS_EXCEPTIONS_H
 
 #include <stdexcept>
 #include <string>

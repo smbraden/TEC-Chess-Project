@@ -35,7 +35,7 @@ namespace chess {
 	public:
 
 		History();
-		bool newPage(const ChessPiece::team_type turn, const Grid& argGrid);	// returns true if addition results in 3-fold repetition
+		bool newPage(const team_type turn, const Grid& argGrid);	// returns true if addition results in 3-fold repetition
 		bool getDrawStatus() const;
 		int getFrequencyOf(const Grid& argGrid) const;
 
@@ -46,13 +46,13 @@ namespace chess {
 			int row;
 			bool enPassant;
 			bool castle;
-			ChessPiece::piece_type piece;
-			ChessPiece::team_type team;
-			ChessPiece::team_type turn;
+			piece_type piece;
+			team_type team;
+			team_type turn;
 
 			PieceRecord() : col(0), row(0), enPassant(false), castle(false),
-				piece(ChessPiece::piece_type::nullType), team(ChessPiece::team_type::nullType),
-				turn(ChessPiece::team_type::white) {}
+				piece(piece_type::nullType), team(team_type::nullType),
+				turn(team_type::white) {}
 
 			bool operator==(const PieceRecord& r) const {
 				return (col == r.col && row == r.row && enPassant == r.enPassant &&

@@ -27,7 +27,7 @@ namespace chess {
         // grid = Grid();
         history = History();
         turnMachine = ChessTeam();
-        winner = ChessPiece::team_type::nullType;
+        winner = team_type::nullType;
         draw = false;
     }
 
@@ -44,8 +44,8 @@ namespace chess {
             turnMachine.move(pos1, pos2, move1, move2);
         }
         catch (const chess_except::WinSignal& e) {
-            winner = (turnMachine.getTurnTeam() == ChessPiece::team_type::white) ?
-                ChessPiece::team_type::black : ChessPiece::team_type::white;
+            winner = (turnMachine.getTurnTeam() == team_type::white) ?
+                team_type::black : team_type::white;
             throw e;
         }
         catch (const chess_except::DrawSignal& e) {
@@ -53,8 +53,8 @@ namespace chess {
             throw e;
         }
         
-
-        if (history.newPage(turnMachine.getTurnTeam(), turnMachine.getGrid()))      // newPage() returns true when 3-fold repetition reached
+        // newPage() returns true when 3-fold repetition reached
+        if (history.newPage(turnMachine.getTurnTeam(), turnMachine.getGrid()))      
             throw chess_except::DrawSignal("The cause is 3-fold repetition of the game state...");
     }
 
@@ -81,10 +81,10 @@ namespace chess {
                 if (!isPiece(col, row))
                     std::cout << "__";
                 else {
-                    ChessPiece::team_type team = getTeamType(col, row);
-                    ChessPiece::piece_type piece = getPieceType(col, row);
-                    std::cout << static_cast<std::underlying_type<ChessPiece::team_type>::type>(team)
-                        << static_cast<std::underlying_type<ChessPiece::team_type>::type>(piece);
+                    team_type team = getTeamType(col, row);
+                    piece_type piece = getPieceType(col, row);
+                    std::cout << static_cast<std::underlying_type<team_type>::type>(team)
+                        << static_cast<std::underlying_type<team_type>::type>(piece);
                     // cast the team and piece types beack to underlying types for printing
                 }
 
@@ -107,9 +107,20 @@ namespace chess {
 
 
     
-    ChessPiece::team_type ChessBoard::getWinner()
+    team_type ChessBoard::getWinner()
     {
         return winner;
+    }
+
+
+
+
+
+
+
+    char ChessBoard::getWinnerUnlyingType()
+    {
+        return static_cast<std::underlying_type<team_type>::type>(winner);
     }
 
 
@@ -126,9 +137,20 @@ namespace chess {
 
     
 
-    ChessPiece::team_type ChessBoard::getTurnTeam()
+    team_type ChessBoard::getTurnTeam()
     {
         return turnMachine.getTurnTeam();
+    }
+
+
+
+
+
+
+
+    char ChessBoard::getTurnTeamUnlyingType()
+    {
+        return static_cast<std::underlying_type<team_type>::type>(turnMachine.getTurnTeam());
     }
 
 
@@ -147,7 +169,7 @@ namespace chess {
 
 
     // Precondition:    isPiece(pos1, pos2) == true
-    ChessPiece::team_type ChessBoard::getTeamType(int pos1, int pos2) const
+    team_type ChessBoard::getTeamType(int pos1, int pos2) const
     {
         assert(turnMachine.isPiece(pos1, pos2));
         return turnMachine.getTeamType(pos1, pos2);
@@ -158,7 +180,7 @@ namespace chess {
 
 
     // Precondition:    isPiece(pos1, pos2) == true
-    ChessPiece::piece_type ChessBoard::getPieceType(int pos1, int pos2) const
+    piece_type ChessBoard::getPieceType(int pos1, int pos2) const
     {
         assert(turnMachine.isPiece(pos1, pos2));
         return turnMachine.getPieceType(pos1, pos2);

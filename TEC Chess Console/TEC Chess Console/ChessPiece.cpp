@@ -27,7 +27,7 @@ namespace chess {
 		col = 0;
 		row = 0;
 		team = team_type::white;
-		piece = piece_type::none;
+		piece = piece_type::nullType;
 	}
 	
 	
@@ -42,7 +42,7 @@ namespace chess {
 		row = inRow;
 		col = inCol;
 		team = color;
-		piece = piece_type::none;
+		piece = piece_type::nullType;
 	}
 
 
@@ -82,7 +82,7 @@ namespace chess {
 
 
 	// Accessor
-	ChessPiece::team_type ChessPiece::getTeamType() const
+	team_type ChessPiece::getTeamType() const
 	{
 		return team;
 	}
@@ -93,7 +93,7 @@ namespace chess {
 
 	
 	// Accessor
-	ChessPiece::piece_type ChessPiece::getPieceType() const
+	piece_type ChessPiece::getPieceType() const
 	{
 		return piece;
 	}

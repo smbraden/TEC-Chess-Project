@@ -42,7 +42,7 @@ namespace chess {
 	int* Pawn::validMove(int inCol, int inRow) const
 	{
 		int* path = nullptr;
-		ChessPiece::team_type team = getTeamType();
+		team_type team = getTeamType();
 		int col = getCol();
 		int row = getRow();
 		
@@ -103,7 +103,7 @@ namespace chess {
 	{
 		int* path = nullptr;
 		int row = getRow();
-		ChessPiece::team_type team = getTeamType();
+		team_type team = getTeamType();
 
 		if (abs(inRow - getRow()) == 2) {
 
@@ -262,7 +262,7 @@ namespace chess {
 		static int* path = nullptr;
 		int row = getRow();
 		int col = getCol();
-		ChessPiece::team_type team = getTeamType();
+		team_type team = getTeamType();
 
 		bool rookMove = ((row == inRow) || (col == inCol));
 		bool bishopMove = ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow));
