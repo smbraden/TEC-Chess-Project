@@ -10,6 +10,8 @@
 #include <iostream>
 #include <ctype.h>		// for tolower()
 #include "ChessBoard.h"
+#include <SFML/Graphics.hpp>
+#include "jacobTests.h"
 
 using namespace std;
 using namespace chess;
