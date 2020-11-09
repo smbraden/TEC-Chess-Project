@@ -1,4 +1,4 @@
-/*/-------------------------------------------------------------------------------------//
+ /*/-------------------------------------------------------------------------------------//
 	Filename:           boardTest.cpp
 	Contributor:        Sonja Braden
 	Date:               10/4/2020
@@ -15,18 +15,10 @@ using namespace std;
 using namespace chess;
 
 
-
-#define char2col(ch) tolower(ch) - 97
-#define int2row(in) in - 1
-
-
-
-bool testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2);
-bool testMoveB(ChessBoard& argBoard, int x1, int y1, int x2, int y2);
+bool testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag);
 void play(ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& y2);
-
-
-
+inline int char2col(char ch);
+inline int int2row(int arg);
 
 
 
@@ -35,7 +27,7 @@ int main() {
 	char x1 = 'a';
 	int y1 = 1;
 	char x2 = 'a';
-	int y2 = 1;
+	int y2 = 1; 
 	char option = 'c';
 
 	ChessBoard testBoard;
@@ -43,8 +35,9 @@ int main() {
 	cout << endl << endl;
 
 	cout << "Welcome to the TEC Chess Test Console!" << endl;
-	cout << "To enter moves, use the format 'ColRow': a7, b3, etc"<< endl;
-	cout << "Enter 'q' to exit at the continue/quit promt after each round" << endl;
+	cout << "To enter moves, use the format 'ColRow': a7, b3, etc" << endl;
+	cout << "Don't hit 'enter' without any input. This is a quick n dirty test that will break." << endl;
+	cout << "Enter 'q' to exit at the continue/quit prompt after each round" << endl;
 	cout << "Play? Hit quit/continue now (q/c): ";
 	cin >> option;
 	cout << endl;
@@ -64,31 +57,59 @@ int main() {
 
 
 
+bool testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag)
+{
+	try {
+
+		argBoard.move(x1, y1, x2, y2);
+		cout << endl;
+		argBoard.printBoard();
+		cout << endl;
+		return true;
+	}
+	catch (const chess_except::InvalidMoveExcep& e) {
+		cout << e.getMsg() << endl << endl;
+	}
+	catch (const chess_except::DrawSignal& e) {
+		cout << e.getMsg() << endl << endl;
+		flag = true;
+		return true;
+	}
+	catch (const chess_except::WinSignal& e) {
+		cout << e.getMsg() << endl << endl;
+		flag = true;
+		return true;
+	}
+
+	return false;
+}
+
+
+
+
+
+
+
 void play(ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& y2)
 {
+	bool endFlag = false;
 
 	do {
 
 		do {
+			
+			string team = (argBoard.getTurnTeam() == ChessPiece::team_type::white) ? "White" : "Black";
 
-			cout << "White move. Current position:	";
+			cout << team << " move. Current position:	";
 			cin >> x1 >> y1;
-			cout << "White move. New position:	";
+			cout << team << " move. New position:	";
 			cin >> x2 >> y2;
 			cout << endl;
+			
+		} while (!testMove(argBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2), endFlag));
 
-		} while (!testMoveW(argBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2)));
-
-		do {
-
-			cout << "Black move. Current position:	";
-			cin >> x1 >> y1;
-			cout << "Black move. New position:	";
-			cin >> x2 >> y2;
-			cout << endl;
-
-		} while (!testMoveB(argBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2)));
-
+		if (endFlag)
+			break;
 
 		// Continue prompt
 		cout << "quit or continue (q/c):	";
@@ -97,7 +118,9 @@ void play(ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& 
 		if (option == 'q')
 			break;
 
-	} while (tolower(option) != 'q');
+	} while (tolower(option) != 'q' && !endFlag);
+
+	argBoard.printBoard();	// the final print will not execute (win or draw signaled by exception)
 }
 
 
@@ -105,42 +128,9 @@ void play(ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& 
 
 
 
-bool testMoveB(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
+inline int char2col(char ch)
 {
-	try {
-		
-		argBoard.moveBlack(x1, y1, x2, y2);
-		cout << endl;
-		argBoard.printBoard();
-		cout << endl;
-		return true;
-	}
-	catch (ChessBoard::BoundsError e) {
-		cout << "Cannot move to or from a position off the board" << endl << endl;
-	}
-	catch (ChessBoard::EmptySquareError e) {
-		cout << "Cannot move an empty square" << endl << endl;
-	}
-	catch (ChessBoard::TurnMoveError e) {
-		cout << "Not your turn, or you're moving the other player's piece" << endl << endl;
-	}
-	catch (ChessBoard::NoTurnPassError e) {
-		cout << "No moving to the same square, no passing turns" << endl << endl;
-	}
-	catch (ChessBoard::SelfCapturError e) {
-		cout << "You cannot 'capture' your own pieces" << endl << endl;
-	}
-	catch (ChessPiece::PieceMoveError e) {
-		cout << "Invalid move for that piece" << endl << endl;
-	}
-	catch (ChessBoard::IndirectPathError e) {
-		cout << "Indirect path. Only Knights can jump over other pieces" << endl << endl;
-	}
-	catch (ChessBoard::IlegalMoveError e) {
-		cout << "Ilegal move" << endl << endl;
-	}
-
-	return false;
+	return (tolower(ch) - 97);
 }
 
 
@@ -148,49 +138,15 @@ bool testMoveB(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
 
 
 
-bool testMoveW(ChessBoard& argBoard, int x1, int y1, int x2, int y2)
+inline int int2row(int arg)
 {
-	try {
-
-		argBoard.moveWhite(x1, y1, x2, y2);
-		cout << endl;
-		argBoard.printBoard();
-		cout << endl;
-		return true;
-	}
-	catch (ChessBoard::BoundsError e) {
-		cout << "Cannot move to or from a position off the board" << endl << endl;
-	}
-	catch (ChessBoard::EmptySquareError e) {
-		cout << "Cannot move an empty square" << endl << endl;
-	}
-	catch (ChessBoard::TurnMoveError e) {
-		cout << "Not your turn, or you're moving the other player's piece" << endl << endl;
-	}
-	catch (ChessBoard::NoTurnPassError e) {
-		cout << "No moving to the same square, no passing turns" << endl << endl;
-	}
-	catch (ChessBoard::SelfCapturError e) {
-		cout << "You cannot 'capture' your own pieces" << endl << endl;
-	}
-	catch (ChessPiece::PieceMoveError e) {
-		cout << "Invalid move for that piece" << endl << endl;
-	}
-	catch (ChessBoard::IndirectPathError e) {
-		cout << "Indirect path. Only Knights can jump over other pieces" << endl << endl;
-	}
-	catch (ChessBoard::IlegalMoveError e) {
-		cout << "Ilegal move" << endl << endl;
-	}
-
-	return false;
+	return (arg - 1);
 }
 
 
 
 
 /*
-
 Sample output...
 
   a  b  c  d  e  f  g  h
@@ -413,53 +369,59 @@ quit or continue (q/c):
 
 
 
+
+
 /*
 
-// Prototype
-bool testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2, ChessPiece::team_type inTeam);
 
 
-// Definition
-bool testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2, ChessPiece::team_type inTeam)
+/*
+bool testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag)
 {
 	try {
-		if (inTeam == ChessPiece::team_type::black)
-			argBoard.moveBlack(x1, y1, x2, y2);
-		else
-			argBoard.moveWhite(x1, y1, x2, y2);
+
+		argBoard.move(x1, y1, x2, y2);
 		cout << endl;
 		argBoard.printBoard();
 		cout << endl;
 		return true;
 	}
-	catch (ChessBoard::BoundsError e) {
-		cout << "Cannot move to or from a position off the board" << endl << endl;
+	catch (ChessTeam::BoundsError e) {
+		cout << "Cannot move to or from a position off the board..." << endl << endl;
 	}
-	catch (ChessBoard::EmptySquareError e) {
-		cout << "Cannot move an empty square" << endl << endl;
+	catch (ChessTeam::EmptySquareError e) {
+		cout << "Cannot move an empty square..." << endl << endl;
 	}
-	catch (ChessBoard::TurnMoveError e) {
-		cout << "Not your turn, or you're moving the other player's piece" << endl << endl;
+	catch (ChessTeam::TurnMoveError e) {
+		cout << "Not your turn, or you're moving the other player's piece..." << endl << endl;
 	}
-	catch (ChessBoard::NoTurnPassError e) {
-		cout << "No moving to the same square, no passing turns" << endl << endl;
+	catch (ChessTeam::NoTurnPassError e) {
+		cout << "No moving to the same square, no passing turns..." << endl << endl;
 	}
-	catch (ChessBoard::SelfCapturError e) {
-		cout << "You cannot 'capture' your own pieces" << endl << endl;
+	catch (ChessTeam::SelfCapturError e) {
+		cout << "You cannot 'capture' your own pieces..." << endl << endl;
 	}
 	catch (ChessPiece::PieceMoveError e) {
-		cout << "Invalid move for that piece" << endl << endl;
+		cout << "Invalid move for that piece..." << endl << endl;
 	}
-	catch (ChessBoard::IlegalMoveError e) {
-		cout << "Only Knights can jump over other pieces" << endl << endl;
+	catch (ChessTeam::IndirectPathError e) {
+		cout << "Indirect path. Only Knights can jump over other pieces..." << endl << endl;
+	}
+	catch (ChessTeam::CheckError e) {
+		cout << "This move does not remove your King from check. You might be pwned..." << endl << endl;
+	}
+	catch (ChessBoard::DrawSignal e) {
+		cout << "The game is a draw. The cause is 3-fold repetition of the game state..." << endl << endl;
+		flag = true;
+		return true;
+	}
+	catch (ChessBoard::WinSignal e) {
+		string winner = (argBoard.getWinner() == ChessPiece::team_type::white) ? "white" : "black";
+		cout << "The winner is " << winner << "!" << endl << endl;
+		flag = true;
+		return true;
 	}
 
 	return false;
 }
-
-
-
-// while (!testMove(testBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2), ChessPiece::team_type::black));
-// while (!testMove(testBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2), ChessPiece::team_type::white));
-
 */

@@ -6,7 +6,12 @@
 	Description:		Implementation  of the ChessPiece class. This is the base
 						class from which unique types of pieces are derived 
 						(queen, king, etc.) Unique types have different error checking 
-						for valid movement by the rules of chess.						
+						for valid movement by the rules of chess.	
+
+						Mutators for the piece and team members are intentionally absent.
+						For the derived ChessPiece's, we want to set these members 
+						at construction, and allow them to never change
+						(accidentally, or otherwise)
 //-------------------------------------------------------------------------------------/*/
 
 
@@ -16,12 +21,13 @@
 
 namespace chess {
 
+	// Default constructor
 	ChessPiece::ChessPiece()
 	{
 		col = 0;
 		row = 0;
 		team = team_type::white;
-		piece = piece_type::none;
+		piece = piece_type::nullType;
 	}
 	
 	
@@ -29,27 +35,14 @@ namespace chess {
 
 
 
-	// Default and Parameterized constructor
+	// Parameterized constructor
 	ChessPiece::ChessPiece(int inCol, int inRow, team_type color)
 	{
 		assert((inCol < BOARD_SIZE) && (inRow < BOARD_SIZE) && (inCol >= 0) && (inRow >= 0));
 		row = inRow;
 		col = inCol;
 		team = color;
-		piece = piece_type::none;
-	}
-
-
-
-
-
-	// Copy constructor
-	ChessPiece::ChessPiece(const ChessPiece& source)
-	{
-		row = source.row;
-		col = source.col;
-		team = source.team;
-		piece = source.piece;
+		piece = piece_type::nullType;
 	}
 
 
@@ -89,7 +82,7 @@ namespace chess {
 
 
 	// Accessor
-	ChessPiece::team_type ChessPiece::getTeamType() const
+	team_type ChessPiece::getTeamType() const
 	{
 		return team;
 	}
@@ -98,33 +91,13 @@ namespace chess {
 
 
 
-
-	// Mutator
-	void ChessPiece::setTeamType(team_type arg)
-	{
-		team = arg;
-	}
-
-
-
-
-
-
+	
 	// Accessor
-	ChessPiece::piece_type ChessPiece::getPieceType() const
+	piece_type ChessPiece::getPieceType() const
 	{
 		return piece;
 	}
 
-
-
-
-	
-	// Mutator
-	void ChessPiece::setPieceType(piece_type arg)
-	{
-		piece = arg;
-	}
 
 
 
@@ -158,8 +131,7 @@ namespace chess {
 		int* path = nullptr;
 		return path;
 	}
-
-	/* Real pieces will take the folloing form 
+	/* Real pieces will take the following form 
  		
 		int* ChessPiece::setPosition(int inCol, int inRow)
 		{
@@ -173,6 +145,16 @@ namespace chess {
 			return path;
 		}
 	*/
+
+
+
+
+
+	int* ChessPiece::getTrapSet() const
+	{
+		return nullptr;
+	}
+
 
 
 

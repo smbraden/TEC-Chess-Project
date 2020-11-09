@@ -8,7 +8,7 @@
 
 
 #include "DerivedPieces.h"
-
+#include <cstdlib>
 
 
 namespace chess {
@@ -19,7 +19,7 @@ namespace chess {
 	Pawn::Pawn() : ChessPiece()
 	{
 		enPassant = false;
-		setPieceType(piece_type::pawn);
+		piece = piece_type::pawn;
 	}
 
 
@@ -30,7 +30,7 @@ namespace chess {
 	Pawn::Pawn(int inCol, int inRow, team_type color, bool passVal) : ChessPiece(inCol, inRow, color)
 	{
 		enPassant = passVal;
-		setPieceType(piece_type::pawn);
+		piece = piece_type::pawn;
 	}
 
 
@@ -38,13 +38,11 @@ namespace chess {
 
 
 
-	/* Precondition:	the potential validity of the move with respect to 
-						other pieces on the board has been evaluated and confirmed.
-						(ie pieces blocking the pawn vs pieces captured by the pawn)	*/
+	
 	int* Pawn::validMove(int inCol, int inRow) const
 	{
 		int* path = nullptr;
-		ChessPiece::team_type team = getTeamType();
+		team_type team = getTeamType();
 		int col = getCol();
 		int row = getRow();
 		
@@ -52,33 +50,23 @@ namespace chess {
 
 			// if starting row and move two rows forward, or otherwise move only one row forward 
 			if ((row == 6 && inRow == 4 && col == inCol) || (inRow == (row - 1) && col == inCol)) {
-				if (row == 6 && inRow == 4) {			// col == inCol implied
+				if (row == 6 && inRow == 4)			// col == inCol implied
 					path = getPath(inCol, inRow);	// only need path if moved two spaces
-					// setEnPassant(true);
-				}
-			}
-			else if (row == inRow + 1 && abs(col - inCol) == 1) {	// diagonal capture, no path
-
-			}
-			else {
-				throw PieceMoveError();
-			}
+			  }
+			else if (!(row == inRow + 1 && abs(col - inCol) == 1)) // diagonal capture, no path
+				// throw PieceMoveError();
+				throw chess_except::PieceMoveError("Invalid Pawn move.");
 		}
 		else { //  if (team == white)
 
 			// if starting row and move two rows forward, or otherwise move only one row forward 
 			if ((row == 1 && inRow == 3 && col == inCol) || (inRow == row + 1 && col == inCol)) {
-				if (row == 1 && inRow == 3) {		//  col == inCol
+				if (row == 1 && inRow == 3)			//  col == inCol
 					path = getPath(inCol, inRow);	// only need path if moved two spaces
-					// setEnPassant(true);
-				}
 			}
-			else if (inRow == row + 1 && abs(col - inCol) == 1) {	// diagonal capture, no path
-
-			}
-			else {
-				throw PieceMoveError();
-			} 
+			else if (!(inRow == row + 1 && abs(col - inCol) == 1)) // diagonal capture, no path
+				// throw PieceMoveError();
+				throw chess_except::PieceMoveError("Invalid Pawn move.");
 		}
 
 		return path; // could be condensed, but with lengthy, less-readable condition statements
@@ -115,11 +103,15 @@ namespace chess {
 	{
 		int* path = nullptr;
 		int row = getRow();
-		ChessPiece::team_type team = getTeamType();
+		team_type team = getTeamType();
 
 		if (abs(inRow - getRow()) == 2) {
 
-			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
+			path = new int[MAX_PATH_LEN];
+			for (int i = 0; i < MAX_PATH_LEN; i++) {
+				path[i] = ARRAY_END;
+			}
+
 			path[0] = inCol;
 			path[1] = (team == team_type::black ? inRow + 1 : row + 1);
 			
@@ -127,7 +119,30 @@ namespace chess {
 		return path;	// path is nullptr if no spaces between position and destination
 	}
 	
-	
+
+
+
+
+
+	int* Pawn::getTrapSet() const
+	{
+		int rowShift = (team == team_type::white) ? 1 : -1;
+
+		const int SIZE = 7;
+		int* coordinates = new int[SIZE];  // 3 coordinates plus null terminator
+		int displacement = -1;
+
+		for (int j = 0; j < (SIZE - 1); j += 2) {
+			coordinates[j] = col + displacement;
+			coordinates[j + 1] = row + rowShift;
+			displacement++;
+		}
+		coordinates[SIZE - 1] = ARRAY_END;
+
+		return coordinates;
+		
+	}
+
 
 
 
@@ -137,7 +152,7 @@ namespace chess {
 
 	Knight::Knight() : ChessPiece()
 	{
-		setPieceType(piece_type::knight);
+		piece = piece_type::knight;
 	}
 
 
@@ -147,7 +162,7 @@ namespace chess {
 
 	Knight::Knight(int inCol, int inRow, team_type color) : ChessPiece(inCol, inRow, color)
 	{
-		setPieceType(piece_type::knight);
+		piece = piece_type::knight;
 	}
 
 
@@ -165,7 +180,8 @@ namespace chess {
 		bool cond2 = abs(row - inRow) == 2 && abs(col - inCol) == 1;
 
 		if (!(cond1 || cond2)) {	// neither satisfied
-			throw PieceMoveError();
+			// throw PieceMoveError();
+			throw chess_except::PieceMoveError("Invalid Knight move.");
 		}
 		
 		return nullptr;
@@ -186,12 +202,44 @@ namespace chess {
 
 
 
-	
+	int* Knight::getTrapSet() const
+	{
+		const int SIZE = 17;
+		int* coordinates = new int[SIZE]; // 8 coordinates plus null terminator
+
+		coordinates[0] = col - 2;
+		coordinates[1] = row + 1;
+		coordinates[2] = col - 1;
+		coordinates[3] = row + 2;
+
+		coordinates[4] = col + 1;
+		coordinates[5] = row + 2;
+		coordinates[6] = col + 2;
+		coordinates[7] = row + 1;
+
+		coordinates[8] = col + 2;
+		coordinates[9] = row - 1;
+		coordinates[10] = col + 1;
+		coordinates[11] = row - 2;
+
+		coordinates[12] = col - 1;
+		coordinates[13] = row - 2;
+		coordinates[14] = col - 2;
+		coordinates[15] = row - 1;
+
+		coordinates[16] = ARRAY_END;
+
+		return coordinates;
+	}
+
+
+
+
 	//------------------------------Queen-----------------------------------//
 
 	Queen::Queen() : ChessPiece()
 	{
-		setPieceType(piece_type::queen);
+		piece = piece_type::queen;
 	}
 
 
@@ -201,7 +249,7 @@ namespace chess {
 
 	Queen::Queen(int inCol, int inRow, team_type color) : ChessPiece(inCol, inRow, color)
 	{
-		setPieceType(piece_type::queen);
+		piece = piece_type::queen;
 	}
 
 
@@ -214,7 +262,7 @@ namespace chess {
 		static int* path = nullptr;
 		int row = getRow();
 		int col = getCol();
-		ChessPiece::team_type team = getTeamType();
+		team_type team = getTeamType();
 
 		bool rookMove = ((row == inRow) || (col == inCol));
 		bool bishopMove = ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow));
@@ -223,10 +271,11 @@ namespace chess {
 			path = getLateralPath(inCol, inRow);
 		}											// Rook and Bishop getPath()'s from Queen.
 		else if (bishopMove) {
-			path = getDiagonalPath(inCol, inRow); 
+			path = getDiagonalPath(inCol, inRow);
 		}
 		else {
-			throw PieceMoveError();
+			// throw PieceMoveError();
+			throw chess_except::PieceMoveError("Invalid Queen move.");
 		}
 
 		return path;
@@ -245,43 +294,40 @@ namespace chess {
 
 		if (abs(inCol - col) > 1 || abs(inRow - row) > 1) {	// if more than 1 squares traversed
 
-			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
+			path = new int[MAX_PATH_LEN];
+			for (int i = 0; i < MAX_PATH_LEN; i++) {
+				path[i] = ARRAY_END;
+			}
+
 			int j = 0;
+			int next = 0;
 
 			if (col == inCol) {		// same column
-				
-				int nextRow = 0;
-				if (row > inRow)
-					nextRow = inRow + 1;
-				else
-					nextRow = row + 1;
-				
-				while (nextRow != row) {
+
+				next = (row > inRow) ? inRow + 1 : row + 1;
+
+				while (next != row && next != inRow) {
 
 					path[2 * j] = inCol;
-					path[2 * j + 1] = nextRow;
-					nextRow++;
+					path[2 * j + 1] = next;
+					next++;
 					j++;
 				}
-			}
-			else if (row == inRow) {	// same row
 				
-				int nextCol = 0;
-				if (col > inCol)
-					nextCol = inCol + 1;
-				else
-					nextCol = col + 1;
-					
-				while (nextCol != col) {
+			}
+			else if (row == inRow) {	// same column
+
+				next = (col > inCol) ? inCol + 1 : col + 1;
+
+				while (next != col && next != inCol) {
 
 					path[2 * j + 1] = inRow;
-					path[2 * j] = nextCol;
-					nextCol++;
+					path[2 * j] = next;
+					next++;
 					j++;
 				}
 			}
 		}
-
 		return path;
 	}
 
@@ -289,14 +335,17 @@ namespace chess {
 
 
 
+	
+	
+	int* Queen::buildPath(signed int colSign, signed int rowSign, int inCol, int inRow) const {
 
+		int* path = new int[MAX_PATH_LEN];
+		for (int i = 0; i < MAX_PATH_LEN; i++) {
+			path[i] = ARRAY_END;
+		}
 
-	// (*)
-	int* Queen::buildDiagonalPath(int colSign, int rowSign, int inCol, int inRow) const {
-
-		int* path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
-		int col = getCol();
 		int row = getRow();
+		int col = getCol();
 
 		int nextRow = row + rowSign;
 		int nextCol = col + colSign;
@@ -328,30 +377,75 @@ namespace chess {
 			return path;
 		else {
 
-			if (col > inCol && row < inRow)
-				path = buildDiagonalPath(-1, 1, inCol, inRow);
-			else if (col < inCol && row < inRow)
-				path = buildDiagonalPath(1, 1, inCol, inRow);
-			else if (col < inCol && row > inRow)
-				path = buildDiagonalPath(1, -1, inCol, inRow);
-			else if (col > inCol && row > inRow)
-				path = buildDiagonalPath(-1, -1, inCol, inRow);
+			if (col > inCol && row < inRow) {
+				path = buildPath(-1, 1, inCol, inRow);
+			}
+			else if (col < inCol && row < inRow) {
+				path = buildPath(1, 1, inCol, inRow);
+			}
+			else if (col < inCol && row > inRow) {
+				path = buildPath(1, -1, inCol, inRow);
+			}
+			else if (col > inCol && row > inRow) {
+				path = buildPath(-1, -1, inCol, inRow);
+			}
 		}
 
 		return path;
 	}
-	
 
 
 
-	
+
+
+
+
+	int* Queen::getTrapSet() const
+	{
+		const int SIZE = 17;
+		int* coordinates = new int[SIZE]; // 8 coordinates plus null terminator
+
+		coordinates[0] = col;
+		coordinates[1] = row + 1;
+
+		coordinates[2] = col;
+		coordinates[3] = row - 1;
+
+		coordinates[4] = col + 1;
+		coordinates[5] = row;
+
+		coordinates[6] = col - 1;
+		coordinates[7] = row;
+
+		coordinates[8] = col - 1;
+		coordinates[9] = row - 1;
+
+		coordinates[10] = col + 1;
+		coordinates[11] = row - 1;
+
+		coordinates[12] = col + 1;
+		coordinates[13] = row + 1;
+
+		coordinates[14] = col - 1;
+		coordinates[15] = row + 1;
+
+		coordinates[16] = ARRAY_END;
+
+		return coordinates;
+	}
+
+
+
+
+
 
 
 	//------------------------------Rook-----------------------------------//
 
 	Rook::Rook() : Queen()
 	{
-		setPieceType(piece_type::rook);
+		piece = piece_type::rook;
+		castle = true;
 	}
 
 
@@ -359,9 +453,10 @@ namespace chess {
 
 
 
-	Rook::Rook(int inCol, int inRow, team_type color) : Queen(inCol, inRow, color)
+	Rook::Rook(int inCol, int inRow, team_type color, bool c) : Queen(inCol, inRow, color)
 	{
-		setPieceType(piece_type::rook);
+		piece = piece_type::rook;
+		castle = c;
 	}
 
 
@@ -379,9 +474,30 @@ namespace chess {
 		if ((row == inRow) || (col == inCol)) // if moving only along columns or rows
 			path = getPath(inCol, inRow);
 		else
-			throw PieceMoveError();
+			throw chess_except::PieceMoveError("Invalid Rook move.");
+			// throw PieceMoveError();
 
 		return path;
+	}
+
+
+
+
+
+
+	bool Rook::getCastleStatus()
+	{
+		return castle;
+	}
+
+
+
+
+
+
+	void Rook::setCastleStatus(bool arg)
+	{
+		castle = arg;
 	}
 
 
@@ -399,12 +515,39 @@ namespace chess {
 
 
 
+	int* Rook::getTrapSet() const
+	{
+		const int SIZE = 9;
+		int* coordinates = new int[SIZE]; // 4 coordinates plus null terminator
+
+		coordinates[0] = col;
+		coordinates[1] = row + 1;
+
+		coordinates[2] = col;
+		coordinates[3] = row - 1;
+
+		coordinates[4] = col + 1;
+		coordinates[5] = row;
+
+		coordinates[6] = col - 1;
+		coordinates[7] = row;
+
+		coordinates[8] = ARRAY_END;
+
+		return coordinates;
+	}
+
+
+
+
+
 	//------------------------------Bishop-----------------------------------//
 
 	Bishop::Bishop() : Queen()
 	{
-		setPieceType(piece_type::bishop);
+		piece = piece_type::bishop;
 	}
+
 
 
 
@@ -413,7 +556,7 @@ namespace chess {
 
 	Bishop::Bishop(int inCol, int inRow, team_type color) : Queen(inCol, inRow, color)
 	{
-		setPieceType(piece_type::bishop);
+		piece = piece_type::bishop;
 	}
 
 
@@ -427,13 +570,12 @@ namespace chess {
 		int col = getCol();
 		int row = getRow();
 
-		if ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow)) {
+		if ((col - inCol) == (row - inRow) || (col - inCol) == -(row - inRow))
 			path = getPath(inCol, inRow);
-		}
-		else {
-			throw PieceMoveError();
-		}
-
+		else
+			throw chess_except::PieceMoveError("Invalid Bishop move.");
+			// throw PieceMoveError();
+		
 		return path;
 	}
 
@@ -451,14 +593,40 @@ namespace chess {
 
 
 
+	
+
+	int* Bishop::getTrapSet() const
+	{
+		const int SIZE = 9;
+		int* coordinates = new int[SIZE]; // 4 coordinates plus null terminator
+
+		coordinates[0] = col - 1;
+		coordinates[1] = row - 1;
+
+		coordinates[2] = col + 1;
+		coordinates[3] = row - 1;
+
+		coordinates[4] = col + 1;
+		coordinates[5] = row + 1;
+
+		coordinates[6] = col - 1;
+		coordinates[7] = row + 1;
+
+		coordinates[8] = ARRAY_END;
+
+		return coordinates;
+	}
+
+
+
+
+
 	//------------------------------King-----------------------------------//
 
-	King::King()
+	King::King() : ChessPiece()
 	{
-		setPieceType(piece_type::king);
-		castle = false;
-		check = false;
-		checkMate = false;
+		piece = piece_type::king;
+		castle = true;
 	}
 
 
@@ -466,12 +634,10 @@ namespace chess {
 
 
 
-	King::King(int inCol, int inRow, team_type color)
+	King::King(int inCol, int inRow, team_type color, bool c) : ChessPiece(inCol, inRow, color)
 	{
-		setPieceType(piece_type::king);
-		castle = false;
-		check = false;
-		checkMate = false;
+		piece = piece_type::king;
+		castle = c;
 	}
 
 
@@ -488,12 +654,11 @@ namespace chess {
 		int row = getRow();
 		int col = getCol();
 
-		if ((inRow <= row + 1) && (inRow >= row - 1) && (inCol <= col + 1) && (inCol >= col - 1)) {
-			
-		}
-		else {
-			throw PieceMoveError();
-		}
+		// if ((inRow > row + 1) || (inRow < row - 1) || (inCol > col + 1) || (inCol < col - 1))
+		if (!((inRow <= row + 1) && (inRow >= row - 1) && (inCol <= col + 1) && (inCol >= col - 1))) 
+			throw chess_except::PieceMoveError("Invalid King move.");
+			// throw PieceMoveError();
+
 
 		return  nullptr;
 	}
@@ -508,41 +673,14 @@ namespace chess {
 		return castle;
 	}
 
+
+
+
+
+
 	void King::setCastleStatus(bool arg)
 	{
 		castle = arg;
-	}
-
-
-
-
-
-
-
-
-	bool King::getCheckStatus()
-	{
-		return check;
-	}
-
-	void King::setCheckStatus(bool arg)
-	{
-		check = arg;
-	}
-
-
-
-
-
-
-	bool King::getMateStatus()
-	{
-		return checkMate;
-	}
-
-	void King::setMateStatus(bool arg)
-	{
-		checkMate = arg;
 	}
 
 
@@ -559,96 +697,221 @@ namespace chess {
 
 
 
+
+	int* King::getTrapSet() const
+	{
+		const int SIZE = 17;
+		int* coordinates = new int[SIZE]; // 8 coordinates plus null terminator
+
+		coordinates[0] = col;
+		coordinates[1] = row + 1;
+
+		coordinates[2] = col;
+		coordinates[3] = row - 1;
+
+		coordinates[4] = col + 1;
+		coordinates[5] = row;
+
+		coordinates[6] = col - 1;
+		coordinates[7] = row;
+
+		coordinates[8] = col - 1;
+		coordinates[9] = row - 1;
+
+		coordinates[10] = col + 1;
+		coordinates[11] = row - 1;
+
+		coordinates[12] = col + 1;
+		coordinates[13] = row + 1;
+
+		coordinates[14] = col - 1;
+		coordinates[15] = row + 1;
+
+		coordinates[16] = ARRAY_END;
+
+		return coordinates;
+	}
+
+
+
+
 }	// closes namespace
 
 
 
-// (*)
-/*	int* Queen::getDiagonalPath(int inCol, int inRow) const
+
+
+
+
+
+
+
+/*
+
+Some alternative implementations...
+
+
+int* Queen::getDiagonalPath(int inCol, int inRow) const
+{
+	int* path = nullptr;
+	int col = getCol();
+	int row = getRow();
+
+	if (abs(inCol - col) == 1 && abs(inRow - row) == 1)	// moved by only 1 space
+		return nullptr;
+	else {
+		path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };	// function for this?
+
+		if (row < inRow && col > inCol) {
+
+			//	__ x2 __ __
+			//	__ __ __ __
+			//	__ __ __ x1
+			//	__ __ __ __
+
+			int nextRow = row + 1;
+			int nextCol = col - 1;
+			int j = 0;
+			while (nextRow != inRow && nextCol != inCol) {
+				path[j * 2] = nextCol;
+				path[j * 2 + 1] = nextRow;
+				j++;
+				nextRow++;
+				nextCol--;
+			}
+		}
+		else if (row < inRow && col < inCol) {
+
+			//	__ __ __ x2
+			//	__ __ __ __
+			//	__ x1 __ __
+			//	__ __ __ __
+
+			int nextRow = row + 1;
+			int nextCol = col + 1;
+			int j = 0;
+			while (nextRow != inRow && nextCol != inCol) {
+				path[j * 2] = nextCol;
+				path[j * 2 + 1] = nextRow;
+				j++;
+				nextRow++;
+				nextCol++;
+			}
+		}
+		else if (row > inRow && col < inCol) {
+
+			//	__ __ __ __
+			//	__ x1 __ __
+			//	__ __ __ __
+			//	__ __ __ x2
+
+			int nextRow = row - 1;
+			int nextCol = col + 1;
+			int j = 0;
+			while (nextRow != inRow && nextCol != inCol) {
+				path[j * 2] = nextCol;
+				path[j * 2 + 1] = nextRow;
+				j++;
+				nextRow--;
+				nextCol++;
+			}
+		}
+		else if (row > inRow && col > inCol) {
+
+			//	__ __ __ x1
+			//	__ __ __ __
+			//	__ x2 __ __
+			//	__ __ __ __
+
+			int nextRow = row - 1;
+			int nextCol = col - 1;
+			int j = 0;
+			while (nextRow != inRow && nextCol != inCol) {
+				path[j * 2] = nextCol;
+				path[j * 2 + 1] = nextRow;
+				j++;
+				nextRow--;
+				nextCol--;
+			}
+		}
+	}
+
+	return path;
+}
+
+*/
+
+
+
+
+
+/*
+
+int* Queen::getLateralPath(int inCol, int inRow) const
 	{
 		int* path = nullptr;
 		int col = getCol();
 		int row = getRow();
 
-		if (abs(inCol - col) == 1 && abs(inRow - row) == 1)	// moved by only 1 space
-			return nullptr;
-		else {
-			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };	// function for this?
+		if (abs(inCol - col) > 1 || abs(inRow - row) > 1) {	// if more than 1 squares traversed
 
-			if (row < inRow && col > inCol) {
+			path = new int[2 * MAX_PATH]{ -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 };
+			int j = 0;
 
-				//	__ x2 __ __
-				//	__ __ __ __
-				//	__ __ __ x1
-				//	__ __ __ __
+			if (col == inCol) {	// same column
 
-				int nextRow = row + 1;
-				int nextCol = col - 1;
-				int j = 0;
-				while (nextRow != inRow && nextCol != inCol) {
-					path[j * 2] = nextCol;
-					path[j * 2 + 1] = nextRow;
-					j++;
-					nextRow++;
-					nextCol--;
+				if (row > inRow) {
+
+					int nextRow = inRow + 1;
+					while (nextRow != row) {
+
+						path[2 * j] = inCol;
+						path[2 * j + 1] = nextRow;
+						nextRow++;
+						j++;
+					}
+				}
+				else {	// if row < inRow
+
+					int nextRow = row + 1;
+					while (nextRow != inRow) {
+
+						path[2 * j] = inCol;
+						path[2 * j + 1] = nextRow;
+						nextRow++;
+						j++;
+					}
 				}
 			}
-			else if (row < inRow && col < inCol) {
+			else if (row == inRow) {	// same column
 
-				//	__ __ __ x2
-				//	__ __ __ __
-				//	__ x1 __ __
-				//	__ __ __ __
+				if (col > inCol) {
 
-				int nextRow = row + 1;
-				int nextCol = col + 1;
-				int j = 0;
-				while (nextRow != inRow && nextCol != inCol) {
-					path[j * 2] = nextCol;
-					path[j * 2 + 1] = nextRow;
-					j++;
-					nextRow++;
-					nextCol++;
+					int nextCol = inCol + 1;
+					while (nextCol != col) {
+
+						path[2 * j + 1] = inRow;
+						path[2 * j] = nextCol;
+						nextCol++;
+						j++;
+					}
 				}
-			}
-			else if (row > inRow && col < inCol) {
+				else {	// if col < inCol
 
-				//	__ __ __ __
-				//	__ x1 __ __
-				//	__ __ __ __
-				//	__ __ __ x2
+					int nextCol = col + 1;
+					while (nextCol != inCol) {
 
-				int nextRow = row - 1;
-				int nextCol = col + 1;
-				int j = 0;
-				while (nextRow != inRow && nextCol != inCol) {
-					path[j * 2] = nextCol;
-					path[j * 2 + 1] = nextRow;
-					j++;
-					nextRow--;
-					nextCol++;
-				}
-			}
-			else if (row > inRow && col > inCol) {
-
-				//	__ __ __ x1
-				//	__ __ __ __
-				//	__ x2 __ __
-				//	__ __ __ __
-
-				int nextRow = row - 1;
-				int nextCol = col - 1;
-				int j = 0;
-				while (nextRow != inRow && nextCol != inCol) {
-					path[j * 2] = nextCol;
-					path[j * 2 + 1] = nextRow;
-					j++;
-					nextRow--;
-					nextCol--;
+						path[2 * j + 1] = inRow;
+						path[2 * j] = nextCol;
+						nextCol++;
+						j++;
+					}
 				}
 			}
 		}
 
 		return path;
 	}
-	*/
+
+
+*/

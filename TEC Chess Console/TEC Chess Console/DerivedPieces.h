@@ -21,16 +21,37 @@ namespace chess {
 		Pawn();
 		Pawn(int inCol, int inRow, team_type color, bool passVal);
 		class PawnMoveError {};
-		int* validMove(int inCol, int inRow) const;	// no "const" for Pawns b/c need to setEnPassant()  
+		int* validMove(int inCol, int inRow) const;
 		void setEnPassant(bool);
 		bool getEnPassant() const;
-
+		int* getTrapSet() const;
 
 	protected:
 
 		bool enPassant;
 		int* getPath(int inCol, int inRow) const;
 		
+	};
+	
+	
+	
+	
+	
+	
+	class Knight : public ChessPiece {
+
+	public:
+
+		Knight();
+		Knight(int inCol, int inRow, team_type color);
+		class KnightMoveError {};
+		int* validMove(int inCol, int inRow) const;
+		int* getTrapSet() const;
+
+	private:
+
+		int* getPath(int inCol, int inRow) const;
+
 	};
 
 
@@ -46,53 +67,14 @@ namespace chess {
 		Queen(int inCol, int inRow, team_type color);
 		class QueenMoveError {};
 		int* validMove(int inCol, int inRow) const;
+		int* getTrapSet() const;
 
 	protected:	// for Rook and Bishop access to these getPath()'s
 
-		//int* getPath(int inCol, int inRow) const;
 		int* getLateralPath(int inCol, int inRow) const;
 		int* getDiagonalPath(int inCol, int inRow) const;
-		int* buildDiagonalPath(int colSign, int rowSign, int inCol, int inRow) const; // getDiagonalPath() helper function
-	};
-
-
-
-
-
-
-	class Rook : public Queen {
-
-	public:
-
-		Rook();
-		Rook(int inCol, int inRow, team_type color);
-		class RookMoveError {};
-		int* validMove(int inCol, int inRow) const;
-		
-	private:
-
-		int* getPath(int inCol, int inRow) const;
-		
-	};
-
-
-
-
-
-
-	class Knight : public ChessPiece {
-
-	public:
-
-		Knight();
-		Knight(int inCol, int inRow, team_type color);
-		class KnightMoveError {};
-		int* validMove(int inCol, int inRow) const;
-		
-	private:
-
-		int* getPath(int inCol, int inRow) const;
-		
+		// helper function to getDiagonalPath() 
+		int* buildPath(signed int colSign, signed int rowSign, int inCol, int inRow) const;
 	};
 
 
@@ -107,11 +89,36 @@ namespace chess {
 		Bishop(int inCol, int inRow, team_type color);
 		class BishopMoveError {};
 		int* validMove(int inCol, int inRow) const;
-				
+		int* getTrapSet() const;
+
 	private:
 
 		int* getPath(int inCol, int inRow) const;
 		
+	};
+
+
+
+
+
+
+	class Rook : public Queen {
+
+	public:
+
+		Rook();
+		Rook(int inCol, int inRow, team_type color, bool c);
+		class RookMoveError {};
+		int* validMove(int inCol, int inRow) const;
+		int* getTrapSet() const;
+		bool getCastleStatus();
+		void setCastleStatus(bool arg);
+
+	private:
+
+		bool castle;	// true as long as rook  has never moved yet
+		int* getPath(int inCol, int inRow) const;
+
 	};
 
 
@@ -125,21 +132,16 @@ namespace chess {
 	public:
 
 		King();
-		King(int inCol, int inRow, team_type color);
+		King(int inCol, int inRow, team_type color, bool c);
 		class KingMoveError {};
 		int* validMove(int inCol, int inRow) const;
+		int* getTrapSet() const;
 		bool getCastleStatus();
 		void setCastleStatus(bool arg);
-		bool getCheckStatus();
-		void setCheckStatus(bool arg);
-		bool getMateStatus();
-		void setMateStatus(bool arg);
-
+		
 	private:
 
 		bool castle;	// true as long as king has never moved yet
-		bool check;
-		bool checkMate;
 		int* getPath(int inCol, int inRow) const;
 		
 	};

@@ -1,0 +1,114 @@
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 bP bP bP bP bP bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ __ __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 wP wP wP wP wP wP wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+
+Welcome to the TEC Chess Test Console!
+To enter moves, use the format 'ColRow': a7, b3, etc
+Don't hit 'enter' without any input. This is a quick n dirty test that will break.
+Enter 'q' to exit at the continue/quit prompt after each round
+Play? Hit quit/continue now (q/c): c
+
+White move. Current position:   e2
+White move. New position:       e4
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 bP bP bP bP bP bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 __ __ __ __ __ __ __ __ 5
+4 __ __ __ __ wP __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 wP wP wP wP __ wP wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): c
+
+Black move. Current position:   e
+7
+Black move. New position:       e5
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 bP bP bP bP __ bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 __ __ __ __ bP __ __ __ 5
+4 __ __ __ __ wP __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 wP wP wP wP __ wP wP wP 2
+1 wR wN wB wQ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): c
+
+White move. Current position:   d1
+White move. New position:       h5
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ bK bB bN bR 8
+7 bP bP bP bP __ bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 __ __ __ __ bP __ __ wQ 5
+4 __ __ __ __ wP __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 wP wP wP wP __ wP wP wP 2
+1 wR wN wB __ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): c
+
+Black move. Current position:   e8
+Black move. New position:       e7
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ __ bB bN bR 8
+7 bP bP bP bP bK bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 __ __ __ __ bP __ __ wQ 5
+4 __ __ __ __ wP __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 wP wP wP wP __ wP wP wP 2
+1 wR wN wB __ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): c
+
+White move. Current position:   h5
+White move. New position:       e5
+
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ __ bB bN bR 8
+7 bP bP bP bP bK bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 __ __ __ __ wQ __ __ __ 5
+4 __ __ __ __ wP __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 wP wP wP wP __ wP wP wP 2
+1 wR wN wB __ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
+
+quit or continue (q/c): q
+
+  a  b  c  d  e  f  g  h
+8 bR bN bB bQ __ bB bN bR 8
+7 bP bP bP bP bK bP bP bP 7
+6 __ __ __ __ __ __ __ __ 6
+5 __ __ __ __ wQ __ __ __ 5
+4 __ __ __ __ wP __ __ __ 4
+3 __ __ __ __ __ __ __ __ 3
+2 wP wP wP wP __ wP wP wP 2
+1 wR wN wB __ wK wB wN wR 1
+  a  b  c  d  e  f  g  h
