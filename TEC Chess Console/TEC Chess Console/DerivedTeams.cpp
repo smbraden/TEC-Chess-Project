@@ -15,9 +15,9 @@ namespace chess {
 	{
 		kCol = 4;
 		kRow = 0;
-		team = ChessPiece::team_type::white;
+		team = team_type::white;
 		grid = Grid();
-		checkmateStatus = false;
+		
 	}
 
 
@@ -29,9 +29,9 @@ namespace chess {
 	{
 		kCol = 4;
 		kRow = 0;
-		team = ChessPiece::team_type::white;
+		team = team_type::white;
 		grid = g;
-		checkmateStatus = m;
+		
 	}
 
 
@@ -58,7 +58,7 @@ namespace chess {
 	{
 		assert(inBounds4(pos1, pos2, move1, move2));
 
-		if (isPiece(pos1, pos2) && getPiece(pos1, pos2) != ChessPiece::piece_type::pawn) {
+		if (isPiece(pos1, pos2) && getPiece(pos1, pos2) != piece_type::pawn) {
 			return false;
 		}
 		
@@ -83,9 +83,9 @@ namespace chess {
 	void WhiteTeam::pawnPromote(int pos1, int pos2, int move1, int move2)
 	{
 		assert(inBounds4(pos1, pos2, move1, move2));
-		ChessPiece::team_type team = getTeam(pos1, pos2);
+		team_type team = getTeam(pos1, pos2);
 
-		if (isPiece(pos1, pos2) && getPiece(pos1, pos2) == ChessPiece::piece_type::pawn 
+		if (isPiece(pos1, pos2) && getPiece(pos1, pos2) == piece_type::pawn 
 																			&& move2 == 7) {
 			
 			// later, promote with options HERE
@@ -105,12 +105,12 @@ namespace chess {
 		assert(isPiece(pos1, pos2));
 
 		// confirm the basic conditions
-		if (getPiece(pos1, pos2) != ChessPiece::piece_type::king || 
+		if (getPiece(pos1, pos2) != piece_type::king || 
 				!((King*)getElement(pos1, pos2))->getCastleStatus() || isCheck(kCol, kRow))
 			return false;
 
 		if (move1 == 2 && move2 == 0) {
-			if (isPiece(0, 0) && getPiece(0, 0) == ChessPiece::piece_type::rook 
+			if (isPiece(0, 0) && getPiece(0, 0) == piece_type::rook 
 									&& ((Rook*)getElement(0, 0))->getCastleStatus()) {
 				if (validCastlePath(4, 0, 0, 0)) {
 					((Rook*)getElement(0, 0))->setCastleStatus(false);
@@ -121,7 +121,7 @@ namespace chess {
 			}
 		}
 		else if (move1 == 6 && move2 == 0) {
-			if (isPiece(7, 0) && getPiece(7, 0) == ChessPiece::piece_type::rook 
+			if (isPiece(7, 0) && getPiece(7, 0) == piece_type::rook 
 									&& ((Rook*)getElement(7, 0))->getCastleStatus()) {
 				if (validCastlePath(4, 0, 7, 0)) {
 					((Rook*)getElement(7, 0))->setCastleStatus(false);
@@ -152,7 +152,7 @@ namespace chess {
 			return true;
 		}
 		if (isPiece(left, attack2) && getTeam(left, attack2) != team
-			&& getPiece(left, attack2) == ChessPiece::piece_type::pawn) {
+			&& getPiece(left, attack2) == piece_type::pawn) {
 			attack1 = left;
 			return true;
 		}
@@ -168,7 +168,7 @@ namespace chess {
 
 	int* WhiteTeam::PawnMovesSet(int pos1, int pos2) const
 	{
-		assert(getPiece(pos1, pos2) != ChessPiece::piece_type::pawn);
+		assert(getPiece(pos1, pos2) != piece_type::pawn);
 		
 		int* coordinates = new int[6];
 
@@ -192,7 +192,7 @@ namespace chess {
 	{
 		kCol = 4;
 		kRow = 7;
-		team = ChessPiece::team_type::black;
+		team = team_type::black;
 		grid = Grid();
 		checkmateStatus = false;
 	}
@@ -206,7 +206,7 @@ namespace chess {
 	{
 		kCol = 4;
 		kRow = 7;
-		team = ChessPiece::team_type::black;
+		team = team_type::black;
 		grid = g;
 		checkmateStatus = m;
 	}
@@ -235,7 +235,7 @@ namespace chess {
 	{
 		assert(inBounds4(pos1, pos2, move1, move2));
 
-		if (isPiece(pos1, pos2) && getPiece(pos1, pos2) != ChessPiece::piece_type::pawn) {
+		if (isPiece(pos1, pos2) && getPiece(pos1, pos2) != piece_type::pawn) {
 			return false;
 		}
 
@@ -260,10 +260,9 @@ namespace chess {
 	void BlackTeam::pawnPromote(int pos1, int pos2, int move1, int move2)
 	{
 		assert(inBounds4(pos1, pos2, move1, move2));
-		ChessPiece::team_type team = getTeam(pos1, pos2);
+		team_type team = getTeam(pos1, pos2);
 
-		if (isPiece(pos1, pos2) && getPiece(pos1, pos2) == ChessPiece::piece_type::pawn
-																		&& move2 == 0) {
+		if (isPiece(pos1, pos2) && getPiece(pos1, pos2) == piece_type::pawn	&& move2 == 0) {
 			
 			// later, promote with options HERE
 			Queen* qPtr = new Queen(pos1, pos2, team);
@@ -282,12 +281,12 @@ namespace chess {
 		assert(isPiece(pos1, pos2));
 
 		// confirm the basic conditions
-		if (getPiece(pos1, pos2) != ChessPiece::piece_type::king 
+		if (getPiece(pos1, pos2) != piece_type::king 
 					|| !((King*)getElement(pos1, pos2))->getCastleStatus() || isCheck(kCol, kRow))
 			return false;
 
 		if (move1 == 6 && move2 == 7) {
-			if (isPiece(7, 7) && getPiece(7, 7) == ChessPiece::piece_type::rook 
+			if (isPiece(7, 7) && getPiece(7, 7) == piece_type::rook 
 					&& ((Rook*)getElement(7, 7))->getCastleStatus()) {
 				if (validCastlePath(4, 7, 7, 7)) {
 					((Rook*)getElement(7, 7))->setCastleStatus(false);
@@ -325,12 +324,12 @@ namespace chess {
 		int pRow = kRow - 1;
 
 		if (isPiece(right, attack2) && getTeam(right, attack2) != team
-			&& getPiece(right, attack2) == ChessPiece::piece_type::pawn) {
+			&& getPiece(right, attack2) == piece_type::pawn) {
 			attack1 = right;
 			return true;
 		}
 		if (isPiece(left, attack2) && getTeam(left, attack2) != team
-			&& getPiece(left, attack2) == ChessPiece::piece_type::pawn) {
+			&& getPiece(left, attack2) == piece_type::pawn) {
 			attack1 = left;
 			return true;
 		}

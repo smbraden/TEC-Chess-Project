@@ -33,9 +33,6 @@
     <ClInclude Include="ChessTeam.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DerivedTeams.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Grid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -68,16 +65,10 @@
     <ClCompile Include="ChessTeam_Mate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DerivedTeams.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="History.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LinkedBag.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
