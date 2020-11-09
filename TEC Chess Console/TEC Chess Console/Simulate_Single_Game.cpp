@@ -1,5 +1,5 @@
 /*/-------------------------------------------------------------------------------------//
-   Filename:           Simulate_Game_CPPFile.cpp
+   Filename:           Simulate_Single_Game.cpp
    Contributor:        Sonja Braden
    Date:               11/2/2020
    Reference:
@@ -29,22 +29,22 @@ int main() {
 	int result;
 
 	cout << endl << "Welcome to the Chess Game Simulator. Let's test some games..." << endl << endl;
-	
+
 	printHeader(1);
 	result = play("testGame1.txt", testBoard);
-	
+
 	printHeader(2); // should be a checkmate on black, but not getting this result
-	result = play("testGame2.txt", testBoard);	
-	
+	result = play("testGame2.txt", testBoard);
+
 	printHeader(3);
 	result = play("testGame3.txt", testBoard);
-	
+
 	printHeader(4);
 	result = play("testGame4.txt", testBoard);
-	
+
 	printHeader(5);
 	result = play("testGame5.txt", testBoard);
-	
+
 	return 0;
 }
 
@@ -68,7 +68,7 @@ bool testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag)
 		cout << e.getMsg() << endl << endl;
 	}
 	catch (const chess_except::DrawSignal& e) {
-		
+
 		cout << "//-----------------------------------------//" << endl;
 		cout << "    " << e.getMsg() << endl;
 		cout << "//-----------------------------------------//" << endl << endl;
@@ -113,7 +113,7 @@ int play(const string filename, ChessBoard& argBoard)
 
 	while (!endFlag && inputFile >> x1 && inputFile >> y1 && inputFile >> x2 && inputFile >> y2) {
 
-		string team = (argBoard.getTurnTeam() == ChessPiece::team_type::white) ? "White" : "Black";
+		string team = (argBoard.getTurnTeam() == team_type::white) ? "White" : "Black";
 
 		system("PAUSE");	// lazy pause
 		cout << endl;
@@ -122,7 +122,7 @@ int play(const string filename, ChessBoard& argBoard)
 		cout << team << " move. New position:	" << x2 << y2 << endl << endl;
 
 		testMove(argBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2), endFlag);
-		
+
 	}
 
 	inputFile.clear();
@@ -137,11 +137,11 @@ int play(const string filename, ChessBoard& argBoard)
 
 
 
-void printHeader(int gameNum) 
+void printHeader(int gameNum)
 {
 
 	cout << "//-----------------------------------------//" << endl;
-	cout << "               Begin Game "		 << gameNum << endl;
+	cout << "               Begin Game " << gameNum << endl;
 	cout << "//-----------------------------------------//" << endl;
 	cout << endl;
 
@@ -167,6 +167,4 @@ inline int int2row(int arg)
 {
 	return (arg - 1);
 }
-
-
 

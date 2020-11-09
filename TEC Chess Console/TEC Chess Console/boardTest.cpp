@@ -35,6 +35,7 @@ int main() {
 	testBoard.printBoard();
 	cout << endl << endl;
 
+	/*
 	cout << "Welcome to the TEC Chess Test Console!" << endl;
 	cout << "To enter moves, use the format 'ColRow': a7, b3, etc" << endl;
 	cout << "Don't hit 'enter' without any input. This is a quick n dirty test that will break." << endl;
@@ -48,6 +49,7 @@ int main() {
 	else {
 		play(testBoard, option, x1, y1, x2, y2);
 	}
+	*/
 
 	//-----------------------Graphics-----------------------//
 
@@ -116,7 +118,6 @@ int main() {
 		drawlist.draw();
 		window.display();
 	}
-
 
 	return 0;
 }
