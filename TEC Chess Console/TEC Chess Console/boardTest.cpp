@@ -1,10 +1,9 @@
  /*/-------------------------------------------------------------------------------------//
 	Filename:           boardTest.cpp
-	Contributor:        Sonja Braden
-	Date:               10/4/2020
+	Contributors:       Sonja Braden, Jacob Halaweh
+	Date:               11/9/2020
 	Reference:
-	Description:		A client for testing the chess board class. The class requires 
-						extensive testing
+	Description:		A client for testing the chess board class and integrating graphics
 //-------------------------------------------------------------------------------------/*/
 
 #include <iostream>
@@ -49,6 +48,75 @@ int main() {
 	else {
 		play(testBoard, option, x1, y1, x2, y2);
 	}
+
+	//-----------------------Graphics-----------------------//
+
+	jtest::drawList drawlist;
+
+	// Creating window and objects.
+	sf::RenderWindow window(sf::VideoMode(1200, 600), "SFML works!");
+	window.setFramerateLimit(60);
+
+	// Shape objects
+	sf::CircleShape shape(100.f);
+	shape.setFillColor(sf::Color::Green);
+	sf::CircleShape shape2(30.f);
+	shape2.setFillColor(sf::Color::Blue);
+	sf::RectangleShape shape3;
+	sf::Vector2f sizing;
+	sizing.x = 30;
+	sizing.y = 30;
+	sf::Vector2f pos;
+	pos.x = 300;
+	pos.y = 300;
+	shape3.setSize(sizing);
+	shape3.setFillColor(sf::Color::Blue);
+	shape3.setPosition(pos);
+
+
+	// Sprite object test
+	sf::Texture wqTex;
+	if (!wqTex.loadFromFile("Images/WhiteQueen.png"))
+	{
+		// error...
+	}
+	sf::Sprite sprite;
+	sprite.setTexture(wqTex);
+	sf::Vector2f wqpos;
+	wqpos.x = 500;
+	wqpos.y = 300;
+	sprite.setPosition(wqpos);
+
+	// Utilizing the drawList class so future shape draws are automated.
+	drawlist.setRenderWindow(window);
+	drawlist.addShape(shape);
+	drawlist.addShape(shape2);
+	drawlist.addShape(shape3);
+	drawlist.addSprite(sprite);
+
+	// Graphics while loop begins.           <----------------- Normal terminal stuff wont work past here because graphics is running. Game must be contained in this While-Loop!
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			// Testing mouse functionality.
+			sf::Vector2i localPosition = sf::Mouse::getPosition(window);
+			sf::Vector2f mpos;
+			mpos.x = localPosition.x - 30;
+			mpos.y = localPosition.y - 30;
+			shape2.setPosition(mpos);
+
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+
+		// Drawing window and objects.
+		window.clear();
+		drawlist.draw();
+		window.display();
+	}
+
 
 	return 0;
 }
@@ -147,283 +215,3 @@ inline int int2row(int arg)
 
 
 
-
-/*
-Sample output...
-
-  a  b  c  d  e  f  g  h
-8 bR bN bB bQ bK bB bN bR 8
-7 bP bP bP bP bP bP bP bP 7
-6 __ __ __ __ __ __ __ __ 6
-5 __ __ __ __ __ __ __ __ 5
-4 __ __ __ __ __ __ __ __ 4
-3 __ __ __ __ __ __ __ __ 3
-2 wP wP wP wP wP wP wP wP 2
-1 wR wN wB wQ wK wB wN wR 1
-  a  b  c  d  e  f  g  h
-
-
-Welcome to the TEC Chess Test Console!
-To enter moves, use the format 'ColRow': a7, b3, etc
-Enter 'q' to exit at the continue/quit promt after each round
-Play? Hit quit/continue now (q/c): c
-
-White move. Current position:   f2
-White move. New position:       f4
-
-
-  a  b  c  d  e  f  g  h
-8 bR bN bB bQ bK bB bN bR 8
-7 bP bP bP bP bP bP bP bP 7
-6 __ __ __ __ __ __ __ __ 6
-5 __ __ __ __ __ __ __ __ 5
-4 __ __ __ __ __ wP __ __ 4
-3 __ __ __ __ __ __ __ __ 3
-2 wP wP wP wP wP __ wP wP 2
-1 wR wN wB wQ wK wB wN wR 1
-  a  b  c  d  e  f  g  h
-
-Black move. Current position:   e2
-Black move. New position:       f2
-
-Not your turn, or you're moving the other player's piece
-
-Black move. Current position:   b8
-Black move. New position:       c6
-
-
-  a  b  c  d  e  f  g  h
-8 bR __ bB bQ bK bB bN bR 8
-7 bP bP bP bP bP bP bP bP 7
-6 __ __ bN __ __ __ __ __ 6
-5 __ __ __ __ __ __ __ __ 5
-4 __ __ __ __ __ wP __ __ 4
-3 __ __ __ __ __ __ __ __ 3
-2 wP wP wP wP wP __ wP wP 2
-1 wR wN wB wQ wK wB wN wR 1
-  a  b  c  d  e  f  g  h
-
-quit or continue (q/c): c
-
-White move. Current position:   e1
-White move. New position:       g3
-
-Invalid move for that piece
-
-White move. Current position:   e1
-White move. New position:       f2
-
-
-  a  b  c  d  e  f  g  h
-8 bR __ bB bQ bK bB bN bR 8
-7 bP bP bP bP bP bP bP bP 7
-6 __ __ bN __ __ __ __ __ 6
-5 __ __ __ __ __ __ __ __ 5
-4 __ __ __ __ __ wP __ __ 4
-3 __ __ __ __ __ __ __ __ 3
-2 wP wP wP wP wP wK wP wP 2
-1 wR wN wB wQ __ wB wN wR 1
-  a  b  c  d  e  f  g  h
-
-Black move. Current position:   d7
-Black move. New position:       d5
-
-
-  a  b  c  d  e  f  g  h
-8 bR __ bB bQ bK bB bN bR 8
-7 bP bP bP __ bP bP bP bP 7
-6 __ __ bN __ __ __ __ __ 6
-5 __ __ __ bP __ __ __ __ 5
-4 __ __ __ __ __ wP __ __ 4
-3 __ __ __ __ __ __ __ __ 3
-2 wP wP wP wP wP wK wP wP 2
-1 wR wN wB wQ __ wB wN wR 1
-  a  b  c  d  e  f  g  h
-
-quit or continue (q/c): c
-
-White move. Current position:   g1
-White move. New position:       f3
-
-
-  a  b  c  d  e  f  g  h
-8 bR __ bB bQ bK bB bN bR 8
-7 bP bP bP __ bP bP bP bP 7
-6 __ __ bN __ __ __ __ __ 6
-5 __ __ __ bP __ __ __ __ 5
-4 __ __ __ __ __ wP __ __ 4
-3 __ __ __ __ __ wN __ __ 3
-2 wP wP wP wP wP wK wP wP 2
-1 wR wN wB wQ __ wB __ wR 1
-  a  b  c  d  e  f  g  h
-
-Black move. Current position:   d8
-Black move. New position:       d6
-
-
-  a  b  c  d  e  f  g  h
-8 bR __ bB __ bK bB bN bR 8
-7 bP bP bP __ bP bP bP bP 7
-6 __ __ bN bQ __ __ __ __ 6
-5 __ __ __ bP __ __ __ __ 5
-4 __ __ __ __ __ wP __ __ 4
-3 __ __ __ __ __ wN __ __ 3
-2 wP wP wP wP wP wK wP wP 2
-1 wR wN wB wQ __ wB __ wR 1
-  a  b  c  d  e  f  g  h
-
-quit or continue (q/c): c
-
-White move. Current position:   f3
-White move. New position:       d4
-
-
-  a  b  c  d  e  f  g  h
-8 bR __ bB __ bK bB bN bR 8
-7 bP bP bP __ bP bP bP bP 7
-6 __ __ bN bQ __ __ __ __ 6
-5 __ __ __ bP __ __ __ __ 5
-4 __ __ __ wN __ wP __ __ 4
-3 __ __ __ __ __ __ __ __ 3
-2 wP wP wP wP wP wK wP wP 2
-1 wR wN wB wQ __ wB __ wR 1
-  a  b  c  d  e  f  g  h
-
-Black move. Current position:   c8
-Black move. New position:       h3
-
-Indirect path. Only Knights can jump over other pieces
-
-Black move. Current position:   d6
-Black move. New position:       b8
-
-Indirect path. Only Knights can jump over other pieces
-
-Black move. Current position:   c8
-Black move. New position:       a6
-
-Indirect path. Only Knights can jump over other pieces
-
-Black move. Current position:   a8
-Black move. New position:       b8
-
-
-  a  b  c  d  e  f  g  h
-8 __ bR bB __ bK bB bN bR 8
-7 bP bP bP __ bP bP bP bP 7
-6 __ __ bN bQ __ __ __ __ 6
-5 __ __ __ bP __ __ __ __ 5
-4 __ __ __ wN __ wP __ __ 4
-3 __ __ __ __ __ __ __ __ 3
-2 wP wP wP wP wP wK wP wP 2
-1 wR wN wB wQ __ wB __ wR 1
-  a  b  c  d  e  f  g  h
-
-quit or continue (q/c): c
-
-White move. Current position:   d4
-White move. New position:       c6
-
-
-  a  b  c  d  e  f  g  h
-8 __ bR bB __ bK bB bN bR 8
-7 bP bP bP __ bP bP bP bP 7
-6 __ __ wN bQ __ __ __ __ 6
-5 __ __ __ bP __ __ __ __ 5
-4 __ __ __ __ __ wP __ __ 4
-3 __ __ __ __ __ __ __ __ 3
-2 wP wP wP wP wP wK wP wP 2
-1 wR wN wB wQ __ wB __ wR 1
-  a  b  c  d  e  f  g  h
-
-Black move. Current position:   c8
-Black move. New position:       g4
-
-Indirect path. Only Knights can jump over other pieces
-
-Black move. Current position:   c8
-Black move. New position:       f5
-
-Indirect path. Only Knights can jump over other pieces
-
-Black move. Current position:   c8
-Black move. New position:       e6
-
-
-  a  b  c  d  e  f  g  h
-8 __ bR __ __ bK bB bN bR 8
-7 bP bP bP __ bP bP bP bP 7
-6 __ __ wN bQ bB __ __ __ 6
-5 __ __ __ bP __ __ __ __ 5
-4 __ __ __ __ __ wP __ __ 4
-3 __ __ __ __ __ __ __ __ 3
-2 wP wP wP wP wP wK wP wP 2
-1 wR wN wB wQ __ wB __ wR 1
-  a  b  c  d  e  f  g  h
-
-quit or continue (q/c):
-
-
-
-*/
-
-
-
-
-
-
-
-/*
-
-
-
-/*
-bool testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag)
-{
-	try {
-
-		argBoard.move(x1, y1, x2, y2);
-		cout << endl;
-		argBoard.printBoard();
-		cout << endl;
-		return true;
-	}
-	catch (ChessTeam::BoundsError e) {
-		cout << "Cannot move to or from a position off the board..." << endl << endl;
-	}
-	catch (ChessTeam::EmptySquareError e) {
-		cout << "Cannot move an empty square..." << endl << endl;
-	}
-	catch (ChessTeam::TurnMoveError e) {
-		cout << "Not your turn, or you're moving the other player's piece..." << endl << endl;
-	}
-	catch (ChessTeam::NoTurnPassError e) {
-		cout << "No moving to the same square, no passing turns..." << endl << endl;
-	}
-	catch (ChessTeam::SelfCapturError e) {
-		cout << "You cannot 'capture' your own pieces..." << endl << endl;
-	}
-	catch (ChessPiece::PieceMoveError e) {
-		cout << "Invalid move for that piece..." << endl << endl;
-	}
-	catch (ChessTeam::IndirectPathError e) {
-		cout << "Indirect path. Only Knights can jump over other pieces..." << endl << endl;
-	}
-	catch (ChessTeam::CheckError e) {
-		cout << "This move does not remove your King from check. You might be pwned..." << endl << endl;
-	}
-	catch (ChessBoard::DrawSignal e) {
-		cout << "The game is a draw. The cause is 3-fold repetition of the game state..." << endl << endl;
-		flag = true;
-		return true;
-	}
-	catch (ChessBoard::WinSignal e) {
-		string winner = (argBoard.getWinner() == ChessPiece::team_type::white) ? "white" : "black";
-		cout << "The winner is " << winner << "!" << endl << endl;
-		flag = true;
-		return true;
-	}
-
-	return false;
-}
-*/
