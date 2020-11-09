@@ -62,10 +62,13 @@
     <ClCompile Include="ChessTeam_Mate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Simulate_Games.cpp">
+    <ClCompile Include="AlgebraicNotation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AlgebraicNotation.cpp">
+    <ClCompile Include="boardTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulate_Games.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

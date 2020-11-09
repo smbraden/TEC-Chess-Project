@@ -113,7 +113,7 @@ int play(const string filename, ChessBoard& argBoard)
 
 	while (!endFlag && inputFile >> x1 && inputFile >> y1 && inputFile >> x2 && inputFile >> y2) {
 
-		string team = (argBoard.getTurnTeam() == ChessPiece::team_type::white) ? "White" : "Black";
+		string team = (argBoard.getTurnTeam() == team_type::white) ? "White" : "Black";
 
 		system("PAUSE");	// lazy pause
 		cout << endl;
