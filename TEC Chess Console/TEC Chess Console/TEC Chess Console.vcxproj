@@ -145,15 +145,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="boardTest.cpp" />
+    <ClCompile Include="ChessBoard.cpp" />
     <ClCompile Include="ChessPiece.cpp" />
+    <ClCompile Include="ChessTeam.cpp" />
+    <ClCompile Include="ChessTeam_Mate.cpp" />
     <ClCompile Include="DerivedPieces.cpp" />
+    <ClCompile Include="DerivedTeams.cpp" />
+    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="History.cpp" />
     <ClCompile Include="jacobTests.cpp" />
-    <ClCompile Include="piecesTest.cpp" />
+    <ClCompile Include="LinkedBag.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChessBoard.h" />
+    <ClInclude Include="ChessExceptions.h" />
     <ClInclude Include="ChessPiece.h" />
+    <ClInclude Include="ChessTeam.h" />
     <ClInclude Include="DerivedPieces.h" />
+    <ClInclude Include="DerivedTeams.h" />
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="History.h" />
     <ClInclude Include="jacobTests.h" />
+    <ClInclude Include="LinkedBag.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
