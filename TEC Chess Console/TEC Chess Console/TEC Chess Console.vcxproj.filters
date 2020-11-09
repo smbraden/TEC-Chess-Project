@@ -21,22 +21,7 @@
     <ClInclude Include="DerivedPieces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ChessTeam.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ChessBoard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="History.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LinkedBag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ChessExceptions.h">
+    <ClInclude Include="jacobTests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,25 +32,10 @@
     <ClCompile Include="DerivedPieces.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChessTeam.cpp">
+    <ClCompile Include="piecesTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ChessBoard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="History.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ChessTeam_Mate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Simulate_Games.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AlgebraicNotation.cpp">
+    <ClCompile Include="jacobTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

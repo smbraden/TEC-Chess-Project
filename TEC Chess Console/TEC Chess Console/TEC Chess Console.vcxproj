@@ -116,10 +116,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-system-d.lib;sfml-audio-d.lib;sfml-network-d.lib;sfml-window-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -130,34 +133,27 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics.lib;sfml-system.lib;sfml-audio.lib;sfml-network.lib;sfml-window.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AlgebraicNotation.cpp" />
-    <ClCompile Include="ChessBoard.cpp" />
     <ClCompile Include="ChessPiece.cpp" />
-    <ClCompile Include="ChessTeam.cpp" />
     <ClCompile Include="DerivedPieces.cpp" />
-    <ClCompile Include="Grid.cpp" />
-    <ClCompile Include="History.cpp" />
-    <ClCompile Include="ChessTeam_Mate.cpp" />
-    <ClCompile Include="Simulate_Games.cpp" />
+    <ClCompile Include="jacobTests.cpp" />
+    <ClCompile Include="piecesTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChessBoard.h" />
     <ClInclude Include="ChessPiece.h" />
-    <ClInclude Include="ChessTeam.h" />
     <ClInclude Include="DerivedPieces.h" />
-    <ClInclude Include="Grid.h" />
-    <ClInclude Include="History.h" />
-    <ClInclude Include="ChessExceptions.h" />
-    <ClInclude Include="LinkedBag.h" />
+    <ClInclude Include="jacobTests.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

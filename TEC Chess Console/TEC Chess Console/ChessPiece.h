@@ -55,6 +55,8 @@ namespace chess {
 			virtual int* validMove(int inCol, int inRow) const;
 			virtual int* getTrapSet() const;
 
+
+
 		protected:
 
 			int col;
