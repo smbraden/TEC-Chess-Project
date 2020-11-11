@@ -25,8 +25,8 @@ namespace chess_ui {
 		void draw();
 
 	private:
-		std::vector<sf::Shape*> shapeObjPtrs = {};
-		std::vector<sf::Sprite*> spriteObjPtrs = {};
+		std::vector<sf::Shape*> shapeObjPtrs;
+		std::vector<sf::Sprite*> spriteObjPtrs;
 		sf::RenderWindow* renderWindowPointer;
 		
 	};

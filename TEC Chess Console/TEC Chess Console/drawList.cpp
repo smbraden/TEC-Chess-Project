@@ -15,7 +15,9 @@ namespace chess_ui {
 
 	// Initializes the drawList.
 	drawList::drawList() {
-		// Initialize
+		shapeObjPtrs = {};
+		spriteObjPtrs = {};
+		renderWindowPointer = nullptr;
 	}
 
 	// Sets the target render window for this draw list.

@@ -7,30 +7,13 @@
 	Description:		A client for testing the chess board class and integrating graphics
 //-------------------------------------------------------------------------------------/*/
 
-#include <ctype.h>		// for tolower()
+#include <ctype.h>				// for tolower()
 #include "ChessBoard.h"
-#include <SFML/Graphics.hpp>
-#include "drawList.h"
+#include "drawList.h"			// <-- redundant here #include <SFML/Graphics.hpp>
 #include "ChessPieceSprite.h"
 
-//--------------------Backend--------------------//
-/*
-bool testMove(chess::ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag);
-void play(chess::ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& y2);
-inline int char2col(char ch);
-inline int int2row(int arg);
-*/
-//--------------------Frontend--------------------//
 
-// void initTextures(sf::Texture* array[], const std::string filenames[]);
-// void destroyTextures(sf::Texture* array[]);
-void initPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES]);
-void destroyPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES]);
-
-// void setFirstRankSprite(sf::Sprite* spritePieces[], sf::Texture* array[], chess::team_type team);
-// void setSecondRankSprite(sf::Sprite& sp, sf::Texture& tex);
-
-//--------------------Constants--------------------//
+//------------------------Constants------------------------//
 
 const int WINDOW_W = 1400;
 const int WINDOW_H = 1200;
@@ -55,11 +38,25 @@ const std::string PieceFilenames[2][NUM_TEAM_TEXTURES] = {
 chess_ui::drawList drawlist;
 
 
+//--------------------Backend Functions--------------------//
+/*
+bool testMove(chess::ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag);
+void play(chess::ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& y2);
+inline int char2col(char ch);
+inline int int2row(int arg);
+*/
+//--------------------Frontend Functions--------------------//
+
+
+void initPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES]);
+void destroyPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES]);
+
 
 int main() {
 
 	chess_ui::PieceSprite* spritePieces[2][NUM_TEAM_PIECES];
-	
+	// chess_ui::PieceSprite spritePieces[2][NUM_TEAM_PIECES];
+
 	//----------------Graphics Intializations----------------//
 
 	// Creating window and objects.
@@ -90,7 +87,7 @@ int main() {
 
 	//--------------Init Chess Piece Sprites--------------//
 
-	initPieceSprites(spritePieces[2][NUM_TEAM_PIECES]);
+	initPieceSprites(spritePieces);
 
 	//------------Add Entities to the drawList------------//
 	drawlist.setRenderWindow(window);
@@ -100,8 +97,8 @@ int main() {
 
 	for (int i = 0; i < 2; i++) {
 		for (int j = 0; j < NUM_TEAM_PIECES; j++) {
-			sf::Sprite temp = spritePieces[i][j]->getSprite();
-			drawlist.addSprite(temp);
+			sf::Sprite* temp = spritePieces[i][j]->getSprite();
+			drawlist.addSprite(*temp);
 		}
 	}
 	//----------------Graphics Event Loop----------------//
@@ -119,7 +116,7 @@ int main() {
 					// event.mouseButton.y;
 				}
 			case sf::Event::Closed:
-				destroyPieceSprites(spritePieces[2][NUM_TEAM_PIECES]);
+				destroyPieceSprites(spritePieces);
 				window.close();
 			}
 
@@ -164,12 +161,12 @@ void initPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES])
 		x += 100;
 	}
 
-	int x = 280;
-	int Wy = 780;
-	int By = 280;
+	x = 280;
+	Wy = 780;
+	By = 280;
 	for (int i = 8; i < NUM_TEAM_PIECES; i++) {	// all zee wPawns
 		spritePieces[0][i] = new chess_ui::PieceSprite(PieceFilenames[0][5], x, Wy);
-		spritePieces[0][i] = new chess_ui::PieceSprite(PieceFilenames[0][5], x, By);
+		spritePieces[1][i] = new chess_ui::PieceSprite(PieceFilenames[1][5], x, By);
 		x += 100;
 	}
 }
@@ -194,26 +191,6 @@ void destroyPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES])
 
 
 
-/*
-void initTextures(sf::Texture* array[], const std::string filenames[])
-{
-	for (int i = 0; i < NUM_PIECE_TEXTURES; i++) {
-		array[i] = new sf::Texture;
-		if (!array[i]->loadFromFile(filenames[i])) { } // error
-	}
-}
-
-
-
-
-
-
-void destroyTextures(sf::Texture* array[])
-{
-	for (int i = 0; i < NUM_PIECE_TEXTURES; i++)
-		delete array[i];
-}
-*/
 
 
 
@@ -221,84 +198,10 @@ void destroyTextures(sf::Texture* array[])
 
 
 /*
-int x = 280;
-int Wy = 880;
-int By = 180;
-for (int i = 0; i < 5; i++) {	// leftiest wRook through wKing
-	spritePieces[0][i] = chess_ui::PieceSprite(PieceFilenames[0][i], x, Wy);
-	spritePieces[1][i] = chess_ui::PieceSprite(PieceFilenames[1][i], x, By);
-	x += 100;
-}
-for (int i = 5; i < 8; i++) {	// rightiest wBishop through wRook
-	spritePieces[0][i] = chess_ui::PieceSprite(PieceFilenames[0][i - 5], x, Wy);
-	spritePieces[1][i] = chess_ui::PieceSprite(PieceFilenames[1][i - 5], x, By);
-	x += 100;
-}
 
-int x = 280;
-int Wy = 780;
-int By = 280;
-for (int i = 8; i < NUM_TEAM_PIECES; i++) {	// all zee wPawns
-	spritePieces[0][i] = chess_ui::PieceSprite(PieceFilenames[0][5], x, Wy);
-	spritePieces[0][i] = chess_ui::PieceSprite(PieceFilenames[0][5], x, By);
-	x += 100;
-}
-*/
+//------------------Backend Functions------------------//
 
 
-
-
-
-
-
-
-
-
-/*
-void setFirstRankSprite(sf::Sprite* spritePieces[], sf::Texture* Textures[], chess::team_type team) {
-	
-	static int x, y;
-	if (team == chess::team_type::white) {
-		x = 280;
-		y = 880;
-
-		spritePieces[0]->setTexture(*Textures[0]);
-		spritePieces[0]->setPosition(sf::Vector2f(x, y));
-		spritePieces[0]->scale(sf::Vector2f(.5f, .45f)); // absolute scale factor
-		drawlist.addSprite(*spritePieces[0]);
-	}
-	else {
-		x = 280;
-		y = 180;
-	}
-
-	
-
-	x += 100;
-}
-
-
-
-
-
-
-void setSecondRankSprite(sf::Sprite& sp, sf::Texture& tex) {
-
-	static int x = 280;
-	static int y = 780;
-
-	sp.setTexture(tex);
-	sp.setPosition(sf::Vector2f(x, y));
-	sp.scale(sf::Vector2f(.5f, .5f)); // absolute scale factor	
-
-	drawlist.addSprite(sp);
-
-	x += 100;
-}
-*/
-
-
-/*
 
 bool testMove(chess::ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag)
 {

@@ -6,6 +6,9 @@ namespace chess_ui {
 
 	PieceSprite::PieceSprite()
 	{
+		// textVect = std::vector<sf::Texture*>();
+		textVect = std::vector<sf::Texture*>();
+		filenames = std::vector<std::string>();
 		Sprite = sf::Sprite();
 		TexturePtr = nullptr;	// let pieces share the same Texture
 	}
@@ -15,7 +18,7 @@ namespace chess_ui {
 
 
 
-	PieceSprite::PieceSprite(std::string file, int x_pos, int y_pos)
+	PieceSprite::PieceSprite(const std::string& file, int x_pos, int y_pos)
 	{
 		addTexture(file);
 
@@ -28,12 +31,21 @@ namespace chess_ui {
 
 
 
-
+	/*
 	sf::Sprite PieceSprite::getSprite()
 	{
 		return Sprite;
 	}
+	*/
 
+
+
+	
+	sf::Sprite* PieceSprite::getSprite()
+	{
+		return &Sprite;
+	}
+	
 
 
 
@@ -59,22 +71,24 @@ namespace chess_ui {
 
 
 
-	void PieceSprite::addTexture(std::string file)
+	void PieceSprite::addTexture(const std::string& file)
 	{
 		bool flag = true;
-		Texture_ID tempTextID(file);
-		for (int i = 0; i < textID_Vect.size(); i++) {
-			if (textID_Vect[i] == tempTextID) {
-				TexturePtr = &(textID_Vect[i].Txt);
-				break;
+		for (int i = 0; i < textVect.size(); i++) {
+			if (filenames[i] == file) {
+				TexturePtr = textVect[i];
 				flag = false;
+				break;
 			}
 		}
+
 		if (flag) {
-			textID_Vect.push_back(Texture_ID(file));
-			TexturePtr = &((textID_Vect.back()).Txt);
+			
+			sf::Texture* newTexture = new sf::Texture;
+			if (!newTexture->loadFromFile(file)) { /*error*/ }
+			filenames.push_back(file);
+			textVect.push_back(newTexture);
+			TexturePtr = newTexture;
 		}
 	}
-
-
 }
