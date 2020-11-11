@@ -13,36 +13,36 @@
 #include <SFML/Graphics.hpp>
 #include "jacobTests.h"
 
-using namespace std;
-using namespace chess;
+// using namespace std;
+// using namespace chess;
 
 
-bool testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag);
-void play(ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& y2);
+bool testMove(chess::ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag);
+void play(chess::ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& y2);
 inline int char2col(char ch);
 inline int int2row(int arg);
 
-
-
-
 const int WINDOW_W = 1400;
 const int WINDOW_H = 1200;
-const int BOARD_W = 800;
-const int BOARD_H = 800;
+const int BOARD_W = 900;
+const int BOARD_H = 900;
 const char background_filename[] = "Assets/marble2.jpg";
 const char board_filename[] = "Assets/Chess_Board.jpg";
 
+jtest::drawList drawlist;
+
+void setSpritePiece(sf::Sprite& sp, sf::Texture& tex, const char filename[]);
 
 
 int main() {
 
 	// Instantiate ChessBoard object
-	ChessBoard testBoard;
+	chess::ChessBoard testBoard;
 
 
 	//----------------Graphics Intializations----------------//
 
-	jtest::drawList drawlist;
+	
 
 	// Creating window and objects.
 	sf::RenderWindow window(sf::VideoMode(WINDOW_W, WINDOW_H), "TEC Chess UI");
@@ -69,21 +69,42 @@ int main() {
 	shape2.setFillColor(sf::Color::Blue);
 
 
-	// Create wQueen Sprite object pieces
-	sf::Sprite queen_sprite;
-	sf::Texture wqTex;
-	wqTex.setSmooth(true);
-	if (!wqTex.loadFromFile("Assets/WhiteQueen.png")) {	/*error*/ }
-	queen_sprite.setTexture(wqTex);
-	queen_sprite.setPosition(sf::Vector2f(540, 700));
-	
-
 	// Utilizing the drawList class so future shape draws are automated.
 	drawlist.setRenderWindow(window);
 	drawlist.addShape(background_sprite);
 	drawlist.addShape(board);
-	drawlist.addSprite(queen_sprite);
 	drawlist.addShape(shape2);
+
+	sf::Texture wrTex;
+	sf::Sprite wRook1_sprite;
+	setSpritePiece(wRook1_sprite, wrTex, "Assets/WhiteRook.png");
+
+	sf::Texture wnTex;
+	sf::Sprite wKnight1_sprite;
+	setSpritePiece(wKnight1_sprite, wnTex, "Assets/WhiteKnight.png");
+
+	sf::Texture wbTex;
+	sf::Sprite wBishop1_sprite;
+	setSpritePiece(wBishop1_sprite, wbTex, "Assets/WhiteBishop.png");
+
+	sf::Texture wqTex;
+	sf::Sprite wQueen_sprite;
+	setSpritePiece(wQueen_sprite, wqTex, "Assets/WhiteQueen.png");
+
+	sf::Texture wkTex;
+	sf::Sprite wKing_sprite;
+	setSpritePiece(wKing_sprite, wkTex, "Assets/WhiteKing.png");
+
+	sf::Sprite wBishop2_sprite;
+	setSpritePiece(wBishop2_sprite, wbTex, "Assets/WhiteBishop.png");
+
+	sf::Sprite wKnight2_sprite;
+	setSpritePiece(wKnight2_sprite, wnTex, "Assets/WhiteKnight.png");
+
+	sf::Sprite wRook2_sprite;
+	setSpritePiece(wRook2_sprite, wrTex, "Assets/WhiteRook.png");
+	
+
 
 	//----------------Graphics Event Loop----------------//
 
@@ -128,27 +149,48 @@ int main() {
 
 
 
+void setSpritePiece(sf::Sprite& sp, sf::Texture& tex, const char filename[] ) {
+	
+	static int x = 280;
+	static int y = 880;
 
-bool testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag)
+	// Create wQueen Sprite object pieces
+	tex.setSmooth(true);
+	if (!tex.loadFromFile(filename)) {	/*error*/ }
+	sp.setTexture(tex);
+	sp.setPosition(sf::Vector2f(x, y));
+	sp.scale(sf::Vector2f(.5f, .45f)); // absolute scale factor	
+
+	drawlist.addSprite(sp);
+
+	x += 100;
+}
+
+
+
+
+
+
+bool testMove(chess::ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag)
 {
 	try {
 
 		argBoard.move(x1, y1, x2, y2);
-		cout << endl;
+		std::cout << std::endl;
 		argBoard.printBoard();
-		cout << endl;
+		std::cout << std::endl;
 		return true;
 	}
 	catch (const chess_except::InvalidMoveExcep& e) {
-		cout << e.getMsg() << endl << endl;
+		std::cout << e.getMsg() << "\n\n";
 	}
 	catch (const chess_except::DrawSignal& e) {
-		cout << e.getMsg() << endl << endl;
+		std::cout << e.getMsg() << "\n\n";
 		flag = true;
 		return true;
 	}
 	catch (const chess_except::WinSignal& e) {
-		cout << e.getMsg() << endl << endl;
+		std::cout << e.getMsg() << "\n\n";
 		flag = true;
 		return true;
 	}
@@ -162,7 +204,7 @@ bool testMove(ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag)
 
 
 
-void play(ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& y2)
+void play(chess::ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& y2)
 {
 	bool endFlag = false;
 
@@ -170,13 +212,13 @@ void play(ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& 
 
 		do {
 			
-			string team = (argBoard.getTurnTeam() == team_type::white) ? "White" : "Black";
+			string team = (argBoard.getTurnTeam() == chess::team_type::white) ? "White" : "Black";
 
-			cout << team << " move. Current position:	";
-			cin >> x1 >> y1;
-			cout << team << " move. New position:	";
-			cin >> x2 >> y2;
-			cout << endl;
+			std::cout << team << " move. Current position:	";
+			std::cin >> x1 >> y1;
+			std::cout << team << " move. New position:	";
+			std::cin >> x2 >> y2;
+			std::cout << "\n";
 			
 		} while (!testMove(argBoard, char2col(x1), int2row(y1), char2col(x2), int2row(y2), endFlag));
 
@@ -184,9 +226,9 @@ void play(ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& 
 			break;
 
 		// Continue prompt
-		cout << "quit or continue (q/c):	";
-		cin >> option;
-		cout << endl;
+		std::cout << "quit or continue (q/c):	";
+		std::cin >> option;
+		std::cout << "\n";
 		if (option == 'q')
 			break;
 
@@ -217,3 +259,12 @@ inline int int2row(int arg)
 
 
 
+
+
+
+
+//	wqTex.setSmooth(true);
+//	if (!wqTex.loadFromFile("Assets/WhiteQueen.png")) {	/*error*/ }
+/*	queen_sprite.setTexture(wqTex);
+	queen_sprite.setPosition(sf::Vector2f(580, 880));
+	queen_sprite.scale(sf::Vector2f(.5f, .5f)); // absolute scale factor	*/

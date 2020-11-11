@@ -26,13 +26,13 @@ namespace jtest {
 	}
 
 	// Adds a shape to the draw list for rendering.
-	void drawList::addShape(sf::Shape&shapeObj) {
+	void drawList::addShape(sf::Shape& shapeObj) {
 		shapeObjPtrs.push_back(&shapeObj);
 	}
 
 	// Adds a shape to the draw list for rendering.
-	void drawList::addSprite(sf::Sprite& shapeObj) {
-		spriteObjPtrs.push_back(&shapeObj);
+	void drawList::addSprite(sf::Sprite& spriteObj) {
+		spriteObjPtrs.push_back(&spriteObj);
 	}
 
 
