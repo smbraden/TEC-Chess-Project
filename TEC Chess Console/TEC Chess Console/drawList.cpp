@@ -1,5 +1,5 @@
 /*/-------------------------------------------------------------------------------------//
-	Filename:           jacobTests.h
+	Filename:           drawList.h
 	Contributor:        Jacob Halaweh
 	Date:               9/26/2020
 	Reference:
@@ -7,12 +7,11 @@
 //-------------------------------------------------------------------------------------/*/
 
 #include <iostream>
-#include "jacobTests.h"
+#include "drawList.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
-using namespace std;
 
-namespace jtest {
+namespace chess_ui {
 
 	// Initializes the drawList.
 	drawList::drawList() {

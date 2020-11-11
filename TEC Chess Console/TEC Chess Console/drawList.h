@@ -1,5 +1,5 @@
 /*/-------------------------------------------------------------------------------------//
-	Filename:           jacobTests.h
+	Filename:           drawList.h
 	Contributor:        Jacob Halaweh
 	Date:               9/26/2020
 	Reference:
@@ -9,14 +9,11 @@
 #ifndef JACOBTESTS_H
 #define JACOBTESTS_H
 
-
-#include "jacobTests.h"
 #include <vector>
 #include <SFML/Graphics.hpp>
-using namespace std;
 
 
-namespace jtest {
+namespace chess_ui {
 
 	class drawList {
 
@@ -28,14 +25,14 @@ namespace jtest {
 		void draw();
 
 	private:
-		vector<sf::Shape*> shapeObjPtrs = {};
-		vector<sf::Sprite*> spriteObjPtrs = {};
+		std::vector<sf::Shape*> shapeObjPtrs = {};
+		std::vector<sf::Sprite*> spriteObjPtrs = {};
 		sf::RenderWindow* renderWindowPointer;
 		
 	};
 
 
-} // jtest namespace end of scope
+} // drawList namespace end of scope
 
 
 #endif

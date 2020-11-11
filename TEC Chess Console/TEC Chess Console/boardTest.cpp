@@ -7,48 +7,66 @@
 	Description:		A client for testing the chess board class and integrating graphics
 //-------------------------------------------------------------------------------------/*/
 
-#include <iostream>
 #include <ctype.h>		// for tolower()
 #include "ChessBoard.h"
 #include <SFML/Graphics.hpp>
-#include "jacobTests.h"
+#include "drawList.h"
+#include "ChessPieceSprite.h"
 
-// using namespace std;
-// using namespace chess;
-
-
+//--------------------Backend--------------------//
+/*
 bool testMove(chess::ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag);
 void play(chess::ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& y2);
 inline int char2col(char ch);
 inline int int2row(int arg);
+*/
+//--------------------Frontend--------------------//
+
+// void initTextures(sf::Texture* array[], const std::string filenames[]);
+// void destroyTextures(sf::Texture* array[]);
+void initPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES]);
+void destroyPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES]);
+
+// void setFirstRankSprite(sf::Sprite* spritePieces[], sf::Texture* array[], chess::team_type team);
+// void setSecondRankSprite(sf::Sprite& sp, sf::Texture& tex);
+
+//--------------------Constants--------------------//
 
 const int WINDOW_W = 1400;
 const int WINDOW_H = 1200;
 const int BOARD_W = 900;
 const int BOARD_H = 900;
-const char background_filename[] = "Assets/marble2.jpg";
-const char board_filename[] = "Assets/Chess_Board.jpg";
+const int NUM_PIECE_TEXTURES = 12;
+const int NUM_TEAM_TEXTURES = 6;
+const int NUM_PIECES = 32;
+const int NUM_TEAM_PIECES = 16;
 
-jtest::drawList drawlist;
 
-void setSpritePiece(sf::Sprite& sp, sf::Texture& tex, const char filename[]);
+const std::string background_filename = "Assets/marble2.jpg";
+const std::string board_filename = "Assets/Chess_Board.jpg";
+const std::string mouse_follower_filename = "Assets/marble3.jpg";
+
+const std::string PieceFilenames[2][NUM_TEAM_TEXTURES] = {
+	{ "Assets/WhiteRook.png", "Assets/WhiteKnight.png", "Assets/WhiteBishop.png",
+	  "Assets/WhiteQueen.png","Assets/WhiteKing.png", "Assets/WhitePawn.png" },
+	{ "Assets/BlackRook.png", "Assets/BlackKnight.png", "Assets/BlackBishop.png",
+	  "Assets/BlackQueen.png", "Assets/BlackKing.png", "Assets/BlackPawn.png" } };
+
+chess_ui::drawList drawlist;
+
 
 
 int main() {
 
-	// Instantiate ChessBoard object
-	chess::ChessBoard testBoard;
-
-
-	//----------------Graphics Intializations----------------//
-
+	chess_ui::PieceSprite* spritePieces[2][NUM_TEAM_PIECES];
 	
+	//----------------Graphics Intializations----------------//
 
 	// Creating window and objects.
 	sf::RenderWindow window(sf::VideoMode(WINDOW_W, WINDOW_H), "TEC Chess UI");
 	window.setFramerateLimit(60);
-
-	// Load the background texture, set the shape, and position it
+	
+	// Creating background
 	sf::Texture background_texture;
 	if (!background_texture.loadFromFile(background_filename)) { /*error*/ }
 	sf::RectangleShape background_sprite(sf::Vector2f(WINDOW_W, WINDOW_H));
@@ -56,56 +74,36 @@ int main() {
 	background_sprite.setPosition(sf::Vector2f(0, 0));
 	background_sprite.setTextureRect(sf::IntRect(0, 0, WINDOW_W, WINDOW_H));
 
-
-	// Load the board texture, set the shape, and position it
+	// Creating board
 	sf::Texture board_texture;
 	if (!board_texture.loadFromFile(board_filename)) { /*error*/ }
 	sf::RectangleShape board(sf::Vector2f(BOARD_W, BOARD_H));
 	board.setTexture(&board_texture);
 	board.setPosition(sf::Vector2f((WINDOW_W - BOARD_W) / 2, (WINDOW_H - BOARD_H) / 2));
 
-	// Shape 2
-	sf::CircleShape shape2(30.f);
-	shape2.setFillColor(sf::Color::Blue);
+	// Creating mouse follower
+	sf::Texture mouse_follower_texture;
+	if (!mouse_follower_texture.loadFromFile(mouse_follower_filename)) { /*error*/ }
+	sf::CircleShape mouse_follower(30.f);
+	mouse_follower.setTexture(&mouse_follower_texture);
+	mouse_follower.setTextureRect(sf::IntRect(10, 10, 100, 100));
 
+	//--------------Init Chess Piece Sprites--------------//
 
-	// Utilizing the drawList class so future shape draws are automated.
+	initPieceSprites(spritePieces[2][NUM_TEAM_PIECES]);
+
+	//------------Add Entities to the drawList------------//
 	drawlist.setRenderWindow(window);
 	drawlist.addShape(background_sprite);
 	drawlist.addShape(board);
-	drawlist.addShape(shape2);
+	drawlist.addShape(mouse_follower);
 
-	sf::Texture wrTex;
-	sf::Sprite wRook1_sprite;
-	setSpritePiece(wRook1_sprite, wrTex, "Assets/WhiteRook.png");
-
-	sf::Texture wnTex;
-	sf::Sprite wKnight1_sprite;
-	setSpritePiece(wKnight1_sprite, wnTex, "Assets/WhiteKnight.png");
-
-	sf::Texture wbTex;
-	sf::Sprite wBishop1_sprite;
-	setSpritePiece(wBishop1_sprite, wbTex, "Assets/WhiteBishop.png");
-
-	sf::Texture wqTex;
-	sf::Sprite wQueen_sprite;
-	setSpritePiece(wQueen_sprite, wqTex, "Assets/WhiteQueen.png");
-
-	sf::Texture wkTex;
-	sf::Sprite wKing_sprite;
-	setSpritePiece(wKing_sprite, wkTex, "Assets/WhiteKing.png");
-
-	sf::Sprite wBishop2_sprite;
-	setSpritePiece(wBishop2_sprite, wbTex, "Assets/WhiteBishop.png");
-
-	sf::Sprite wKnight2_sprite;
-	setSpritePiece(wKnight2_sprite, wnTex, "Assets/WhiteKnight.png");
-
-	sf::Sprite wRook2_sprite;
-	setSpritePiece(wRook2_sprite, wrTex, "Assets/WhiteRook.png");
-	
-
-
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < NUM_TEAM_PIECES; j++) {
+			sf::Sprite temp = spritePieces[i][j]->getSprite();
+			drawlist.addSprite(temp);
+		}
+	}
 	//----------------Graphics Event Loop----------------//
 
 	while (window.isOpen())		// Graphics Event loop
@@ -121,17 +119,16 @@ int main() {
 					// event.mouseButton.y;
 				}
 			case sf::Event::Closed:
+				destroyPieceSprites(spritePieces[2][NUM_TEAM_PIECES]);
 				window.close();
 			}
-
-
 
 			// Testing mouse functionality.
 			sf::Vector2i localPosition = sf::Mouse::getPosition(window);
 			sf::Vector2f mpos;
 			mpos.x = localPosition.x - 30;
 			mpos.y = localPosition.y - 30;
-			shape2.setPosition(mpos);
+			mouse_follower.setPosition(mpos);
 
 		}
 
@@ -149,19 +146,133 @@ int main() {
 
 
 
-void setSpritePiece(sf::Sprite& sp, sf::Texture& tex, const char filename[] ) {
+
+// Dimensions		spritePieces[2][NUM_TEAM_PIECES]
+void initPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES])
+{
+	int x = 280;
+	int Wy = 880;
+	int By = 180;
+	for (int i = 0; i < 5; i++) {	// leftiest wRook through wKing
+		spritePieces[0][i] = new chess_ui::PieceSprite(PieceFilenames[0][i], x, Wy);
+		spritePieces[1][i] = new chess_ui::PieceSprite(PieceFilenames[1][i], x, By);
+		x += 100;
+	}
+	for (int i = 5; i < 8; i++) {	// rightiest wBishop through wRook
+		spritePieces[0][i] = new chess_ui::PieceSprite(PieceFilenames[0][i - 5], x, Wy);
+		spritePieces[1][i] = new chess_ui::PieceSprite(PieceFilenames[1][i - 5], x, By);
+		x += 100;
+	}
+
+	int x = 280;
+	int Wy = 780;
+	int By = 280;
+	for (int i = 8; i < NUM_TEAM_PIECES; i++) {	// all zee wPawns
+		spritePieces[0][i] = new chess_ui::PieceSprite(PieceFilenames[0][5], x, Wy);
+		spritePieces[0][i] = new chess_ui::PieceSprite(PieceFilenames[0][5], x, By);
+		x += 100;
+	}
+}
+
+
+
+
+
+
+
+void destroyPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES])
+{
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < NUM_TEAM_PIECES; j++) {
+			delete spritePieces[i][j];
+		}
+	}
+}
+
+
+
+
+
+
+/*
+void initTextures(sf::Texture* array[], const std::string filenames[])
+{
+	for (int i = 0; i < NUM_PIECE_TEXTURES; i++) {
+		array[i] = new sf::Texture;
+		if (!array[i]->loadFromFile(filenames[i])) { } // error
+	}
+}
+
+
+
+
+
+
+void destroyTextures(sf::Texture* array[])
+{
+	for (int i = 0; i < NUM_PIECE_TEXTURES; i++)
+		delete array[i];
+}
+*/
+
+
+
+
+
+
+/*
+int x = 280;
+int Wy = 880;
+int By = 180;
+for (int i = 0; i < 5; i++) {	// leftiest wRook through wKing
+	spritePieces[0][i] = chess_ui::PieceSprite(PieceFilenames[0][i], x, Wy);
+	spritePieces[1][i] = chess_ui::PieceSprite(PieceFilenames[1][i], x, By);
+	x += 100;
+}
+for (int i = 5; i < 8; i++) {	// rightiest wBishop through wRook
+	spritePieces[0][i] = chess_ui::PieceSprite(PieceFilenames[0][i - 5], x, Wy);
+	spritePieces[1][i] = chess_ui::PieceSprite(PieceFilenames[1][i - 5], x, By);
+	x += 100;
+}
+
+int x = 280;
+int Wy = 780;
+int By = 280;
+for (int i = 8; i < NUM_TEAM_PIECES; i++) {	// all zee wPawns
+	spritePieces[0][i] = chess_ui::PieceSprite(PieceFilenames[0][5], x, Wy);
+	spritePieces[0][i] = chess_ui::PieceSprite(PieceFilenames[0][5], x, By);
+	x += 100;
+}
+*/
+
+
+
+
+
+
+
+
+
+
+/*
+void setFirstRankSprite(sf::Sprite* spritePieces[], sf::Texture* Textures[], chess::team_type team) {
 	
-	static int x = 280;
-	static int y = 880;
+	static int x, y;
+	if (team == chess::team_type::white) {
+		x = 280;
+		y = 880;
 
-	// Create wQueen Sprite object pieces
-	tex.setSmooth(true);
-	if (!tex.loadFromFile(filename)) {	/*error*/ }
-	sp.setTexture(tex);
-	sp.setPosition(sf::Vector2f(x, y));
-	sp.scale(sf::Vector2f(.5f, .45f)); // absolute scale factor	
+		spritePieces[0]->setTexture(*Textures[0]);
+		spritePieces[0]->setPosition(sf::Vector2f(x, y));
+		spritePieces[0]->scale(sf::Vector2f(.5f, .45f)); // absolute scale factor
+		drawlist.addSprite(*spritePieces[0]);
+	}
+	else {
+		x = 280;
+		y = 180;
+	}
 
-	drawlist.addSprite(sp);
+	
 
 	x += 100;
 }
@@ -170,6 +281,24 @@ void setSpritePiece(sf::Sprite& sp, sf::Texture& tex, const char filename[] ) {
 
 
 
+
+void setSecondRankSprite(sf::Sprite& sp, sf::Texture& tex) {
+
+	static int x = 280;
+	static int y = 780;
+
+	sp.setTexture(tex);
+	sp.setPosition(sf::Vector2f(x, y));
+	sp.scale(sf::Vector2f(.5f, .5f)); // absolute scale factor	
+
+	drawlist.addSprite(sp);
+
+	x += 100;
+}
+*/
+
+
+/*
 
 bool testMove(chess::ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag)
 {
@@ -212,7 +341,7 @@ void play(chess::ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2
 
 		do {
 			
-			string team = (argBoard.getTurnTeam() == chess::team_type::white) ? "White" : "Black";
+			std::string team = (argBoard.getTurnTeam() == chess::team_type::white) ? "White" : "Black";
 
 			std::cout << team << " move. Current position:	";
 			std::cin >> x1 >> y1;
@@ -256,15 +385,60 @@ inline int int2row(int arg)
 {
 	return (arg - 1);
 }
+*/
 
 
 
 
 
 
+/*
+sf::Texture wrTex;
+sf::Sprite wRook1_sprite;
+setFirstRankSprite(wRook1_sprite, wrTex);
 
-//	wqTex.setSmooth(true);
-//	if (!wqTex.loadFromFile("Assets/WhiteQueen.png")) {	/*error*/ }
-/*	queen_sprite.setTexture(wqTex);
-	queen_sprite.setPosition(sf::Vector2f(580, 880));
-	queen_sprite.scale(sf::Vector2f(.5f, .5f)); // absolute scale factor	*/
+sf::Texture wnTex;
+sf::Sprite wKnight1_sprite;
+setFirstRankSprite(wKnight1_sprite, wnTex, "Assets/WhiteKnight.png");
+
+sf::Texture wbTex;
+sf::Sprite wBishop1_sprite;
+setFirstRankSprite(wBishop1_sprite, wbTex, "Assets/WhiteBishop.png");
+
+sf::Texture wqTex;
+sf::Sprite wQueen_sprite;
+setFirstRankSprite(wQueen_sprite, wqTex, "Assets/WhiteQueen.png");
+
+sf::Texture wkTex;
+sf::Sprite wKing_sprite;
+setFirstRankSprite(wKing_sprite, wkTex, "Assets/WhiteKing.png");
+
+sf::Sprite wBishop2_sprite;
+setFirstRankSprite(wBishop2_sprite, wbTex, "Assets/WhiteBishop.png");
+
+sf::Sprite wKnight2_sprite;
+setFirstRankSprite(wKnight2_sprite, wnTex, "Assets/WhiteKnight.png");
+
+sf::Sprite wRook2_sprite;
+setFirstRankSprite(wRook2_sprite, wrTex, "Assets/WhiteRook.png");
+
+sf::Texture wpTex;
+wpTex.setSmooth(true);
+if (!wpTex.loadFromFile("Assets/WhitePawn.png")) {	} // error
+sf::Sprite(wPawn1_sprite);
+sf::Sprite wPawn2_sprite;
+sf::Sprite wPawn3_sprite;
+sf::Sprite wPawn4_sprite;
+sf::Sprite wPawn5_sprite;
+sf::Sprite wPawn6_sprite;
+sf::Sprite wPawn7_sprite;
+sf::Sprite wPawn8_sprite;
+setSecondRankSprite(wPawn1_sprite, wpTex);
+setSecondRankSprite(wPawn2_sprite, wpTex);
+setSecondRankSprite(wPawn3_sprite, wpTex);
+setSecondRankSprite(wPawn4_sprite, wpTex);
+setSecondRankSprite(wPawn5_sprite, wpTex);
+setSecondRankSprite(wPawn6_sprite, wpTex);
+setSecondRankSprite(wPawn7_sprite, wpTex);
+setSecondRankSprite(wPawn8_sprite, wpTex);
+*/
