@@ -2,7 +2,8 @@
 	Filename:           boardTest.cpp
 	Contributors:       Sonja Braden, Jacob Halaweh
 	Date:               11/9/2020
-	Reference:
+	Reference:			https://www.sfml-dev.org/tutorials/2.5/start-vc.php
+						https://docs.microsoft.com/en-us/windows/win32/LearnWin32/learn-to-program-for-windows
 	Description:		A client for testing the chess board class and integrating graphics
 //-------------------------------------------------------------------------------------/*/
 
@@ -23,85 +24,87 @@ inline int int2row(int arg);
 
 
 
+
+const int WINDOW_W = 1400;
+const int WINDOW_H = 1200;
+const int BOARD_W = 800;
+const int BOARD_H = 800;
+const char background_filename[] = "Assets/marble2.jpg";
+const char board_filename[] = "Assets/Chess_Board.jpg";
+
+
+
 int main() {
 
-	char x1 = 'a';
-	int y1 = 1;
-	char x2 = 'a';
-	int y2 = 1; 
-	char option = 'c';
-
+	// Instantiate ChessBoard object
 	ChessBoard testBoard;
-	testBoard.printBoard();
-	cout << endl << endl;
 
-	/*
-	cout << "Welcome to the TEC Chess Test Console!" << endl;
-	cout << "To enter moves, use the format 'ColRow': a7, b3, etc" << endl;
-	cout << "Don't hit 'enter' without any input. This is a quick n dirty test that will break." << endl;
-	cout << "Enter 'q' to exit at the continue/quit prompt after each round" << endl;
-	cout << "Play? Hit quit/continue now (q/c): ";
-	cin >> option;
-	cout << endl;
 
-	if (option == 'q')
-		return 0;
-	else {
-		play(testBoard, option, x1, y1, x2, y2);
-	}
-	*/
-
-	//-----------------------Graphics-----------------------//
+	//----------------Graphics Intializations----------------//
 
 	jtest::drawList drawlist;
 
 	// Creating window and objects.
-	sf::RenderWindow window(sf::VideoMode(1200, 600), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(WINDOW_W, WINDOW_H), "TEC Chess UI");
 	window.setFramerateLimit(60);
 
-	// Shape objects
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
+	// Load the background texture, set the shape, and position it
+	sf::Texture background_texture;
+	if (!background_texture.loadFromFile(background_filename)) { /*error*/ }
+	sf::RectangleShape background_sprite(sf::Vector2f(WINDOW_W, WINDOW_H));
+	background_sprite.setTexture(&background_texture);
+	background_sprite.setPosition(sf::Vector2f(0, 0));
+	background_sprite.setTextureRect(sf::IntRect(0, 0, WINDOW_W, WINDOW_H));
+
+
+	// Load the board texture, set the shape, and position it
+	sf::Texture board_texture;
+	if (!board_texture.loadFromFile(board_filename)) { /*error*/ }
+	sf::RectangleShape board(sf::Vector2f(BOARD_W, BOARD_H));
+	board.setTexture(&board_texture);
+	board.setPosition(sf::Vector2f((WINDOW_W - BOARD_W) / 2, (WINDOW_H - BOARD_H) / 2));
+
+	// Shape 2
 	sf::CircleShape shape2(30.f);
 	shape2.setFillColor(sf::Color::Blue);
-	sf::RectangleShape shape3;
-	sf::Vector2f sizing;
-	sizing.x = 30;
-	sizing.y = 30;
-	sf::Vector2f pos;
-	pos.x = 300;
-	pos.y = 300;
-	shape3.setSize(sizing);
-	shape3.setFillColor(sf::Color::Blue);
-	shape3.setPosition(pos);
 
 
-	// Sprite object test
+	// Create wQueen Sprite object pieces
+	sf::Sprite queen_sprite;
 	sf::Texture wqTex;
-	if (!wqTex.loadFromFile("Images/WhiteQueen.png"))
-	{
-		// error...
-	}
-	sf::Sprite sprite;
-	sprite.setTexture(wqTex);
-	sf::Vector2f wqpos;
-	wqpos.x = 500;
-	wqpos.y = 300;
-	sprite.setPosition(wqpos);
+	wqTex.setSmooth(true);
+	if (!wqTex.loadFromFile("Assets/WhiteQueen.png")) {	/*error*/ }
+	queen_sprite.setTexture(wqTex);
+	queen_sprite.setPosition(sf::Vector2f(540, 700));
+	
 
 	// Utilizing the drawList class so future shape draws are automated.
 	drawlist.setRenderWindow(window);
-	drawlist.addShape(shape);
+	drawlist.addShape(background_sprite);
+	drawlist.addShape(board);
+	drawlist.addSprite(queen_sprite);
 	drawlist.addShape(shape2);
-	drawlist.addShape(shape3);
-	drawlist.addSprite(sprite);
 
-	// Graphics while loop begins.           <----------------- Normal terminal stuff wont work past here because graphics is running. Game must be contained in this While-Loop!
-	while (window.isOpen())
+	//----------------Graphics Event Loop----------------//
+
+	while (window.isOpen())		// Graphics Event loop
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
+			switch (event.type) {
+
+			case sf::Event::MouseButtonPressed:
+				if (event.mouseButton.button == sf::Mouse::Right) {
+					// event.mouseButton.x;
+					// event.mouseButton.y;
+				}
+			case sf::Event::Closed:
+				window.close();
+			}
+
+
+
 			// Testing mouse functionality.
 			sf::Vector2i localPosition = sf::Mouse::getPosition(window);
 			sf::Vector2f mpos;
@@ -109,19 +112,17 @@ int main() {
 			mpos.y = localPosition.y - 30;
 			shape2.setPosition(mpos);
 
-			if (event.type == sf::Event::Closed)
-				window.close();
 		}
 
 		// Drawing window and objects.
 		window.clear();
 		drawlist.draw();
 		window.display();
-	}
+
+	}		//------------End Event Loop------------//
 
 	return 0;
 }
-
 
 
 

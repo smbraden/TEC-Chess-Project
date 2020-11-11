@@ -39,11 +39,11 @@ namespace jtest {
 	// Renders all shapes in the list to the targeted render window.
 	void drawList::draw() {
 
-		for (int i = 0; i < spriteObjPtrs.size(); i++) {
-			renderWindowPointer->draw(*spriteObjPtrs[i]);
-		}
 		for (int i = 0; i < shapeObjPtrs.size(); i++) {
 			renderWindowPointer->draw(*shapeObjPtrs[i]);
+		}
+		for (int i = 0; i < spriteObjPtrs.size(); i++) {
+			renderWindowPointer->draw(*spriteObjPtrs[i]);
 		}
 	}
 
