@@ -17,6 +17,7 @@ namespace chess_ui {
 	{
 		filename = "";
 		spriteTexture = sf::Texture();
+		boundingBox = getGlobalBounds();
 	}
 
 
@@ -31,6 +32,7 @@ namespace chess_ui {
 		setTexture(spriteTexture);
 		setPosition(x_pos, y_pos);
 		scale(sf::Vector2f(.5f, .45f)); // absolute scale factor	
+		boundingBox = getGlobalBounds();
 	}
 
 
@@ -45,6 +47,16 @@ namespace chess_ui {
 		else {
 			throw TextureUndefinedError();
 		}
+	}
+
+
+
+
+
+
+	bool PieceSprite::contains(int x_pos, int y_pos)
+	{
+		return boundingBox.contains(x_pos, y_pos);
 	}
 
 }	// closes namespace

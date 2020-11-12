@@ -7,11 +7,8 @@
 						Also automating some of the initializations common to 
 						all Chess piece sprites
 //-------------------------------------------------------------------------------------/*/
-
-
 #ifndef CHESS_PIECE_SPRITE_H
 #define CHESS_PIECE_SPRITE_H
-
 
 #include <SFML/Graphics.hpp>
 // #include <iostream>		// for overloaded string operator== if static vector used
@@ -27,12 +24,14 @@ namespace chess_ui {
 		PieceSprite();
 		PieceSprite(const std::string& file, int x_pos, int y_pos);
 		void addTexture(const std::string& file);
+		bool contains(int x_pos, int y_pos);
 		class TextureUndefinedError {};
 
 	private:
 
 		std::string filename;
 		sf::Texture spriteTexture;
+		sf::FloatRect boundingBox;
 	};
 }
 

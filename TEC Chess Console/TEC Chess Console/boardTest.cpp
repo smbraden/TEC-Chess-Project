@@ -7,55 +7,10 @@
 	Description:		A client for testing the chess board class and integrating graphics
 //-------------------------------------------------------------------------------------/*/
 
-#include <ctype.h>				// for tolower()
-#include "ChessBoard.h"
-#include "drawList.h"			// <-- redundant here #include <SFML/Graphics.hpp>
-#include "ChessPieceSprite.h"	// <-- redundant here #include <SFML/Graphics.hpp>
-
-
-//------------------------Constants------------------------//
-
-const int WINDOW_W = 1400;
-const int WINDOW_H = 1200;
-const int BOARD_W = 900;
-const int BOARD_H = 900;
-const int NUM_PIECE_TEXTURES = 12;
-const int NUM_TEAM_TEXTURES = 6;
-const int NUM_PIECES = 32;
-const int NUM_TEAM_PIECES = 16;
-
-
-const std::string background_filename = "Assets/marble2.jpg";
-const std::string board_filename = "Assets/Chess_Board_Lavender_Light.jpg";
-const std::string mouse_follower_filename = "Assets/marble3.jpg";
-
-const std::string PieceFilenames[2][NUM_TEAM_TEXTURES] = {
-	{ "Assets/WhiteRook.png", "Assets/WhiteKnight.png", "Assets/WhiteBishop.png",
-	  "Assets/WhiteQueen.png","Assets/WhiteKing.png", "Assets/WhitePawn.png" },
-	{ "Assets/BlackRook.png", "Assets/BlackKnight.png", "Assets/BlackBishop.png",
-	  "Assets/BlackQueen.png", "Assets/BlackKing.png", "Assets/BlackPawn.png" } };
-
-chess_ui::drawList drawlist;
-
-
-//--------------------Backend Functions--------------------//
-/*
-bool testMove(chess::ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag);
-void play(chess::ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& y2);
-inline int char2col(char ch);
-inline int int2row(int arg);
-*/
-//--------------------Frontend Functions--------------------//
-
-
-void initPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES]);
-void destroyPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES]);
+#include "boardTestHeader.h"
 
 
 int main() {
-
-	chess_ui::PieceSprite* spritePieces[2][NUM_TEAM_PIECES];
-	// chess_ui::PieceSprite spritePieces[2][NUM_TEAM_PIECES];
 
 	//----------------Graphics Intializations----------------//
 
@@ -85,6 +40,15 @@ int main() {
 	mouse_follower.setTexture(&mouse_follower_texture);
 	mouse_follower.setTextureRect(sf::IntRect(10, 10, 100, 100));
 
+	// Create text
+	sf::Font font;
+	if (!font.loadFromFile(font1_filename))	{ /* error */ }
+	sf::Text text;
+	text.setFont(font); // font is a sf::Font
+	text.setString("Hello world.\n Does the \n work?");
+	text.setCharacterSize(24); // in pixels, not points!
+	text.setFillColor(sf::Color::Black);
+
 	//--------------Init Chess Piece Sprites--------------//
 
 	initPieceSprites(spritePieces);
@@ -94,6 +58,7 @@ int main() {
 	drawlist.addShape(background_sprite);
 	drawlist.addShape(board);
 	drawlist.addShape(mouse_follower);
+	drawlist.addText(text);
 
 	for (int i = 0; i < 2; i++) {
 		for (int j = 0; j < NUM_TEAM_PIECES; j++) {
@@ -106,20 +71,18 @@ int main() {
 	while (window.isOpen())		// Graphics Event loop
 	{
 		sf::Event event;
+		sf::Vector2f mpos;
+		sf::Vector2i localPosition;
+		// int x_click;
+		// int y_click;
+		// int x_released;
+		// int y_released;
+		
+
+		sf::Sprite* clicked = nullptr;
+
 		while (window.pollEvent(event))
 		{
-			switch (event.type) {
-			/*
-			case sf::Event::MouseButtonPressed:
-				if (event.mouseButton.button == sf::Mouse::Right) {
-					// event.mouseButton.x;
-					// event.mouseButton.y;
-				}
-			*/
-			case sf::Event::Closed:
-				window.close();
-			}
-
 			// Testing mouse functionality.
 			sf::Vector2i localPosition = sf::Mouse::getPosition(window);
 			sf::Vector2f mpos;
@@ -127,6 +90,28 @@ int main() {
 			mpos.y = localPosition.y - 30;
 			mouse_follower.setPosition(mpos);
 
+			switch (event.type) {
+			
+			case sf::Event::MouseButtonPressed:
+				
+				if ((clicked = getClickedPiece(event.mouseButton.x, event.mouseButton.y)) != nullptr) {
+					localPosition = sf::Mouse::getPosition(window);
+					clicked->setPosition(localPosition.x, localPosition.y);
+				}	
+				break;
+
+			case sf::Event::MouseButtonReleased:
+
+				if (clicked != nullptr) {
+					clicked->setPosition(event.mouseButton.x, event.mouseButton.y);
+					clicked = nullptr;
+				}
+				break;
+
+			case sf::Event::Closed:
+				
+				window.close();
+			}
 		}
 
 		// Drawing window and objects.
@@ -186,6 +171,23 @@ void destroyPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES])
 			delete spritePieces[i][j];
 		}
 	}
+}
+
+
+
+
+
+
+sf::Sprite* getClickedPiece(int x_click, int y_click)
+{
+	for (int i = 0; i < NUM_TEAM_PIECES; i++) {
+		for (int j = 0; j < NUM_TEAM_PIECES; j++) {
+			if (spritePieces[i][j] != nullptr && spritePieces[i][j]->contains(x_click, y_click)) {
+				return spritePieces[i][j];
+			}
+		}
+	}	// completed loop without any bounding boxes detected in the click zone
+	return nullptr;
 }
 
 

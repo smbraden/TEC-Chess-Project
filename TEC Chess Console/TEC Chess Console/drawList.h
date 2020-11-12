@@ -22,11 +22,13 @@ namespace chess_ui {
 		void setRenderWindow(sf::RenderWindow &window);
 		void addShape(sf::Shape& shapeObj);
 		void addSprite(sf::Sprite& shapeObj);
+		void addText(sf::Text& textObj);
 		void draw();
 
 	private:
 		std::vector<sf::Shape*> shapeObjPtrs;
 		std::vector<sf::Sprite*> spriteObjPtrs;
+		std::vector<sf::Text*> textObjPtrs;
 		sf::RenderWindow* renderWindowPointer;
 		
 	};

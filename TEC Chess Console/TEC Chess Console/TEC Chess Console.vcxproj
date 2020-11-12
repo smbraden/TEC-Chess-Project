@@ -164,6 +164,7 @@
     <ClInclude Include="ChessTeam.h" />
     <ClInclude Include="DerivedPieces.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="boardTestHeader.h" />
     <ClInclude Include="History.h" />
     <ClInclude Include="drawList.h" />
     <ClInclude Include="LinkedBag.h" />
