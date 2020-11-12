@@ -1,13 +1,22 @@
-#include "ChessPieceSprite.h"
+/*/-------------------------------------------------------------------------------------//
+   Filename:           ChessPieceSprite.cpp
+   Contributors:       Sonja Braden
+   Date:               11/11/2020
+   Reference:			https://www.sfml-dev.org/tutorials/2.5/start-vc.php
+   Description:			Adding a texture object to a derived sf::Sprite class,
+						Also automating some of the initializations common to
+						all Chess piece sprites
+//-------------------------------------------------------------------------------------/*/
 
+#include "ChessPieceSprite.h"
 
 namespace chess_ui {
 
 
 	PieceSprite::PieceSprite()
 	{
-		filenames = "";
-		TexturePtr = nullptr;	// let pieces share the same Texture
+		filename = "";
+		spriteTexture = sf::Texture();
 	}
 
 
@@ -19,7 +28,7 @@ namespace chess_ui {
 	{
 		addTexture(file);
 
-		setTexture(*TexturePtr);
+		setTexture(spriteTexture);
 		setPosition(x_pos, y_pos);
 		scale(sf::Vector2f(.5f, .45f)); // absolute scale factor	
 	}
@@ -30,10 +39,8 @@ namespace chess_ui {
 
 	void PieceSprite::addTexture(const std::string& file)
 	{
-		sf::Texture* newTexture = new sf::Texture;
-		if (newTexture->loadFromFile(file)) {
-			filenames = file;
-			TexturePtr = newTexture;
+		if (spriteTexture.loadFromFile(file)) {
+			filename = file;
 		}
 		else {
 			throw TextureUndefinedError();
