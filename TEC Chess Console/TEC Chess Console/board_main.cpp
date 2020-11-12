@@ -7,10 +7,12 @@
 	Description:		A client for testing the chess board class and integrating graphics
 //-------------------------------------------------------------------------------------/*/
 
-#include "boardTestHeader.h"
+#include "board_main.h"
 #include <string.h>
 
 int main() {
+
+	// chess::ChessBoard testBoard;	// test the build with the back-end object
 
 	//----------------Graphics Intializations----------------//
 
@@ -41,16 +43,16 @@ int main() {
 	mouse_follower.setTextureRect(sf::IntRect(10, 10, 100, 100));
 
 	// Create text
-	// sf::Font font;
-	// if (!font.loadFromFile(font1_filename))	{ /* error */ }
-	/*sf::Text text;
+	sf::Font font;
+	if (!font.loadFromFile(font1_filename))	{ /* error */ }
+	sf::Text text;
 	text.setFont(font); // font is a sf::Font
 	std::string msg;
-	msg = "Hello world.\n	To-do:\n-Lighten the Black Team to dark gray-ish\n-Get click and drag working\n-Design mechanism for mapping pixel positions to board coordinates\n-Resizable window";
+	msg = "Hello world.\n";
 	text.setString(msg);
 	text.setCharacterSize(24); // in pixels, not points!
 	text.setFillColor(sf::Color::Black);
-	*/
+	
 	//--------------Init Chess Piece Sprites--------------//
 
 	initPieceSprites(spritePieces);
@@ -80,7 +82,6 @@ int main() {
 		// int x_released;
 		// int y_released;
 		
-
 		sf::Sprite* clicked = nullptr;
 
 		while (window.pollEvent(event))

@@ -9,7 +9,7 @@
 #include <iostream>
 #include <ctype.h>		// for tolower()
 #include <fstream>		// for ifstream
-#include "ChessBoard.h"
+#include "Chess-Backend/ChessBoard.h"
 
 using namespace std;
 using namespace chess;

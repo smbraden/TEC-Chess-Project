@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\SFML-2.5.1\include;$(SolutionDir)..\Assets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,29 +145,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="boardTest.cpp" />
-    <ClCompile Include="ChessBoard.cpp" />
-    <ClCompile Include="ChessPiece.cpp" />
+    <ClCompile Include="board_main.cpp" />
+    <ClCompile Include="Chess-Backend\AlgebraicNotation.cpp" />
+    <ClCompile Include="Chess-Backend\ChessBoard.cpp" />
+    <ClCompile Include="Chess-Backend\ChessPiece.cpp" />
+    <ClCompile Include="Chess-Backend\ChessTeam.cpp" />
+    <ClCompile Include="Chess-Backend\ChessTeam_Mate.cpp" />
+    <ClCompile Include="Chess-Backend\DerivedPieces.cpp" />
+    <ClCompile Include="Chess-Backend\Grid.cpp" />
+    <ClCompile Include="Chess-Backend\History.cpp" />
     <ClCompile Include="ChessPieceSprite.cpp" />
-    <ClCompile Include="ChessTeam.cpp" />
-    <ClCompile Include="ChessTeam_Mate.cpp" />
-    <ClCompile Include="DerivedPieces.cpp" />
-    <ClCompile Include="Grid.cpp" />
-    <ClCompile Include="History.cpp" />
     <ClCompile Include="drawList.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChessBoard.h" />
-    <ClInclude Include="ChessExceptions.h" />
-    <ClInclude Include="ChessPiece.h" />
+    <ClInclude Include="Chess-Backend\ChessBoard.h" />
+    <ClInclude Include="Chess-Backend\ChessExceptions.h" />
+    <ClInclude Include="Chess-Backend\ChessPiece.h" />
+    <ClInclude Include="Chess-Backend\ChessTeam.h" />
+    <ClInclude Include="Chess-Backend\DerivedPieces.h" />
+    <ClInclude Include="Chess-Backend\Grid.h" />
+    <ClInclude Include="Chess-Backend\History.h" />
+    <ClInclude Include="Chess-Backend\LinkedBag.h" />
     <ClInclude Include="ChessPieceSprite.h" />
-    <ClInclude Include="ChessTeam.h" />
-    <ClInclude Include="DerivedPieces.h" />
-    <ClInclude Include="Grid.h" />
-    <ClInclude Include="boardTestHeader.h" />
-    <ClInclude Include="History.h" />
+    <ClInclude Include="board_main.h" />
     <ClInclude Include="drawList.h" />
-    <ClInclude Include="LinkedBag.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

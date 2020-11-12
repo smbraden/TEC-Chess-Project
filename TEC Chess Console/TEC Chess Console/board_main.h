@@ -9,9 +9,9 @@
 #ifndef BOARD_TEST_HEADER_H
 #define BOARD_TEST_HEADER_H
 
-
+#include "Chess-Backend/ChessBoard.h"
 #include <ctype.h>				// for tolower()
-#include "ChessBoard.h"
+
 #include "drawList.h"			// <-- redundant here #include <SFML/Graphics.hpp>
 #include "ChessPieceSprite.h"	// <-- redundant here #include <SFML/Graphics.hpp>
 
@@ -28,16 +28,16 @@ const int NUM_PIECES = 32;
 const int NUM_TEAM_PIECES = 16;
 
 
-const std::string background_filename = "Assets/marble2.jpg";
-const std::string board_filename = "Assets/Chess_Board_Lavender_Light.jpg";
-const std::string mouse_follower_filename = "Assets/marble3.jpg";
-const std::string font1_filename = "Assets/Inconsolata-Medium.ttf"; 
+const std::string background_filename = "Images/marble2.jpg";
+const std::string board_filename = "Images/Chess_Board_Lavender_Light.jpg";
+const std::string mouse_follower_filename = "Images/marble3.jpg";
+const std::string font1_filename = "Images/Inconsolata-Medium.ttf"; 
 
 const std::string PieceFilenames[2][NUM_TEAM_TEXTURES] = {
-	{ "Assets/WhiteRook.png", "Assets/WhiteKnight.png", "Assets/WhiteBishop.png",
-	  "Assets/WhiteQueen.png","Assets/WhiteKing.png", "Assets/WhitePawn.png" },
-	{ "Assets/BlackRook.png", "Assets/BlackKnight.png", "Assets/BlackBishop.png",
-	  "Assets/BlackQueen.png", "Assets/BlackKing.png", "Assets/BlackPawn.png" } };
+	{ "Images/WhiteRook.png", "Images/WhiteKnight.png", "Images/WhiteBishop.png",
+	  "Images/WhiteQueen.png","Images/WhiteKing.png", "Images/WhitePawn.png" },
+	{ "Images/BlackRook.png", "Images/BlackKnight.png", "Images/BlackBishop.png",
+	  "Images/BlackQueen.png", "Images/BlackKing.png", "Images/BlackPawn.png" } };
 
 chess_ui::drawList drawlist;
 

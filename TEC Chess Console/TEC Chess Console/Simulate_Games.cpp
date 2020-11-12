@@ -10,7 +10,7 @@
 #include <iostream>
 #include <ctype.h>		// for tolower()
 #include <fstream>		// for ifstream
-#include "ChessBoard.h"
+#include "Chess-Backend/ChessBoard.h"
 
 using namespace std;
 using namespace chess;
@@ -43,7 +43,7 @@ int main() {
 	
 	cout << endl << "Welcome to the Chess Game Simulator. Let's test some games..." << endl << endl;
 
-	playGames("testGames_List.txt", testBoard);
+	playGames("Data/testGames_List.txt", testBoard);
 
 	return 0;
 }

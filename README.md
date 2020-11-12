@@ -15,4 +15,4 @@ Some GUI features that remain to be completed include:
 	* Light-colored outline around Black pieces
 4. Resizable window with board entity that does not resize with respect to the screen
 
-![Chess Board UI Screenshot](TEC_Chess_UI_ScreenShot.png)
+![Chess Board UI Screenshot](Project_Info/TEC_Chess_UI_ScreenShot.png)
