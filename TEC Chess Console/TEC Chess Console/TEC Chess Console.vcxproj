@@ -146,26 +146,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="board_main.cpp" />
-    <ClCompile Include="Chess-Backend\AlgebraicNotation.cpp" />
-    <ClCompile Include="Chess-Backend\ChessBoard.cpp" />
-    <ClCompile Include="Chess-Backend\ChessPiece.cpp" />
-    <ClCompile Include="Chess-Backend\ChessTeam.cpp" />
-    <ClCompile Include="Chess-Backend\ChessTeam_Mate.cpp" />
-    <ClCompile Include="Chess-Backend\DerivedPieces.cpp" />
-    <ClCompile Include="Chess-Backend\Grid.cpp" />
-    <ClCompile Include="Chess-Backend\History.cpp" />
     <ClCompile Include="ChessPieceSprite.cpp" />
     <ClCompile Include="drawList.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Chess-Backend\ChessBoard.h" />
-    <ClInclude Include="Chess-Backend\ChessExceptions.h" />
-    <ClInclude Include="Chess-Backend\ChessPiece.h" />
-    <ClInclude Include="Chess-Backend\ChessTeam.h" />
-    <ClInclude Include="Chess-Backend\DerivedPieces.h" />
-    <ClInclude Include="Chess-Backend\Grid.h" />
-    <ClInclude Include="Chess-Backend\History.h" />
-    <ClInclude Include="Chess-Backend\LinkedBag.h" />
     <ClInclude Include="ChessPieceSprite.h" />
     <ClInclude Include="board_main.h" />
     <ClInclude Include="drawList.h" />

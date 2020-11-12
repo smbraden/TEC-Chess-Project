@@ -1,5 +1,5 @@
 /*/-------------------------------------------------------------------------------------//
-   Filename:           boardTestHeader.h
+   Filename:           board_main.h
    Contributors:       Sonja Braden
    Date:               11/11/2020
    Reference:			https://www.sfml-dev.org/tutorials/2.5/start-vc.php
@@ -9,11 +9,14 @@
 #ifndef BOARD_TEST_HEADER_H
 #define BOARD_TEST_HEADER_H
 
-#include "Chess-Backend/ChessBoard.h"
-#include <ctype.h>				// for tolower()
-
 #include "drawList.h"			// <-- redundant here #include <SFML/Graphics.hpp>
 #include "ChessPieceSprite.h"	// <-- redundant here #include <SFML/Graphics.hpp>
+
+
+/*
+// Add ChessBoard.h/.cpp and dependencies to project for testing integration
+#include "Chess-Backend/ChessBoard.h"
+#include <ctype.h>				// for tolower() in backend board_main functions	*/
 
 
 //------------------------Constants------------------------//

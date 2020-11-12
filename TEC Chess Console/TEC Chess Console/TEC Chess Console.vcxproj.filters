@@ -15,37 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="drawList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ChessPieceSprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="board_main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Chess-Backend\ChessBoard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Chess-Backend\ChessExceptions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Chess-Backend\ChessPiece.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Chess-Backend\ChessTeam.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Chess-Backend\DerivedPieces.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Chess-Backend\Grid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Chess-Backend\History.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Chess-Backend\LinkedBag.h">
+    <ClInclude Include="drawList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -57,30 +33,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="board_main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Chess-Backend\AlgebraicNotation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Chess-Backend\ChessBoard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Chess-Backend\ChessPiece.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Chess-Backend\ChessTeam.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Chess-Backend\ChessTeam_Mate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Chess-Backend\DerivedPieces.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Chess-Backend\Grid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Chess-Backend\History.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
