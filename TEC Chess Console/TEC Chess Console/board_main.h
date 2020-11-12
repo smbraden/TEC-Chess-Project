@@ -1,5 +1,5 @@
 /*/-------------------------------------------------------------------------------------//
-   Filename:           boardTestHeader.h
+   Filename:           board_main.h
    Contributors:       Sonja Braden
    Date:               11/11/2020
    Reference:			https://www.sfml-dev.org/tutorials/2.5/start-vc.php

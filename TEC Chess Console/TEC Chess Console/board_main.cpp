@@ -1,5 +1,5 @@
  /*/-------------------------------------------------------------------------------------//
-	Filename:           boardTest.cpp
+	Filename:           board_main.cpp
 	Contributors:       Sonja Braden, Jacob Halaweh
 	Date:               11/9/2020
 	Reference:			https://www.sfml-dev.org/tutorials/2.5/start-vc.php
