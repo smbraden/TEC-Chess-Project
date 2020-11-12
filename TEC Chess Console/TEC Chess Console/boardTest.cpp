@@ -8,7 +8,7 @@
 //-------------------------------------------------------------------------------------/*/
 
 #include "boardTestHeader.h"
-
+#include <string.h>
 
 int main() {
 
@@ -45,7 +45,9 @@ int main() {
 	if (!font.loadFromFile(font1_filename))	{ /* error */ }
 	sf::Text text;
 	text.setFont(font); // font is a sf::Font
-	text.setString("Hello world.\n Does the \n work?");
+	std::string msg;
+	msg = "Hello world.\n	To-do:\n-Lighten the Black Team to dark gray-ish\n-Get click and drag working\n-Design mechanism for mapping pixel positions to board coordinates\n-Resizable window";
+	text.setString(msg);
 	text.setCharacterSize(24); // in pixels, not points!
 	text.setFillColor(sf::Color::Black);
 
