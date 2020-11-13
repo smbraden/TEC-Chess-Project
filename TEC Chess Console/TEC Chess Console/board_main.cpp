@@ -70,6 +70,20 @@ int main() {
 			drawlist.addSprite(*temp);
 		}
 	}
+
+	////////////////////////////////////////////////////////////////////////////////////////
+	//------------Draggable object example (Deletable, here for demonstration)------------//
+	chess_ui::draggable draggable_box;
+	draggable_box.initialize();
+	draggable_box.set_width_height(32,32);
+	draggable_box.set_color(255, 0, 255, 255);
+	draggable_box.set_x_pos(50);
+	draggable_box.set_y_pos(100);
+	drawlist.addShape(*draggable_box.getShape());
+	// If deleted, remove the "draggable_box.update(window);" from the graphics event loop. Searching this quote will find it.
+	////////////////////////////////////////////////////////////////////////////////////////
+
+
 	//----------------Graphics Event Loop----------------//
 
 	while (window.isOpen())		// Graphics Event loop
@@ -92,7 +106,7 @@ int main() {
 			mpos.x = localPosition.x - 30;
 			mpos.y = localPosition.y - 30;
 			mouse_follower.setPosition(mpos);
-
+			
 			switch (event.type) {
 			
 			case sf::Event::MouseButtonPressed:
@@ -115,7 +129,17 @@ int main() {
 				
 				window.close();
 			}
+
+
+			// Pressing escape closes the window
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+				window.close();
+			}
+
 		}
+
+		// Update the draggable box demo
+		draggable_box.update(window);
 
 		// Drawing window and objects.
 		window.clear();
