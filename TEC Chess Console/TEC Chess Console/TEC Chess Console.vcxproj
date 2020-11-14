@@ -156,6 +156,7 @@
     <ClCompile Include="Chess-Backend\History.cpp" />
     <ClCompile Include="ChessPieceSprite.cpp" />
     <ClCompile Include="drawList.cpp" />
+    <ClCompile Include="Draggable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Chess-Backend\ChessBoard.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="ChessPieceSprite.h" />
     <ClInclude Include="board_main.h" />
     <ClInclude Include="drawList.h" />
+    <ClInclude Include="Draggable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

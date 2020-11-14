@@ -9,9 +9,11 @@
 #ifndef BOARD_TEST_HEADER_H
 #define BOARD_TEST_HEADER_H
 
+
 #include "Chess-Backend/ChessBoard.h"
 #include <ctype.h>				// for tolower()
 
+#include "Draggable.h"
 #include "drawList.h"			// <-- redundant here #include <SFML/Graphics.hpp>
 #include "ChessPieceSprite.h"	// <-- redundant here #include <SFML/Graphics.hpp>
 
