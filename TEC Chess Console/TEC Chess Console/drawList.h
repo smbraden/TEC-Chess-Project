@@ -1,13 +1,13 @@
 /*/-------------------------------------------------------------------------------------//
 	Filename:           drawList.h
 	Contributor:        Jacob Halaweh
-	Date:               9/26/2020
+	Date:               11/13/2020
 	Reference:
 	Description:		Tests run on graphical integration. Placed in seperate file to be modular.
 //-------------------------------------------------------------------------------------/*/
 
-#ifndef JACOBTESTS_H
-#define JACOBTESTS_H
+#ifndef DRAWLIST_H
+#define DRAWLIST_H
 
 #include <vector>
 #include <SFML/Graphics.hpp>

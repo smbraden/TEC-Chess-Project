@@ -17,6 +17,7 @@ namespace chess_ui {
 	drawList::drawList() {
 		shapeObjPtrs = {};
 		spriteObjPtrs = {};
+		textObjPtrs = {};
 		renderWindowPointer = nullptr;
 	}
 
@@ -40,6 +41,7 @@ namespace chess_ui {
 	void drawList::addText(sf::Text& textObj) {
 		textObjPtrs.push_back(&textObj);
 	}
+
 
 
 	// Renders all shapes in the list to the targeted render window.
