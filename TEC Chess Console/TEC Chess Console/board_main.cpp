@@ -146,8 +146,8 @@ void initPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES])
 		x += 100;
 	}
 	for (int i = 5; i < 8; i++) {	// rightiest wBishop through wRook
-		spritePieces[0][i] = new chess_ui::PieceSprite(PieceFilenames[0][i - 5], x, Wy);
-		spritePieces[1][i] = new chess_ui::PieceSprite(PieceFilenames[1][i - 5], x, By);
+		spritePieces[0][i] = new chess_ui::PieceSprite(PieceFilenames[0][7 - i], x, Wy);
+		spritePieces[1][i] = new chess_ui::PieceSprite(PieceFilenames[1][7 - i], x, By);
 		x += 100;
 	}
 
