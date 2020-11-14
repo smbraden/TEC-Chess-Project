@@ -108,7 +108,7 @@ int main() {
 			mouse_follower.setPosition(mpos);
 			
 			switch (event.type) {
-			
+			/*
 			case sf::Event::MouseButtonPressed:
 				
 				if ((clicked = getClickedPiece(event.mouseButton.x, event.mouseButton.y)) != nullptr) {
@@ -124,7 +124,7 @@ int main() {
 					clicked = nullptr;
 				}
 				break;
-
+				*/
 			case sf::Event::Closed:
 				
 				window.close();
