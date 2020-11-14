@@ -66,11 +66,13 @@ int main() {
 
 	for (int i = 0; i < 2; i++) {
 		for (int j = 0; j < NUM_TEAM_PIECES; j++) {
-			sf::Sprite* temp = spritePieces[i][j];
+			chess_ui::PieceSprite* temp = spritePieces[i][j];
+			drawlist.addSpritePiece(*temp);
 			drawlist.addSprite(*temp);
+			// sf::Sprite* temp = spritePieces[i][j];
 		}
 	}
-
+	/*
 	////////////////////////////////////////////////////////////////////////////////////////
 	//------------Draggable object example (Deletable, here for demonstration)------------//
 	chess_ui::draggable draggable_box;
@@ -82,7 +84,7 @@ int main() {
 	drawlist.addShape(*draggable_box.getShape());
 	// If deleted, remove the "draggable_box.update(window);" from the graphics event loop. Searching this quote will find it.
 	////////////////////////////////////////////////////////////////////////////////////////
-
+	*/
 
 	//----------------Graphics Event Loop----------------//
 
@@ -91,10 +93,6 @@ int main() {
 		sf::Event event;
 		sf::Vector2f mpos;
 		sf::Vector2i localPosition;
-		// int x_click;
-		// int y_click;
-		// int x_released;
-		// int y_released;
 		
 		sf::Sprite* clicked = nullptr;
 
@@ -139,8 +137,8 @@ int main() {
 		}
 
 		// Update the draggable box demo
-		draggable_box.update(window);
-
+		// draggable_box.update(window);
+		
 		// Drawing window and objects.
 		window.clear();
 		drawlist.draw();

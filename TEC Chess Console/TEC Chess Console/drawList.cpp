@@ -18,13 +18,17 @@ namespace chess_ui {
 		shapeObjPtrs = {};
 		spriteObjPtrs = {};
 		textObjPtrs = {};
+		spritePieceObjPtrs = {};
 		renderWindowPointer = nullptr;
 	}
 
 	// Sets the target render window for this draw list.
 	void drawList::setRenderWindow(sf::RenderWindow &window) {
 		renderWindowPointer = &window;
-		
+	}
+
+	void drawList::addSpritePiece(chess_ui::PieceSprite& pieceObj) {
+		spritePieceObjPtrs.push_back(&pieceObj);
 	}
 
 	// Adds a shape to the draw list for rendering.
@@ -45,13 +49,20 @@ namespace chess_ui {
 
 
 	// Renders all shapes in the list to the targeted render window.
+	// This updates, then renders all draggable PieceSprite
+	// If a plain old Spite needs to be rendered, then
+	// uncomment the comment out loop below
 	void drawList::draw() {
 
 		for (int i = 0; i < shapeObjPtrs.size(); i++) {
 			renderWindowPointer->draw(*shapeObjPtrs[i]);
 		}
-		for (int i = 0; i < spriteObjPtrs.size(); i++) {
-			renderWindowPointer->draw(*spriteObjPtrs[i]);
+		/* for (int i = 0; i < spritePieceObjPtrs.size(); i++) {
+			renderWindowPointer->draw(*spritePieceObjPtrs[i]);
+		} */
+		for (int i = 0; i < spritePieceObjPtrs.size(); i++) {
+			spritePieceObjPtrs[i]->update(*renderWindowPointer);
+			renderWindowPointer->draw(*spritePieceObjPtrs[i]);
 		}
 		for (int i = 0; i < textObjPtrs.size(); i++) {
 			renderWindowPointer->draw(*textObjPtrs[i]);

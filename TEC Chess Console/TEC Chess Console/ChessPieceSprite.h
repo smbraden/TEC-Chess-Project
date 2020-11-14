@@ -1,6 +1,6 @@
 /*/-------------------------------------------------------------------------------------//
    Filename:           ChessPieceSprite.h
-   Contributors:       Sonja Braden
+   Contributors:       Sonja Braden, Jacob Halaweh
    Date:               11/11/2020
    Reference:			https://www.sfml-dev.org/tutorials/2.5/start-vc.php
    Description:			Adding a texture object to a derived sf::Sprite class, 
@@ -22,16 +22,37 @@ namespace chess_ui {
 	public:
 		
 		PieceSprite();
-		PieceSprite(const std::string& file, int x_pos, int y_pos);
+		PieceSprite(const std::string& file, int in_x, int in_pos);
 		void addTexture(const std::string& file);
-		bool contains(int x_pos, int y_pos);
+		bool contains(int in_x, int in_y);
+
 		class TextureUndefinedError {};
+
+		// elements of draggable functionality
+		void update(sf::RenderWindow& a);
+		void set_x_pos(int in_x);
+		void set_y_pos(int in_y);
+		float get_x_pos();
+		float get_y_pos();
+		
+		
 
 	private:
 
 		std::string filename;
 		sf::Texture spriteTexture;
 		sf::FloatRect boundingBox;
+
+		// elements of draggable functionality
+		int width = 0;
+		int height = 0;
+		float x_pos = 0;
+		float y_pos = 0;
+		float mouse_offset_x = 0;
+		float mouse_offset_y = 0;
+		bool dragging = false;
+		bool flag_first_click = true;
+		
 	};
 }
 

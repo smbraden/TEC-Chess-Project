@@ -37,6 +37,7 @@ namespace chess_ui {
 
 
 
+
 	void draggable::update(sf::RenderWindow& a) {
 
 		// Get true mouse position, taking window repositioninginto account. Does not account for window rescaling or skew.
@@ -133,6 +134,14 @@ namespace chess_ui {
 
 	sf::RectangleShape* draggable::getShape() {
 		return &shape;
+	}
+
+
+
+
+	void draggable::draw(sf::RenderWindow& a) {
+
+		a.draw(shape);
 	}
 
 

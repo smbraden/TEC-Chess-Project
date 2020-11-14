@@ -27,8 +27,9 @@ namespace chess_ui {
 		float get_y_pos();
 		int get_width();
 		int get_height();
-		sf::RectangleShape* getShape();
 		void draw_draggable(sf::RenderWindow& a);
+		void draw(sf::RenderWindow& a);
+		sf::RectangleShape* getShape();
 
 	private:
 		sf::RectangleShape shape;

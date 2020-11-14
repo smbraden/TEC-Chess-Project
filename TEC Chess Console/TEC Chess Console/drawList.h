@@ -11,7 +11,7 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
-
+#include "ChessPieceSprite.h"
 
 namespace chess_ui {
 
@@ -20,13 +20,15 @@ namespace chess_ui {
 	public:
 		drawList();
 		void setRenderWindow(sf::RenderWindow &window);
-		void addShape(sf::Shape& shapeObj);
+		void addSpritePiece(chess_ui::PieceSprite& pieceObj);
 		void addSprite(sf::Sprite& shapeObj);
+		void addShape(sf::Shape& shapeObj);
 		void addText(sf::Text& textObj);
 		void draw();
 
 	private:
 		std::vector<sf::Shape*> shapeObjPtrs;
+		std::vector<chess_ui::PieceSprite*> spritePieceObjPtrs;
 		std::vector<sf::Sprite*> spriteObjPtrs;
 		std::vector<sf::Text*> textObjPtrs;
 		sf::RenderWindow* renderWindowPointer;
