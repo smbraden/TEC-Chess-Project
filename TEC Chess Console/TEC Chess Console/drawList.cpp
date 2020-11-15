@@ -6,10 +6,7 @@
 	Description:		Tests run on graphical integration. Placed in seperate file to be modular.
 //-------------------------------------------------------------------------------------/*/
 
-#include <iostream>
 #include "drawList.h"
-#include <SFML/Graphics.hpp>
-#include <vector>
 
 namespace chess_ui {
 
@@ -71,6 +68,32 @@ namespace chess_ui {
 
 } // jtest namespace end of scope
 
+
+/*
+
+To demo, add the following codde before the graphics event loop, while (window.isOpen())
+
+////////////////////////////////////////////////////////////////////////////////////////
+//------------Draggable object example (Deletable, here for demonstration)------------//
+chess_ui::draggable draggable_box;
+draggable_box.initialize();
+draggable_box.set_width_height(32,32);
+draggable_box.set_color(255, 0, 255, 255);
+draggable_box.set_x_pos(50);
+draggable_box.set_y_pos(100);
+drawlist.addShape(*draggable_box.getShape());
+// If deleted, remove the "draggable_box.update(window);" 
+// from the graphics event loop. Searching this quote will find it.
+////////////////////////////////////////////////////////////////////////////////////////
+
+
+Also inclide this update to the object at the end of every go of the loop
+
+// Update the draggable box demo
+draggable_box.update(window);
+
+
+*/
 
 
 

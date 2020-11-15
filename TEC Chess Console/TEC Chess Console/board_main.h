@@ -11,12 +11,9 @@
 
 
 #include "Chess-Backend/ChessBoard.h"
-#include <ctype.h>				// for tolower()
-
-// #include "Draggable.h"
 #include "drawList.h"			// <-- redundant here #include <SFML/Graphics.hpp>
-#include "ChessPieceSprite.h"	// <-- redundant here #include <SFML/Graphics.hpp>
-
+#include "PieceSprite.h"		// <-- redundant here #include <SFML/Graphics.hpp>
+#include "PieceSprite_Set.h"
 
 /*
 // Add ChessBoard.h/.cpp and dependencies to project for testing integration
@@ -30,9 +27,10 @@ const int WINDOW_W = 1400;
 const int WINDOW_H = 1200;
 const int BOARD_W = 900;
 const int BOARD_H = 900;
-const int NUM_PIECE_TEXTURES = 12;
+
+// const int NUM_PIECE_TEXTURES = 12;
+// const int NUM_PIECES = 32;
 const int NUM_TEAM_TEXTURES = 6;
-const int NUM_PIECES = 32;
 const int NUM_TEAM_PIECES = 16;
 
 
@@ -47,9 +45,10 @@ const std::string PieceFilenames[2][NUM_TEAM_TEXTURES] = {
 	{ "Images/BlackRook.png", "Images/BlackKnight.png", "Images/BlackBishop.png",
 	  "Images/BlackQueen.png", "Images/BlackKing.png", "Images/BlackPawn.png" } };
 
-chess_ui::drawList drawlist;
 
-chess_ui::PieceSprite* spritePieces[2][NUM_TEAM_PIECES];
+chess_ui::drawList drawlist;
+chess_ui::PieceSprite_Set pieces;
+
 
 //--------------------Backend Functions--------------------//
 /*
@@ -58,13 +57,26 @@ void play(chess::ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2
 inline int char2col(char ch);
 inline int int2row(int arg);
 */
-//--------------------Frontend Functions--------------------//
-
-
-void initPieceSprites(chess_ui::PieceSprite * spritePieces[][NUM_TEAM_PIECES]);
-void destroyPieceSprites(chess_ui::PieceSprite * spritePieces[][NUM_TEAM_PIECES]);
-sf::Sprite* getClickedPiece(int x_click, int y_click);
-
 
 
 #endif // BOARD_TEST_HEADER_H
+
+
+
+
+
+
+
+
+
+
+
+//--------------------Frontend Functions--------------------//
+
+/*
+
+// chess_ui::PieceSprite* spritePieces[2][NUM_TEAM_PIECES];
+
+void initPieceSprites(chess_ui::PieceSprite * spritePieces[][NUM_TEAM_PIECES]);
+void destroyPieceSprites(chess_ui::PieceSprite * spritePieces[][NUM_TEAM_PIECES]);
+*/

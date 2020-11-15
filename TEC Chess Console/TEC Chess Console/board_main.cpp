@@ -1,4 +1,4 @@
- /*/-------------------------------------------------------------------------------------//
+/*/-------------------------------------------------------------------------------------//
 	Filename:           board_main.cpp
 	Contributors:       Sonja Braden, Jacob Halaweh
 	Date:               11/9/2020
@@ -8,11 +8,11 @@
 //-------------------------------------------------------------------------------------/*/
 
 #include "board_main.h"
-#include <string.h>
 
 int main() {
 
-	// chess::ChessBoard testBoard;	// test the build with the back-end object
+	// test the build with the back-end object, add dependencies first
+	// chess::ChessBoard testBoard;	
 
 	//----------------Graphics Intializations----------------//
 
@@ -53,10 +53,6 @@ int main() {
 	text.setCharacterSize(24); // in pixels, not points!
 	text.setFillColor(sf::Color::Black);
 	
-	//--------------Init Chess Piece Sprites--------------//
-
-	initPieceSprites(spritePieces);
-
 	//------------Add Entities to the drawList------------//
 	drawlist.setRenderWindow(window);
 	drawlist.addShape(background_sprite);
@@ -66,25 +62,12 @@ int main() {
 
 	for (int i = 0; i < 2; i++) {
 		for (int j = 0; j < NUM_TEAM_PIECES; j++) {
-			chess_ui::PieceSprite* temp = spritePieces[i][j];
+			
+			chess_ui::PieceSprite* temp = pieces.getPiecePtr(i, j);
 			drawlist.addSpritePiece(*temp);
-			drawlist.addSprite(*temp);
-			// sf::Sprite* temp = spritePieces[i][j];
 		}
 	}
-	/*
-	////////////////////////////////////////////////////////////////////////////////////////
-	//------------Draggable object example (Deletable, here for demonstration)------------//
-	chess_ui::draggable draggable_box;
-	draggable_box.initialize();
-	draggable_box.set_width_height(32,32);
-	draggable_box.set_color(255, 0, 255, 255);
-	draggable_box.set_x_pos(50);
-	draggable_box.set_y_pos(100);
-	drawlist.addShape(*draggable_box.getShape());
-	// If deleted, remove the "draggable_box.update(window);" from the graphics event loop. Searching this quote will find it.
-	////////////////////////////////////////////////////////////////////////////////////////
-	*/
+
 
 	//----------------Graphics Event Loop----------------//
 
@@ -106,26 +89,15 @@ int main() {
 			mouse_follower.setPosition(mpos);
 			
 			switch (event.type) {
-			/*
-			case sf::Event::MouseButtonPressed:
-				
-				if ((clicked = getClickedPiece(event.mouseButton.x, event.mouseButton.y)) != nullptr) {
-					localPosition = sf::Mouse::getPosition(window);
-					clicked->setPosition(localPosition.x, localPosition.y);
-				}	
-				break;
-
-			case sf::Event::MouseButtonReleased:
-
-				if (clicked != nullptr) {
-					clicked->setPosition(event.mouseButton.x, event.mouseButton.y);
-					clicked = nullptr;
-				}
-				break;
-				*/
+			
 			case sf::Event::Closed:
-				
 				window.close();
+			
+						/*
+			case X:
+
+			case Y:		
+						*/
 			}
 
 
@@ -133,11 +105,7 @@ int main() {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 				window.close();
 			}
-
 		}
-
-		// Update the draggable box demo
-		// draggable_box.update(window);
 		
 		// Drawing window and objects.
 		window.clear();
@@ -146,81 +114,8 @@ int main() {
 
 	}		//------------End Event Loop------------//
 
-	destroyPieceSprites(spritePieces);
-
 	return 0;
 }
-
-
-
-
-
-
-// Dimensions		spritePieces[2][NUM_TEAM_PIECES]
-void initPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES])
-{
-	int x = 280;
-	int Wy = 880;
-	int By = 180;
-	for (int i = 0; i < 5; i++) {	// leftiest wRook through wKing
-		spritePieces[0][i] = new chess_ui::PieceSprite(PieceFilenames[0][i], x, Wy);
-		spritePieces[1][i] = new chess_ui::PieceSprite(PieceFilenames[1][i], x, By);
-		x += 100;
-	}
-	for (int i = 5; i < 8; i++) {	// rightiest wBishop through wRook
-		spritePieces[0][i] = new chess_ui::PieceSprite(PieceFilenames[0][7 - i], x, Wy);
-		spritePieces[1][i] = new chess_ui::PieceSprite(PieceFilenames[1][7 - i], x, By);
-		x += 100;
-	}
-
-	x = 280;
-	Wy = 780;
-	By = 280;
-	for (int i = 8; i < NUM_TEAM_PIECES; i++) {	// all zee wPawns
-		spritePieces[0][i] = new chess_ui::PieceSprite(PieceFilenames[0][5], x, Wy);
-		spritePieces[1][i] = new chess_ui::PieceSprite(PieceFilenames[1][5], x, By);
-		x += 100;
-	}
-}
-
-
-
-
-
-
-
-void destroyPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES])
-{
-	for (int i = 0; i < 2; i++) {
-		for (int j = 0; j < NUM_TEAM_PIECES; j++) {
-			delete spritePieces[i][j];
-		}
-	}
-}
-
-
-
-
-
-
-sf::Sprite* getClickedPiece(int x_click, int y_click)
-{
-	for (int i = 0; i < NUM_TEAM_PIECES; i++) {
-		for (int j = 0; j < NUM_TEAM_PIECES; j++) {
-			if (spritePieces[i][j] != nullptr && spritePieces[i][j]->contains(x_click, y_click)) {
-				return spritePieces[i][j];
-			}
-		}
-	}	// completed loop without any bounding boxes detected in the click zone
-	return nullptr;
-}
-
-
-
-
-
-
-
 
 
 
@@ -319,4 +214,64 @@ inline int int2row(int arg)
 }
 */
 
+//------------------End Backend Functions------------------//
 
+
+
+
+
+
+
+
+
+
+
+/*
+
+These functionalities have been moved to PieceSprite_Set:
+
+
+// Dimensions		spritePieces[2][NUM_TEAM_PIECES]
+void initPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES])
+{
+	int x = 280;
+	int Wy = 880;
+	int By = 180;
+	for (int i = 0; i < 5; i++) {	// leftiest wRook through wKing
+		spritePieces[0][i] = new chess_ui::PieceSprite(PieceFilenames[0][i], x, Wy);
+		spritePieces[1][i] = new chess_ui::PieceSprite(PieceFilenames[1][i], x, By);
+		x += 100;
+	}
+	for (int i = 5; i < 8; i++) {	// rightiest wBishop through wRook
+		spritePieces[0][i] = new chess_ui::PieceSprite(PieceFilenames[0][7 - i], x, Wy);
+		spritePieces[1][i] = new chess_ui::PieceSprite(PieceFilenames[1][7 - i], x, By);
+		x += 100;
+	}
+
+	x = 280;
+	Wy = 780;
+	By = 280;
+	for (int i = 8; i < NUM_TEAM_PIECES; i++) {	// all zee wPawns
+		spritePieces[0][i] = new chess_ui::PieceSprite(PieceFilenames[0][5], x, Wy);
+		spritePieces[1][i] = new chess_ui::PieceSprite(PieceFilenames[1][5], x, By);
+		x += 100;
+	}
+}
+
+
+
+
+
+
+
+void destroyPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES])
+{
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < NUM_TEAM_PIECES; j++) {
+			delete spritePieces[i][j];
+		}
+	}
+}
+
+
+*/

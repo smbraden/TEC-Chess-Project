@@ -146,13 +146,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="board_main.cpp" />
-    <ClCompile Include="ChessPieceSprite.cpp" />
+    <ClCompile Include="Draggable.cpp" />
+    <ClCompile Include="PieceSprite.cpp" />
     <ClCompile Include="drawList.cpp" />
+    <ClCompile Include="PieceSprite_Set.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChessPieceSprite.h" />
     <ClInclude Include="board_main.h" />
+    <ClInclude Include="Draggable.h" />
+    <ClInclude Include="PieceSprite.h" />
     <ClInclude Include="drawList.h" />
+    <ClInclude Include="PieceSprite_Set.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -15,13 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChessPieceSprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="board_main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="drawList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PieceSprite_Set.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PieceSprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Draggable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -29,10 +35,16 @@
     <ClCompile Include="drawList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChessPieceSprite.cpp">
+    <ClCompile Include="board_main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="board_main.cpp">
+    <ClCompile Include="PieceSprite_Set.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PieceSprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Draggable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

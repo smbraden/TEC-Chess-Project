@@ -9,9 +9,11 @@
 #ifndef DRAWLIST_H
 #define DRAWLIST_H
 
+
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "ChessPieceSprite.h"
+#include "PieceSprite.h"
+
 
 namespace chess_ui {
 

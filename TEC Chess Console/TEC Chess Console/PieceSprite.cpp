@@ -3,63 +3,86 @@
    Contributors:       Sonja Braden
    Date:               11/11/2020
    Reference:			https://www.sfml-dev.org/tutorials/2.5/start-vc.php
-   Description:			Adding a texture object to a derived sf::Sprite class,
+   Description:			Adding a texture object and draggable functionality 
+						to a derived sf::Sprite class.
 						Also automating some of the initializations common to
-						all Chess piece sprites
+						all Chess piece sprites.
 //-------------------------------------------------------------------------------------/*/
 
-#include "ChessPieceSprite.h"
+#include "PieceSprite.h"
 
 namespace chess_ui {
 
-
-	PieceSprite::PieceSprite()
-	{
-		addTexture("Images/WhitePawn.png");
-		setTexture(spriteTexture);
-		scale(sf::Vector2f(.5f, .45f)); // absolute scale factor	
-		boundingBox = getGlobalBounds();
 	
-		x_pos = getPosition().x;
-		y_pos = getPosition().y;
-		height = boundingBox.height;
-		width = boundingBox.width;
-	}
-
-
-
-
-
-
-	PieceSprite::PieceSprite(const std::string& file, int in_x, int in_y)
+	// Init Texture with a pinter to another texture
+	PieceSprite::PieceSprite(sf::Texture* text, float in_x, float in_y)
 	{
-		addTexture(file);
-		setTexture(spriteTexture);
+		TexturePtr = text;
+		setTexture(*TexturePtr); 
 		scale(sf::Vector2f(.5f, .45f)); // absolute scale factor	
 		boundingBox = getGlobalBounds();
 		setPosition(in_x, in_y);
 
 		x_pos = in_x;
 		y_pos = in_y;
-		height = boundingBox.height;
-		width = boundingBox.width;
 
 	}
 
 
 
-
-
-	void PieceSprite::addTexture(const std::string& file)
+	
+	// Init Texture using a filename from projet Images
+	PieceSprite::PieceSprite()
 	{
-		if (spriteTexture.loadFromFile(file)) {
-			filename = file;
-		}
-		else {
-			throw TextureUndefinedError();
-		}
+		if (!(TexturePtr->loadFromFile("Images/WhitePawn.png"))) {  } // error
+		setTexture(*TexturePtr);
+		scale(sf::Vector2f(.5f, .45f)); // absolute scale factor	
+		boundingBox = getGlobalBounds();
+	
+		x_pos = getPosition().x;
+		y_pos = getPosition().y;
 	}
 
+
+
+
+	/*
+	
+			For an implementation where each PieceSprite instantiates
+			its own personal Texture Object, use these constructors
+			instead of the ones above. (with several other modifications)
+
+
+	// Init Texture with a filename
+	PieceSprite::PieceSprite(const std::string& file, float in_x, float in_y)
+	{
+		if (!(texture.loadFromFile(file))) {  } // error
+		setTexture(texture); // *TexturePtr
+		scale(sf::Vector2f(.5f, .45f)); // absolute scale factor	
+		boundingBox = getGlobalBounds();
+		setPosition(in_x, in_y);
+
+		x_pos = in_x;
+		y_pos = in_y;
+	}
+
+
+
+
+	// Init Texture using a filename from projet Images
+	PieceSprite::PieceSprite()
+	{
+		if (!(text.loadFromFile("Images/WhitePawn.png"))) {  } // error
+		setTexture(texture);
+		scale(sf::Vector2f(.5f, .45f)); // absolute scale factor
+		boundingBox = getGlobalBounds();
+
+		x_pos = getPosition().x;
+		y_pos = getPosition().y;
+	}
+
+
+	*/
 
 
 
@@ -80,7 +103,11 @@ namespace chess_ui {
 	
 	void PieceSprite::update(sf::RenderWindow& a) {
 
-		// Get true mouse position, taking window repositioninginto account. Does not account for window rescaling or skew.
+		int height = boundingBox.height;
+		int width = boundingBox.width;
+
+		// Get true mouse position, taking window repositioning into account. 
+		// Does not account for window rescaling or skew.
 		int mouse_x = sf::Mouse::getPosition().x - a.getPosition().x;
 		int mouse_y = sf::Mouse::getPosition().y - a.getPosition().y;
 
@@ -117,7 +144,6 @@ namespace chess_ui {
 			x_pos = position.x - a.getPosition().x - mouse_offset_x;
 			y_pos = position.y - a.getPosition().y - mouse_offset_y;
 
-
 		}
 		sf::Vector2f position_2f;
 
@@ -131,14 +157,14 @@ namespace chess_ui {
 
 
 
-	void PieceSprite::set_x_pos(int x) {
+	void PieceSprite::set_x_pos(float x) {
 		x_pos = x;
 	}
 
 
 
 
-	void PieceSprite::set_y_pos(int y) {
+	void PieceSprite::set_y_pos(float y) {
 		y_pos = y;
 	}
 
@@ -160,29 +186,3 @@ namespace chess_ui {
 }	// closes namespace
 
 
-
-
-
-
-/*
-void PieceSprite::addTexture(const std::string& file)
-{
-	bool flag = true;
-	for (int i = 0; i < textVect.size(); i++) {
-		if (filenames[i] == file) {
-			TexturePtr = textVect[i];
-			flag = false;
-			break;
-		}
-	}
-
-	if (flag) {
-
-		sf::Texture* newTexture = new sf::Texture;
-		if (!newTexture->loadFromFile(file)) { } // error
-		filenames.push_back(file);
-		textVect.push_back(newTexture);
-		TexturePtr = newTexture;
-	}
-}
-*/
