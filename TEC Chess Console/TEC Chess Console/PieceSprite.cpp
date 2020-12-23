@@ -10,6 +10,8 @@
 //-------------------------------------------------------------------------------------/*/
 
 #include "PieceSprite.h"
+#include <iostream>		//  for debugging
+
 
 namespace chess_ui {
 
@@ -20,12 +22,8 @@ namespace chess_ui {
 		TexturePtr = text;
 		setTexture(*TexturePtr); 
 		scale(sf::Vector2f(.5f, .45f)); // absolute scale factor	
-		boundingBox = getGlobalBounds();
+		
 		setPosition(in_x, in_y);
-
-		x_pos = in_x;
-		y_pos = in_y;
-
 	}
 
 
@@ -37,112 +35,77 @@ namespace chess_ui {
 		if (!(TexturePtr->loadFromFile("Images/WhitePawn.png"))) {  } // error
 		setTexture(*TexturePtr);
 		scale(sf::Vector2f(.5f, .45f)); // absolute scale factor	
-		boundingBox = getGlobalBounds();
-	
-		x_pos = getPosition().x;
-		y_pos = getPosition().y;
+		
 	}
 
 
 
 
-	/*
-	
-			For an implementation where each PieceSprite instantiates
-			its own personal Texture Object, use these constructors
-			instead of the ones above. (with several other modifications)
 
 
-	// Init Texture with a filename
-	PieceSprite::PieceSprite(const std::string& file, float in_x, float in_y)
+	bool PieceSprite::contains_mouse(sf::RenderWindow& window)
 	{
-		if (!(texture.loadFromFile(file))) {  } // error
-		setTexture(texture); // *TexturePtr
-		scale(sf::Vector2f(.5f, .45f)); // absolute scale factor	
+		auto mouse_pos = sf::Mouse::getPosition(window);
+		auto translated_pos = window.mapPixelToCoords(mouse_pos); // Mouse position translated into world coordinates
+		
+		//  getGlobalBounds() returns the bounding box of the entity in the global coordinate system, 
+		// i.e. after all of its transformations (position, rotation, scale) have been applied
 		boundingBox = getGlobalBounds();
-		setPosition(in_x, in_y);
-
-		x_pos = in_x;
-		y_pos = in_y;
+		
+		// some adjustments for a more precise bounding box
+		boundingBox.left += 40;
+		boundingBox.top += 20;
+		boundingBox.width /= 3;
+		boundingBox.height = (boundingBox.height * 2) / 3;
+		
+		return boundingBox.contains(translated_pos);
 	}
 
-
-
-
-	// Init Texture using a filename from projet Images
-	PieceSprite::PieceSprite()
-	{
-		if (!(text.loadFromFile("Images/WhitePawn.png"))) {  } // error
-		setTexture(texture);
-		scale(sf::Vector2f(.5f, .45f)); // absolute scale factor
-		boundingBox = getGlobalBounds();
-
-		x_pos = getPosition().x;
-		y_pos = getPosition().y;
-	}
-
-
-	*/
-
-
-
-
-
-	bool PieceSprite::contains(int in_x, int in_y)
-	{
-		return boundingBox.contains(in_x, in_y);
-	}
 
 
 
 
 
 	//-----------------Draggable-----------------//
-
-
 	
-	void PieceSprite::update(sf::RenderWindow& a) {
+	void PieceSprite::update(sf::RenderWindow& window) {
 
-		int height = boundingBox.height;
-		int width = boundingBox.width;
-
+		float x_pos = getPosition().x;
+		float y_pos = getPosition().y;
+		
 		// Get true mouse position, taking window repositioning into account. 
 		// Does not account for window rescaling or skew.
-		int mouse_x = sf::Mouse::getPosition().x - a.getPosition().x;
-		int mouse_y = sf::Mouse::getPosition().y - a.getPosition().y;
+		int mouse_x = sf::Mouse::getPosition().x - window.getPosition().x;
+		int mouse_y = sf::Mouse::getPosition().y - window.getPosition().y;
+				
+		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && contains_mouse(window)) {
 
-
-		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && (mouse_x > x_pos) && 
-			(mouse_x < x_pos + width) && (mouse_y > y_pos) && (mouse_y < y_pos + height)) {
+			// For debugging
+			// std::cout << "Top:   " << boundingBox.top << "	Left: " << boundingBox.left << std::endl;
+			// std::cout << "Width: " << boundingBox.width << "	Height: " << boundingBox.height << std::endl;
 
 			if (flag_first_click == true) {
 				dragging = true;
 				mouse_offset_x = mouse_x - getPosition().x;
 				mouse_offset_y = mouse_y - getPosition().y;
+
 				flag_first_click = false;
 			}
 		}
-		else {
-			if (!sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-				dragging = false;
-			}
-		}
-
-
-		if (!sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-			flag_first_click = true;
+		else if (!sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+			 dragging = false;
+			 flag_first_click = true;
 		}
 		else {
 			flag_first_click = false;
 		}
 
-
 		if (dragging == true) {
 
 			sf::Vector2i position = sf::Mouse::getPosition();
-
-			x_pos = position.x - a.getPosition().x - mouse_offset_x;
-			y_pos = position.y - a.getPosition().y - mouse_offset_y;
+			
+			x_pos = position.x - window.getPosition().x - mouse_offset_x;
+			y_pos = position.y - window.getPosition().y - mouse_offset_y;
 
 		}
 		sf::Vector2f position_2f;
@@ -151,38 +114,11 @@ namespace chess_ui {
 		position_2f.y = y_pos;
 
 		setPosition(position_2f);
-
+		
 	}
-
-
-
-
-	void PieceSprite::set_x_pos(float x) {
-		x_pos = x;
-	}
-
-
-
-
-	void PieceSprite::set_y_pos(float y) {
-		y_pos = y;
-	}
-
-
-
-
-	float PieceSprite::get_x_pos() {
-		return x_pos;
-	}
-
-
-
-
-	float PieceSprite::get_y_pos() {
-		return y_pos;
-	}
-
-
+	
 }	// closes namespace
+
+
 
 

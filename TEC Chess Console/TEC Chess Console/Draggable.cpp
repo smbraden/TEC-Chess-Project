@@ -40,12 +40,14 @@ namespace chess_ui {
 
 	void draggable::update(sf::RenderWindow& a) {
 
-		// Get true mouse position, taking window repositioninginto account. Does not account for window rescaling or skew.
+		// Get true mouse position, taking window repositioninginto account. 
+		// Does not account for window rescaling or skew.
 		int mouse_x = sf::Mouse::getPosition().x - a.getPosition().x;
 		int mouse_y = sf::Mouse::getPosition().y - a.getPosition().y;
 
 
-		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && (mouse_x > x_pos) && (mouse_x < x_pos + width) && (mouse_y > y_pos) && (mouse_y < y_pos + height)) {
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && (mouse_x > x_pos) && 
+			(mouse_x < x_pos + width) && (mouse_y > y_pos) && (mouse_y < y_pos + height)) {
 
 			if (flag_first_click == true) {
 				dragging = true;

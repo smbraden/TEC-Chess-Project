@@ -81,7 +81,6 @@ namespace chess_ui {
 			for (int j = 0; j < NUM_TEAM_PIECES; j++) {
 				TexturePtrs[i][j] = new sf::Texture;
 				TexturePtrs[i][j]->loadFromFile(PieceFilenames[i][j]);	// dynamic implementation
-				// Textures[i][j].loadFromFile(PieceFilenames[i][j]);	// non-dynamic implementation
 			}
 		}
 	}
@@ -93,6 +92,9 @@ namespace chess_ui {
 	
 	void PieceSprite_Set::initPieceSprites()
 	{
+		int white_index = 0;
+		int black_index = 1;
+
 
 		int x = 280;
 		int Wy = 880;
@@ -100,13 +102,19 @@ namespace chess_ui {
 		for (int i = 0; i < 5; i++) {	// leftiest wRook through wKing
 
 			addSpriteTexture(TexturePtrs[0][i], 0, i, x, Wy);
-			addSpriteTexture(TexturePtrs[1][i], 1, i, x, By);
+			//addSpriteTexture(TexturePtrs[1][i], 1, i, x, By);		// to instead use Black Piece textures at index [1][i]
+			addSpriteTexture(TexturePtrs[0][i], 1, i, x, By);		// to use darkened White Piece textures
+			spritePieces[1][i]->setColor(sf::Color(150, 150, 150));
+
 			x += 100;
 		}
 		for (int i = 5; i < 8; i++) {	// rightiest wBishop through wRook
 
 			addSpriteTexture(TexturePtrs[0][7 - i], 0, i, x, Wy);
-			addSpriteTexture(TexturePtrs[1][7 - i], 1, i, x, By);
+			//addSpriteTexture(TexturePtrs[1][7 - i], 1, i, x, By);	// to instead use Black Piece textures at index [1][7 - i]
+			addSpriteTexture(TexturePtrs[0][7 - i], 1, i, x, By);	// to use darkened White Piece textures
+			spritePieces[1][i]->setColor(sf::Color(150, 150, 150));
+
 			x += 100;
 		}
 
@@ -115,12 +123,33 @@ namespace chess_ui {
 		By = 280;
 		for (int i = 8; i < NUM_TEAM_PIECES; i++) {	// all zee wPawns
 			addSpriteTexture(TexturePtrs[0][5], 0, i, x, Wy);
-			addSpriteTexture(TexturePtrs[1][5], 1, i, x, By);
+			// addSpriteTexture(TexturePtrs[1][5], 1, i, x, By);	// to instead use Black Piece textures at index [1][5]
+			addSpriteTexture(TexturePtrs[0][5], 1, i, x, By);		// to use darkened White Piece textures
+			spritePieces[1][i]->setColor(sf::Color(150, 150, 150));
+
 			x += 100;
 		}
 
 	}
 
+	/*
+	
+	Some setColor() combos to try for black
+	Use the white piece texture if setting the color in software
+
+	Tan:
+	(166, 137, 111)
+	(179, 153, 130)
+	(169, 139, 112)
+
+	Greys:
+	(128, 128, 128)
+	(175, 175, 175)
+	(192, 192, 192)
+
+	So far, best overall contrast is (150, 150, 150) grey on a slightly darkened chess board
+
+	*/
 
 
 

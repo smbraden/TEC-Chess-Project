@@ -8,13 +8,19 @@ Graphics are created with the abstraction library, [Simple Fast Media Library (S
 
 Some GUI features that remain to be completed include:
 
-1. Design/Implement a mechanism for mapping pixel positions to board coordinates
-2. Implement PieceSprite movement with mouse. Options:
-	* Click to click (leaning towards this one)	
-	* Grab and drag
-3. Treat the Black team piece to contrast against the board more. Some options:
+- [ ] Design/Implement a mechanism for mapping pixel positions to board coordinates
+- [ ] Design/Implement a snap to coordinates mechanism as specified:
+	* A released sprite will snap to the nearest (empty?) space on the board
+	* Must prevent all clashing of sprite bounding boxes
+- [x] Treat the Black team piece to contrast against the board more. Some options:
 	* Lighten the Black Team to dark gray-ish
 	* Light-colored outline around Black pieces
-4. Resizable window with board entity that does not resize with respect to the screen
+- [x] Implement PieceSprite movement with mouse. Options:
+	* Grab and drag
+	* Click to click (leaning towards this one)
+- [ ] Moving piece is rendered in front of other pieces
+- [ ] Resizable window with board entity that does not resize with respect to the screen
 
-![Chess Board UI Screenshot](Project_Info/TEC_Chess_UI_ScreenShot.png)
+![Chess Board UI Screenshot](Project_Info/TEC_Chess_UI_ScreenShot_Grey.png)
+
+	

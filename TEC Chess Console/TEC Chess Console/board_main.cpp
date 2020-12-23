@@ -33,6 +33,7 @@ int main() {
 	if (!board_texture.loadFromFile(board_filename)) { /*error*/ }
 	sf::RectangleShape board(sf::Vector2f(BOARD_W, BOARD_H));
 	board.setTexture(&board_texture);
+	board.setFillColor(sf::Color(224, 215, 205));	// darken the board a bit
 	board.setPosition(sf::Vector2f((WINDOW_W - BOARD_W) / 2, (WINDOW_H - BOARD_H) / 2));
 
 	// Creating mouse follower
@@ -67,6 +68,8 @@ int main() {
 			drawlist.addSpritePiece(*temp);
 		}
 	}
+
+
 
 
 	//----------------Graphics Event Loop----------------//

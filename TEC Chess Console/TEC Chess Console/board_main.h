@@ -14,6 +14,7 @@
 #include "drawList.h"			// <-- redundant here #include <SFML/Graphics.hpp>
 #include "PieceSprite.h"		// <-- redundant here #include <SFML/Graphics.hpp>
 #include "PieceSprite_Set.h"
+#include "Draggable.h"
 
 /*
 // Add ChessBoard.h/.cpp and dependencies to project for testing integration
@@ -35,7 +36,8 @@ const int NUM_TEAM_PIECES = 16;
 
 
 const std::string background_filename = "Images/marble2.jpg";
-const std::string board_filename = "Images/Chess_Board_Lavender_Light.jpg";
+const std::string board_filename = "Images/Chess_Board_Lavender_Light.jpg"; // better to darken the lavendar light version in software
+// const std::string board_filename = "Images/Chess_Board.jpg";	
 const std::string mouse_follower_filename = "Images/marble3.jpg";
 const std::string font1_filename = "Images/Inconsolata-Medium.ttf"; 
 
@@ -62,21 +64,3 @@ inline int int2row(int arg);
 #endif // BOARD_TEST_HEADER_H
 
 
-
-
-
-
-
-
-
-
-
-//--------------------Frontend Functions--------------------//
-
-/*
-
-// chess_ui::PieceSprite* spritePieces[2][NUM_TEAM_PIECES];
-
-void initPieceSprites(chess_ui::PieceSprite * spritePieces[][NUM_TEAM_PIECES]);
-void destroyPieceSprites(chess_ui::PieceSprite * spritePieces[][NUM_TEAM_PIECES]);
-*/
