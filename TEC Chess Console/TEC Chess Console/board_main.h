@@ -14,7 +14,7 @@
 #include "drawList.h"			// <-- redundant here #include <SFML/Graphics.hpp>
 #include "PieceSprite.h"		// <-- redundant here #include <SFML/Graphics.hpp>
 #include "PieceSprite_Set.h"
-#include "Draggable.h"
+// #include "Draggable.h"
 
 /*
 // Add ChessBoard.h/.cpp and dependencies to project for testing integration
@@ -28,6 +28,12 @@ const int WINDOW_W = 1400;
 const int WINDOW_H = 1200;
 const int BOARD_W = 900;
 const int BOARD_H = 900;
+const int SCREEN_W = sf::VideoMode::getDesktopMode().width;
+const int SCREEN_H = sf::VideoMode::getDesktopMode().height;
+const int BACKGROUND_W = SCREEN_W * 2;
+const int BACKGROUND_H = SCREEN_H * 2;
+const sf::Vector2f BOARD_POS = sf::Vector2f((BACKGROUND_W - BOARD_W) / 2, (BACKGROUND_H - BOARD_H) / 2);
+
 
 // const int NUM_PIECE_TEXTURES = 12;
 // const int NUM_PIECES = 32;
@@ -49,10 +55,12 @@ const std::string PieceFilenames[2][NUM_TEAM_TEXTURES] = {
 
 
 chess_ui::drawList drawlist;
-chess_ui::PieceSprite_Set pieces;
+chess_ui::PieceSprite_Set pieces_set(BOARD_POS + sf::Vector2f(30, 30), 100);
 
+//--------------------Frontend main() Functions--------------------//
+void resize_adjust_view(const sf::Event& event, sf::RenderWindow& window);
 
-//--------------------Backend Functions--------------------//
+//--------------------Backend main() Functions--------------------//
 /*
 bool testMove(chess::ChessBoard& argBoard, int x1, int y1, int x2, int y2, bool& flag);
 void play(chess::ChessBoard& argBoard, char& option, char& x1, int& y1, char& x2, int& y2);

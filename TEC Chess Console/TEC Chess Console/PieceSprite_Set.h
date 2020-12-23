@@ -23,6 +23,9 @@
 						This allows for creation of a set of Pieces with custom styles.
 //-------------------------------------------------------------------------------------/*/
 
+#ifndef PIECE_SPRITE_SET_H
+#define PIECE_SPRITE_SET_H
+
 #include <SFML/Graphics.hpp>
 #include "PieceSprite.h"
 #include <string>
@@ -38,7 +41,8 @@ namespace chess_ui {
 		const static int NUM_TEAM_PIECES = 16;
 
 		PieceSprite_Set();
-		PieceSprite_Set(const std::string PieceFilenames[2][NUM_TEAM_TEXTURES]);
+		PieceSprite_Set(const sf::Vector2f& reference, int spacing);
+		PieceSprite_Set(const std::string arg[2][NUM_TEAM_TEXTURES], const sf::Vector2f& reference, int spacing);
 		~PieceSprite_Set();
 		PieceSprite* getPiecePtr(int i, int j);
 
@@ -54,7 +58,7 @@ namespace chess_ui {
 		{ "Images/BlackRook.png", "Images/BlackKnight.png", "Images/BlackBishop.png",
 		  "Images/BlackQueen.png", "Images/BlackKing.png", "Images/BlackPawn.png" } };
 
-		void initPieceSprites();
+		void initPieceSprites(const sf::Vector2f& reference, int spacing);
 		void initTextures();
 		void addSpriteTexture(sf::Texture* txtPtr, int team_index, int piece_index, int x, int y);
 
@@ -62,3 +66,5 @@ namespace chess_ui {
 
 }
 
+
+#endif

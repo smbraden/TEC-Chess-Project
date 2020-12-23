@@ -19,7 +19,7 @@ Some GUI features that remain to be completed include:
 	* Grab and drag
 	* Click to click (leaning towards this one)
 - [ ] Moving piece is rendered in front of other pieces
-- [ ] Resizable window with board entity that does not resize with respect to the screen
+- [x] Resizable window with view adjusted around board entity
 
 ![Chess Board UI Screenshot](Project_Info/TEC_Chess_UI_ScreenShot_Grey.png)
 

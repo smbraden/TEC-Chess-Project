@@ -58,6 +58,14 @@ namespace chess_ui {
 		boundingBox.width /= 3;
 		boundingBox.height = (boundingBox.height * 2) / 3;
 		
+		/*
+		OR
+
+		FloatRect (T rectLeft, T rectTop, T rectWidth, T rectHeight)
+		Construct the rectangle from its coordinates.
+		
+		*/
+
 		return boundingBox.contains(translated_pos);
 	}
 

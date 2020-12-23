@@ -19,52 +19,53 @@ int main() {
 	// Creating window and objects.
 	sf::RenderWindow window(sf::VideoMode(WINDOW_W, WINDOW_H), "TEC Chess UI");
 	window.setFramerateLimit(60);
-	
+	window.setView(sf::View(sf::FloatRect((BACKGROUND_W - WINDOW_W) / 2, 
+		(BACKGROUND_H - WINDOW_H) / 2, WINDOW_W, WINDOW_H)));
+		
 	// Creating background
 	sf::Texture background_texture;
 	if (!background_texture.loadFromFile(background_filename)) { /*error*/ }
-	sf::RectangleShape background_sprite(sf::Vector2f(WINDOW_W, WINDOW_H));
-	background_sprite.setTexture(&background_texture);
-	background_sprite.setPosition(sf::Vector2f(0, 0));
-	background_sprite.setTextureRect(sf::IntRect(0, 0, WINDOW_W, WINDOW_H));
-
+	sf::RectangleShape background_shape(sf::Vector2f(BACKGROUND_W, BACKGROUND_H));
+	background_shape.setTexture(&background_texture);
+	background_shape.setPosition(sf::Vector2f(0, 0));
+	
 	// Creating board
 	sf::Texture board_texture;
 	if (!board_texture.loadFromFile(board_filename)) { /*error*/ }
 	sf::RectangleShape board(sf::Vector2f(BOARD_W, BOARD_H));
 	board.setTexture(&board_texture);
 	board.setFillColor(sf::Color(224, 215, 205));	// darken the board a bit
-	board.setPosition(sf::Vector2f((WINDOW_W - BOARD_W) / 2, (WINDOW_H - BOARD_H) / 2));
+	board.setPosition(BOARD_POS);
 
-	// Creating mouse follower
-	sf::Texture mouse_follower_texture;
-	if (!mouse_follower_texture.loadFromFile(mouse_follower_filename)) { /*error*/ }
-	sf::CircleShape mouse_follower(30.f);
-	mouse_follower.setTexture(&mouse_follower_texture);
-	mouse_follower.setTextureRect(sf::IntRect(10, 10, 100, 100));
-
+	// Creating mouse follower 
+	// sf::Texture mouse_follower_texture;
+	// if (!mouse_follower_texture.loadFromFile(mouse_follower_filename)) { /*error*/ }
+	// sf::CircleShape mouse_follower(30.f);
+	// mouse_follower.setTexture(&mouse_follower_texture);
+	// mouse_follower.setTextureRect(sf::IntRect(10, 10, 100, 100));
+	
 	// Create text
-	sf::Font font;
-	if (!font.loadFromFile(font1_filename))	{ /* error */ }
-	sf::Text text;
-	text.setFont(font); // font is a sf::Font
-	std::string msg;
-	msg = "Hello world.\n";
-	text.setString(msg);
-	text.setCharacterSize(24); // in pixels, not points!
-	text.setFillColor(sf::Color::Black);
+	// sf::Font font;
+	// if (!font.loadFromFile(font1_filename))	{ /* error */ }
+	// sf::Text text;
+	// text.setFont(font); // font is a sf::Font
+	// std::string msg;
+	// msg = "Hello world.\n";
+	// text.setString(msg);
+	// text.setCharacterSize(24); // in pixels, not points!
+	// text.setFillColor(sf::Color::Black);
 	
 	//------------Add Entities to the drawList------------//
 	drawlist.setRenderWindow(window);
-	drawlist.addShape(background_sprite);
+	drawlist.addShape(background_shape);
 	drawlist.addShape(board);
-	drawlist.addShape(mouse_follower);
+	// drawlist.addShape(mouse_follower);
 	// drawlist.addText(text);
 
 	for (int i = 0; i < 2; i++) {
 		for (int j = 0; j < NUM_TEAM_PIECES; j++) {
 			
-			chess_ui::PieceSprite* temp = pieces.getPiecePtr(i, j);
+			chess_ui::PieceSprite* temp = pieces_set.getPiecePtr(i, j);
 			drawlist.addSpritePiece(*temp);
 		}
 	}
@@ -81,28 +82,32 @@ int main() {
 		sf::Vector2i localPosition;
 		
 		sf::Sprite* clicked = nullptr;
-
+		
 		while (window.pollEvent(event))
 		{
+			/*
 			// Testing mouse functionality.
 			sf::Vector2i localPosition = sf::Mouse::getPosition(window);
-			sf::Vector2f mpos;
-			mpos.x = localPosition.x - 30;
-			mpos.y = localPosition.y - 30;
-			mouse_follower.setPosition(mpos);
-			
+			sf::Vector2f mouse_pos;
+			mouse_pos = sf::Vector2f(localPosition.x, localPosition.y) - sf::Vector2f(30, 30);
+			mouse_follower.setPosition(mouse_pos);		// set the mouse follower position
+			*/
+
 			switch (event.type) {
 			
-			case sf::Event::Closed:
+			case sf::Event::Closed :
 				window.close();
-			
+			case sf::Event::Resized :
+			{
+				resize_adjust_view(event, window);			
+			}
+				
 						/*
 			case X:
 
 			case Y:		
 						*/
 			}
-
 
 			// Pressing escape closes the window
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
@@ -124,9 +129,51 @@ int main() {
 
 
 
+//------------------Frontend main() Functions------------------//
+
+
+void resize_adjust_view(const sf::Event& event, sf::RenderWindow& window)
+{
+	// when the window is expanded beyond initial dimensions
+	if (event.size.height >= WINDOW_H && event.size.width >= WINDOW_W) {
+
+		// keep the view centered on the board
+		window.setView(sf::View(sf::Vector2f(BACKGROUND_W / 2, BACKGROUND_H / 2),
+			sf::Vector2f(event.size.width, event.size.height)));
+	} 	// when the window is still larger than the board
+	else if ((event.size.height < WINDOW_H || event.size.width < WINDOW_W) &&
+		(event.size.height > BOARD_H && event.size.width > BOARD_W)) {
+
+		// keep the view centered on the board
+		window.setView(sf::View(sf::Vector2f(BACKGROUND_W / 2, BACKGROUND_H / 2),
+			sf::Vector2f(event.size.width, event.size.height)));
+
+	} // when the window is only WIDER than the board, but not taller
+	else if (event.size.height < BOARD_H && event.size.width >= BOARD_W) {
+
+		window.setView(sf::View(sf::FloatRect((BACKGROUND_W - event.size.width) / 2, BOARD_POS.y,
+			event.size.width, event.size.height)));
+
+	} // when the window is only TALLER than the board, but not wider
+	else if (event.size.width < BOARD_W && event.size.height >= BOARD_H) {
+
+		window.setView(sf::View(sf::FloatRect(BOARD_POS.x, (BACKGROUND_H - event.size.height) / 2,
+			event.size.width, event.size.height)));
+
+	} // when the window is smaller than the board in both dimensions
+	else {
+		window.setView(sf::View(sf::FloatRect(BOARD_POS.x, BOARD_POS.y,
+			event.size.width, event.size.height)));
+	}
+}
+
+
+
+
+
 /*
 
-//------------------Backend Functions------------------//
+//------------------Backend main() Functions------------------//
 
 
 
@@ -278,3 +325,4 @@ void destroyPieceSprites(chess_ui::PieceSprite* spritePieces[][NUM_TEAM_PIECES])
 
 
 */
+

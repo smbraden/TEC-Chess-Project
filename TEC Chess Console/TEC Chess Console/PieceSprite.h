@@ -22,14 +22,11 @@ namespace chess_ui {
 		
 		PieceSprite();
 		PieceSprite(sf::Texture* text, float in_x, float in_y);
-			
 				
 		class TextureUndefinedError {};
 
 		// elements of draggable functionality
-		bool contains_mouse(sf::RenderWindow& window);
 		void update(sf::RenderWindow& a);
-				
 		
 	private:
 
@@ -37,14 +34,15 @@ namespace chess_ui {
 		static const int  DEFAULT_PIECE_HEIGHT = 50;
 		sf::Texture* TexturePtr;
 		
-		
 		// elements of draggable functionality
 		sf::FloatRect boundingBox = getGlobalBounds();
 		float mouse_offset_x = 0;
 		float mouse_offset_y = 0;
 		bool dragging = false;
 		bool flag_first_click = true;
-				
+
+		bool contains_mouse(sf::RenderWindow& window);
+
 	};
 }
 
