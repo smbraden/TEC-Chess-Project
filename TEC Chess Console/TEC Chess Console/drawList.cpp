@@ -54,9 +54,9 @@ namespace chess_ui {
 		for (int i = 0; i < shapeObjPtrs.size(); i++) {
 			renderWindowPointer->draw(*shapeObjPtrs[i]);
 		}
-		/* for (int i = 0; i < spritePieceObjPtrs.size(); i++) {
-			renderWindowPointer->draw(*spritePieceObjPtrs[i]);
-		} */
+		for (int i = 0; i < spriteObjPtrs.size(); i++) {
+			renderWindowPointer->draw(*spriteObjPtrs[i]);
+		}
 		for (int i = 0; i < spritePieceObjPtrs.size(); i++) {
 			spritePieceObjPtrs[i]->update(*renderWindowPointer);
 			renderWindowPointer->draw(*spritePieceObjPtrs[i]);

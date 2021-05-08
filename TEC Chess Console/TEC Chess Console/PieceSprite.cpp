@@ -23,6 +23,8 @@ namespace chess_ui {
 		setTexture(*TexturePtr); 
 		scale(sf::Vector2f(.5f, .45f)); // absolute scale factor	
 		
+		// recall that boundingBox = getGlobalBounds()
+		setOrigin(boundingBox.width / 2, boundingBox.height / 2);
 		setPosition(in_x, in_y);
 	}
 
@@ -36,6 +38,8 @@ namespace chess_ui {
 		setTexture(*TexturePtr);
 		scale(sf::Vector2f(.5f, .45f)); // absolute scale factor	
 		
+		// recall that boundingBox = getGlobalBounds()
+		setOrigin(boundingBox.width / 2, boundingBox.height / 2);
 	}
 
 
@@ -76,7 +80,9 @@ namespace chess_ui {
 
 	//-----------------Draggable-----------------//
 	
-	void PieceSprite::update(sf::RenderWindow& window) {
+	bool PieceSprite::update(sf::RenderWindow& window) {
+
+		bool temp_flag = dragging;
 
 		float x_pos = getPosition().x;
 		float y_pos = getPosition().y;
@@ -85,7 +91,7 @@ namespace chess_ui {
 		// Does not account for window rescaling or skew.
 		int mouse_x = sf::Mouse::getPosition().x - window.getPosition().x;
 		int mouse_y = sf::Mouse::getPosition().y - window.getPosition().y;
-				
+		
 		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && contains_mouse(window)) {
 
 			// For debugging
@@ -123,6 +129,8 @@ namespace chess_ui {
 
 		setPosition(position_2f);
 		
+		return (temp_flag && !dragging);	// return true if sprite is dropped
+			
 	}
 	
 }	// closes namespace

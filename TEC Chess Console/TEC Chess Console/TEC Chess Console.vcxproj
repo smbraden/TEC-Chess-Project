@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="board_main.cpp" />
     <ClCompile Include="Draggable.cpp" />
+    <ClCompile Include="GUIBoard.cpp" />
     <ClCompile Include="PieceSprite.cpp" />
     <ClCompile Include="drawList.cpp" />
     <ClCompile Include="PieceSprite_Set.cpp" />
@@ -154,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="board_main.h" />
     <ClInclude Include="Draggable.h" />
+    <ClInclude Include="GUIBoard.h" />
     <ClInclude Include="PieceSprite.h" />
     <ClInclude Include="drawList.h" />
     <ClInclude Include="PieceSprite_Set.h" />
